@@ -16,7 +16,7 @@ class Item(models.Model):
     def __str__(self):
         return self.name
 
-
+# Not currently used
 class Npc(models.Model):
     name = models.CharField(max_length=100)
     npc_id = models.IntegerField()

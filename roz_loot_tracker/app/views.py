@@ -4,8 +4,6 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from app.models import Player, Raid, RaidAttendance
 
 
-# TODO: Add delete views
-
 
 class PlayerListView(ListView):
     model = Player
