@@ -1,0 +1,25 @@
+services:
+  quarm_db:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_DATABASE: quarm
+      MYSQL_USER: django_user
+      MYSQL_PASSWORD: django_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./db_data:/var/lib/mysql
+    restart: unless-stopped
+
+  app:
+    build: .
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - quarm_db

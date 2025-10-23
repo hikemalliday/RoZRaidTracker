@@ -1,0 +1,1538 @@
+[
+{
+    "model": "app.zone",
+    "pk": 1,
+    "fields": {
+        "name": "Acrylia Caverns",
+        "zone_id": 154
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 2,
+    "fields": {
+        "name": "Plane of Sky",
+        "zone_id": 71
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 3,
+    "fields": {
+        "name": "Ak'Anon",
+        "zone_id": 55
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 4,
+    "fields": {
+        "name": "Akheva Ruins",
+        "zone_id": 179
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 5,
+    "fields": {
+        "name": "The Arena",
+        "zone_id": 77
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 6,
+    "fields": {
+        "name": "The Arena Two",
+        "zone_id": 180
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 7,
+    "fields": {
+        "name": "Aviak Village",
+        "zone_id": 53
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 8,
+    "fields": {
+        "name": "Befallen",
+        "zone_id": 36
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 9,
+    "fields": {
+        "name": "Gorge of King Xorbb",
+        "zone_id": 16
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 10,
+    "fields": {
+        "name": "Blackburrow",
+        "zone_id": 17
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 11,
+    "fields": {
+        "name": "Bastion of Thunder",
+        "zone_id": 209
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 12,
+    "fields": {
+        "name": "The Burning Wood",
+        "zone_id": 87
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 13,
+    "fields": {
+        "name": "Butcherblock Mountains",
+        "zone_id": 68
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 14,
+    "fields": {
+        "name": "Cabilis East",
+        "zone_id": 106
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 15,
+    "fields": {
+        "name": "Cabilis West",
+        "zone_id": 82
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 16,
+    "fields": {
+        "name": "Dagnor's Cauldron",
+        "zone_id": 70
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 17,
+    "fields": {
+        "name": "Accursed Temple of Cazic Thule",
+        "zone_id": 48
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 18,
+    "fields": {
+        "name": "The Howling Stones",
+        "zone_id": 105
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 19,
+    "fields": {
+        "name": "Chardok",
+        "zone_id": 103
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 20,
+    "fields": {
+        "name": "The City of Mist",
+        "zone_id": 90
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 21,
+    "fields": {
+        "name": "Loading",
+        "zone_id": 190
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 22,
+    "fields": {
+        "name": "Cobaltscar",
+        "zone_id": 117
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 23,
+    "fields": {
+        "name": "The Crypt of Decay",
+        "zone_id": 200
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 24,
+    "fields": {
+        "name": "Field of Bone (Alt)",
+        "zone_id": 1078
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 25,
+    "fields": {
+        "name": "West Commonlands",
+        "zone_id": 21
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 26,
+    "fields": {
+        "name": "Crushbone",
+        "zone_id": 58
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 27,
+    "fields": {
+        "name": "Crystal Caverns",
+        "zone_id": 121
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 28,
+    "fields": {
+        "name": "Sunset Home",
+        "zone_id": 26
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 29,
+    "fields": {
+        "name": "The Crypt of Dalnir",
+        "zone_id": 104
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 30,
+    "fields": {
+        "name": "The Dawnshroud Peaks",
+        "zone_id": 174
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 31,
+    "fields": {
+        "name": "The Dreadlands",
+        "zone_id": 86
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 32,
+    "fields": {
+        "name": "Mines of Droga",
+        "zone_id": 81
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 33,
+    "fields": {
+        "name": "Eastern Plains of Karana",
+        "zone_id": 15
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 34,
+    "fields": {
+        "name": "Eastern Wastes",
+        "zone_id": 116
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 35,
+    "fields": {
+        "name": "Echo Caverns",
+        "zone_id": 153
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 36,
+    "fields": {
+        "name": "East Commonlands",
+        "zone_id": 22
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 37,
+    "fields": {
+        "name": "The Emerald Jungle",
+        "zone_id": 94
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 38,
+    "fields": {
+        "name": "Erudin",
+        "zone_id": 24
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 39,
+    "fields": {
+        "name": "Erudin Palace",
+        "zone_id": 23
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 40,
+    "fields": {
+        "name": "Erud's Crossing",
+        "zone_id": 98
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 41,
+    "fields": {
+        "name": "Marauders Mire",
+        "zone_id": 130
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 42,
+    "fields": {
+        "name": "Everfrost Peaks",
+        "zone_id": 30
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 43,
+    "fields": {
+        "name": "Plane of Fear",
+        "zone_id": 72
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 44,
+    "fields": {
+        "name": "The Feerrott",
+        "zone_id": 47
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 45,
+    "fields": {
+        "name": "Northern Felwithe",
+        "zone_id": 61
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 46,
+    "fields": {
+        "name": "Southern Felwithe",
+        "zone_id": 62
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 47,
+    "fields": {
+        "name": "Field of Bone",
+        "zone_id": 78
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 48,
+    "fields": {
+        "name": "Firiona Vie",
+        "zone_id": 84
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 49,
+    "fields": {
+        "name": "East Freeport",
+        "zone_id": 10
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 50,
+    "fields": {
+        "name": "North Freeport",
+        "zone_id": 8
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 51,
+    "fields": {
+        "name": "West Freeport",
+        "zone_id": 9
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 52,
+    "fields": {
+        "name": "Frontier Mountains",
+        "zone_id": 92
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 53,
+    "fields": {
+        "name": "Tower of Frozen Shadow",
+        "zone_id": 111
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 54,
+    "fields": {
+        "name": "The Fungus Grove",
+        "zone_id": 157
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 55,
+    "fields": {
+        "name": "Greater Faydark",
+        "zone_id": 54
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 56,
+    "fields": {
+        "name": "The Great Divide",
+        "zone_id": 118
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 57,
+    "fields": {
+        "name": "Grieg's End",
+        "zone_id": 163
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 58,
+    "fields": {
+        "name": "Grimling Forest",
+        "zone_id": 167
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 59,
+    "fields": {
+        "name": "Grobb",
+        "zone_id": 52
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 60,
+    "fields": {
+        "name": "Plane of Growth",
+        "zone_id": 127
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 61,
+    "fields": {
+        "name": "Ruins of Old Guk",
+        "zone_id": 66
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 62,
+    "fields": {
+        "name": "Guk",
+        "zone_id": 65
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 63,
+    "fields": {
+        "name": "Halas",
+        "zone_id": 29
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 64,
+    "fields": {
+        "name": "Plane of Hate",
+        "zone_id": 76
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 65,
+    "fields": {
+        "name": "High Keep",
+        "zone_id": 6
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 66,
+    "fields": {
+        "name": "Highpass Hold",
+        "zone_id": 5
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 67,
+    "fields": {
+        "name": "Halls of Honor",
+        "zone_id": 211
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 68,
+    "fields": {
+        "name": "Temple of Marr",
+        "zone_id": 220
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 69,
+    "fields": {
+        "name": "The Hole",
+        "zone_id": 39
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 70,
+    "fields": {
+        "name": "Hollowshade Moor",
+        "zone_id": 166
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 71,
+    "fields": {
+        "name": "Iceclad Ocean",
+        "zone_id": 110
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 72,
+    "fields": {
+        "name": "Innothule Swamp",
+        "zone_id": 46
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 73,
+    "fields": {
+        "name": "Jaggedpine Forest",
+        "zone_id": 181
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 74,
+    "fields": {
+        "name": "Kael Drakkel",
+        "zone_id": 113
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 75,
+    "fields": {
+        "name": "Kaesora",
+        "zone_id": 88
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 76,
+    "fields": {
+        "name": "South Kaladim",
+        "zone_id": 60
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 77,
+    "fields": {
+        "name": "North Kaladim",
+        "zone_id": 67
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 78,
+    "fields": {
+        "name": "Karnor's Castle",
+        "zone_id": 102
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 79,
+    "fields": {
+        "name": "Katta Castellum",
+        "zone_id": 160
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 80,
+    "fields": {
+        "name": "Kedge Keep",
+        "zone_id": 64
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 81,
+    "fields": {
+        "name": "Kerra Isle",
+        "zone_id": 74
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 82,
+    "fields": {
+        "name": "Kithicor Forest",
+        "zone_id": 20
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 83,
+    "fields": {
+        "name": "Kurn's Tower",
+        "zone_id": 97
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 84,
+    "fields": {
+        "name": "Lake of Ill Omen",
+        "zone_id": 85
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 85,
+    "fields": {
+        "name": "Lake Rathetear",
+        "zone_id": 51
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 86,
+    "fields": {
+        "name": "Lavastorm Mountains",
+        "zone_id": 27
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 87,
+    "fields": {
+        "name": "Mons Letalis",
+        "zone_id": 169
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 88,
+    "fields": {
+        "name": "Lesser Faydark",
+        "zone_id": 57
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 89,
+    "fields": {
+        "name": "Loading Zone",
+        "zone_id": 184
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 90,
+    "fields": {
+        "name": "New Loading Zone",
+        "zone_id": 185
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 91,
+    "fields": {
+        "name": "The Maiden's Eye",
+        "zone_id": 173
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 92,
+    "fields": {
+        "name": "Plane of Mischief",
+        "zone_id": 126
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 93,
+    "fields": {
+        "name": "Castle of Mistmoore",
+        "zone_id": 59
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 94,
+    "fields": {
+        "name": "Misty Thicket",
+        "zone_id": 33
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 95,
+    "fields": {
+        "name": "Marus Seru",
+        "zone_id": 168
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 96,
+    "fields": {
+        "name": "Najena",
+        "zone_id": 44
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 97,
+    "fields": {
+        "name": "Dragon Necropolis",
+        "zone_id": 123
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 98,
+    "fields": {
+        "name": "Nektropos",
+        "zone_id": 28
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 99,
+    "fields": {
+        "name": "Neriak - Foreign Quarter",
+        "zone_id": 40
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 100,
+    "fields": {
+        "name": "Neriak - Commons",
+        "zone_id": 41
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 101,
+    "fields": {
+        "name": "Neriak - 3rd Gate",
+        "zone_id": 42
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 102,
+    "fields": {
+        "name": "Neriak Palace",
+        "zone_id": 43
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 103,
+    "fields": {
+        "name": "Netherbian Lair",
+        "zone_id": 161
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 104,
+    "fields": {
+        "name": "Nexus",
+        "zone_id": 152
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 105,
+    "fields": {
+        "name": "The Lair of Terris Thule",
+        "zone_id": 221
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 106,
+    "fields": {
+        "name": "Northern Plains of Karana",
+        "zone_id": 13
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 107,
+    "fields": {
+        "name": "Northern Desert of Ro",
+        "zone_id": 34
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 108,
+    "fields": {
+        "name": "Mines of Nurga",
+        "zone_id": 107
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 109,
+    "fields": {
+        "name": "Oasis of Marr",
+        "zone_id": 37
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 110,
+    "fields": {
+        "name": "Oggok",
+        "zone_id": 49
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 111,
+    "fields": {
+        "name": "Ocean of Tears",
+        "zone_id": 69
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 112,
+    "fields": {
+        "name": "The Overthere",
+        "zone_id": 93
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 113,
+    "fields": {
+        "name": "Paineel",
+        "zone_id": 75
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 114,
+    "fields": {
+        "name": "The Paludal Caverns",
+        "zone_id": 156
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 115,
+    "fields": {
+        "name": "Lair of the Splitpaw",
+        "zone_id": 18
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 116,
+    "fields": {
+        "name": "Permafrost Caverns",
+        "zone_id": 73
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 117,
+    "fields": {
+        "name": "Plane of Air",
+        "zone_id": 215
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 118,
+    "fields": {
+        "name": "Plane of Disease",
+        "zone_id": 205
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 119,
+    "fields": {
+        "name": "Plane of Earth",
+        "zone_id": 218
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 120,
+    "fields": {
+        "name": "Plane of Earth",
+        "zone_id": 222
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 121,
+    "fields": {
+        "name": "Plane of Fire",
+        "zone_id": 217
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 122,
+    "fields": {
+        "name": "Plane of Innovation",
+        "zone_id": 206
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 123,
+    "fields": {
+        "name": "Plane of Justice",
+        "zone_id": 201
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 124,
+    "fields": {
+        "name": "Plane of Knowledge",
+        "zone_id": 202
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 125,
+    "fields": {
+        "name": "Plane of Nightmares",
+        "zone_id": 204
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 126,
+    "fields": {
+        "name": "Plane of Storms",
+        "zone_id": 210
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 127,
+    "fields": {
+        "name": "Drunder, the Fortress of Zek",
+        "zone_id": 214
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 128,
+    "fields": {
+        "name": "Plane of Time",
+        "zone_id": 219
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 129,
+    "fields": {
+        "name": "Plane of Time",
+        "zone_id": 223
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 130,
+    "fields": {
+        "name": "Torment, the Plane of Pain",
+        "zone_id": 207
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 131,
+    "fields": {
+        "name": "Plane of Tranquility",
+        "zone_id": 203
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 132,
+    "fields": {
+        "name": "Plane of Valor",
+        "zone_id": 208
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 133,
+    "fields": {
+        "name": "Plane of War",
+        "zone_id": 213
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 134,
+    "fields": {
+        "name": "Plane of Water",
+        "zone_id": 216
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 135,
+    "fields": {
+        "name": "Qeynos Aqueduct System",
+        "zone_id": 45
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 136,
+    "fields": {
+        "name": "Western Plains of Karana",
+        "zone_id": 12
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 137,
+    "fields": {
+        "name": "South Qeynos",
+        "zone_id": 1
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 138,
+    "fields": {
+        "name": "North Qeynos",
+        "zone_id": 2
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 139,
+    "fields": {
+        "name": "Qeynos Hills",
+        "zone_id": 4
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 140,
+    "fields": {
+        "name": "Surefall Glade",
+        "zone_id": 3
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 141,
+    "fields": {
+        "name": "Rathe Mountains",
+        "zone_id": 50
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 142,
+    "fields": {
+        "name": "Rivervale",
+        "zone_id": 19
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 143,
+    "fields": {
+        "name": "Runnyeye",
+        "zone_id": 11
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 144,
+    "fields": {
+        "name": "Scarlet Desert",
+        "zone_id": 175
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 145,
+    "fields": {
+        "name": "Ruins of Sebilis",
+        "zone_id": 89
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 146,
+    "fields": {
+        "name": "Shadeweaver's Thicket",
+        "zone_id": 165
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 147,
+    "fields": {
+        "name": "Shadow Haven",
+        "zone_id": 150
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 148,
+    "fields": {
+        "name": "The City of Shar Vahl",
+        "zone_id": 155
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 149,
+    "fields": {
+        "name": "Siren's Grotto",
+        "zone_id": 125
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 150,
+    "fields": {
+        "name": "Skyfire Mountains",
+        "zone_id": 91
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 151,
+    "fields": {
+        "name": "Skyshrine",
+        "zone_id": 114
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 152,
+    "fields": {
+        "name": "Sleeper's Tomb",
+        "zone_id": 128
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 153,
+    "fields": {
+        "name": "Solusek's Eye",
+        "zone_id": 31
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 154,
+    "fields": {
+        "name": "Nagafen's Lair",
+        "zone_id": 32
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 155,
+    "fields": {
+        "name": "Tower of Solusek Ro",
+        "zone_id": 212
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 156,
+    "fields": {
+        "name": "Temple of Solusek Ro",
+        "zone_id": 80
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 157,
+    "fields": {
+        "name": "Southern Plains of Karana",
+        "zone_id": 14
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 158,
+    "fields": {
+        "name": "Southern Desert of Ro",
+        "zone_id": 35
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 159,
+    "fields": {
+        "name": "Sanctus Seru",
+        "zone_id": 159
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 160,
+    "fields": {
+        "name": "Ssraeshza Temple",
+        "zone_id": 162
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 161,
+    "fields": {
+        "name": "Steamfont Mountains",
+        "zone_id": 56
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 162,
+    "fields": {
+        "name": "Stonebrunt Mountains",
+        "zone_id": 100
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 163,
+    "fields": {
+        "name": "Swamp of No Hope",
+        "zone_id": 83
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 164,
+    "fields": {
+        "name": "Temple of Veeshan",
+        "zone_id": 124
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 165,
+    "fields": {
+        "name": "The Tenebrous Mountains",
+        "zone_id": 172
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 166,
+    "fields": {
+        "name": "The Deep",
+        "zone_id": 164
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 167,
+    "fields": {
+        "name": "The Grey",
+        "zone_id": 171
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 168,
+    "fields": {
+        "name": "The City of Thurgadin",
+        "zone_id": 115
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 169,
+    "fields": {
+        "name": "Icewell Keep",
+        "zone_id": 129
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 170,
+    "fields": {
+        "name": "Timorous Deep",
+        "zone_id": 96
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 171,
+    "fields": {
+        "name": "Toxxulia Forest",
+        "zone_id": 38
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 172,
+    "fields": {
+        "name": "Trakanon's Teeth",
+        "zone_id": 95
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 173,
+    "fields": {
+        "name": "EverQuest Tutorial",
+        "zone_id": 183
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 174,
+    "fields": {
+        "name": "Twilight",
+        "zone_id": 170
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 175,
+    "fields": {
+        "name": "The Umbral Plains",
+        "zone_id": 176
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 176,
+    "fields": {
+        "name": "The Estate of Unrest",
+        "zone_id": 63
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 177,
+    "fields": {
+        "name": "Veeshan's Peak",
+        "zone_id": 108
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 178,
+    "fields": {
+        "name": "Veksar",
+        "zone_id": 109
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 179,
+    "fields": {
+        "name": "Velketor's Labyrinth",
+        "zone_id": 112
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 180,
+    "fields": {
+        "name": "Vex Thal",
+        "zone_id": 158
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 181,
+    "fields": {
+        "name": "The Wakening Land",
+        "zone_id": 119
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 182,
+    "fields": {
+        "name": "The Warrens",
+        "zone_id": 101
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 183,
+    "fields": {
+        "name": "Warsliks Woods",
+        "zone_id": 79
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 184,
+    "fields": {
+        "name": "Western Wastes",
+        "zone_id": 120
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 185,
+    "fields": {
+        "name": "Nektulos Forest",
+        "zone_id": 25
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 186,
+    "fields": {
+        "name": "The Bazaar",
+        "zone_id": 151
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 187,
+    "fields": {
+        "name": "Lost Temple of CazicThule",
+        "zone_id": 1048
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 188,
+    "fields": {
+        "name": "Plane of Hate (Instanced)",
+        "zone_id": 1076
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 189,
+    "fields": {
+        "name": "Plane of Fear (Instanced)",
+        "zone_id": 1072
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 190,
+    "fields": {
+        "name": "Plane of Sky (Instanced)",
+        "zone_id": 1071
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 191,
+    "fields": {
+        "name": "Kurn's Tower (Alternate)",
+        "zone_id": 1097
+    }
+},
+{
+    "model": "app.zone",
+    "pk": 192,
+    "fields": {
+        "name": "The Hole (Instanced)",
+        "zone_id": 1039
+    }
+}
+]
