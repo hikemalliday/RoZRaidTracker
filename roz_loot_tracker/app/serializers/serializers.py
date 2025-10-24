@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from roz_loot_tracker.app.models import Player, Item, Zone, Character, Raid, ItemAwarded, PreferredPixel
+from app.models import Player, Item, Zone, Character, Raid, ItemAwarded, PreferredPixel
 
 
 class ItemSerializer(serializers.ModelSerializer):

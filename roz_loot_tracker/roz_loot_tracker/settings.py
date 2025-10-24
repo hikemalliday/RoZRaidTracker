@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -82,20 +83,19 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },
-    # External MariaDB source (read-only data)
-    'quarm_db': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('QUARM_DB_NAME', 'quarm'),
-        'USER': os.getenv('QUARM_DB_USER', 'root'),
-        'PASSWORD': os.getenv('QUARM_DB_PASSWORD', 'admin123'),
-        'HOST': os.getenv('QUARM_DB_HOST', 'quarm_db'),
-        'PORT': os.getenv('QUARM_DB_PORT', '3306'),
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
-    },
+    # TODO: 2 databases was causes a DRF bug. Leave commented out for now.
+    # 'quarm_db': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': os.getenv('QUARM_DB_NAME', 'quarm'),
+    #     'USER': os.getenv('QUARM_DB_USER', 'root'),
+    #     'PASSWORD': os.getenv('QUARM_DB_PASSWORD', 'admin123'),
+    #     'HOST': os.getenv('QUARM_DB_HOST', 'quarm_db'),
+    #     'PORT': os.getenv('QUARM_DB_PORT', '3306'),
+    #     'OPTIONS': {
+    #         'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+    #     },
+    # },
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -143,6 +143,10 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
 }
