@@ -1,0 +1,57 @@
+[
+{
+    "model": "app.itemawarded",
+    "pk": 3,
+    "fields": {
+        "item": 20820,
+        "raid": 2,
+        "player": 1,
+        "created_at": "2025-10-24T23:47:56.072Z",
+        "updated_at": "2025-10-24T23:47:56.072Z"
+    }
+},
+{
+    "model": "app.itemawarded",
+    "pk": 4,
+    "fields": {
+        "item": 25135,
+        "raid": 2,
+        "player": 2,
+        "created_at": "2025-10-24T23:48:16.777Z",
+        "updated_at": "2025-10-24T23:48:16.777Z"
+    }
+},
+{
+    "model": "app.itemawarded",
+    "pk": 5,
+    "fields": {
+        "item": 20802,
+        "raid": 2,
+        "player": 5,
+        "created_at": "2025-10-24T23:48:28.677Z",
+        "updated_at": "2025-10-24T23:48:28.677Z"
+    }
+},
+{
+    "model": "app.itemawarded",
+    "pk": 6,
+    "fields": {
+        "item": 20816,
+        "raid": 2,
+        "player": 3,
+        "created_at": "2025-10-24T23:48:48.013Z",
+        "updated_at": "2025-10-24T23:48:48.014Z"
+    }
+},
+{
+    "model": "app.itemawarded",
+    "pk": 7,
+    "fields": {
+        "item": 20819,
+        "raid": 2,
+        "player": 4,
+        "created_at": "2025-10-24T23:49:01.518Z",
+        "updated_at": "2025-10-24T23:49:01.518Z"
+    }
+}
+]

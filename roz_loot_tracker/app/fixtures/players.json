@@ -1,0 +1,65 @@
+[
+{
+    "model": "app.player",
+    "pk": 1,
+    "fields": {
+        "name": "Grixus",
+        "created_at": "2025-10-23T01:49:52.693Z",
+        "updated_at": "2025-10-23T01:49:52.693Z"
+    }
+},
+{
+    "model": "app.player",
+    "pk": 2,
+    "fields": {
+        "name": "Sharknado",
+        "created_at": "2025-10-24T23:43:36.151Z",
+        "updated_at": "2025-10-24T23:43:36.151Z"
+    }
+},
+{
+    "model": "app.player",
+    "pk": 3,
+    "fields": {
+        "name": "Tune",
+        "created_at": "2025-10-24T23:44:25.120Z",
+        "updated_at": "2025-10-24T23:44:25.120Z"
+    }
+},
+{
+    "model": "app.player",
+    "pk": 4,
+    "fields": {
+        "name": "Trikx",
+        "created_at": "2025-10-24T23:44:45.083Z",
+        "updated_at": "2025-10-24T23:44:45.083Z"
+    }
+},
+{
+    "model": "app.player",
+    "pk": 5,
+    "fields": {
+        "name": "Choopa",
+        "created_at": "2025-10-24T23:45:16.100Z",
+        "updated_at": "2025-10-24T23:45:16.100Z"
+    }
+},
+{
+    "model": "app.player",
+    "pk": 6,
+    "fields": {
+        "name": "Mortii",
+        "created_at": "2025-10-24T23:45:35.388Z",
+        "updated_at": "2025-10-24T23:45:35.388Z"
+    }
+},
+{
+    "model": "app.player",
+    "pk": 7,
+    "fields": {
+        "name": "Noni",
+        "created_at": "2025-10-24T23:45:56.307Z",
+        "updated_at": "2025-10-24T23:45:56.307Z"
+    }
+}
+]

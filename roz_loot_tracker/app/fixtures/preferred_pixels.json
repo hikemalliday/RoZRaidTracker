@@ -1,0 +1,50 @@
+[
+{
+    "model": "app.preferredpixel",
+    "pk": 1,
+    "fields": {
+        "player": 1,
+        "item": 25757
+    }
+},
+{
+    "model": "app.preferredpixel",
+    "pk": 2,
+    "fields": {
+        "player": 2,
+        "item": 25746
+    }
+},
+{
+    "model": "app.preferredpixel",
+    "pk": 3,
+    "fields": {
+        "player": 3,
+        "item": 25975
+    }
+},
+{
+    "model": "app.preferredpixel",
+    "pk": 4,
+    "fields": {
+        "player": 5,
+        "item": 25963
+    }
+},
+{
+    "model": "app.preferredpixel",
+    "pk": 5,
+    "fields": {
+        "player": 1,
+        "item": 25975
+    }
+},
+{
+    "model": "app.preferredpixel",
+    "pk": 6,
+    "fields": {
+        "player": 1,
+        "item": 25121
+    }
+}
+]

@@ -1,0 +1,12 @@
+[
+{
+    "model": "app.raid",
+    "pk": 2,
+    "fields": {
+        "name": "Kael",
+        "zone": 74,
+        "created_at": "2025-10-24T23:46:32.895Z",
+        "updated_at": "2025-10-24T23:46:32.895Z"
+    }
+}
+]

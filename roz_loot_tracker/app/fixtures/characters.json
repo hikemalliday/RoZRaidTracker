@@ -1,0 +1,119 @@
+[
+{
+    "model": "app.character",
+    "pk": 1,
+    "fields": {
+        "name": "Penalty",
+        "player": 1,
+        "is_main": true,
+        "is_main_alt": false,
+        "char_class": "MNK",
+        "created_at": "2025-10-23T01:50:10.967Z",
+        "updated_at": "2025-10-23T01:50:10.967Z"
+    }
+},
+{
+    "model": "app.character",
+    "pk": 2,
+    "fields": {
+        "name": "Fullstack",
+        "player": 1,
+        "is_main": false,
+        "is_main_alt": true,
+        "char_class": "WIZ",
+        "created_at": "2025-10-23T01:50:28.710Z",
+        "updated_at": "2025-10-23T01:50:28.710Z"
+    }
+},
+{
+    "model": "app.character",
+    "pk": 3,
+    "fields": {
+        "name": "Pell",
+        "player": 2,
+        "is_main": true,
+        "is_main_alt": false,
+        "char_class": "ENC",
+        "created_at": "2025-10-24T23:43:48.459Z",
+        "updated_at": "2025-10-24T23:43:48.459Z"
+    }
+},
+{
+    "model": "app.character",
+    "pk": 4,
+    "fields": {
+        "name": "Sharkie",
+        "player": 2,
+        "is_main": false,
+        "is_main_alt": true,
+        "char_class": "MNK",
+        "created_at": "2025-10-24T23:44:07.178Z",
+        "updated_at": "2025-10-24T23:44:07.178Z"
+    }
+},
+{
+    "model": "app.character",
+    "pk": 5,
+    "fields": {
+        "name": "Bowflexin",
+        "player": 3,
+        "is_main": true,
+        "is_main_alt": false,
+        "char_class": "RNG",
+        "created_at": "2025-10-24T23:44:35.745Z",
+        "updated_at": "2025-10-24T23:44:35.745Z"
+    }
+},
+{
+    "model": "app.character",
+    "pk": 6,
+    "fields": {
+        "name": "Wisecrak",
+        "player": 4,
+        "is_main": true,
+        "is_main_alt": false,
+        "char_class": "ENC",
+        "created_at": "2025-10-24T23:44:56.139Z",
+        "updated_at": "2025-10-24T23:44:56.139Z"
+    }
+},
+{
+    "model": "app.character",
+    "pk": 7,
+    "fields": {
+        "name": "Choopy",
+        "player": 5,
+        "is_main": true,
+        "is_main_alt": false,
+        "char_class": "BRD",
+        "created_at": "2025-10-24T23:45:27.061Z",
+        "updated_at": "2025-10-24T23:45:27.061Z"
+    }
+},
+{
+    "model": "app.character",
+    "pk": 8,
+    "fields": {
+        "name": "Chrimbus",
+        "player": 6,
+        "is_main": true,
+        "is_main_alt": false,
+        "char_class": "SHM",
+        "created_at": "2025-10-24T23:45:51.726Z",
+        "updated_at": "2025-10-24T23:45:51.726Z"
+    }
+},
+{
+    "model": "app.character",
+    "pk": 9,
+    "fields": {
+        "name": "Noni",
+        "player": 7,
+        "is_main": true,
+        "is_main_alt": false,
+        "char_class": "ENC",
+        "created_at": "2025-10-24T23:46:05.966Z",
+        "updated_at": "2025-10-24T23:46:05.966Z"
+    }
+}
+]
