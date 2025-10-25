@@ -1,7 +1,7 @@
 # Dockerfile
 FROM python:3.11-slim
 
-WORKDIR /app
+WORKDIR /app/roz_loot_tracker
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -12,10 +12,10 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy project files
-COPY requirements.txt .
+COPY roz_loot_tracker/requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY . .
+COPY roz_loot_tracker .
 
 EXPOSE 8000
 
