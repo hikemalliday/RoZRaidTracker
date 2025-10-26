@@ -24,9 +24,10 @@ export const useAxios = (baseURL, enableInterceptors = true) => {
             const originalRequest = err.config;
             console.log(err);
             if (err.response.status === 401 && !originalRequest._retry) {
+                originalRequest._retry = true;
                 try {
-                    originalRequest._retry = true;
-                    const {data} = await axiosInstance.post("/token/refresh/", {
+                    const refreshAxios = axios.create({ baseURL })
+                    const {data} = await refreshAxios.post("/token/refresh/", {
                         refresh: refreshToken,
                     });
                     const tokens = {
