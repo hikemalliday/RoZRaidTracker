@@ -16,7 +16,6 @@ export default function Login() {
         e.preventDefault();
         try {
             const resp = await axios.post("http://127.0.0.1:8000/api/token/", {username, password});
-            console.log(resp);
             if (resp.status === 200) {
                 setLoginSuccess(true);
                 login({
