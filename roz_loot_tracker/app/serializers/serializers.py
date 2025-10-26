@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from app.models import Player, Item, Zone, Character, Raid, ItemAwarded, PreferredPixel
+from app.models import Player, Item, Zone, Character, Raid, ItemAwarded, PreferredPixel, RaidAttendance
 
 
 class ItemSerializer(serializers.ModelSerializer):
@@ -42,4 +42,10 @@ class ItemAwardedSerializer(serializers.ModelSerializer):
 class PreferredPixelSerializer(serializers.ModelSerializer):
     class Meta:
         model = PreferredPixel
+        fields = '__all__'
+
+
+class RaidAttendanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RaidAttendance
         fields = '__all__'

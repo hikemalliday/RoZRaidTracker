@@ -4,7 +4,7 @@ from app import models
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from app.serializers.serializers import PlayerSerializer, ItemSerializer, RaidSerializer, \
-    ZoneSerializer, CharacterSerializer, ItemAwardedSerializer, PreferredPixelSerializer
+    ZoneSerializer, CharacterSerializer, ItemAwardedSerializer, PreferredPixelSerializer, RaidAttendanceSerializer
 
 
 PERMISSION_CLASS_DEBUG = IsAuthenticated # TODO: Dev purposes
@@ -50,4 +50,10 @@ class ItemAwardedViewSet(viewsets.ModelViewSet):
 class PreferredPixelViewSet(viewsets.ModelViewSet):
     queryset = models.PreferredPixel.objects.all()
     serializer_class = PreferredPixelSerializer
+    permission_classes = (PERMISSION_CLASS_DEBUG,)
+
+
+class RaidAttendanceViewSet(viewsets.ModelViewSet):
+    queryset = models.RaidAttendance.objects.all()
+    serializer_class = RaidAttendanceSerializer
     permission_classes = (PERMISSION_CLASS_DEBUG,)
