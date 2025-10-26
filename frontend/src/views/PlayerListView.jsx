@@ -1,6 +1,10 @@
-import { ListView } from "./generic/ListView.jsx";
-import { PLAYER_LIST } from "../tests/mocks/mockData.js";
+import {ListView} from "./generic/ListView.jsx";
+import {usePlayers} from "../hooks/requests.js";
 
 export function PlayerListView() {
-    return <ListView title="Players" accessor="name" data={PLAYER_LIST}/>
+    const {data, isLoading, error} = usePlayers("/players/");
+
+    if (isLoading) return <>LOADING...</>;
+
+    return <ListView title="Players" accessor="name" data={data}/>
 }

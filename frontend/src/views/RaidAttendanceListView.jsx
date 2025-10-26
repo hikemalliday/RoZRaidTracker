@@ -1,6 +1,10 @@
-import { ListView } from "./generic/ListView.jsx";
-import { RAID_ATTENDANCE_LIST } from "../tests/mocks/mockData.js";
+import {ListView} from "./generic/ListView.jsx";
+import {useRaidAttendance} from "../hooks/requests.js";
 
 export function RaidAttendanceListView() {
-    return <ListView title="Raid Attendance" accessor="name" data={RAID_ATTENDANCE_LIST}/>
+    const {data, isLoading, error} = useRaidAttendance("/raid_attendance/");
+
+    if (isLoading) return <>LOADING...</>;
+
+    return <ListView title="Raid Attendance" accessor="name" data={data}/>
 }

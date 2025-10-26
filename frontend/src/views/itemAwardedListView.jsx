@@ -1,6 +1,10 @@
-import { ListView } from "./generic/ListView.jsx";
-import { ITEM_AWARDED_LIST } from "../tests/mocks/mockData.js";
+import {ListView} from "./generic/ListView.jsx";
+import {useItemsAwarded} from "../hooks/requests.js";
 
 export function ItemAwardedListView() {
-    return <ListView title="Items Awarded" accessor="name" data={ITEM_AWARDED_LIST}/>
+    const {data, isLoading, error} = useItemsAwarded("/items_awarded/");
+
+    if (isLoading) return <>LOADING...</>;
+
+    return <ListView title="Items Awarded" accessor="name" data={data}/>
 }
