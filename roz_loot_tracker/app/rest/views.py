@@ -7,7 +7,7 @@ from app.serializers.serializers import PlayerSerializer, ItemSerializer, RaidSe
     ZoneSerializer, CharacterSerializer, ItemAwardedSerializer, PreferredPixelSerializer
 
 
-PERMISSION_CLASS_DEBUG = AllowAny # TODO: Dev purposes
+PERMISSION_CLASS_DEBUG = IsAuthenticated # TODO: Dev purposes
 
 
 class ItemViewSet(viewsets.ModelViewSet):

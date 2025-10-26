@@ -5,7 +5,7 @@ export function ListView({title, accessor, data}) {
             {data.map((element, i) => {
                 const elementToRender = element[accessor];
                 return (
-                    <div>{ elementToRender ? elementToRender : "could not access object" }</div>
+                    <div key={i}>{ elementToRender ? elementToRender : "could not access object" }</div>
                 )
             })}
         </div>
