@@ -2,9 +2,12 @@ import {ListView} from "./generic/ListView.jsx";
 import {useItemsAwarded} from "../hooks/requests.js";
 
 export function ItemAwardedListView() {
-    const {data, isLoading, error} = useItemsAwarded("/items_awarded/");
+    const {data, isPending, error} = useItemsAwarded("/items_awarded/");
 
-    if (isLoading) return <>LOADING...</>;
+    if (isPending) return <>LOADING...</>;
+
+    if (error) return <>{error.message}</>;
+
 
     return <ListView title="Items Awarded" accessor="name" data={data}/>
 }

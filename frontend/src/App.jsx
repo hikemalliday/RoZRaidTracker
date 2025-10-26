@@ -1,6 +1,7 @@
 import './App.css'
 import Home from './views/Home.jsx';
 import {BrowserRouter, Route, Routes} from "react-router";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import Login from "./views/Login.jsx";
 import {AuthProvider} from "./context/AuthContext.jsx";
 import {ProtectedRoute} from "./ProtectedRoute";
@@ -11,10 +12,14 @@ import {ItemAwardedListView} from "./views/itemAwardedListView.jsx";
 import {RaidAttendanceListView} from "./views/RaidAttendanceListView.jsx";
 
 function App() {
+
+    const queryClient = new QueryClient();
+
     return (
         <>
             <BrowserRouter>
                 <AuthProvider>
+                    <QueryClientProvider client={queryClient}>
                         <Routes>
                             <Route path="/login" element={<Login/>}/>
                             <Route element={<ProtectedRoute/>}>
@@ -26,6 +31,7 @@ function App() {
                             </Route>
                             <Route path="*" element={<NotFound/>}/>
                         </Routes>
+                    </QueryClientProvider>
                 </AuthProvider>
             </BrowserRouter>
         </>

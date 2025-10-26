@@ -1,20 +1,55 @@
-import { useRequest } from "./useRequest.jsx";
+import {useAxios} from "./useAxios.jsx";
+import {BACKEND_BASE_URL_DEV} from "../config.js";
+import {useQuery} from "@tanstack/react-query";
 
 
 export function usePlayers() {
-    return useRequest("/players/");
+    const client = useAxios(BACKEND_BASE_URL_DEV);
+    const {isPending, error, data} = useQuery({
+        queryKey: ['players'],
+        queryFn: async () => {
+            const {data} = await client.get("/players/");
+            return data;
+        },
+    })
+    return {isPending, error, data};
 }
 
+
 export function useRaids() {
-    return useRequest("/raids/");
+    const client = useAxios(BACKEND_BASE_URL_DEV);
+    const {isPending, error, data} = useQuery({
+        queryKey: ['raids'],
+        queryFn: async () => {
+            const {data} = await client.get("/raids/");
+            return data;
+        },
+    })
+    return {isPending, error, data};
 }
 
 
 export function useRaidAttendance() {
-    return useRequest("/raid_attendance/");
+    const client = useAxios(BACKEND_BASE_URL_DEV);
+    const {isPending, error, data} = useQuery({
+        queryKey: ['raid_attendance'],
+        queryFn: async () => {
+            const {data} = await client.get("/raid_attendance/");
+            return data;
+        },
+    })
+    return {isPending, error, data};
 }
 
 
 export function useItemsAwarded() {
-    return useRequest("/items_awarded/");
+    const client = useAxios(BACKEND_BASE_URL_DEV);
+    const {isPending, error, data} = useQuery({
+        queryKey: ['items_awarded'],
+        queryFn: async () => {
+            const {data} = await client.get("/items_awarded/");
+            return data;
+        },
+    })
+    return {isPending, error, data};
 }
