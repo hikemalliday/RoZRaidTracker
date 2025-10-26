@@ -16,7 +16,6 @@ export const AuthProvider = ({children}) => {
         localStorage.setItem("refreshToken", tokens.refresh);
         setAccessToken(tokens.access);
         setRefreshToken(tokens.refresh);
-        navigate("/");
     };
 
 

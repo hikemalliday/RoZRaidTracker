@@ -4,8 +4,8 @@ import {useAuthContext} from "../context/AuthContext.jsx";
 import {useNavigate} from "react-router";
 
 export default function Login() {
-    const [username, setUsername] = useState(null);
-    const [password, setPassword] = useState(null);
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const [loginSuccess, setLoginSuccess] = useState(false);
     const [error, setError] = useState(null);
     const {login} = useAuthContext();
@@ -28,9 +28,10 @@ export default function Login() {
             setError(err.response?.data?.detail || err.response?.data?.non_field_errors?.[0] || 'Invalid Credentials');
             setLoginSuccess(false);
         }
-    };
+    }
 
     const LoginSuccessMessage = () => {
+        navigate("/");
         return <div>
             Login successful. If you are not automatically redirect, click
             <a onClick={() => navigate("/")}>here</a>
@@ -39,7 +40,7 @@ export default function Login() {
 
     return (<div>
         <h3>LOG IN</h3>
-        {error ?? <p>{error}</p>}
+        {error && <p>{error}</p>}
         <form onSubmit={(e) => getTokenPair(e)}>
             <div>
                 <input
@@ -63,7 +64,7 @@ export default function Login() {
                 SUBMIT
             </button>
         </form>
-        {loginSuccess ?? <LoginSuccessMessage/>}
+        {loginSuccess && <LoginSuccessMessage/>}
     </div>)
 
 }
