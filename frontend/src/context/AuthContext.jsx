@@ -1,4 +1,4 @@
-import {createContext, useContext, useState, useEffect} from "react";
+import {createContext, useContext, useState } from "react";
 import {useNavigate} from "react-router";
 
 
@@ -37,4 +37,4 @@ export const AuthProvider = ({children}) => {
     );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuthContext = () => useContext(AuthContext);

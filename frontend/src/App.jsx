@@ -11,13 +11,13 @@ function App() {
         <>
             <BrowserRouter>
                 <AuthProvider>
-                    <Routes>
-                        <Route path="/login" element={<Login/>}/>
-                        <Route element={<ProtectedRoute/>}>
-                            <Route path="/" element={<DevHome/>}/>
-                        </Route>
-                        <Route path="*" element={<NotFound/>}/>
-                    </Routes>
+                        <Routes>
+                            <Route path="/login" element={<Login/>}/>
+                            <Route element={<ProtectedRoute/>}>
+                                <Route path="/" element={<DevHome/>}/>
+                            </Route>
+                            <Route path="*" element={<NotFound/>}/>
+                        </Routes>
                 </AuthProvider>
             </BrowserRouter>
         </>

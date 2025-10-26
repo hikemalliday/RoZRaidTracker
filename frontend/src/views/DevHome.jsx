@@ -1,16 +1,16 @@
 import {useState, useEffect} from "react";
-import axios from "axios";
+import {useAxios} from "../hooks/useAxios.jsx";
 
 export default function DevHome() {
     const [players, setPlayers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const client = useAxios("http://127.0.0.1:8000/api/");
 
     async function getPlayers() {
         try {
             setLoading(true);
-            const resp = await axios.get("http://127.0.0.1:8000/api/players/");
-            console.log(resp.data);
+            const resp = await client.get("players/");
             setPlayers(resp.data);
         } catch (err) {
             console.error(err);
