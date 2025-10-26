@@ -1,5 +1,5 @@
 import './App.css'
-import DevHome from './views/DevHome.jsx';
+import Home from './views/Home.jsx';
 import {BrowserRouter, Route, Routes} from "react-router";
 import Login from "./views/Login.jsx";
 import {AuthProvider} from "./context/AuthContext.jsx";
@@ -14,7 +14,7 @@ function App() {
                         <Routes>
                             <Route path="/login" element={<Login/>}/>
                             <Route element={<ProtectedRoute/>}>
-                                <Route path="/" element={<DevHome/>}/>
+                                <Route path="/" element={<Home/>}/>
                             </Route>
                             <Route path="*" element={<NotFound/>}/>
                         </Routes>
