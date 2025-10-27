@@ -92,3 +92,8 @@ a:hover {
 a:active {
   color: dimgrey;
 }
+
+#list-view-links {
+  display: flex;
+  flex-direction: column;
+}
