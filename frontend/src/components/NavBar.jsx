@@ -1,0 +1,41 @@
+import {useNavigate} from "react-router";
+import {useAuthContext} from "../context/AuthContext.jsx";
+
+export function NavBar() {
+
+    const navigate = useNavigate();
+    const { isAuthenticated } = useAuthContext();
+    const navBarLinks = () => {
+      if (!isAuthenticated) return <div></div>
+        return (
+            <>
+            <a id="nav-bar-players-link" onClick={() => navigate("/players")}>
+                PLAYERS
+            </a>
+            -
+            <a id="nav-bar-raids-link" onClick={() => navigate("/raids")}>
+                RAIDS
+            </a>
+            -
+            <a id="nav-bar-raid-attendance-link" onClick={() => navigate("/raid_attendance")}>
+                RAID ATTENDANCE
+            </a>
+            -
+            <a id="nav-bar-items-awarded-link" onClick={() => navigate("/items_awarded")}>
+                ITEMS AWARDED
+            </a>
+        </>
+        )
+    };
+
+    return (
+        <div id="nav-bar-main">
+            <div id="nav-bar-logo" onClick={() => navigate("/")}>
+                ZEK
+            </div>
+            <div id="nav-bar-links">
+                {navBarLinks()}
+            </div>
+        </div>
+    )
+}

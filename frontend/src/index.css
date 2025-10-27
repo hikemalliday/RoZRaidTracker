@@ -1,25 +1,24 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: rgb(255, 255, 255);
+  background-color: #00000068;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
 }
 
 body {
@@ -28,11 +27,6 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
 }
 
 button {
@@ -54,15 +48,47 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+#nav-bar-main {
+  background-color: black;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+#nav-bar-logo {
+  font-weight: bold;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+#nav-bar-links {
+  display: flex;
+  gap: 10px;
+  padding-right: 10px;
+  align-items: center;
+}
+
+.row-even {
+  background-color: rgba(97, 97, 97, 0.099);
+}
+
+.row-odd {
+  background-color: rgb(34, 34, 34);
+}
+
+a {
+  color: white;
+  cursor: pointer;
+}
+
+a:hover {
+  color: darkgrey;
+}
+
+a:active {
+  color: dimgrey;
 }

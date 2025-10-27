@@ -27,8 +27,6 @@ export const AuthProvider = ({children}) => {
         navigate("/login");
     };
 
-    // I'm not sure that we need a useEffect here to check tokens and call refresh endpoint, let axios interceptor handle that
-
     return (
         <AuthContext.Provider  value={{ accessToken, refreshToken, login, logout, isAuthenticated }}>
             {children}
