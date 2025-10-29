@@ -29,9 +29,6 @@ class PlayerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
-
-
 class RaidSerializer(serializers.ModelSerializer):
     class Meta:
         model = Raid
@@ -39,6 +36,10 @@ class RaidSerializer(serializers.ModelSerializer):
 
 
 class ItemAwardedSerializer(serializers.ModelSerializer):
+    item = ItemSerializer(read_only=True)
+    raid = RaidSerializer(read_only=True)
+    player = PlayerSerializer(read_only=True)
+
     class Meta:
         model = ItemAwarded
         fields = '__all__'
