@@ -4,7 +4,7 @@ export function DetailView({data, accessor}) {
         return Object.entries(data).map(([key, val], i) => {
             return (
                 <div key={i}>
-                    <strong>{key}:</strong> {val}
+                    <strong>{key}:</strong> { JSON.stringify(val)}
                 </div>
             )
         });

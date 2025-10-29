@@ -17,6 +17,7 @@ export function PlayerListView() {
         return playersData.map((player) => {
             return {
                 "name": player.name,
+                "id": player.id,
                 "main": player.characters.find((char) => char.is_main === true),
                 "mainAlt": player.characters.find((char) => char.is_main_alt === true),
             }
@@ -26,7 +27,7 @@ export function PlayerListView() {
     console.log(getPlayersRows(data));
 
     const handleClick = (view, id) => {
-        return navigate(`${view}/${id}`);
+        return navigate(`/${view}/${id}`, {replace: true});
     }
 
     const table = (rows) => {

@@ -105,3 +105,16 @@ export function getItemAwarded(id) {
     });
     return {isPending, error, data};
 }
+
+
+export function getCharacter(id) {
+    const client = useAxios(BACKEND_BASE_URL_DEV);
+    const {isPending, error, data} = useQuery({
+        queryKey: ['characters', id],
+        queryFn: async () => {
+            const {data} = await client.get(`/characters/${id}/`);
+            return data;
+        }
+    });
+    return {isPending, error, data};
+}

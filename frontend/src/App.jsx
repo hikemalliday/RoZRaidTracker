@@ -12,6 +12,7 @@ import {PlayerDetailView} from "./views/PlayerDetailView.jsx";
 import {ItemAwardedDetailView} from "./views/ItemAwardedDetailView.jsx";
 import {RaidAttendanceDetailView} from "./views/RaidAttendanceDetailView.jsx";
 import {RaidDetailView} from "./views/RaidDetailView.jsx";
+import {CharacterDetailView} from "./views/CharacterDetailView.jsx";
 
 function App() {
     const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ function App() {
                         <Route path="/raids/:id" element={<RaidDetailView/>}/>
                         <Route path="/items_awarded/:id" element={<ItemAwardedDetailView/>}/>
                         <Route path="/raid_attendance/:id" element={<RaidAttendanceDetailView/>}/>
+                        <Route path="/characters/:id" element={<CharacterDetailView/>}/>
                     </Route>
                     <Route path="*" element={<NotFound/>}/>
                 </Routes>
