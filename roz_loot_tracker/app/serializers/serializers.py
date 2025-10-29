@@ -15,16 +15,21 @@ class ZoneSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CharacterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Character
+        fields = '__all__'
+
+
 class PlayerSerializer(serializers.ModelSerializer):
+    characters = CharacterSerializer(many=True, read_only=True)
+
     class Meta:
         model = Player
         fields = '__all__'
 
 
-class CharacterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Character
-        fields = '__all__'
+
 
 
 class RaidSerializer(serializers.ModelSerializer):

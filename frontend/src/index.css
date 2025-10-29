@@ -97,3 +97,16 @@ a:active {
   display: flex;
   flex-direction: column;
 }
+
+#players-list-cell {
+  color: white;
+  cursor: pointer;
+}
+
+#players-list-cell:hover {
+  color: darkgrey;
+}
+
+#players-list-cell:active {
+  color: dimgrey;
+}
