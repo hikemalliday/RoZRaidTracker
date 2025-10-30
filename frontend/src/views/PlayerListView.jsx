@@ -2,6 +2,8 @@ import {ListView} from "./generic/ListView.jsx";
 import {usePlayers} from "../hooks/requests.js";
 import {useNavigate} from "react-router";
 
+// TODO: Currently not using the generic list view here
+
 export function PlayerListView() {
     const navigate = useNavigate();
     const {data, isPending, error} = usePlayers("/players/");
@@ -9,9 +11,6 @@ export function PlayerListView() {
     if (isPending) return <>LOADING...</>;
 
     if (error) return <>{error.message}</>;
-
-    // console.log('data, players list payload:');
-    // console.log(data);
 
     const getPlayersRows = (playersData) => {
         return playersData.map((player) => {
@@ -23,8 +22,6 @@ export function PlayerListView() {
             }
         })
     }
-    console.log('getPlayersRows:');
-    console.log(getPlayersRows(data));
 
     const handleClick = (view, id) => {
         return navigate(`/${view}/${id}`, {replace: true});
@@ -56,5 +53,5 @@ export function PlayerListView() {
     }
     return table(getPlayersRows(data));
 
-    return <ListView title="Players" accessor="name" data={data}/>
+    // return <ListView title="Players" accessor="name" data={data}/>
 }
