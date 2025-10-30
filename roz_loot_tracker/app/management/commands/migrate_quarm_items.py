@@ -27,7 +27,7 @@ class Command(BaseCommand):
 
         with connections['quarm_db'].cursor() as source_cursor:
             source_cursor = connections['quarm_db'].cursor()
-            source_cursor.execute('SELECT id, Name FROM items;')
+            source_cursor.execute('SELECT id, Name, icon FROM items;')
         try:
             with transaction.atomic():
                 while True:
@@ -36,7 +36,7 @@ class Command(BaseCommand):
                     if not rows:
                         break
 
-                    items_to_insert = [models.Item(eq_item_id=row[0], name=row[1], item_score=0) for row in rows]
+                    items_to_insert = [models.Item(eq_item_id=row[0], name=row[1], icon_id=row[2], item_score=0) for row in rows]
                     models.Item.objects.bulk_create(items_to_insert)
                     self.stdout.write(self.style.SUCCESS(f'Successfully inserted {len(rows)} rows'))
         except Exception as e:

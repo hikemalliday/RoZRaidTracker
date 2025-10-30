@@ -11,6 +11,7 @@ NOT_REQUIRED = {
 class Item(models.Model):
     name = models.CharField(max_length=100)
     eq_item_id = models.IntegerField()
+    icon_id = models.IntegerField()
     item_score = models.IntegerField(**NOT_REQUIRED)
 
     def __str__(self):
