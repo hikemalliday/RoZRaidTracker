@@ -1,6 +1,7 @@
 import {ListView} from "./generic/ListView.jsx";
 import {usePlayers} from "../hooks/requests.js";
 import {useNavigate} from "react-router";
+import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 
 // TODO: Currently not using the generic list view here
 
@@ -29,26 +30,26 @@ export function PlayerListView() {
 
     const table = (rows) => {
         return (
-            <table>
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Main</th>
-                    <th>Alt</th>
-                </tr>
-                </thead>
-                <tbody>
+            <Table>
+                <TableHead>
+                <TableRow>
+                    <TableCell id="table-header">Name</TableCell>
+                    <TableCell id="table-header">Main</TableCell>
+                    <TableCell id="table-header">Alt</TableCell>
+                </TableRow>
+                </TableHead>
+                <TableBody>
                 {rows.map((row) => {
                     return (
-                        <tr>
-                            <td id="players-list-cell" onClick={(_) => handleClick("players", row?.id)}>{row?.name}</td>
-                            <td id="players-list-cell" onClick={(_) => handleClick("characters", row?.main?.id)}>{row?.main?.name || "null"}</td>
-                            <td id="players-list-cell" onClick={(_) => handleClick("characters", row?.mainAlt?.id)}>{row?.mainAlt?.name || "null"}</td>
-                        </tr>
+                        <TableRow>
+                            <TableCell id="clickable-cell" onClick={(_) => handleClick("players", row?.id)}>{row?.name}</TableCell>
+                            <TableCell id="clickable-cell" onClick={(_) => handleClick("characters", row?.main?.id)}>{row?.main?.name || "null"}</TableCell>
+                            <TableCell id="clickable-cell" onClick={(_) => handleClick("characters", row?.mainAlt?.id)}>{row?.mainAlt?.name || "null"}</TableCell>
+                        </TableRow>
                     )
                 })}
-                </tbody>
-            </table>
+                </TableBody>
+            </Table>
         )
     }
     return table(getPlayersRows(data));

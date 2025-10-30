@@ -98,15 +98,24 @@ a:active {
   flex-direction: column;
 }
 
-#players-list-cell {
+#clickable-cell {
   color: white;
   cursor: pointer;
 }
 
-#players-list-cell:hover {
+#clickable-cell:hover {
   color: darkgrey;
 }
 
-#players-list-cell:active {
+#clickable-cell:active {
   color: dimgrey;
+}
+
+#item-icon {
+  width: 20px;
+  height: 20px;
+}
+
+#table-header {
+  color: white;
 }

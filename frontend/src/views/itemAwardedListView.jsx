@@ -1,10 +1,16 @@
 import {ListView} from "./generic/ListView.jsx";
 import {useItemsAwarded} from "../hooks/requests.js";
 import axios from "axios";
+import {useNavigate} from "react-router";
+import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 
 export function ItemAwardedListView() {
+    const navigate = useNavigate();
     const {data, isPending, error} = useItemsAwarded("/items_awarded/");
 
+    const handleClick = (view, id) => {
+        return navigate(`/${view}/${id}`, {replace: true});
+    }
     const getIconPath = (iconId) => {
         return `/item_icons/item_${iconId}.png`;
     };
@@ -18,7 +24,9 @@ export function ItemAwardedListView() {
             return {
                 "name": itemAwarded.item.name,
                 "player": itemAwarded.player.name,
+                "playerId": itemAwarded.player.id,
                 "raid": itemAwarded.raid.name,
+                "raidId": itemAwarded.raid.id,
                 "date": itemAwarded.created_at,
                 "iconId": itemAwarded.item.icon_id,
             }
@@ -27,54 +35,55 @@ export function ItemAwardedListView() {
 
     const table = (rows) => {
         return (
-            <table>
-                <thead>
-                <tr>
-                    <th>
+            <Table >
+                <TableHead>
+                <TableRow>
+                    <TableCell id="table-header">
+                    </TableCell>
+                    <TableCell id="table-header">
                         Name
-                    </th>
-                    <th>
+                    </TableCell>
+                    <TableCell id="table-header">
                         Player
-                    </th>
-                    <th>
+                    </TableCell>
+                    <TableCell id="table-header">
                         Raid
-                    </th>
-                    <th>
+                    </TableCell>
+                    <TableCell id="table-header">
                         Date
-                    </th>
-                    <th>
-                        Icon
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
+                    </TableCell>
+                </TableRow>
+                </TableHead>
+                <TableBody>
                 {rows.map((row) => {
                     return (
-                        <tr>
-                            <td>
-                                {row.name}
-                            </td>
-                            <td>
-                                {row.player}
-                            </td>
-                            <td>
-                                {row.raid}
-                            </td>
-                            <td>
-                                {row.date}
-                            </td>
-                            <td>
+                        <TableRow>
+                            <TableCell id="clickable-cell">
                                 <img
+                                    id="item-icon"
                                     src={getIconPath(row.iconId)}
                                     alt={row.name}
                                 />
                                 {row.icon}
-                            </td>
-                        </tr>
+                            </TableCell>
+                            <TableCell id="clickable-cell">
+                                {row.name}
+                            </TableCell>
+                            <TableCell id="clickable-cell" onClick={(_) => handleClick("players", row.playerId)}>
+                                {row.player}
+                            </TableCell>
+                            <TableCell id="clickable-cell" onClick={(_) => handleClick("raids", row.raidId)}>
+                                {row.raid}
+                            </TableCell>
+                            <TableCell id="clickable-cell">
+                                {row.date}
+                            </TableCell>
+
+                        </TableRow>
                     )
                 })}
-                </tbody>
-            </table>
+                </TableBody>
+            </Table >
         )
     };
 
