@@ -1,5 +1,5 @@
 import {usePlayerList} from "../hooks/requests.js";
-import {useNavigate} from "react-router";
+import {useNavigate, Link} from "react-router";
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 
 
@@ -39,13 +39,20 @@ export function PlayerListView() {
                     {rows.map((row) => {
                         return (
                             <TableRow>
-                                <TableCell id="clickable-cell"
-                                           onClick={(_) => handleClick("player", row?.id)}>{row?.name}</TableCell>
-                                <TableCell id="clickable-cell"
-                                           onClick={(_) => handleClick("character", row?.main?.id)}>{row?.main?.name || "null"}<span
-                                    id="char-class-span"> - {row?.main?.char_class}</span></TableCell>
-                                <TableCell id="clickable-cell"
-                                           onClick={(_) => handleClick("character", row?.mainAlt?.id)}>{row?.mainAlt?.name || "null"}
+                                <TableCell id="clickable-cell">
+                                    <Link to={`/player/${row?.id}`}>
+                                        {row?.name || "null"}
+                                    </Link>
+                                </TableCell>
+                                <TableCell id="clickable-cell">
+                                    <Link to={`/character/${row?.main?.id}`}>
+                                        {row?.main?.name || "null"}
+                                    </Link>
+                                    <span id="char-class-span"> - {row?.main?.char_class}</span></TableCell>
+                                <TableCell id="clickable-cell">
+                                    <Link to={`/character/${row?.mainAlt?.id}`}>
+                                        {row?.mainAlt?.name || "null"}
+                                    </Link>
                                     <span id="char-class-span"> - {row?.mainAlt?.char_class}</span></TableCell>
                             </TableRow>
                         )
