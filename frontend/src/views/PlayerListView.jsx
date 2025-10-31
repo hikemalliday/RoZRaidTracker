@@ -20,7 +20,10 @@ export function PlayerListView() {
                     "text": ` - ${main?.char_class}`,
                     "id": "char-class-span"
                 }),
-                getLinkCell(alt?.name, `/character/${alt?.id}`),
+                getLinkCell(alt?.name, `/character/${alt?.id}`, {
+                    "text": alt ? ` - ${alt?.char_class}`: "",
+                    "id": "char-class-span"
+                }),
             ]
         });
     };
