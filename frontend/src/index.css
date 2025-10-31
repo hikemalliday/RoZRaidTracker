@@ -72,42 +72,25 @@ button:focus-visible {
   align-items: center;
 }
 
-.row-even {
-  background-color: rgba(97, 97, 97, 0.099);
-}
-
-.row-odd {
-  background-color: rgb(34, 34, 34);
-}
-
-a {
-  color: white;
-  cursor: pointer;
-}
-
-a:hover {
-  color: darkgrey;
-}
-
-a:active {
-  color: dimgrey;
-}
 
 #list-view-links {
   display: flex;
   flex-direction: column;
 }
 
-#clickable-cell {
+#clickable-cell,
+a {
   color: white;
   cursor: pointer;
 }
 
-#clickable-cell:hover {
+#clickable-cell:hover,
+a:hover {
   color: darkgrey;
 }
 
-#clickable-cell:active {
+#clickable-cell:active,
+a:active {
   color: dimgrey;
 }
 
@@ -116,6 +99,6 @@ a:active {
   height: 20px;
 }
 
-#table-header {
+#table-header, #table-row, #non-clickable-cell {
   color: white;
 }
