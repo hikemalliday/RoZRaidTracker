@@ -29,12 +29,14 @@ export function useRaids() {
 }
 
 
-export function useRaidAttendance() {
+export function useRaidAttendance(queryParams) {
     const client = useAxios(BACKEND_BASE_URL_DEV);
     const {isPending, error, data} = useQuery({
-        queryKey: ['raid_attendance'],
+        queryKey: ['raid_attendance', queryParams],
         queryFn: async () => {
-            const {data} = await client.get("/raid_attendance/");
+            const {data} = await client.get("/raid_attendance/", {
+                params: queryParams,
+            });
             return data;
         },
     })

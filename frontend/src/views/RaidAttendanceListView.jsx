@@ -5,7 +5,7 @@ import {useNavigate} from "react-router";
 
 export function RaidAttendanceListView() {
     const navigate = useNavigate();
-    const {data, isPending, error} = useRaidAttendance("/raid_attendance/");
+    const {data, isPending, error} = useRaidAttendance();
 
     if (isPending) return <>LOADING...</>;
 
