@@ -12,9 +12,6 @@ export function RaidListView() {
 
     if (error) return <>{error.message}</>;
 
-    console.log('data Raid list:');
-    console.log(data);
-
     const getRaidsRows = (raidsData) => {
       return raidsData.map((raid) => {
           return {

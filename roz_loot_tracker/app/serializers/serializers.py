@@ -57,6 +57,10 @@ class PreferredPixelSerializer(serializers.ModelSerializer):
 
 
 class RaidAttendanceSerializer(serializers.ModelSerializer):
+    created_at = serializers.DateTimeField(format='%m-%d-%y', read_only=True)
+    updated_at = serializers.DateTimeField(format='%m-%d-%y', read_only=True)
+    player = PlayerSerializer(read_only=True)
+    raid = RaidSerializer(read_only=True)
     class Meta:
         model = RaidAttendance
         fields = '__all__'
