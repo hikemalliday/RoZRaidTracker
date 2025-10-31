@@ -1,6 +1,5 @@
 import {useRaidList} from "../hooks/requests.js";
 import React from "react";
-import {getRaidRows, getRaidTable} from "./utils.jsx"
 import {getCell, getLinkCell, TableList} from "../components/Tables.jsx";
 
 export function RaidListView() {

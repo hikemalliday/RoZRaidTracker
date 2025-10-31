@@ -24,6 +24,18 @@ export const getCell = (val) => {
     )
 }
 
+export const getItemIconCell = (iconId) => {
+    return (
+        <TableCell id="non-clickable-cell">
+            <img
+                id="item-icon"
+                src={`/item_icons/item_${iconId}.png`}
+                alt={"null"}
+            />
+        </TableCell>
+    )
+}
+
 // Now try to implement this in the easiest spot possible. Also, cell.Va
 export function TableList({headers, reducedData}) {
     return (
