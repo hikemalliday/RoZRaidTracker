@@ -1,10 +1,9 @@
 import {usePlayerList} from "../hooks/requests.js";
-import {useNavigate, Link} from "react-router";
+import {Link} from "react-router";
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 
 
 export function PlayerListView() {
-    const navigate = useNavigate();
     const {data, isPending, error} = usePlayerList("/players/");
 
     if (isPending) return <>LOADING...</>;
@@ -21,10 +20,7 @@ export function PlayerListView() {
         })
     }
 
-    const handleClick = (view, id) => {
-        return navigate(`/${view}/${id}`, {replace: true});
-    }
-
+    // # TODO: Move to a 'tables' file?
     const table = (rows) => {
         return (
             <Table>

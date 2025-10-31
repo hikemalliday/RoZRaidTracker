@@ -1,4 +1,5 @@
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
+import {Link} from "react-router";
 
 
 // TODO: Eventually bundle these two together into a component, data + table
@@ -17,7 +18,7 @@ export const getItemAwardedRows = (itemsAwardedData) => {
 };
 
 
-export const getItemAwardedTable = (rows, clickHandler) => {
+export const getItemAwardedTable = (rows) => {
     return (
         <Table>
             <TableHead>
@@ -42,7 +43,7 @@ export const getItemAwardedTable = (rows, clickHandler) => {
                 {rows.map((row) => {
                     return (
                         <TableRow id="table-row">
-                            <TableCell id="clickable-cell">
+                            <TableCell id="non-clickable-cell">
                                 <img
                                     id="item-icon"
                                     src={`/item_icons/item_${row.iconId}.png`}
@@ -53,11 +54,15 @@ export const getItemAwardedTable = (rows, clickHandler) => {
                             <TableCell id="non-clickable-cell">
                                 {row.name}
                             </TableCell>
-                            <TableCell id="clickable-cell" onClick={(_) => clickHandler("player", row.playerId)}>
-                                {row.player}
+                            <TableCell id="clickable-cell">
+                                <Link to={`/player/${row?.playerId}`}>
+                                    {row.player}
+                                </Link>
                             </TableCell>
-                            <TableCell id="clickable-cell" onClick={(_) => clickHandler("raid", row.raidId)}>
-                                {row.raid}
+                            <TableCell>
+                                <Link to={`/raid/${row?.raidId}`}>
+                                    {row.raid}
+                                </Link>
                             </TableCell>
                             <TableCell id="non-clickable-cell">
                                 {row.date}
@@ -84,7 +89,7 @@ export const getRaRows = (raData) => {
     })
 }
 
-export const getRaTable = (rows, clickHandler) => {
+export const getRaTable = (rows) => {
     return (
         <Table>
             <TableHead>
@@ -99,11 +104,16 @@ export const getRaTable = (rows, clickHandler) => {
                 {rows.map((row) => {
                     return (
                         <TableRow>
-                            <TableCell id="clickable-cell"
-                                       onClick={(_) => clickHandler("raid", row?.raid?.id)}>{row?.raid.name}</TableCell>
+                            <TableCell id="clickable-cell">
+                                <Link to={`/raid/${row?.raid?.id}`}>
+                                    {row?.raid.name}
+                                </Link>
+                            </TableCell>
                             <TableCell id="non-clickable-cell">{row?.raid.zone?.name || "null"}</TableCell>
-                            <TableCell id="clickable-cell"
-                                       onClick={(_) => clickHandler("player", row?.player?.id)}>{row?.player?.name || "null"}
+                            <TableCell id="clickable-cell">
+                                <Link to={`/player/${row?.player?.id}`}>
+                                    {row?.player?.name || "null"}
+                                </Link>
                             </TableCell>
                             <TableCell id="non-clickable-cell">{row?.date}</TableCell>
                         </TableRow>
@@ -134,7 +144,7 @@ export const getCharacterRows = (characterData) => {
     });
 }
 
-export const getCharacterTable = (rows, handleClick) => {
+export const getCharacterTable = (rows) => {
     return (
         <Table>
             <TableHead>
@@ -149,12 +159,17 @@ export const getCharacterTable = (rows, handleClick) => {
                 {rows.map((row) => {
                     return (
                         <TableRow>
-                            <TableCell id="clickable-cell"
-                                       onClick={(_) => handleClick("character", row?.id)}>{row?.name}</TableCell>
+                            <TableCell id="clickable-cell">
+                                <Link to={`/character/${row?.id}`}>
+                                    {row?.name}
+                                </Link>
+                            </TableCell>
                             <TableCell id="non-clickable-cell">{row?.charClass || "null"}</TableCell>
                             <TableCell id="non-clickable-cell">{row?.status || "null"}</TableCell>
-                            <TableCell id="clickable-cell"
-                                       onClick={(_) => handleClick("player", row?.playerId)}>{row?.player || "null"}
+                            <TableCell id="clickable-cell">
+                                <Link to={`/player/${row?.playerId}`}>
+                                    {row?.player || "null"}
+                                </Link>
                             </TableCell>
                         </TableRow>
                     )
@@ -163,4 +178,3 @@ export const getCharacterTable = (rows, handleClick) => {
         </Table>
     )
 };
-

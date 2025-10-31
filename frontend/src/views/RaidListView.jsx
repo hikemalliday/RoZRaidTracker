@@ -1,10 +1,9 @@
 import {useRaidList} from "../hooks/requests.js";
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import React from "react";
-import {useNavigate} from "react-router";
+import {Link} from "react-router";
 
 export function RaidListView() {
-    const navigate = useNavigate();
     const {data, isPending, error} = useRaidList("/raids/");
 
     if (isPending) return <>LOADING...</>;
@@ -21,10 +20,6 @@ export function RaidListView() {
         })
     };
 
-    const handleClick = (view, id) => {
-        return navigate(`/${view}/${id}`, {replace: true});
-    }
-
     const table = (rows) => {
         return (
             <Table>
@@ -39,8 +34,11 @@ export function RaidListView() {
                     {rows.map((row) => {
                         return (
                             <TableRow>
-                                <TableCell id="clickable-cell"
-                                           onClick={(_) => handleClick("raids", row?.id)}>{row?.name || "null"}</TableCell>
+                                <TableCell id="clickable-cell">
+                                    <Link to={`/raid/${row?.id}`}>
+                                        {row?.name || "null"}
+                                    </Link>
+                                </TableCell>
                                 <TableCell id="non-clickable-cell">{row?.zone?.name || "null"}</TableCell>
                                 <TableCell id="non-clickable-cell">{row?.date || "null"}</TableCell>
                             </TableRow>
