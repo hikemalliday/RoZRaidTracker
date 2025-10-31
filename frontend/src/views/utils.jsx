@@ -1,5 +1,7 @@
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 
+
+// TODO: Eventually bundle these two together into a component, data + table
 export const getItemAwardedRows = (itemsAwardedData) => {
     return itemsAwardedData.map((itemAwarded) => {
         return {
@@ -13,6 +15,7 @@ export const getItemAwardedRows = (itemsAwardedData) => {
         }
     })
 };
+
 
 export const getItemAwardedTable = (rows, clickHandler) => {
     return (
@@ -66,3 +69,49 @@ export const getItemAwardedTable = (rows, clickHandler) => {
         </Table>
     )
 };
+
+
+// TODO: Eventually bundle these two together into a component, data + table
+export const getRaRows = (raData) => {
+    return raData.map((ra) => {
+        return {
+            "id": ra.id,
+            "raid": ra.raid,
+            "zone": ra.zone,
+            "player": ra.player,
+            "date": ra.created_at,
+        }
+    })
+}
+
+export const getRaTable = (rows, clickHandler) => {
+    return (
+        <Table>
+            <TableHead>
+                <TableRow>
+                    <TableCell id="table-header">Raid</TableCell>
+                    <TableCell id="table-header">Zone</TableCell>
+                    <TableCell id="table-header">Player</TableCell>
+                    <TableCell id="table-header">Date</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {rows.map((row) => {
+                    return (
+                        <TableRow>
+                            <TableCell id="clickable-cell"
+                                       onClick={(_) => clickHandler("raid", row?.raid?.id)}>{row?.raid.name}</TableCell>
+                            <TableCell id="non-clickable-cell">{row?.raid.zone?.name || "null"}</TableCell>
+                            <TableCell id="clickable-cell"
+                                       onClick={(_) => clickHandler("player", row?.player?.id)}>{row?.player?.name || "null"}
+                            </TableCell>
+                            <TableCell id="non-clickable-cell">{row?.date}</TableCell>
+                        </TableRow>
+                    )
+                })}
+            </TableBody>
+        </Table>
+    )
+}
+
+

@@ -1,7 +1,7 @@
-import {DetailView} from "./generic/DetailView.jsx";
 import {useNavigate, useParams} from "react-router";
-import {useItemAwardedList, usePlayer, useRaidAttendance, useRaidAttendanceList} from "../hooks/requests.js";
-import {getItemAwardedRows, getItemAwardedTable} from "./utils.jsx";
+import {useItemAwardedList, usePlayer, useRaidAttendanceList} from "../hooks/requests.js";
+import {getItemAwardedRows, getItemAwardedTable, getRaRows, getRaTable} from "./utils.jsx";
+import {Container, Typography} from "@mui/material";
 
 export function PlayerDetailView() {
     const navigate = useNavigate();
@@ -30,7 +30,6 @@ export function PlayerDetailView() {
         )
     }
 
-
     if (isPlayerPending || isRaPending || isItemsAwardedPending) return <>LOADING...</>;
     if (playerError || raError || itemsAwardedError) return renderErrors([playerError, raError,]);
 
@@ -38,9 +37,20 @@ export function PlayerDetailView() {
     const itemAwardedRows = getItemAwardedRows(itemsAwardedData);
     const itemAwardedTable = getItemAwardedTable(itemAwardedRows, handleClick);
 
+    const raRows = getRaRows(raData);
+    const raTable = getRaTable(raRows, handleClick);
+
     return (
-        <>
-            {itemAwardedTable}
-        </>
+        <Container>
+            <Container>
+                <Typography variant="h6">Items Awarded</Typography>
+                {itemAwardedTable}
+            </Container>
+            <Container sx={{mt: 9}}>
+                <Typography variant="h6">Raid Attendance</Typography>
+                {raTable}
+            </Container>
+        </Container>
+
     )
 }
