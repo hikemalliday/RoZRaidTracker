@@ -18,7 +18,7 @@ export const getLinkCell = (val, route, extraText) => {
 
 export const getCell = (val) => {
     return (
-        <TableCell id="clickable-cell">
+        <TableCell id="non-clickable-cell">
             {val}
         </TableCell>
     )
