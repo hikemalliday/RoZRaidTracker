@@ -1,6 +1,13 @@
 import {useNavigate, useParams} from "react-router";
-import {useItemAwardedList, usePlayer, useRaidAttendanceList} from "../hooks/requests.js";
-import {getItemAwardedRows, getItemAwardedTable, getRaRows, getRaTable} from "./utils.jsx";
+import {useCharacterList, useItemAwardedList, usePlayer, useRaidAttendanceList} from "../hooks/requests.js";
+import {
+    getCharacterRows,
+    getCharacterTable,
+    getItemAwardedRows,
+    getItemAwardedTable,
+    getRaRows,
+    getRaTable
+} from "./utils.jsx";
 import {Container, Typography} from "@mui/material";
 
 export function PlayerDetailView() {
@@ -13,6 +20,11 @@ export function PlayerDetailView() {
         data: itemsAwardedData,
         error: itemsAwardedError
     } = useItemAwardedList({player: id});
+    const {
+        isPending: isCharacterPending,
+        data: characterData,
+        error: characterError,
+    } = useCharacterList({player: id});
 
     const handleClick = (view, id) => {
         return navigate(`/${view}/${id}`, {replace: true});
@@ -30,8 +42,10 @@ export function PlayerDetailView() {
         )
     }
 
-    if (isPlayerPending || isRaPending || isItemsAwardedPending) return <>LOADING...</>;
-    if (playerError || raError || itemsAwardedError) return renderErrors([playerError, raError,]);
+    if (isPlayerPending || isRaPending || isItemsAwardedPending || isCharacterPending) return <>LOADING...</>;
+
+    const errorList = [playerError, raError, itemsAwardedError, characterError];
+    if (errorList.some(Boolean)) return renderErrors(errorList);
 
 
     const itemAwardedRows = getItemAwardedRows(itemsAwardedData);
@@ -40,15 +54,23 @@ export function PlayerDetailView() {
     const raRows = getRaRows(raData);
     const raTable = getRaTable(raRows, handleClick);
 
+    const characterRows = getCharacterRows(characterData);
+    const characterTable = getCharacterTable(characterRows, handleClick);
+
     return (
         <Container>
+            <Typography sx={{ mt: 5 }} variant="h5">Player:  {playerData.name}</Typography>
             <Container>
-                <Typography variant="h6">Items Awarded</Typography>
+                <Typography sx={{ mt: 5 }} variant="h6">Items Awarded</Typography>
                 {itemAwardedTable}
             </Container>
             <Container sx={{mt: 9}}>
                 <Typography variant="h6">Raid Attendance</Typography>
                 {raTable}
+            </Container>
+            <Container sx={{mt: 9}}>
+                <Typography variant="h6">Characters</Typography>
+                {characterTable}
             </Container>
         </Container>
 

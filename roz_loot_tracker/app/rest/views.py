@@ -34,6 +34,8 @@ class CharacterViewSet(viewsets.ModelViewSet):
     queryset = models.Character.objects.all()
     serializer_class = CharacterSerializer
     permission_classes = (PERMISSION_CLASS_DEBUG,)
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['player']
 
 
 class RaidViewSet(viewsets.ModelViewSet):

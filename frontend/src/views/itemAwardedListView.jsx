@@ -4,7 +4,7 @@ import {getItemAwardedRows, getItemAwardedTable} from "./utils.jsx";
 
 export function ItemAwardedListView() {
     const navigate = useNavigate();
-    const {data, isPending, error} = useItemAwardedList("/items_awarded/");
+    const {data, isPending, error} = useItemAwardedList();
 
     const handleClick = (view, id) => {
         return navigate(`/${view}/${id}`, {replace: true});

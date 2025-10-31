@@ -58,6 +58,23 @@ export function useItemAwardedList(queryParams) {
     return {isPending, error, data};
 }
 
+
+export function useCharacterList(queryParams) {
+    const client = useAxios(BACKEND_BASE_URL_DEV);
+    const {isPending, error, data} = useQuery({
+        queryKey: ['characters', queryParams],
+        queryFn: async () => {
+            const {data} = await client.get(`/characters/`, {
+                params: queryParams,
+            });
+            return data;
+        }
+    });
+    return {isPending, error, data};
+}
+
+
+
 // GET DETAIL
 export function usePlayer(id) {
     const client = useAxios(BACKEND_BASE_URL_DEV);
