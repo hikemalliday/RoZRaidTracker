@@ -1,10 +1,10 @@
 import {DetailView} from "./generic/DetailView.jsx";
 import {useParams} from "react-router";
-import {getItemAwarded} from "../hooks/requests.js";
+import {useItemAwarded} from "../hooks/requests.js";
 
 export function ItemAwardedDetailView() {
     const { id } = useParams();
-    const { isPending, data, error } = getItemAwarded(id);
+    const { isPending, data, error } = useItemAwarded(id);
 
     if (isPending) return <>LOADING...</>;
     if (error) return <>{error.message}</>;

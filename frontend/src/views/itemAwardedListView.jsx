@@ -1,12 +1,12 @@
 import {ListView} from "./generic/ListView.jsx";
-import {useItemsAwarded} from "../hooks/requests.js";
+import {useItemAwardedList} from "../hooks/requests.js";
 import axios from "axios";
 import {useNavigate} from "react-router";
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 
 export function ItemAwardedListView() {
     const navigate = useNavigate();
-    const {data, isPending, error} = useItemsAwarded("/items_awarded/");
+    const {data, isPending, error} = useItemAwardedList("/items_awarded/");
 
     const handleClick = (view, id) => {
         return navigate(`/${view}/${id}`, {replace: true});

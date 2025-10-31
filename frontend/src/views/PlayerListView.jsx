@@ -1,11 +1,11 @@
-import {usePlayers} from "../hooks/requests.js";
+import {usePlayerList} from "../hooks/requests.js";
 import {useNavigate} from "react-router";
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 
 
 export function PlayerListView() {
     const navigate = useNavigate();
-    const {data, isPending, error} = usePlayers("/players/");
+    const {data, isPending, error} = usePlayerList("/players/");
 
     if (isPending) return <>LOADING...</>;
     if (error) return <>{error.message}</>;

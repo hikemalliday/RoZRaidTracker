@@ -1,11 +1,11 @@
-import {useRaids} from "../hooks/requests.js";
+import {useRaidList} from "../hooks/requests.js";
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import React from "react";
 import {useNavigate} from "react-router";
 
 export function RaidListView() {
     const navigate = useNavigate();
-    const {data, isPending, error} = useRaids("/raids/");
+    const {data, isPending, error} = useRaidList("/raids/");
 
     if (isPending) return <>LOADING...</>;
     if (error) return <>{error.message}</>;

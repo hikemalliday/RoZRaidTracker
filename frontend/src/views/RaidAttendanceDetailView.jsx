@@ -1,10 +1,10 @@
 import {DetailView} from "./generic/DetailView.jsx";
 import {useParams} from "react-router";
-import {getRaidAttendance} from "../hooks/requests.js";
+import {useRaidAttendance} from "../hooks/requests.js";
 
 export function RaidAttendanceDetailView() {
     const { id } = useParams();
-    const { isPending, data, error } = getRaidAttendance(id);
+    const { isPending, data, error } = useRaidAttendance(id);
 
     if (isPending) return <>LOADING...</>;
     if (error) return <>{error.message}</>;

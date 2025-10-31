@@ -1,11 +1,11 @@
 import {ListView} from "./generic/ListView.jsx";
-import {useRaidAttendance} from "../hooks/requests.js";
+import {useRaidAttendanceList} from "../hooks/requests.js";
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import {useNavigate} from "react-router";
 
 export function RaidAttendanceListView() {
     const navigate = useNavigate();
-    const {data, isPending, error} = useRaidAttendance();
+    const {data, isPending, error} = useRaidAttendanceList();
 
     if (isPending) return <>LOADING...</>;
 
