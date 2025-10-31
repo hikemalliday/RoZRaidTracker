@@ -5,6 +5,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from app.serializers.serializers import PlayerSerializer, ItemSerializer, RaidSerializer, \
     ZoneSerializer, CharacterSerializer, ItemAwardedSerializer, PreferredPixelSerializer, RaidAttendanceSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 PERMISSION_CLASS_DEBUG = IsAuthenticated # TODO: Dev purposes
@@ -57,3 +58,5 @@ class RaidAttendanceViewSet(viewsets.ModelViewSet):
     queryset = models.RaidAttendance.objects.all()
     serializer_class = RaidAttendanceSerializer
     permission_classes = (PERMISSION_CLASS_DEBUG,)
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['player', 'raid']
