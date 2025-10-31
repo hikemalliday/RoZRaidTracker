@@ -3,7 +3,7 @@ import {BACKEND_BASE_URL_DEV} from "../config.js";
 import {useQuery} from "@tanstack/react-query";
 
 // GET LIST
-export function usePlayers() {
+export function usePlayerList() {
     const client = useAxios(BACKEND_BASE_URL_DEV);
     const {isPending, error, data} = useQuery({
         queryKey: ['players'],
@@ -16,7 +16,7 @@ export function usePlayers() {
 }
 
 
-export function useRaids() {
+export function useRaidList() {
     const client = useAxios(BACKEND_BASE_URL_DEV);
     const {isPending, error, data} = useQuery({
         queryKey: ['raids'],
@@ -29,7 +29,7 @@ export function useRaids() {
 }
 
 
-export function useRaidAttendance(queryParams) {
+export function useRaidAttendanceList(queryParams) {
     const client = useAxios(BACKEND_BASE_URL_DEV);
     const {isPending, error, data} = useQuery({
         queryKey: ['raid_attendance', queryParams],
@@ -44,7 +44,7 @@ export function useRaidAttendance(queryParams) {
 }
 
 
-export function useItemsAwarded() {
+export function useItemAwardedList() {
     const client = useAxios(BACKEND_BASE_URL_DEV);
     const {isPending, error, data} = useQuery({
         queryKey: ['items_awarded'],
@@ -57,7 +57,7 @@ export function useItemsAwarded() {
 }
 
 // GET DETAIL
-export function getPlayer(id) {
+export function usePlayer(id) {
     const client = useAxios(BACKEND_BASE_URL_DEV);
     const {isPending, error, data} = useQuery({
         queryKey: ['player', id],
@@ -70,7 +70,7 @@ export function getPlayer(id) {
 }
 
 
-export function getRaid(id) {
+export function useRaid(id) {
     const client = useAxios(BACKEND_BASE_URL_DEV);
     const {isPending, error, data} = useQuery({
         queryKey: ['raid', id],
@@ -83,7 +83,7 @@ export function getRaid(id) {
 }
 
 
-export function getRaidAttendance(id) {
+export function useRaidAttendance(id) {
     const client = useAxios(BACKEND_BASE_URL_DEV);
     const {isPending, error, data} = useQuery({
         queryKey: ['raid_attendance', id],
@@ -96,7 +96,7 @@ export function getRaidAttendance(id) {
 }
 
 
-export function getItemAwarded(id) {
+export function useItemAwarded(id) {
     const client = useAxios(BACKEND_BASE_URL_DEV);
     const {isPending, error, data} = useQuery({
         queryKey: ['items_awarded', id],
@@ -109,7 +109,7 @@ export function getItemAwarded(id) {
 }
 
 
-export function getCharacter(id) {
+export function useCharacter(id) {
     const client = useAxios(BACKEND_BASE_URL_DEV);
     const {isPending, error, data} = useQuery({
         queryKey: ['characters', id],
