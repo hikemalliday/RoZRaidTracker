@@ -44,12 +44,14 @@ export function useRaidAttendanceList(queryParams) {
 }
 
 
-export function useItemAwardedList() {
+export function useItemAwardedList(queryParams) {
     const client = useAxios(BACKEND_BASE_URL_DEV);
     const {isPending, error, data} = useQuery({
         queryKey: ['items_awarded'],
         queryFn: async () => {
-            const {data} = await client.get("/items_awarded/");
+            const {data} = await client.get("/items_awarded/", {
+                params: queryParams,
+            });
             return data;
         },
     })

@@ -110,3 +110,8 @@ a:active {
 #char-class-span {
   color: gray;
 }
+
+#error-list {
+  display: flex;
+  flex-direction: column;
+}

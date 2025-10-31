@@ -46,6 +46,8 @@ class ItemAwardedViewSet(viewsets.ModelViewSet):
     queryset = models.ItemAwarded.objects.all()
     serializer_class = ItemAwardedSerializer
     permission_classes = (PERMISSION_CLASS_DEBUG,)
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['player', 'raid']
 
 
 class PreferredPixelViewSet(viewsets.ModelViewSet):

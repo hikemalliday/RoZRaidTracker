@@ -1,8 +1,6 @@
-import {ListView} from "./generic/ListView.jsx";
 import {useItemAwardedList} from "../hooks/requests.js";
-import axios from "axios";
 import {useNavigate} from "react-router";
-import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
+import {getItemAwardedRows, getItemAwardedTable} from "./utils.jsx";
 
 export function ItemAwardedListView() {
     const navigate = useNavigate();
@@ -11,82 +9,11 @@ export function ItemAwardedListView() {
     const handleClick = (view, id) => {
         return navigate(`/${view}/${id}`, {replace: true});
     }
-    const getIconPath = (iconId) => {
-        return `/item_icons/item_${iconId}.png`;
-    };
+
 
     if (isPending) return <>LOADING...</>;
 
     if (error) return <>{error.message}</>;
 
-    const getItemAwardedRows = (itemsAwardedData) => {
-        return itemsAwardedData.map((itemAwarded) => {
-            return {
-                "name": itemAwarded.item.name,
-                "player": itemAwarded.player.name,
-                "playerId": itemAwarded.player.id,
-                "raid": itemAwarded.raid.name,
-                "raidId": itemAwarded.raid.id,
-                "date": itemAwarded.created_at,
-                "iconId": itemAwarded.item.icon_id,
-            }
-        })
-    };
-
-    const table = (rows) => {
-        return (
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell id="table-header">
-                        </TableCell>
-                        <TableCell id="table-header">
-                            Name
-                        </TableCell>
-                        <TableCell id="table-header">
-                            Player
-                        </TableCell>
-                        <TableCell id="table-header">
-                            Raid
-                        </TableCell>
-                        <TableCell id="table-header">
-                            Date
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map((row) => {
-                        return (
-                            <TableRow id="table-row">
-                                <TableCell id="clickable-cell">
-                                    <img
-                                        id="item-icon"
-                                        src={getIconPath(row.iconId)}
-                                        alt={row.name}
-                                    />
-                                    {row.icon}
-                                </TableCell>
-                                <TableCell id="non-clickable-cell">
-                                    {row.name}
-                                </TableCell>
-                                <TableCell id="clickable-cell" onClick={(_) => handleClick("player", row.playerId)}>
-                                    {row.player}
-                                </TableCell>
-                                <TableCell id="clickable-cell" onClick={(_) => handleClick("raid", row.raidId)}>
-                                    {row.raid}
-                                </TableCell>
-                                <TableCell id="non-clickable-cell">
-                                    {row.date}
-                                </TableCell>
-                            </TableRow>
-                        )
-                    })}
-                </TableBody>
-            </Table>
-        )
-    };
-
-    return table(getItemAwardedRows(data));
-
-    // return <ListView title="Items Awarded" accessor="name" data={data}/>
+    return getItemAwardedTable(getItemAwardedRows(data), handleClick);
 }
