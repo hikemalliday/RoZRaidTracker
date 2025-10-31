@@ -32,6 +32,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 class RaidSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(format='%m-%d-%y', read_only=True)
     updated_at = serializers.DateTimeField(format='%m-%d-%y', read_only=True)
+    zone = ZoneSerializer(read_only=True)
     class Meta:
         model = Raid
         fields = '__all__'
