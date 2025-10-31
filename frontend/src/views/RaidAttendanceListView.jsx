@@ -42,13 +42,13 @@ export function RaidAttendanceListView() {
                         return (
                             <TableRow>
                                 <TableCell id="clickable-cell"
-                                           onClick={(_) => handleClick("raids", row?.raid?.id)}>{row?.raid.name}</TableCell>
+                                           onClick={(_) => handleClick("raid", row?.raid?.id)}>{row?.raid.name}</TableCell>
                                 <TableCell id="non-clickable-cell">{row?.raid.zone?.name || "null"}</TableCell>
                                 <TableCell id="clickable-cell"
-                                           onClick={(_) => handleClick("players", row?.player?.id)}>{row?.player?.name || "null"}
+                                           onClick={(_) => handleClick("player", row?.player?.id)}>{row?.player?.name || "null"}
                                     <span id="char-class-span"> - {row?.mainAlt?.char_class}</span></TableCell>
                                 <TableCell id="non-clickable-cell"
-                                           onClick={(_) => handleClick("characters", row?.mainAlt?.id)}>{row?.mainAlt?.name || "null"}
+                                           onClick={(_) => handleClick("character", row?.mainAlt?.id)}>{row?.mainAlt?.name || "null"}
                                     <span id="char-class-span"> - {row?.mainAlt?.char_class}</span></TableCell>
                             </TableRow>
                         )

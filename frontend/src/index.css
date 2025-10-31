@@ -86,7 +86,7 @@ a {
 
 #clickable-cell:hover,
 a:hover {
-  color: darkgrey;
+  color: lime;
 }
 
 #clickable-cell:active,
@@ -99,7 +99,11 @@ a:active {
   height: 20px;
 }
 
-#table-header, #table-row, #non-clickable-cell {
+#table-header {
+  color: limegreen;
+}
+
+#table-row, #non-clickable-cell {
   color: white;
 }
 

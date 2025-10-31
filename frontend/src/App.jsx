@@ -25,16 +25,16 @@ function App() {
                     <Route element={<ProtectedRoute/>}>
                         <Route path="/" element={<Home/>}/>
                         */ List Views */
-                        <Route path="/players" element={<PlayerListView/>}/>
-                        <Route path="/raids" element={<RaidListView/>}/>
-                        <Route path="/items_awarded" element={<ItemAwardedListView/>}/>
+                        <Route path="/player" element={<PlayerListView/>}/>
+                        <Route path="/raid" element={<RaidListView/>}/>
+                        <Route path="/item_awarded" element={<ItemAwardedListView/>}/>
                         <Route path="/raid_attendance" element={<RaidAttendanceListView/>}/>
                         */ Detail Views */
-                        <Route path="/players/:id" element={<PlayerDetailView/>}/>
-                        <Route path="/raids/:id" element={<RaidDetailView/>}/>
-                        <Route path="/items_awarded/:id" element={<ItemAwardedDetailView/>}/>
+                        <Route path="/player/:id" element={<PlayerDetailView/>}/>
+                        <Route path="/raid/:id" element={<RaidDetailView/>}/>
+                        <Route path="/item_awarded/:id" element={<ItemAwardedDetailView/>}/>
                         <Route path="/raid_attendance/:id" element={<RaidAttendanceDetailView/>}/>
-                        <Route path="/characters/:id" element={<CharacterDetailView/>}/>
+                        <Route path="/character/:id" element={<CharacterDetailView/>}/>
                     </Route>
                     <Route path="*" element={<NotFound/>}/>
                 </Routes>

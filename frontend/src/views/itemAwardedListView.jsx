@@ -66,13 +66,13 @@ export function ItemAwardedListView() {
                                     />
                                     {row.icon}
                                 </TableCell>
-                                <TableCell id="clickable-cell">
+                                <TableCell id="non-clickable-cell">
                                     {row.name}
                                 </TableCell>
-                                <TableCell id="clickable-cell" onClick={(_) => handleClick("players", row.playerId)}>
+                                <TableCell id="clickable-cell" onClick={(_) => handleClick("player", row.playerId)}>
                                     {row.player}
                                 </TableCell>
-                                <TableCell id="clickable-cell" onClick={(_) => handleClick("raids", row.raidId)}>
+                                <TableCell id="clickable-cell" onClick={(_) => handleClick("raid", row.raidId)}>
                                     {row.raid}
                                 </TableCell>
                                 <TableCell id="non-clickable-cell">

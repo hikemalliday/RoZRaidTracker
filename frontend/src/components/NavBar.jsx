@@ -9,11 +9,11 @@ export function NavBar() {
       if (!isAuthenticated) return <div></div>
         return (
             <>
-            <a id="nav-bar-players-link" onClick={() => navigate("/players")}>
+            <a id="nav-bar-players-link" onClick={() => navigate("/player")}>
                 PLAYERS
             </a>
             -
-            <a id="nav-bar-raids-link" onClick={() => navigate("/raids")}>
+            <a id="nav-bar-raids-link" onClick={() => navigate("/raid")}>
                 RAIDS
             </a>
             -
@@ -21,7 +21,7 @@ export function NavBar() {
                 RAID ATTENDANCE
             </a>
             -
-            <a id="nav-bar-items-awarded-link" onClick={() => navigate("/items_awarded")}>
+            <a id="nav-bar-items-awarded-link" onClick={() => navigate("/item_awarded")}>
                 ITEMS AWARDED
             </a>
         </>

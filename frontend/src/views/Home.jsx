@@ -11,9 +11,9 @@ export default function Home() {
                 "flexDirection": "column",
                 "cursor": "pointer",
             }}>
-                <a onClick={(_) => navigate("/players/")}>Players</a>
-                <a onClick={(_) => navigate("/raids/")}>Raids</a>
-                <a onClick={(_) => navigate("/items_awarded/")}>Items Awarded</a>
+                <a onClick={(_) => navigate("/player/")}>Players</a>
+                <a onClick={(_) => navigate("/raid/")}>Raids</a>
+                <a onClick={(_) => navigate("/item_awarded/")}>Items Awarded</a>
                 <a onClick={(_) => navigate("/raid_attendance/")}>Raid Attendance</a>
             </div>
         </>

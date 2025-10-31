@@ -1,4 +1,3 @@
-import {ListView} from "./generic/ListView.jsx";
 import {useRaids} from "../hooks/requests.js";
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import React from "react";
@@ -9,18 +8,17 @@ export function RaidListView() {
     const {data, isPending, error} = useRaids("/raids/");
 
     if (isPending) return <>LOADING...</>;
-
     if (error) return <>{error.message}</>;
 
     const getRaidsRows = (raidsData) => {
-      return raidsData.map((raid) => {
-          return {
-              "id": raid.id,
-              "name": raid.name,
-              "date": raid.created_at,
-              "zone": raid.zone,
-          }
-      })
+        return raidsData.map((raid) => {
+            return {
+                "id": raid.id,
+                "name": raid.name,
+                "date": raid.created_at,
+                "zone": raid.zone,
+            }
+        })
     };
 
     const handleClick = (view, id) => {
@@ -41,9 +39,10 @@ export function RaidListView() {
                     {rows.map((row) => {
                         return (
                             <TableRow>
-                                <TableCell id="clickable-cell" onClick={(_) => handleClick("raids", row?.id)}>{row?.name || "null"}</TableCell>
+                                <TableCell id="clickable-cell"
+                                           onClick={(_) => handleClick("raids", row?.id)}>{row?.name || "null"}</TableCell>
                                 <TableCell id="non-clickable-cell">{row?.zone?.name || "null"}</TableCell>
-                                <TableCell id="non-clickable-cell">{row?.data || "null"}</TableCell>
+                                <TableCell id="non-clickable-cell">{row?.date || "null"}</TableCell>
                             </TableRow>
                         )
                     })}
