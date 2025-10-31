@@ -102,3 +102,7 @@ a:active {
 #table-header, #table-row, #non-clickable-cell {
   color: white;
 }
+
+#char-class-span {
+  color: gray;
+}

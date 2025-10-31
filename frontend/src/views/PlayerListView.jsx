@@ -43,8 +43,8 @@ export function PlayerListView() {
                     return (
                         <TableRow>
                             <TableCell id="clickable-cell" onClick={(_) => handleClick("players", row?.id)}>{row?.name}</TableCell>
-                            <TableCell id="clickable-cell" onClick={(_) => handleClick("characters", row?.main?.id)}>{row?.main?.name || "null"}</TableCell>
-                            <TableCell id="clickable-cell" onClick={(_) => handleClick("characters", row?.mainAlt?.id)}>{row?.mainAlt?.name || "null"}</TableCell>
+                            <TableCell id="clickable-cell" onClick={(_) => handleClick("characters", row?.main?.id)}>{row?.main?.name || "null"}<span id="char-class-span"> - {row?.main?.char_class}</span></TableCell>
+                            <TableCell id="clickable-cell" onClick={(_) => handleClick("characters", row?.mainAlt?.id)}>{row?.mainAlt?.name || "null"} <span id="char-class-span"> - {row?.mainAlt?.char_class}</span></TableCell>
                         </TableRow>
                     )
                 })}
