@@ -1,5 +1,6 @@
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import {Link} from "react-router";
+import React from "react";
 
 
 // TODO: Eventually bundle these two together into a component, data + table
@@ -178,3 +179,44 @@ export const getCharacterTable = (rows) => {
         </Table>
     )
 };
+
+
+export const getRaidRows = (raidsData) => {
+    return raidsData.map((raid) => {
+        return {
+            "id": raid.id,
+            "name": raid.name,
+            "date": raid.created_at,
+            "zone": raid.zone,
+        }
+    })
+};
+
+export const getRaidTable = (rows) => {
+    return (
+        <Table>
+            <TableHead>
+                <TableRow>
+                    <TableCell id="table-header">Name</TableCell>
+                    <TableCell id="table-header">Zone</TableCell>
+                    <TableCell id="table-header">Date</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {rows.map((row) => {
+                    return (
+                        <TableRow>
+                            <TableCell id="clickable-cell">
+                                <Link to={`/raid/${row?.id}`}>
+                                    {row?.name || "null"}
+                                </Link>
+                            </TableCell>
+                            <TableCell id="non-clickable-cell">{row?.zone?.name || "null"}</TableCell>
+                            <TableCell id="non-clickable-cell">{row?.date || "null"}</TableCell>
+                        </TableRow>
+                    )
+                })}
+            </TableBody>
+        </Table>
+    )
+}
