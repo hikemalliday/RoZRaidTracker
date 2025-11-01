@@ -2,7 +2,6 @@ import {useNavigate} from "react-router";
 import {useAuthContext} from "../context/AuthContext.jsx";
 
 export function NavBar() {
-
     const navigate = useNavigate();
     const { isAuthenticated } = useAuthContext();
     const navBarLinks = () => {
@@ -15,10 +14,6 @@ export function NavBar() {
             -
             <a id="nav-bar-raids-link" onClick={() => navigate("/raid")}>
                 RAIDS
-            </a>
-            -
-            <a id="nav-bar-raid-attendance-link" onClick={() => navigate("/raid_attendance")}>
-                RAID ATTENDANCE
             </a>
             -
             <a id="nav-bar-items-awarded-link" onClick={() => navigate("/item_awarded")}>
