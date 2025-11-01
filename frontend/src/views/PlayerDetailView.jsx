@@ -47,7 +47,6 @@ export function PlayerDetailView() {
     const errorList = [playerError, raError, itemsAwardedError, characterError];
     if (errorList.some(Boolean)) return renderErrors(errorList);
 
-
     const itemAwardedRows = getItemAwardedRows(itemsAwardedData);
     const itemAwardedTable = getItemAwardedTable(itemAwardedRows, handleClick);
 
