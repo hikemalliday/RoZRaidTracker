@@ -1,5 +1,4 @@
 import {useItemAwardedList} from "../hooks/requests.js";
-import {getItemAwardedRows, getItemAwardedTable} from "./utils.jsx";
 import {getCell, getItemIconCell, getLinkCell, TableList} from "../components/Tables.jsx";
 
 export function ItemAwardedListView() {

@@ -1,14 +1,7 @@
 import {useNavigate, useParams} from "react-router";
 import {useCharacterList, useItemAwardedList, usePlayer, useRaidAttendanceList} from "../hooks/requests.js";
-import {
-    getCharacterRows,
-    getCharacterTable,
-    getItemAwardedRows,
-    getItemAwardedTable,
-    getRaRows,
-    getRaTable
-} from "./utils.jsx";
 import {Container, Typography} from "@mui/material";
+import {getCell, getItemIconCell, getLinkCell, TableList} from "../components/Tables.jsx";
 
 export function PlayerDetailView() {
     const navigate = useNavigate();
@@ -16,19 +9,15 @@ export function PlayerDetailView() {
     const {isPending: isPlayerPending, data: playerData, error: playerError} = usePlayer(id);
     const {isPending: isRaPending, data: raData, error: raError} = useRaidAttendanceList({player: id});
     const {
-        isPending: isItemsAwardedPending,
-        data: itemsAwardedData,
-        error: itemsAwardedError
+        isPending: isItemAwardedPending,
+        data: itemAwardedData,
+        error: itemAwardedError
     } = useItemAwardedList({player: id});
     const {
         isPending: isCharacterPending,
         data: characterData,
         error: characterError,
     } = useCharacterList({player: id});
-
-    const handleClick = (view, id) => {
-        return navigate(`/${view}/${id}`, {replace: true});
-    }
 
     const renderErrors = (errorsList) => {
         return (
@@ -42,36 +31,58 @@ export function PlayerDetailView() {
         )
     }
 
-    if (isPlayerPending || isRaPending || isItemsAwardedPending || isCharacterPending) return <>LOADING...</>;
+    if (isPlayerPending || isRaPending || isItemAwardedPending || isCharacterPending) return <>LOADING...</>;
 
-    const errorList = [playerError, raError, itemsAwardedError, characterError];
+    const errorList = [playerError, raError, itemAwardedError, characterError];
     if (errorList.some(Boolean)) return renderErrors(errorList);
 
-    const itemAwardedRows = getItemAwardedRows(itemsAwardedData);
-    const itemAwardedTable = getItemAwardedTable(itemAwardedRows, handleClick);
 
-    const raRows = getRaRows(raData);
-    const raTable = getRaTable(raRows, handleClick);
+    const itemAwardedHeaders = ["", "Name", "Player", "Raid", "Date"];
+    const getItemAwardedCells = (data) => {
+        return data.map((row) => {
+            return [
+                getItemIconCell(row?.item?.icon_id),
+                getCell(row?.item?.name),
+                getLinkCell(row?.player?.name, `/player/${row?.player?.id}`),
+                getLinkCell(row?.raid?.name, `/raid/${row?.raid?.id}`),
+                getCell(row?.created_at),
+            ]
+        });
+    };
 
-    const characterRows = getCharacterRows(characterData);
-    const characterTable = getCharacterTable(characterRows, handleClick);
+    const characterHeaders = ["Name", "Class", "Status", "Player"];
+
+    const _getCharStatus = (char) => {
+        if (char.is_main) return "Main";
+        if (char.is_main_alt) return "Main Alt";
+        return "Alt";
+    }
+
+    const getCharacterCells = (data) => {
+        return data.map((row) => {
+            return [
+                getCell(row?.name),
+                getCell(row?.char_class),
+                getCell(_getCharStatus(row)),
+                getLinkCell(row?.player.name, `/player/${row?.player?.id}`),
+            ]
+        })
+    };
 
     return (
         <Container>
             <Typography sx={{ mt: 5 }} variant="h5">Player:  {playerData.name}</Typography>
             <Container>
-                <Typography sx={{ mt: 5 }} variant="h6">Items Awarded</Typography>
-                {itemAwardedTable}
+                <Typography sx={{ mt: 1}}>Lifetime RA: {playerData?.lifetime_ra}%</Typography>
             </Container>
-            <Container sx={{mt: 9}}>
-                <Typography variant="h6">Raid Attendance</Typography>
-                {raTable}
+            <Container>
+                <Typography sx={{ mt: 5 }} variant="h6">Items Awarded</Typography>
+                <TableList headers={itemAwardedHeaders} reducedData={getItemAwardedCells(itemAwardedData)}/>
             </Container>
             <Container sx={{mt: 9}}>
                 <Typography variant="h6">Characters</Typography>
-                {characterTable}
+                <TableList headers={characterHeaders} reducedData={getCharacterCells(characterData)}/>
             </Container>
         </Container>
-
     )
 }
