@@ -1,7 +1,8 @@
 import {useParams} from "react-router";
 import {useItemAwardedList, useRaid, useRaidAttendanceList} from "../hooks/requests.js";
 import {Container, Typography} from "@mui/material";
-import {getCell, getItemIconCell, getLinkCell, TableList} from "../components/Tables.jsx";
+import {RaidAttendanceListTable} from "../components/RaidAttendanceListTable.js";
+import {ItemAwardedListTable} from "../components/ItemAwardedListTable.jsx";
 
 export function RaidDetailView() {
     const {id} = useParams();
@@ -27,33 +28,6 @@ export function RaidDetailView() {
     if (pendingList.some(Boolean)) return <>LOADING...</>;
     if (errorList.some(Boolean)) return <>{renderErrors(errorList)}</>;
 
-    const getRaCells = (data) => {
-        return data.map((row) => {
-            return [
-                getLinkCell(row?.raid?.name, `/raid/${row?.raid?.id}`),
-                getCell(row?.raid.zone?.name),
-                getLinkCell(row?.player?.name, `/player/${row?.player?.id}`),
-                getCell(row?.created_at),
-            ]
-        });
-    }
-
-    const raHeaders = ["Raid", "Zone", "Player", "Date"];
-
-    const getItemAwardedCells = (data) => {
-        return data.map((row) => {
-            return [
-                getItemIconCell(row?.item?.icon_id),
-                getCell(row?.item?.name),
-                getLinkCell(row?.player?.name, `/player/${row?.player?.id}`),
-                getLinkCell(row?.raid?.name, `/raid/${row?.raid?.id}`),
-                getCell(row?.created_at),
-            ]
-        });
-    };
-
-    const itemAwardedHeaders = ["", "Name", "Player", "Raid", "Date"];
-
     return (
         <Container>
             <Typography sx={{mt: 5}} variant="h5">{data?.name}</Typography>
@@ -67,13 +41,13 @@ export function RaidDetailView() {
                 Attendees
             </Typography>
             <Container>
-                <TableList headers={raHeaders} reducedData={getRaCells(raData)}/>
+                <RaidAttendanceListTable data={raData}/>
             </Container>
             <Typography sx={{mt: 5}} variant="h6">
                 Items Awarded
             </Typography>
             <Container>
-                <TableList headers={itemAwardedHeaders} reducedData={getItemAwardedCells(itemAwardedData)}/>
+                <ItemAwardedListTable data={itemAwardedData}/>
             </Container>
         </Container>
     )
