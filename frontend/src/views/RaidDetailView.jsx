@@ -1,26 +1,15 @@
 import {useParams} from "react-router";
 import {useItemAwardedList, useRaid, useRaidAttendanceList} from "../hooks/requests.js";
 import {Container, Typography} from "@mui/material";
-import {RaidAttendanceListTable} from "../components/RaidAttendanceListTable.js";
+import {RaidAttendanceListTable} from "../components/RaidAttendanceListTable.jsx";
 import {ItemAwardedListTable} from "../components/ItemAwardedListTable.jsx";
+import {renderErrors} from "./utils.jsx";
 
 export function RaidDetailView() {
     const {id} = useParams();
     const {isPending, data, error} = useRaid(id);
     const {isPending: isRaPending, data: raData, error: raError} = useRaidAttendanceList({"raid": id});
     const {isPending: isItemAwardedPending, data: itemAwardedData, error:itemAwardedError} = useItemAwardedList({"raid": id});
-
-    const renderErrors = (errorsList) => {
-        return (
-            <div id="errors-list">
-                {errorsList.map((err) => {
-                    return (<div>
-                        {err.message}
-                    </div>)
-                })}
-            </div>
-        )
-    }
 
     const pendingList = [isPending, isRaPending, isItemAwardedPending];
     const errorList = [error, raError, itemAwardedError];

@@ -1,7 +1,9 @@
-import {useNavigate, useParams} from "react-router";
+import {useParams} from "react-router";
 import {useCharacterList, useItemAwardedList, usePlayer, useRaidAttendanceList} from "../hooks/requests.js";
 import {Container, Typography} from "@mui/material";
-import {getCell, getItemIconCell, getLinkCell, TableList} from "../components/Tables.jsx";
+import {renderErrors} from "./utils.jsx";
+import {ItemAwardedListTable} from "../components/ItemAwardedListTable.jsx";
+import {CharacterListTable} from "../components/CharacterListTable.jsx";
 
 export function PlayerDetailView() {
     const {id} = useParams();
@@ -18,55 +20,10 @@ export function PlayerDetailView() {
         error: characterError,
     } = useCharacterList({player: id});
 
-    const renderErrors = (errorsList) => {
-        return (
-            <div id="errors-list">
-                {errorsList.map((err) => {
-                    return (<div>
-                        {err.message}
-                    </div>)
-                })}
-            </div>
-        )
-    }
-
     if (isPlayerPending || isRaPending || isItemAwardedPending || isCharacterPending) return <>LOADING...</>;
 
     const errorList = [playerError, raError, itemAwardedError, characterError];
     if (errorList.some(Boolean)) return renderErrors(errorList);
-
-
-    const itemAwardedHeaders = ["", "Name", "Player", "Raid", "Date"];
-    const getItemAwardedCells = (data) => {
-        return data.map((row) => {
-            return [
-                getItemIconCell(row?.item?.icon_id),
-                getCell(row?.item?.name),
-                getLinkCell(row?.player?.name, `/player/${row?.player?.id}`),
-                getLinkCell(row?.raid?.name, `/raid/${row?.raid?.id}`),
-                getCell(row?.created_at),
-            ]
-        });
-    };
-
-    const characterHeaders = ["Name", "Class", "Status", "Player"];
-
-    const _getCharStatus = (char) => {
-        if (char.is_main) return "Main";
-        if (char.is_main_alt) return "Main Alt";
-        return "Alt";
-    }
-
-    const getCharacterCells = (data) => {
-        return data.map((row) => {
-            return [
-                getCell(row?.name),
-                getCell(row?.char_class),
-                getCell(_getCharStatus(row)),
-                getLinkCell(row?.player.name, `/player/${row?.player?.id}`),
-            ]
-        })
-    };
 
     return (
         <Container>
@@ -76,11 +33,11 @@ export function PlayerDetailView() {
             </Container>
             <Container>
                 <Typography sx={{ mt: 5 }} variant="h6">Items Awarded</Typography>
-                <TableList headers={itemAwardedHeaders} reducedData={getItemAwardedCells(itemAwardedData)}/>
+                <ItemAwardedListTable data={itemAwardedData}/>
             </Container>
             <Container sx={{mt: 9}}>
                 <Typography variant="h6">Characters</Typography>
-                <TableList headers={characterHeaders} reducedData={getCharacterCells(characterData)}/>
+                <CharacterListTable data={characterData}/>
             </Container>
         </Container>
     )

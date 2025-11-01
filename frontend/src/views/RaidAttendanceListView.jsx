@@ -1,5 +1,5 @@
 import {useRaidAttendanceList} from "../hooks/requests.js";
-import {RaidAttendanceListTable} from "../components/RaidAttendanceListTable.js";
+import {RaidAttendanceListTable} from "../components/RaidAttendanceListTable.jsx";
 
 export function RaidAttendanceListView() {
     const {data: raData, isPending, error} = useRaidAttendanceList();
