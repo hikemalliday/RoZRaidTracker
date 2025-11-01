@@ -1,7 +1,7 @@
 import {usePlayerList} from "../hooks/requests.js";
 import {Link} from "react-router";
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
-import {getLinkCell, TableList} from "../components/Tables.jsx";
+import {getCell, getLinkCell, TableList} from "../components/Tables.jsx";
 
 
 export function PlayerListView() {
@@ -24,9 +24,10 @@ export function PlayerListView() {
                     "text": alt ? ` - ${alt?.char_class}`: "",
                     "id": "char-class-span"
                 }),
+                getCell(`${row?.lifetime_ra}%`),
             ]
         });
     };
 
-    return <TableList reducedData={getPlayerCells(data)} headers={["Name", "Main", "Alt"]}/>
+    return <TableList reducedData={getPlayerCells(data)} headers={["Name", "Main", "Alt", "Lifetime RA"]}/>
 }
