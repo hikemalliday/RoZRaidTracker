@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Q
+from django.db.models.functions import Lower
 
 
 NOT_REQUIRED = {
@@ -32,12 +33,19 @@ class Zone(models.Model):
 
 
 class Player(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
+
+    constraints = [
+        models.UniqueConstraint(
+            Lower('name'),
+            name='unique_lower_name'
+        )
+    ]
 
 
 class Character(models.Model):
@@ -59,7 +67,7 @@ class Character(models.Model):
         ("WIZ", "Wizard"),
     )
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="characters")
     is_main = models.BooleanField(default=False)
     is_main_alt = models.BooleanField(default=False)
