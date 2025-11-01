@@ -4,7 +4,6 @@ import {Container, Typography} from "@mui/material";
 import {getCell, getItemIconCell, getLinkCell, TableList} from "../components/Tables.jsx";
 
 export function PlayerDetailView() {
-    const navigate = useNavigate();
     const {id} = useParams();
     const {isPending: isPlayerPending, data: playerData, error: playerError} = usePlayer(id);
     const {isPending: isRaPending, data: raData, error: raError} = useRaidAttendanceList({player: id});

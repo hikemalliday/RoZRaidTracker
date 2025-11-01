@@ -1,6 +1,6 @@
 import {useRaidList} from "../hooks/requests.js";
 import React from "react";
-import {getCell, getLinkCell, TableList} from "../components/Tables.jsx";
+import {RaidListTable} from "../components/RaidListTable.jsx";
 
 export function RaidListView() {
     const {data, isPending, error} = useRaidList("/raids/");
@@ -8,16 +8,5 @@ export function RaidListView() {
     if (isPending) return <>LOADING...</>;
     if (error) return <>{error.message}</>;
 
-    const getRaidCells = (data) => {
-        return data.map((row) => {
-            return [
-                getLinkCell(row?.name, `/raid/${row?.id}`),
-                getCell(row?.zone?.name),
-                getCell(row?.date),
-            ]
-        })
-    };
-
-    const headers = ["Name", "Zone", "Date"];
-    return <TableList headers={headers} reducedData={getRaidCells(data)}/>
+    return <RaidListTable data={data}/>
 }
