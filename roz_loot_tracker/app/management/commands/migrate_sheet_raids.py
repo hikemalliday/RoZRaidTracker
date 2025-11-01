@@ -52,15 +52,18 @@ with transaction.atomic():
         except:
             dt_naive = datetime.now()
         raid = Raid.objects.create(name=raid_name, created_at=dt_naive)
-        print("dt_naive:")
-        print(dt_naive)
 
         player_map = {
-            "corn": "Mendl",
+            "Corn": "Mendl",
+            "Wisecrack": "Wisecrak",
+            "Deadlift (Euphonious)": "Euphonious",
+            "Trikx": "Wisecrack",
+            "Blarg2K": "Blarg2k",
         }
         print(f"raid {raid} created.")
         for player_name in players:
-            mapped_player_name = player_map.get(player_name, player_name)
+            player_name_title = player_name.title()
+            mapped_player_name = player_map.get(player_name_title, player_name_title)
             player_obj, _ = Player.objects.get_or_create(name=mapped_player_name)
             raid_attendance = RaidAttendance.objects.create(
                 player=player_obj,
