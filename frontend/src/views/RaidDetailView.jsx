@@ -40,5 +40,4 @@ export function RaidDetailView() {
             </Container>
         </Container>
     )
-
 }

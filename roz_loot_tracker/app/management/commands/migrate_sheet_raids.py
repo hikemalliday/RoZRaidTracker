@@ -1,12 +1,11 @@
-
+# Admin purposes, used to migrate raid info from sheet
 import csv
 from datetime import datetime
-from django.utils.timezone import make_aware
 from app.models import Raid, RaidAttendance, Player
 from django.db import transaction
 
 
-with open('sheet_raid_players.csv', newline='') as csvfile:
+with open('raid_players_11_1.csv', newline='') as csvfile:
     reader = list(csv.reader(csvfile))
 
 transposed = list(zip(*reader))
@@ -15,7 +14,7 @@ for col in transposed:
     players = [p.strip() for p in col if p and p.strip()]
     player_cols.append(players)
 
-with open('sheet_raid_metadata.csv', newline='') as csvfile:
+with open('raid_meta_11_1.csv', newline='') as csvfile:
     reader = list(csv.reader(csvfile))
 
 transposed = list(zip(*reader))
@@ -59,12 +58,16 @@ with transaction.atomic():
             "Deadlift (Euphonious)": "Euphonious",
             "Trikx": "Wisecrack",
             "Blarg2K": "Blarg2k",
+            "JAH": "Jah",
+            "jAH": "Jah",
         }
         print(f"raid {raid} created.")
         for player_name in players:
             player_name_title = player_name.title()
             mapped_player_name = player_map.get(player_name_title, player_name_title)
             player_obj, _ = Player.objects.get_or_create(name=mapped_player_name)
+            print("PLAYER:")
+            print(player_obj)
             raid_attendance = RaidAttendance.objects.create(
                 player=player_obj,
                 raid=raid,
