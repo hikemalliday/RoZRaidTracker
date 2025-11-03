@@ -12,7 +12,14 @@ export function ItemAwardedListTable({ data }) {
             ]
         });
     };
-    // Blank header to handle item icon col
-    const headers = ["", "Name", "Player", "Raid", "Date"];
-    return <TableList headers={headers} reducedData={getItemAwardedCells(data)}/>
+
+    // Null vals means col is not sortable
+    const headerMap = {
+        "": null,
+        "Name": null,
+        "Player": null,
+        "Raid": null,
+        "Date": null,
+    }
+    return <TableList headerMap={headerMap} data={data}  getTableCells={getItemAwardedCells}/>
 }

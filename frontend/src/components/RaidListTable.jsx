@@ -12,6 +12,10 @@ export function RaidListTable({ data }) {
         })
     };
 
-    const headers = ["Name", "Zone", "Date"];
-    return <TableList headers={headers} reducedData={getRaidCells(data)}/>
+    const headerMap = {
+        "Name": "name",
+        "Zone": "zone.name",
+        "Date": "created_at",
+    }
+    return <TableList headerMap={headerMap} data={data} getTableCells={getRaidCells}/>
 }

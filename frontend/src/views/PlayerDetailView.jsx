@@ -8,7 +8,6 @@ import {CharacterListTable} from "../components/CharacterListTable.jsx";
 export function PlayerDetailView() {
     const {id} = useParams();
     const {isPending: isPlayerPending, data: playerData, error: playerError} = usePlayer(id);
-    const {isPending: isRaPending, data: raData, error: raError} = useRaidAttendanceList({player: id});
     const {
         isPending: isItemAwardedPending,
         data: itemAwardedData,
@@ -20,9 +19,9 @@ export function PlayerDetailView() {
         error: characterError,
     } = useCharacterList({player: id});
 
-    if (isPlayerPending || isRaPending || isItemAwardedPending || isCharacterPending) return <>LOADING...</>;
+    if (isPlayerPending || isItemAwardedPending || isCharacterPending) return <>LOADING...</>;
 
-    const errorList = [playerError, raError, itemAwardedError, characterError];
+    const errorList = [playerError, itemAwardedError, characterError];
     if (errorList.some(Boolean)) return renderErrors(errorList);
 
     return (

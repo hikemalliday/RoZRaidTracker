@@ -7,8 +7,8 @@ export function CharacterListTable({ data }) {
         return "Alt";
     }
 
-    const getCharacterCells = (data) => {
-        return data.map((row) => {
+    const getCharacterCells = (sorted) => {
+        return sorted.map((row) => {
             return [
                 getCell(row?.name),
                 getCell(row?.char_class),
@@ -17,6 +17,14 @@ export function CharacterListTable({ data }) {
             ]
         })
     };
-    const characterHeaders = ["Name", "Class", "Status", "Player"];
-    return <TableList headers={characterHeaders} reducedData={getCharacterCells(data)}/>
+
+    // Null vals here means cols are not sortable
+    const headerMap = {
+        "Name": null,
+        "Class": null,
+        "Status": null,
+        "Player": null,
+    }
+
+    return <TableList data={data} getTableCells={getCharacterCells} headerMap={headerMap} />
 }

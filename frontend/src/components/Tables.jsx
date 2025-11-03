@@ -40,6 +40,13 @@ export function TableList({data, getTableCells, headerMap = {} }) {
     const [sortDirection, setSortDirection] = useState('asc');
     const reducedData = getTableCells(sorted);
 
+    const _getNestedValue = (obj, path) => {
+        return path.split('.').reduce((current, key) => {
+           return current && typeof current === 'object' ? current[key] : undefined;
+        }, obj);
+    };
+
+
     const _sortByCol = (header) => {
         if (!header) return;
         const colToSortBy = headerMap[header];
@@ -47,29 +54,36 @@ export function TableList({data, getTableCells, headerMap = {} }) {
         if (!colToSortBy) return;
 
         const newSorted = [...sorted].sort((a, b) => {
+            const valA = _getNestedValue(a, colToSortBy);
+            const valB = _getNestedValue(b, colToSortBy);
+
+            if (valA == null || valB == null) {
+                return valA == null ? 1 : -1;
+            }
+
             const sortMapString = {
                 "asc": () => {
                     setSortDirection("desc");
-                    return b[colToSortBy].localeCompare(a[colToSortBy]);
+                    return valB.localeCompare(valA);
                 },
                 "desc": () => {
                     setSortDirection("asc");
-                    return a[colToSortBy].localeCompare(b[colToSortBy]);
+                    return valA.localeCompare(valB);
                 },
             }
 
             const sortMapNumber = {
                 "asc": () => {
                     setSortDirection("desc");
-                    return b[colToSortBy] - a[colToSortBy];
+                    return valB - valA;
                 },
                 "desc": () => {
                     setSortDirection("asc");
-                    return a[colToSortBy] - b[colToSortBy];
+                    return valA - valB;
                 }
             }
 
-            const dataType = typeof sorted[0][colToSortBy];
+            const dataType = typeof valA;
             return dataType === "string"  ? sortMapString[sortDirection]() : sortMapNumber[sortDirection]();
         });
         return setSorted(newSorted);

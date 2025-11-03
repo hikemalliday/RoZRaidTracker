@@ -21,14 +21,16 @@ export function PlayerListTable({ data }) {
         });
     }
 
+    const headerMap = {
+        "Name": "name",
+        "Main": null,
+        "Alt": null,
+        "Lifetime RA": "lifetime_ra",
+    }
+
     return <TableList
         data={data}
         getTableCells={getPlayerCells}
-        headerMap={{
-            "Name": "name",
-            "Main": null,
-            "Alt": null,
-            "Lifetime RA": "lifetime_ra",
-        }}
+        headerMap={headerMap}
     />
 }
