@@ -1,4 +1,5 @@
 import {getCell, getLinkCell, TableList} from "./Tables.jsx";
+import {TableRow} from "@mui/material";
 
 export function CharacterListTable({ data }) {
     const _getCharStatus = (char) => {
@@ -7,14 +8,16 @@ export function CharacterListTable({ data }) {
         return "Alt";
     }
 
-    const getCharacterCells = (sorted) => {
-        return sorted.map((row) => {
-            return [
-                getCell(row?.name),
-                getCell(row?.char_class),
-                getCell(_getCharStatus(row)),
-                getLinkCell(row?.player.name, `/player/${row?.player?.id}`),
-            ]
+    const getCharacterRows = (sorted) => {
+        return sorted.map((row, i) => {
+            return (
+                <TableRow key={i}>
+                    {getCell(row?.name)}
+                    {getCell(row?.char_class)}
+                    {getCell(_getCharStatus(row))}
+                    {getLinkCell(row?.player.name, `/player/${row?.player?.id}`)}
+                </TableRow>
+            )
         })
     };
 
@@ -26,5 +29,5 @@ export function CharacterListTable({ data }) {
         "Player": null,
     }
 
-    return <TableList data={data} getTableCells={getCharacterCells} headerMap={headerMap} />
+    return <TableList data={data} getTableRows={getCharacterRows} headerMap={headerMap} />
 }

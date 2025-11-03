@@ -35,10 +35,10 @@ export const getItemIconCell = (iconId) => {
 }
 
 // Order of keys in 'headerMap' matters, as the keys are used for rendering cols / headers
-export function TableList({data, getTableCells, headerMap = {} }) {
+export function TableList({data, getTableRows, headerMap = {} }) {
     const [sorted, setSorted] = useState(data);
     const [sortDirection, setSortDirection] = useState('asc');
-    const reducedData = getTableCells(sorted);
+    const reducedData = getTableRows(sorted);
 
     const _getNestedValue = (obj, path) => {
         return path.split('.').reduce((current, key) => {
@@ -109,14 +109,8 @@ export function TableList({data, getTableCells, headerMap = {} }) {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {reducedData.map((row, i) => {
-                    return (
-                        <TableRow key={i}>
-                            {row.map((cell) => {
-                                return cell
-                            })}
-                        </TableRow>
-                    )
+                {reducedData.map((row) => {
+                    return row
                 })}
             </TableBody>
         </Table>

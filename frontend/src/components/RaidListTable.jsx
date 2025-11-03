@@ -1,14 +1,17 @@
 import {getCell, getLinkCell, TableList} from "./Tables.jsx";
 import React from "react";
+import {TableRow} from "@mui/material";
 
 export function RaidListTable({ data }) {
-    const getRaidCells = (data) => {
-        return data.map((row) => {
-            return [
-                getLinkCell(row?.name, `/raid/${row?.id}`),
-                getCell(row?.zone?.name),
-                getCell(row?.created_at),
-            ]
+    const getRaidRows = (data) => {
+        return data.map((row, i) => {
+            return (
+                <TableRow key={i}>
+                    {getLinkCell(row?.name, `/raid/${row?.id}`)}
+                    {getCell(row?.zone?.name)}
+                    {getCell(row?.created_at)}
+                </TableRow>
+            )
         })
     };
 
@@ -17,5 +20,5 @@ export function RaidListTable({ data }) {
         "Zone": "zone.name",
         "Date": "created_at",
     }
-    return <TableList headerMap={headerMap} data={data} getTableCells={getRaidCells}/>
+    return <TableList headerMap={headerMap} data={data} getTableRows={getRaidRows}/>
 }
