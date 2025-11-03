@@ -4,8 +4,6 @@ import React from "react";
 
 
 export const getLinkCell = (val, route, extraText) => {
-    // extraVal is used to tag add more text in that you don't want linked, for example a character's class
-    // Is it an object so that you can provide element id
     return (
         <TableCell id="clickable-cell">
             <Link to={route}>

@@ -27,17 +27,18 @@ export function RaidDetailView() {
                     <strong>Date:</strong> {data?.created_at}
             </Container>
             <Typography sx={{mt: 5}} variant="h6">
-                Attendees
-            </Typography>
-            <Container>
-                <RaidAttendanceListTable data={raData}/>
-            </Container>
-            <Typography sx={{mt: 5}} variant="h6">
                 Items Awarded
             </Typography>
             <Container>
                 <ItemAwardedListTable data={itemAwardedData}/>
             </Container>
+            <Typography sx={{mt: 5}} variant="h6">
+                Attendees
+            </Typography>
+            <Container>
+                <RaidAttendanceListTable data={raData}/>
+            </Container>
+
         </Container>
     )
 }
