@@ -36,7 +36,7 @@ export const getItemIconCell = (iconId) => {
     )
 }
 
-// Now try to implement this in the easiest spot possible. Also, cell.Va
+// 'reducedData' is a 2d array, where each child array is the cells to render in a row
 export function TableList({headers, reducedData}) {
     return (
         <Table>

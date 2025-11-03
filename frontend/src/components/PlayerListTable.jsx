@@ -8,7 +8,7 @@ export function PlayerListTable({ data }) {
             return [
                 getLinkCell(row?.name, `/player/${row?.id}`),
                 getLinkCell(main?.name, `/character/${main?.id}`, {
-                    "text": ` - ${main?.char_class}`,
+                    "text": main ? ` - ${main?.char_class}`: "",
                     "id": "char-class-span"
                 }),
                 getLinkCell(alt?.name, `/character/${alt?.id}`, {
