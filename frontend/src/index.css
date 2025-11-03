@@ -85,11 +85,13 @@ a {
 }
 
 #clickable-cell:hover,
+#table-header-sortable:hover,
 a:hover {
   color: lime;
 }
 
 #clickable-cell:active,
+#table-header-sortable:active,
 a:active {
   color: dimgrey;
 }
@@ -99,8 +101,12 @@ a:active {
   height: 20px;
 }
 
-#table-header {
+#table-header, #table-header-sortable {
   color: limegreen;
+}
+
+#table-header-sortable {
+  cursor: pointer;
 }
 
 #table-row, #non-clickable-cell {

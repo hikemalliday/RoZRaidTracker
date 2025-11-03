@@ -1,8 +1,9 @@
 import {getCell, getLinkCell, TableList} from "./Tables.jsx";
 
+
 export function PlayerListTable({ data }) {
-    const getPlayerCells = (data) => {
-        return data.map((row) => {
+    const getPlayerCells = (sorted) => {
+        return sorted.map((row) => {
             const main = row.characters.find((char) => char.is_main === true);
             const alt = row.characters.find((char) => char.is_main_alt === true);
             return [
@@ -18,7 +19,16 @@ export function PlayerListTable({ data }) {
                 getCell(`${row?.lifetime_ra}%`),
             ]
         });
-    };
+    }
 
-    return <TableList reducedData={getPlayerCells(data)} headers={["Name", "Main", "Alt", "Lifetime RA"]}/>
+    return <TableList
+        data={data}
+        getTableCells={getPlayerCells}
+        headerMap={{
+            "Name": "name",
+            "Main": null,
+            "Alt": null,
+            "Lifetime RA": "lifetime_ra",
+        }}
+    />
 }
