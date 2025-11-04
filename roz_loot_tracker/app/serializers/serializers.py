@@ -86,3 +86,4 @@ class RaidAttendanceSerializer(serializers.ModelSerializer):
 class RaidAttendanceApprovalSerializer(serializers.ModelSerializer):
     class Meta:
         model = RaidAttendanceApproval
+        fields = '__all__'

@@ -1,11 +1,11 @@
 from django.contrib import admin
-from .models import Player, Raid, RaidAttendance, Character, ItemAwarded, Item, PreferredPixel, Zone
+from .models import Player, Raid, RaidAttendance, Character, ItemAwarded, Item, PreferredPixel, Zone, RaidAttendanceApproval
 
 
 admin.site.site_header = "RoZ Raid Tracker Admin Terminal"
 admin.site.register(RaidAttendance)
 admin.site.register(Character)
-
+admin.site.register(RaidAttendanceApproval)
 
 class ItemAwardedInline(admin.TabularInline):
     model = ItemAwarded
