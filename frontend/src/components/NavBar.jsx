@@ -3,23 +3,27 @@ import {useAuthContext} from "../context/AuthContext.jsx";
 
 export function NavBar() {
     const navigate = useNavigate();
-    const { isAuthenticated } = useAuthContext();
+    const {isAuthenticated} = useAuthContext();
     const navBarLinks = () => {
-      if (!isAuthenticated) return <div></div>
+        if (!isAuthenticated) return <div></div>
         return (
             <>
-            <a id="nav-bar-players-link" onClick={() => navigate("/player")}>
-                PLAYERS
-            </a>
-            -
-            <a id="nav-bar-raids-link" onClick={() => navigate("/raid")}>
-                RAIDS
-            </a>
-            -
-            <a id="nav-bar-items-awarded-link" onClick={() => navigate("/item_awarded")}>
-                ITEMS AWARDED
-            </a>
-        </>
+                <a id="nav-bar-players-link" onClick={() => navigate("/ra_approval")}>
+                    APPROVAL
+                </a>
+                -
+                <a id="nav-bar-players-link" onClick={() => navigate("/player")}>
+                    PLAYERS
+                </a>
+                -
+                <a id="nav-bar-raids-link" onClick={() => navigate("/raid")}>
+                    RAIDS
+                </a>
+                -
+                <a id="nav-bar-items-awarded-link" onClick={() => navigate("/item_awarded")}>
+                    ITEMS AWARDED
+                </a>
+            </>
         )
     };
 

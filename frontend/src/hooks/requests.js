@@ -1,6 +1,7 @@
 import {useAxios} from "./useAxios.jsx";
 import {BACKEND_BASE_URL_DEV} from "../config.js";
 import {useQuery} from "@tanstack/react-query";
+import axios from "axios";
 
 // GET LIST
 export function usePlayerList() {
@@ -134,6 +135,36 @@ export function useCharacter(id) {
         queryKey: ['characters', id],
         queryFn: async () => {
             const {data} = await client.get(`/characters/${id}/`);
+            return data;
+        }
+    });
+    return {isPending, error, data};
+}
+
+
+export function useRaidAttendanceApprovalList() {
+    const axiosInstance = axios.create({baseURL: BACKEND_BASE_URL_DEV});
+    const { isPending, error, data } = useQuery({
+            queryKey: ['raid_attendance_approval'],
+            queryFn: async () => {
+                const { data } = await axiosInstance.get(`/raid_attendance_approval/`, {
+                    headers: {
+                        Authorization: `Api-Key qaE6Pe7n.rO3qVVUxyop5b8wNbTOQCAXBhqJQrAau`,
+                    }
+                });
+                return data;
+            }
+        });
+    return {isPending, error, data};
+}
+
+
+export function useRaidAttendanceApproval(id) {
+    const client = useAxios(BACKEND_BASE_URL_DEV);
+    const {isPending, error, data} = useQuery({
+        queryKey: ['raid_attendance_approval', id],
+        queryFn: async () => {
+            const {data} = await client.get(`/raid_attendance_approval/${id}/`);
             return data;
         }
     });
