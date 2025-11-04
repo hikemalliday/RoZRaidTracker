@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'django_filters',
+    "rest_framework_api_key",
 ]
 
 MIDDLEWARE = [
@@ -85,31 +86,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    },
-    # TODO: 2 databases was causes a DRF bug. Leave commented out for now.
-    # TODO: This one refers to the one in this same docker compose
-    # 'quarm_db': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': os.getenv('QUARM_DB_NAME', 'quarm'),
-    #     'USER': os.getenv('QUARM_DB_USER', 'root'),
-    #     'PASSWORD': os.getenv('QUARM_DB_PASSWORD', 'admin123'),
-    #     'HOST': os.getenv('QUARM_DB_HOST', 'quarm_db'),
-    #     'PORT': os.getenv('QUARM_DB_PORT', '3306'),
-    #     'OPTIONS': {
-    #         'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-    #     },
-    # },
-    # TODO: This one refers to the other docker compose running on 3310
-    'quarm_db': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('QUARM_DB_NAME', 'quarm'),
-        'USER': os.getenv('QUARM_DB_USER', 'root'),
-        'PASSWORD': os.getenv('QUARM_DB_PASSWORD', 'admin123'),
-        'HOST': 'host.docker.internal',
-        'PORT': '3310',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
     },
 }
 
@@ -167,7 +143,7 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
-    )
+    ),
 }
 
 CORS_ALLOWED_ORIGINS = [
