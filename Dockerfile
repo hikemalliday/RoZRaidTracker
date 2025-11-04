@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     libmariadb-dev \
     default-libmysqlclient-dev \
     pkg-config \
+    sqlite3 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy project files
