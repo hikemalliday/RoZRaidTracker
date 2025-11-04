@@ -13,6 +13,9 @@ import {ItemAwardedDetailView} from "./views/ItemAwardedDetailView.jsx";
 import {RaidAttendanceDetailView} from "./views/RaidAttendanceDetailView.jsx";
 import {RaidDetailView} from "./views/RaidDetailView.jsx";
 import {CharacterDetailView} from "./views/CharacterDetailView.jsx";
+import {ApiKeyTestView} from "./views/ApiKeyTestView.jsx";
+import {ApprovalListView} from "./views/ApprovalListView.jsx";
+import {ApprovalDetailView} from "./views/ApprovalDetailView.jsx";
 
 function App() {
     const queryClient = new QueryClient();
@@ -29,12 +32,14 @@ function App() {
                         <Route path="/raid" element={<RaidListView/>}/>
                         <Route path="/item_awarded" element={<ItemAwardedListView/>}/>
                         <Route path="/raid_attendance" element={<RaidAttendanceListView/>}/>
+                        <Route path="/ra_approval" element={<ApprovalListView/>}/>
                         */ Detail Views */
                         <Route path="/player/:id" element={<PlayerDetailView/>}/>
                         <Route path="/raid/:id" element={<RaidDetailView/>}/>
                         <Route path="/item_awarded/:id" element={<ItemAwardedDetailView/>}/>
                         <Route path="/raid_attendance/:id" element={<RaidAttendanceDetailView/>}/>
                         <Route path="/character/:id" element={<CharacterDetailView/>}/>
+                        <Route path="/ra_approval/:id" element={<ApprovalDetailView/>}/>
                     </Route>
                     <Route path="*" element={<NotFound/>}/>
                 </Routes>
