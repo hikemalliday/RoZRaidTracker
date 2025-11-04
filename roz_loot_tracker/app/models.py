@@ -133,3 +133,9 @@ class PreferredPixel(models.Model):
 
     def __str__(self):
         return f"PreferredPixel - Player: {self.player}, Item: {self.item}"
+
+
+class RaidAttendanceApproval(models.Model):
+    players_list = models.JSONField(default=list)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
