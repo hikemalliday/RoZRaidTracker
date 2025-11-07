@@ -1,14 +1,14 @@
-from rest_framework import viewsets
 from app import models
-
-from rest_framework.permissions import AllowAny, IsAuthenticated
-
 from app.serializers.serializers import PlayerSerializer, ItemSerializer, RaidSerializer, \
     ZoneSerializer, CharacterSerializer, ItemAwardedSerializer, PreferredPixelSerializer, RaidAttendanceSerializer, \
     RaidAttendanceApprovalSerializer
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.views import APIView
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 from rest_framework_api_key.permissions import HasAPIKey
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from django.db import transaction
 
 
 PERMISSION_CLASS_DEBUG = IsAuthenticated  # TODO: Dev purposes
@@ -72,3 +72,27 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
     queryset = models.RaidAttendanceApproval.objects.all()
     serializer_class = RaidAttendanceApprovalSerializer
     permission_classes = [HasAPIKey | PERMISSION_CLASS_DEBUG]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['is_approved']
+
+    @action(detail=True, methods=['post'])
+    def approve(self, request, pk=None):
+        players = request.data.get("players")
+        raid_name = request.data.get("raid_name")
+        with transaction.atomic():
+            raid = models.Raid.objects.create(
+                name=raid_name,
+            )
+            for player_name in players:
+                player = models.Player.objects.get(name=player_name)
+                if not player:
+                    return Response({"error": f"Player ${player_name} does not exist. Create player first and try again."}, status=400)
+                models.RaidAttendance.objects.create(
+                    player=player,
+                    raid=raid,
+                )
+            raid_attendance_approval = self.get_object()
+            raid_attendance_approval.is_approved = True
+            raid_attendance_approval.save()
+
+        return Response({"message": f"Success: added raid '{raid_name} + attendees.'"}, status=200)

@@ -137,5 +137,6 @@ class PreferredPixel(models.Model):
 
 class RaidAttendanceApproval(models.Model):
     players_list = models.JSONField(default=list)
+    is_approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

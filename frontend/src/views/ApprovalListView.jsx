@@ -3,7 +3,7 @@ import {ApprovalListTable} from "../components/ApprovalListTable.jsx";
 
 
 export function ApprovalListView() {
-    const {isPending, data, error} = useRaidAttendanceApprovalList();
+    const {isPending, data, error} = useRaidAttendanceApprovalList({is_approved: false});
 
     if (isPending) return <>LOADING...</>;
 

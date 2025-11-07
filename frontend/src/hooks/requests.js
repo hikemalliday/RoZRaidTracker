@@ -1,6 +1,6 @@
 import {useAxios} from "./useAxios.jsx";
 import {BACKEND_BASE_URL_DEV} from "../config.js";
-import {useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery} from "@tanstack/react-query";
 import axios from "axios";
 
 // GET LIST
@@ -142,12 +142,13 @@ export function useCharacter(id) {
 }
 
 
-export function useRaidAttendanceApprovalList() {
+export function useRaidAttendanceApprovalList(queryParams) {
     const axiosInstance = axios.create({baseURL: BACKEND_BASE_URL_DEV});
     const { isPending, error, data } = useQuery({
             queryKey: ['raid_attendance_approval'],
             queryFn: async () => {
                 const { data } = await axiosInstance.get(`/raid_attendance_approval/`, {
+                    params: queryParams,
                     headers: {
                         Authorization: `Api-Key qaE6Pe7n.rO3qVVUxyop5b8wNbTOQCAXBhqJQrAau`,
                     }
@@ -169,4 +170,16 @@ export function useRaidAttendanceApproval(id) {
         }
     });
     return {isPending, error, data};
+}
+
+
+export function useRaidAttendanceApprovalMutation(id){
+    const client = useAxios(BACKEND_BASE_URL_DEV);
+
+    return useMutation({
+        mutationFn: async ({payload}) => {
+            const { data } = await client.post(`/raid_attendance_approval/${id}/approve/`, payload);
+            return data;
+        }
+    });
 }
