@@ -2,6 +2,7 @@ import {useState} from "react";
 import axios from "axios";
 import {useAuthContext} from "../context/AuthContext.jsx";
 import {useNavigate} from "react-router";
+import {useMessage} from "../context/MessageContext.jsx";
 
 export default function Login() {
     const [username, setUsername] = useState("");
@@ -9,6 +10,7 @@ export default function Login() {
     const [loginSuccess, setLoginSuccess] = useState(false);
     const [error, setError] = useState(null);
     const {login} = useAuthContext();
+    const { addMessage } = useMessage();
 
     const navigate = useNavigate();
 
@@ -21,7 +23,8 @@ export default function Login() {
                 login({
                     access: resp.data["access"],
                     refresh: resp.data["refresh"],
-                })
+                });
+                addMessage('Successfully logged in.');
             }
         } catch (err) {
             console.error(err);
