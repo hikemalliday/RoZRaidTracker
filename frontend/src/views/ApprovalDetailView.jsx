@@ -73,7 +73,7 @@ export function ApprovalDetailView() {
                     color: 'white',
                 },
             }}
-            onKeyDown={handleTextInput}
+            onChange={handleTextInput}
             />
             <Table sx={{ marginBottom: "20px", marginTop: "20px"}}>
                 <TableBody>

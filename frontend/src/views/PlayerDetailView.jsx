@@ -31,7 +31,7 @@ export function PlayerDetailView() {
                 <Typography sx={{ mt: 1}}>Lifetime RA: {playerData?.lifetime_ra}%</Typography>
             </Container>
             <Container>
-                <Typography sx={{ mt: 5 }} variant="h6">Items Awarded</Typography>
+                <Typography sx={{ mt: 5 }} variant="h6">Items Awarded - Total: {itemAwardedData.length}</Typography>
                 <ItemAwardedListTable data={itemAwardedData}/>
             </Container>
             <Container sx={{mt: 9}}>

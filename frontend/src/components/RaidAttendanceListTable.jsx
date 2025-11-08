@@ -1,14 +1,14 @@
 import {getCell, getLinkCell, TableList} from "./Tables.jsx";
 import {TableRow} from "@mui/material";
 
-export function RaidAttendanceListTable({ data }) {
+export function RaidAttendanceListTable({ data, rowStyles = {}}) {
     const getRaRows = (data) => {
         return data.map((row, i) => {
             return (
-                <TableRow key={i}>
+                <TableRow key={i} sx={rowStyles}>
+                    {getLinkCell(row?.player?.name, `/player/${row?.player?.id}`)}
                     {getLinkCell(row?.raid?.name, `/raid/${row?.raid?.id}`)}
                     {getCell(row?.raid.zone?.name)}
-                    {getLinkCell(row?.player?.name, `/player/${row?.player?.id}`)}
                     {getCell(row?.created_at)}
                 </TableRow>
             )
@@ -16,9 +16,9 @@ export function RaidAttendanceListTable({ data }) {
     }
 
     const headerMap = {
+        "Player": "player.name",
         "Raid": "raid.name",
         "Zone": "raid.zone.name",
-        "Player": "player.name",
         "Date": "created_at",
     }
     return <TableList headerMap={headerMap} data={data} getTableRows={getRaRows}/>

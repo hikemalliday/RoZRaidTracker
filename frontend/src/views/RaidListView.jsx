@@ -8,5 +8,10 @@ export function RaidListView() {
     if (isPending) return <>LOADING...</>;
     if (error) return <>{error.message}</>;
 
-    return <RaidListTable data={data}/>
+    return <RaidListTable data={data} rowStyles={{
+        '& .MuiTableCell-root': {
+            padding: '4px',
+        },
+        height: '36px',
+    }}/>
 }
