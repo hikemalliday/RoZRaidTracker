@@ -24,7 +24,13 @@ export function ApprovalDetailView() {
 
     const getPlayersRows = (players) => {
         return players.map((player, i) => {
-            return (<TableRow key={i}>
+            return (<TableRow key={i} sx={{
+                '& .MuiTableCell-root': {
+                    padding: '4px',
+                    color: 'white',
+                },
+                height: '36px',
+            }}>
                 <TableCell sx={{color: "white"}}>
                     {player}
                 </TableCell>
@@ -39,19 +45,42 @@ export function ApprovalDetailView() {
 
     return (
         <>
-            <TextField color="secondary" sx={{
+            <TextField
+                label="Raid Name"
+                color="secondary"
+                sx={{
                 '& .MuiInputBase-input': {
-                    color: "white",
-                }
+                    color: 'white',
+                },
+                '& .MuiInputBase-root': {
+                    backgroundColor: '#333333',
+                    borderRadius: '8px',
+                },
+                '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'white',
+                    borderWidth: '2px',
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'white',
+                },
+                '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'white !important',
+                },
+                '& .MuiInputLabel-root': {
+                    color: 'white',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                    color: 'white',
+                },
             }}
             onKeyDown={handleTextInput}
             />
-            <Table>
+            <Table sx={{ marginBottom: "20px", marginTop: "20px"}}>
                 <TableBody>
                     {getPlayersRows(data.players_list)}
                 </TableBody>
             </Table>
-            <Button onClick={submitApproval}>SUBMIT</Button>
+            <Button onClick={submitApproval}>APPROVE</Button>
         </>
     )
 
