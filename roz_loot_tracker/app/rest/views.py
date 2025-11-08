@@ -9,6 +9,7 @@ from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db import transaction
+from rest_framework.exceptions import ValidationError
 
 
 PERMISSION_CLASS_DEBUG = IsAuthenticated  # TODO: Dev purposes
@@ -84,13 +85,15 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
                 name=raid_name,
             )
             for player_name in players:
-                player = models.Player.objects.get(name=player_name)
-                if not player:
-                    return Response({"error": f"Player ${player_name} does not exist. Create player first and try again."}, status=400)
-                models.RaidAttendance.objects.create(
-                    player=player,
-                    raid=raid,
-                )
+                try:
+                    player = models.Player.objects.get(name=player_name.title())
+                    models.RaidAttendance.objects.create(
+                        player=player,
+                        raid=raid,
+                    )
+                except models.Player.DoesNotExist:
+                    raise ValidationError(f"Player {player_name} does not exist. Create player first and try again.")
+
             raid_attendance_approval = self.get_object()
             raid_attendance_approval.is_approved = True
             raid_attendance_approval.save()
