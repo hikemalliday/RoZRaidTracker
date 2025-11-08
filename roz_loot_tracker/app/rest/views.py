@@ -10,6 +10,9 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db import transaction
 from rest_framework.exceptions import ValidationError
+from django.db.models import Count, F, FloatField, ExpressionWrapper
+from django.db.models.expressions import Value
+from django.db.models.functions import Round
 
 
 PERMISSION_CLASS_DEBUG = IsAuthenticated  # TODO: Dev purposes
@@ -31,6 +34,32 @@ class PlayerViewSet(viewsets.ModelViewSet):
     queryset = models.Player.objects.all()
     serializer_class = PlayerSerializer
     permission_classes = (PERMISSION_CLASS_DEBUG,)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        total_raids = models.Raid.objects.count()
+        if total_raids > 0:
+            queryset = queryset.annotate(
+                player_raids=Count('raidattendance__raid'),
+                lifetime_ra=Round(ExpressionWrapper(
+                    100.0 * F('player_raids') / total_raids,
+                    output_field=FloatField()
+                ), precision=2)
+            )
+        else:
+            queryset = queryset.annotate(lifetime_ra=Value(0.0, output_field=FloatField()))
+
+
+        sort_field = self.request.query_params.get('sort_by')
+        sort_order = self.request.query_params.get('order', "asc")
+        if sort_field:
+            allowed_fields = ['name', 'lifetime_ra']
+            if sort_field in allowed_fields:
+                if sort_order != "asc":
+                    sort_field = f"-{sort_field}"
+                queryset = queryset.order_by(sort_field)
+        return queryset
 
 
 class CharacterViewSet(viewsets.ModelViewSet):
