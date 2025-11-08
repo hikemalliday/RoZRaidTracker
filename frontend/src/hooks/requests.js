@@ -1,7 +1,9 @@
 import {useAxios} from "./useAxios.jsx";
 import {BACKEND_BASE_URL_DEV} from "../config.js";
-import {useMutation, useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import axios from "axios";
+import {useMessage} from "../context/MessageContext.jsx";
+import {useNavigate} from "react-router";
 
 // GET LIST
 export function usePlayerList() {
@@ -84,7 +86,7 @@ export function usePlayer(id) {
         queryFn: async () => {
             const {data} = await client.get(`/players/${id}/`);
             return data;
-        }
+        },
     });
     return {isPending, error, data};
 }
@@ -145,7 +147,7 @@ export function useCharacter(id) {
 export function useRaidAttendanceApprovalList(queryParams) {
     const axiosInstance = axios.create({baseURL: BACKEND_BASE_URL_DEV});
     const { isPending, error, data } = useQuery({
-            queryKey: ['raid_attendance_approval'],
+            queryKey: ['raid_attendance_approval', queryParams],
             queryFn: async () => {
                 const { data } = await axiosInstance.get(`/raid_attendance_approval/`, {
                     params: queryParams,
@@ -174,12 +176,22 @@ export function useRaidAttendanceApproval(id) {
 
 
 export function useRaidAttendanceApprovalMutation(id){
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
+    const { addMessage } = useMessage();
     const client = useAxios(BACKEND_BASE_URL_DEV);
-
     return useMutation({
         mutationFn: async ({payload}) => {
             const { data } = await client.post(`/raid_attendance_approval/${id}/approve/`, payload);
             return data;
+        },
+        onSuccess: async (_) => {
+            addMessage("Successfully approved raid.");
+            await queryClient.refetchQueries(['raid_attendance_approval']);
+            navigate("/ra_approval/");
+        },
+        onError: (error) => {
+            addMessage(`Failed to fetch player data: ${error.message}`, "error");
         }
     });
 }
