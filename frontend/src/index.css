@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgb(255, 255, 255);
-  background-color: #00000068;
+  background-color:  rgba(14, 14, 14);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -20,6 +20,31 @@
   padding: 2rem;
   text-align: center;
 }
+
+#nav-bar-main {
+  background-color: black;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+#nav-bar-logo {
+  font-weight: bold;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+#nav-bar-links {
+  display: flex;
+  gap: 10px;
+  padding-right: 10px;
+  align-items: center;
+}
+
 
 body {
   margin: 0;
@@ -48,29 +73,7 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-#nav-bar-main {
-  background-color: black;
-  position: fixed;
-  display: flex;
-  justify-content: space-between;
-  z-index: 2;
-  top: 0;
-  left: 0;
-  width: 100%;
-}
 
-#nav-bar-logo {
-  font-weight: bold;
-  font-size: 2rem;
-  cursor: pointer;
-}
-
-#nav-bar-links {
-  display: flex;
-  gap: 10px;
-  padding-right: 10px;
-  align-items: center;
-}
 
 
 #list-view-links {
