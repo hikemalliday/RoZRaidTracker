@@ -1,7 +1,7 @@
 import { getCell, getLinkCell, TableList } from './Tables.jsx';
 import { TableRow } from '@mui/material';
 
-export function PlayerListTable({ data, rowStyles = {} }) {
+export function PlayerListTable({ data, rowStyles = {}, sortable = true }) {
     const getPlayerRows = sorted => {
         return sorted.map((row, i) => {
             const main = row.characters.find(char => char.is_main === true);
@@ -24,5 +24,12 @@ export function PlayerListTable({ data, rowStyles = {} }) {
         'Lifetime RA': 'lifetime_ra',
     };
 
-    return <TableList data={data} getTableRows={getPlayerRows} headerMap={headerMap} />;
+    return (
+        <TableList
+            data={data}
+            getTableRows={getPlayerRows}
+            headerMap={headerMap}
+            sortable={sortable}
+        />
+    );
 }
