@@ -7,12 +7,14 @@ export function PaginationController({ setPage, previous, next, styles = {} }) {
     return (
         <Container sx={styles}>
             <Button
+                disabled={!previous}
                 sx={{ color: 'white' }}
                 onClick={_ => (previous ? setPage(prev => prev - 1) : null)}
             >
                 {leftCarrot}
             </Button>
             <Button
+                disabled={!next}
                 sx={{ color: 'white' }}
                 onClick={_ => (next ? setPage(prev => prev + 1) : null)}
             >
