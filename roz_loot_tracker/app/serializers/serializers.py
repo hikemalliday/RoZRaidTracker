@@ -25,6 +25,7 @@ class CharacterSerializer(serializers.ModelSerializer):
 class PlayerSerializer(serializers.ModelSerializer):
     characters = CharacterSerializer(many=True, read_only=True)
     lifetime_ra = serializers.FloatField(read_only=True)
+    ra_21_day = serializers.FloatField(read_only=True)
 
     class Meta:
         model = Player

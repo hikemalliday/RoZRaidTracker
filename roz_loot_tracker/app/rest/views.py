@@ -3,7 +3,7 @@ from app.serializers.serializers import PlayerSerializer, ItemSerializer, RaidSe
     ZoneSerializer, CharacterSerializer, ItemAwardedSerializer, PreferredPixelSerializer, RaidAttendanceSerializer, \
     RaidAttendanceApprovalSerializer
 from django.db import transaction
-from django.db.models import Count, F, FloatField, ExpressionWrapper, Func
+from django.db.models import Count, F, FloatField, ExpressionWrapper, Func, Q
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -13,6 +13,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework.pagination import PageNumberPagination
+from django.utils import timezone
+from datetime import timedelta
 
 
 PERMISSION_CLASS_DEBUG = IsAuthenticated  # TODO: Dev purposes
@@ -46,6 +48,11 @@ class PlayerViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         total_raids = models.Raid.objects.count() or 1
 
+        date_threshold = timezone.now() - timedelta(days=21)
+        total_raids_21_days = models.Raid.objects.filter(
+            created_at__gte=date_threshold
+        ).count() or 1
+
         queryset = (
             models.Player.objects
             .annotate(
@@ -54,9 +61,19 @@ class PlayerViewSet(viewsets.ModelViewSet):
                     (100.0 * F('total_ra') / total_raids),
                     output_field=FloatField(),
                 ),
+                total_ra_21_days=Count(
+                    'raidattendance',
+                    filter=Q(raidattendance__raid__created_at__gte=date_threshold),
+                    distinct=True,
+                ),
+                ra_21_day_raw=ExpressionWrapper(
+                    (100.0 * F('total_ra_21_days') / total_raids_21_days),
+                    output_field=FloatField(),
+                )
             )
             .annotate(
-                lifetime_ra=Func(F('lifetime_ra_raw'), 2, function='ROUND', output_field=FloatField())
+                lifetime_ra=Func(F('lifetime_ra_raw'), 2, function='ROUND', output_field=FloatField()),
+                ra_21_day=Func(F('ra_21_day_raw'), 2, function='ROUND', output_field=FloatField())
             )
         )
         return queryset
