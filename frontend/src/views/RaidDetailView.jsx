@@ -1,5 +1,5 @@
 import { useParams } from 'react-router';
-import { useItemAwardedList, useRaid, useRaidAttendanceList } from '../hooks/requests.js';
+import { useDetail, useList } from '../hooks/requests.js';
 import { Container, Typography } from '@mui/material';
 import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.jsx';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
@@ -7,17 +7,17 @@ import { renderErrors } from './utils.jsx';
 
 export function RaidDetailView() {
     const { id } = useParams();
-    const { isPending, data, error } = useRaid(id);
+    const { isPending, data, error } = useDetail('raids', '/raids/', id);
     const {
         isPending: isRaPending,
         data: raData,
         error: raError,
-    } = useRaidAttendanceList({ raid: id });
+    } = useList('raid_attendance', '/raid_attendance/', { raid: id });
     const {
         isPending: isItemAwardedPending,
         data: itemAwardedData,
         error: itemAwardedError,
-    } = useItemAwardedList({ raid: id });
+    } = useList('items_awarded', '/items_awarded/', { raid: id });
 
     const pendingList = [isPending, isRaPending, isItemAwardedPending];
     const errorList = [error, raError, itemAwardedError];

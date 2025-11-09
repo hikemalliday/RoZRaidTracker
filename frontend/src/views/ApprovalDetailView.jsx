@@ -1,12 +1,16 @@
 import { useParams } from 'react-router';
-import { useRaidAttendanceApproval, useRaidAttendanceApprovalMutation } from '../hooks/requests.js';
+import { useDetail, useRaidAttendanceApprovalMutation } from '../hooks/requests.js';
 import { Button, Table, TableBody, TableCell, TableRow, TextField } from '@mui/material';
 import { useState } from 'react';
 import { buttonStyles } from '../styles.js';
 
 export function ApprovalDetailView() {
     const { id } = useParams();
-    const { isPending, data, error } = useRaidAttendanceApproval(id);
+    const { isPending, data, error } = useDetail(
+        'raid_attendance_approval',
+        '/raid_attendance_approval/',
+        id
+    );
     const { mutate } = useRaidAttendanceApprovalMutation(id);
     const [raid, setRaid] = useState('');
 

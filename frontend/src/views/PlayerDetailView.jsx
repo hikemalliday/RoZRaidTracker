@@ -1,5 +1,5 @@
 import { useParams } from 'react-router';
-import { useCharacterList, useItemAwardedList, usePlayer } from '../hooks/requests.js';
+import { useDetail, useList } from '../hooks/requests.js';
 import { Container, Typography } from '@mui/material';
 import { renderErrors } from './utils.jsx';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
@@ -7,17 +7,21 @@ import { CharacterListTable } from '../components/CharacterListTable.jsx';
 
 export function PlayerDetailView() {
     const { id } = useParams();
-    const { isPending: isPlayerPending, data: playerData, error: playerError } = usePlayer(id);
+    const {
+        isPending: isPlayerPending,
+        data: playerData,
+        error: playerError,
+    } = useDetail('players', '/players/', id);
     const {
         isPending: isItemAwardedPending,
         data: itemAwardedData,
         error: itemAwardedError,
-    } = useItemAwardedList({ player: id });
+    } = useList('items_awarded', '/items_awarded/', { player: id });
     const {
         isPending: isCharacterPending,
         data: characterData,
         error: characterError,
-    } = useCharacterList({ player: id });
+    } = useList('characters', '/characters/', { player: id });
 
     if (isPlayerPending || isItemAwardedPending || isCharacterPending) return <>LOADING...</>;
 

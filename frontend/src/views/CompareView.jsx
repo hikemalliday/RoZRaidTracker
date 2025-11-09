@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Autocomplete, Container, TextField, Typography } from '@mui/material';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
-import { useItemAwardedList, usePlayerList } from '../hooks/requests.js';
+import { useList } from '../hooks/requests.js';
 import { renderErrors } from './utils.jsx';
 
 export function CompareView() {
@@ -9,22 +9,26 @@ export function CompareView() {
     const [playerId2, setPlayerId2] = useState('');
     const [playerId3, setPlayerId3] = useState('');
 
-    const { isPending: isPlayersPending, data: playersData, error: playersError } = usePlayerList();
+    const {
+        isPending: isPlayersPending,
+        data: playersData,
+        error: playersError,
+    } = useList('players', '/players/');
     const {
         isPending: isItemAwardedPending1,
         data: itemAwardedData1,
         error: itemAwardedError1,
-    } = useItemAwardedList({ player: playerId1 });
+    } = useList('items_awarded', '/items_awarded/', { player: playerId1 });
     const {
         isPending: isItemAwardedPending2,
         data: itemAwardedData2,
         error: itemAwardedError2,
-    } = useItemAwardedList({ player: playerId2 });
+    } = useList('items_awarded', '/items_awarded/', { player: playerId2 });
     const {
         isPending: isItemAwardedPending3,
         data: itemAwardedData3,
         error: itemAwardedError3,
-    } = useItemAwardedList({ player: playerId3 });
+    } = useList('items_awarded', '/items_awarded/', { player: playerId3 });
 
     const errorsArray = [playersError, itemAwardedError1, itemAwardedError2, itemAwardedError3];
 
