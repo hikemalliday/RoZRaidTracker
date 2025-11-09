@@ -5,19 +5,19 @@ import { PaginationController } from './PaginationController.jsx';
 
 export function PaginatedListTable({ requestHook, TableComponent, sortChoices = [] }) {
     const [page, setPage] = useState(1);
-    const [order, setOrder] = useState('asc');
-    const [sortBy, setSortBy] = useState('name');
-    const { data, isPending, error } = requestHook({ page, sortBy, order });
+    const [orderDir, setOrderDir] = useState('asc');
+    const [ordering, setOrdering] = useState('name');
+    const { data, isPending, error } = requestHook({ page, ordering, orderDir });
 
     if (isPending) return <>LOADING...</>;
     if (error) return <>{error.message}</>;
 
-    const handleOrderChange = e => {
-        return setOrder(e.target.value);
+    const handleOrderDirChange = e => {
+        return setOrderDir(e.target.value);
     };
 
-    const handleSortByChange = e => {
-        return setSortBy(e.target.value);
+    const handleOrderingChange = e => {
+        return setOrdering(e.target.value);
     };
 
     return (
@@ -28,9 +28,9 @@ export function PaginatedListTable({ requestHook, TableComponent, sortChoices = 
                     <Select
                         {...selectComponentProps}
                         variant="standard"
-                        onChange={handleSortByChange}
-                        label="sort by"
-                        value={sortBy}
+                        onChange={handleOrderingChange}
+                        label="ordering"
+                        value={ordering}
                     >
                         {sortChoices.map((choice, i) => {
                             return (
@@ -45,10 +45,10 @@ export function PaginatedListTable({ requestHook, TableComponent, sortChoices = 
                     <InputLabel sx={{ color: 'white' }}>Order</InputLabel>
                     <Select
                         {...selectComponentProps}
-                        onChange={handleOrderChange}
+                        onChange={handleOrderDirChange}
                         variant="standard"
-                        label="order"
-                        value={order}
+                        label="order dir"
+                        value={orderDir}
                     >
                         {['asc', 'desc'].map((choice, i) => {
                             return (
