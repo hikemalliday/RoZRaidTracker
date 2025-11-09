@@ -2,21 +2,25 @@ from app import models
 from app.serializers.serializers import PlayerSerializer, ItemSerializer, RaidSerializer, \
     ZoneSerializer, CharacterSerializer, ItemAwardedSerializer, PreferredPixelSerializer, RaidAttendanceSerializer, \
     RaidAttendanceApprovalSerializer
+from django.db import transaction
+from django.db.models import Count, F, FloatField, ExpressionWrapper, Func
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
-from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework.decorators import action
-from rest_framework.response import Response
-from django.db import transaction
 from rest_framework.exceptions import ValidationError
-from django.db.models import Count, F, FloatField, ExpressionWrapper
-from django.db.models.expressions import Value
-from django.db.models.functions import Round
 from rest_framework.filters import OrderingFilter
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework_api_key.permissions import HasAPIKey
+from rest_framework.pagination import PageNumberPagination
 
 
 PERMISSION_CLASS_DEBUG = IsAuthenticated  # TODO: Dev purposes
+
+
+class AllowNoPagination(PageNumberPagination):
+    page_size_query_param = "page_size"
+    max_page_size = 9999
 
 
 class ItemViewSet(viewsets.ModelViewSet):
@@ -35,29 +39,26 @@ class PlayerViewSet(viewsets.ModelViewSet):
     queryset = models.Player.objects.all()
     serializer_class = PlayerSerializer
     permission_classes = (PERMISSION_CLASS_DEBUG,)
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    ordering_fields = ['name', 'lifetime_ra']
+    pagination_class = AllowNoPagination
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        total_raids = models.Raid.objects.count() or 1
 
-        total_raids = models.Raid.objects.count()
-        if total_raids > 0:
-            queryset = queryset.annotate(
-                player_raids=Count('raidattendance__raid'),
-                lifetime_ra=Round(ExpressionWrapper(
-                    100.0 * F('player_raids') / total_raids,
-                    output_field=FloatField()
-                ), precision=2)
+        queryset = (
+            models.Player.objects
+            .annotate(
+                total_ra=Count('raidattendance', distinct=True),
+                lifetime_ra_raw=ExpressionWrapper(
+                    (100.0 * F('total_ra') / total_raids),
+                    output_field=FloatField(),
+                ),
             )
-        else:
-            queryset = queryset.annotate(lifetime_ra=Value(0.0, output_field=FloatField()))
-
-
-        sort_field = self.request.query_params.get('sort_by')
-        sort_order = self.request.query_params.get('order', "asc")
-        if sort_field and sort_field in ['name', 'lifetime_ra']:
-            if sort_order != "asc":
-                sort_field = f"-{sort_field}"
-            queryset = queryset.order_by(sort_field)
+            .annotate(
+                lifetime_ra=Func(F('lifetime_ra_raw'), 2, function='ROUND', output_field=FloatField())
+            )
+        )
         return queryset
 
 
@@ -84,6 +85,7 @@ class ItemAwardedViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['player', 'raid']
     ordering_fields = ['player', 'raid']
+    pagination_class = AllowNoPagination
 
 
 class PreferredPixelViewSet(viewsets.ModelViewSet):
