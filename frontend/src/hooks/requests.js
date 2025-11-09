@@ -62,7 +62,11 @@ export function useItemAwardedList(queryParams) {
         queryKey: ['items_awarded', queryParams],
         queryFn: async () => {
             const { data } = await client.get('/items_awarded/', {
-                params: queryParams,
+                params: {
+                    sort_by: queryParams?.sortBy || '',
+                    page: queryParams?.page || 1,
+                    order: queryParams?.order || null,
+                },
             });
             return data;
         },
