@@ -36,10 +36,6 @@ function App() {
                         */ Detail Views */
                         <Route path="/player/:id" element={<PlayerDetailView />} />
                         <Route path="/raid/:id" element={<RaidDetailView />} />
-                        <Route path="/item_awarded/:id" element={<ItemAwardedDetailView />} />
-                        <Route path="/raid_attendance/:id" element={<RaidAttendanceDetailView />} />
-                        <Route path="/character/:id" element={<CharacterDetailView />} />
-                        <Route path="/ra_approval/:id" element={<ApprovalDetailView />} />
                         */ MISC */
                         <Route path="/compare" element={<CompareView />} />
                     </Route>
