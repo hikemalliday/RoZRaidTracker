@@ -1,15 +1,23 @@
-import {useParams} from "react-router";
-import {useItemAwardedList, useRaid, useRaidAttendanceList} from "../hooks/requests.js";
-import {Container, Typography} from "@mui/material";
-import {RaidAttendanceListTable} from "../components/RaidAttendanceListTable.jsx";
-import {ItemAwardedListTable} from "../components/ItemAwardedListTable.jsx";
-import {renderErrors} from "./utils.jsx";
+import { useParams } from 'react-router';
+import { useItemAwardedList, useRaid, useRaidAttendanceList } from '../hooks/requests.js';
+import { Container, Typography } from '@mui/material';
+import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.jsx';
+import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
+import { renderErrors } from './utils.jsx';
 
 export function RaidDetailView() {
-    const {id} = useParams();
-    const {isPending, data, error} = useRaid(id);
-    const {isPending: isRaPending, data: raData, error: raError} = useRaidAttendanceList({"raid": id});
-    const {isPending: isItemAwardedPending, data: itemAwardedData, error:itemAwardedError} = useItemAwardedList({"raid": id});
+    const { id } = useParams();
+    const { isPending, data, error } = useRaid(id);
+    const {
+        isPending: isRaPending,
+        data: raData,
+        error: raError,
+    } = useRaidAttendanceList({ raid: id });
+    const {
+        isPending: isItemAwardedPending,
+        data: itemAwardedData,
+        error: itemAwardedError,
+    } = useItemAwardedList({ raid: id });
 
     const pendingList = [isPending, isRaPending, isItemAwardedPending];
     const errorList = [error, raError, itemAwardedError];
@@ -19,31 +27,35 @@ export function RaidDetailView() {
 
     return (
         <Container>
-            <Typography sx={{mt: 5}} variant="h5">{data?.name}</Typography>
+            <Typography sx={{ mt: 5 }} variant="h5">
+                {data?.name}
+            </Typography>
             <Container>
                 <Typography>
                     <strong>Zone:</strong> {data?.zone?.name}
                 </Typography>
-                    <strong>Date:</strong> {data?.created_at}
+                <strong>Date:</strong> {data?.created_at}
             </Container>
-            <Typography sx={{mt: 5}} variant="h6">
-                Items Awarded - Total: {itemAwardedData.length}
+            <Typography sx={{ mt: 5 }} variant="h6">
+                Items Awarded - Total: {itemAwardedData.count}
             </Typography>
             <Container>
-                <ItemAwardedListTable data={itemAwardedData}/>
+                <ItemAwardedListTable data={itemAwardedData.results} />
             </Container>
-            <Typography sx={{mt: 5}} variant="h6">
-                Attendees - Total: {raData.length}
+            <Typography sx={{ mt: 5 }} variant="h6">
+                Attendees - Total: {raData.count}
             </Typography>
             <Container>
-                <RaidAttendanceListTable data={raData} rowStyles={{
-                    '& .MuiTableCell-root': {
-                        padding: '4px',
-                    },
-                    height: '36px',
-                }}/>
+                <RaidAttendanceListTable
+                    data={raData.results}
+                    rowStyles={{
+                        '& .MuiTableCell-root': {
+                            padding: '4px',
+                        },
+                        height: '36px',
+                    }}
+                />
             </Container>
-
         </Container>
-    )
+    );
 }

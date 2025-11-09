@@ -12,7 +12,7 @@ export function RaidListView() {
 
     if (isPending) return <>LOADING...</>;
     if (error) return <>{error.message}</>;
-
+    // TODO: Abstract this, PlayerList has it too
     const selectComponentProps = {
         variant: 'standard',
         sx: {
@@ -90,6 +90,7 @@ export function RaidListView() {
                 previous={data.previous}
                 next={data.next}
             />
+            <Container>{`Total: ${data.count}`}</Container>
             <RaidListTable
                 data={data.results}
                 rowStyles={{

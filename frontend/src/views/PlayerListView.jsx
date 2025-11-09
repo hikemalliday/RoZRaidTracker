@@ -1,8 +1,9 @@
 import { usePlayerList } from '../hooks/requests.js';
 import { PlayerListTable } from '../components/PlayerListTable.jsx';
-import { Container, InputLabel, MenuItem, Select } from '@mui/material';
+import { Container, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import { useState } from 'react';
 import { PaginationController } from '../components/PaginationController.jsx';
+import { selectComponentProps } from '../styles.js';
 
 export function PlayerListView() {
     const [page, setPage] = useState(1);
@@ -12,28 +13,6 @@ export function PlayerListView() {
 
     if (isPending) return <>LOADING...</>;
     if (error) return <>{error.message}</>;
-
-    const selectComponentProps = {
-        variant: 'standard',
-        sx: {
-            marginTop: 1,
-            backgroundColor: 'gray',
-            width: 125,
-            height: 32,
-            padding: 1,
-            '&:before': {
-                borderBottomColor: 'white',
-            },
-            '&:after': {
-                borderBottomColor: 'white',
-            },
-            borderTopLeftRadius: 1,
-            borderTopRightRadius: 1,
-        },
-        MenuProps: {
-            disableScrollLock: true,
-        },
-    };
 
     const handleOrderChange = e => {
         return setOrder(e.target.value);
@@ -90,6 +69,7 @@ export function PlayerListView() {
                 previous={data.previous}
                 next={data.next}
             />
+            <Typography>{`total: ${data.count}`}</Typography>
             <PlayerListTable
                 sortable={false}
                 data={data.results}
