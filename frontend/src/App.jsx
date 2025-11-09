@@ -7,14 +7,9 @@ import { NotFound } from './NotFound.jsx';
 import { PlayerListView } from './views/PlayerListView.jsx';
 import { RaidListView } from './views/RaidListView.jsx';
 import { ItemAwardedListView } from './views/itemAwardedListView.jsx';
-import { RaidAttendanceListView } from './views/RaidAttendanceListView.jsx';
 import { PlayerDetailView } from './views/PlayerDetailView.jsx';
-import { ItemAwardedDetailView } from './views/ItemAwardedDetailView.jsx';
-import { RaidAttendanceDetailView } from './views/RaidAttendanceDetailView.jsx';
 import { RaidDetailView } from './views/RaidDetailView.jsx';
-import { CharacterDetailView } from './views/CharacterDetailView.jsx';
 import { ApprovalListView } from './views/ApprovalListView.jsx';
-import { ApprovalDetailView } from './views/ApprovalDetailView.jsx';
 import { CompareView } from './views/CompareView.jsx';
 
 function App() {
@@ -31,7 +26,6 @@ function App() {
                         <Route path="/player" element={<PlayerListView />} />
                         <Route path="/raid" element={<RaidListView />} />
                         <Route path="/item_awarded" element={<ItemAwardedListView />} />
-                        <Route path="/raid_attendance" element={<RaidAttendanceListView />} />
                         <Route path="/ra_approval" element={<ApprovalListView />} />
                         */ Detail Views */
                         <Route path="/player/:id" element={<PlayerDetailView />} />

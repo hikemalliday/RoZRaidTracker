@@ -42,7 +42,6 @@ export function CompareView() {
     }, [playersData]);
 
     if (isPlayersPending) return <>LOADING...</>;
-
     if (errorsArray.some(Boolean)) return <>{renderErrors(errorsArray)}</>;
 
     const handlePlayerId1Change = playerId => {
@@ -78,8 +77,10 @@ export function CompareView() {
     const playersNamesArray = Object.keys(playersIdMap).sort();
 
     const getPlayerAutoComplete = (playerId, changeHandler, label) => {
+        const veryDarkGray = '#333';
+
         return (
-            <Container>
+            <>
                 <Autocomplete
                     options={playersNamesArray}
                     value={playerId ? playersNameMap[playerId] : null}
@@ -91,12 +92,27 @@ export function CompareView() {
                         <TextField
                             {...params}
                             variant="standard"
-                            label={label}
-                            sx={{ input: { color: 'white' } }}
+                            sx={{
+                                input: {
+                                    color: 'white',
+                                    backgroundColor: veryDarkGray,
+                                    textAlign: 'center',
+                                    transform: 'translateX(25px)',
+                                },
+                                '& .MuiInput-underline:after': {
+                                    borderBottom: 'none', // Remove active underline
+                                },
+                                '& .MuiInput-underline:before': {
+                                    borderBottom: 'none', // Remove inactive underline
+                                },
+                                '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+                                    borderBottom: 'none', // Remove hover underlineonal)
+                                },
+                            }}
                         />
                     )}
                 />
-            </Container>
+            </>
         );
     };
 
@@ -108,15 +124,22 @@ export function CompareView() {
         );
     };
 
-    const getLifetimeRa = (playerId, playersList) => {
+    const getRaInfo = (playerId, playersList) => {
         if (!playerId) return null;
         const playerDetail = playersList.find(player => {
             return player.id == playerId;
         });
         return (
-            <Typography variant="h6" sx={{ mt: 3 }}>
-                {`Lifetime RA: ${playerDetail.lifetime_ra}%`}
-            </Typography>
+            <>
+                <Typography sx={{ mt: 3 }}>
+                    {`Lifetime RA: `}
+                    <span style={{ fontWeight: 'bold' }}>{playerDetail.lifetime_ra}%</span>
+                </Typography>
+                <Typography>
+                    {`21 Day RA: `}
+                    <span style={{ fontWeight: 'bold' }}>{playerDetail.ra_21_day}%</span>
+                </Typography>
+            </>
         );
     };
 
@@ -135,7 +158,7 @@ export function CompareView() {
             <Container>
                 <Container>
                     {getPlayerAutoComplete(playerId1, handlePlayerId1Change, 'Player 1')}
-                    {getLifetimeRa(playerId1, playersData.results)}
+                    {getRaInfo(playerId1, playersData.results)}
                     {!isItemAwardedPending1 && playerId1 && (
                         <>
                             {getItemAwardedInfo(itemAwardedData1)}
@@ -147,7 +170,7 @@ export function CompareView() {
             <Container>
                 <Container>
                     {getPlayerAutoComplete(playerId2, handlePlayerId2Change, 'Player 2')}
-                    {getLifetimeRa(playerId2, playersData.results)}
+                    {getRaInfo(playerId2, playersData.results)}
                     {!isItemAwardedPending2 && playerId2 && (
                         <>
                             {getItemAwardedInfo(itemAwardedData2)}
@@ -159,7 +182,7 @@ export function CompareView() {
             <Container>
                 <Container>
                     {getPlayerAutoComplete(playerId3, handlePlayerId3Change, 'Player 3')}
-                    {getLifetimeRa(playerId3, playersData.results)}
+                    {getRaInfo(playerId3, playersData.results)}
                     {!isItemAwardedPending3 && playerId3 && (
                         <>
                             {getItemAwardedInfo(itemAwardedData3)}
