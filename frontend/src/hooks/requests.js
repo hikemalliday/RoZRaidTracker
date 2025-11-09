@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useMessage } from '../context/MessageContext.jsx';
 import { useNavigate } from 'react-router';
+import { handleAscDesc } from '../views/utils.jsx';
 
 // GET LIST
 export function usePlayerList(queryParams) {
@@ -31,9 +32,8 @@ export function useRaidList(queryParams) {
         queryFn: async () => {
             const { data } = await client.get('/raids/', {
                 params: {
-                    sort_by: queryParams?.sortBy || '',
+                    ordering: handleAscDesc(queryParams?.order || 'asc', queryParams?.sortBy || ''),
                     page: queryParams?.page || 1,
-                    order: queryParams?.order || null,
                 },
             });
             return data;
@@ -58,14 +58,14 @@ export function useRaidAttendanceList(queryParams) {
 
 export function useItemAwardedList(queryParams) {
     const client = useAxios(BACKEND_BASE_URL_DEV);
+
     const { isPending, error, data } = useQuery({
         queryKey: ['items_awarded', queryParams],
         queryFn: async () => {
             const { data } = await client.get('/items_awarded/', {
                 params: {
-                    sort_by: queryParams?.sortBy || '',
+                    ordering: handleAscDesc(queryParams?.order || 'asc', queryParams?.sortBy || ''),
                     page: queryParams?.page || 1,
-                    order: queryParams?.order || null,
                 },
             });
             return data;
