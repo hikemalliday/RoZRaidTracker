@@ -13,6 +13,7 @@ from rest_framework.exceptions import ValidationError
 from django.db.models import Count, F, FloatField, ExpressionWrapper
 from django.db.models.expressions import Value
 from django.db.models.functions import Round
+from rest_framework.filters import OrderingFilter
 
 
 PERMISSION_CLASS_DEBUG = IsAuthenticated  # TODO: Dev purposes
@@ -30,7 +31,6 @@ class ZoneViewSet(viewsets.ModelViewSet):
     permission_classes = (PERMISSION_CLASS_DEBUG,)
 
 
-# TODO: Abstract filter logic into mixin class
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = models.Player.objects.all()
     serializer_class = PlayerSerializer
@@ -73,25 +73,17 @@ class RaidViewSet(viewsets.ModelViewSet):
     queryset = models.Raid.objects.all()
     serializer_class = RaidSerializer
     permission_classes = (PERMISSION_CLASS_DEBUG,)
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        sort_field = self.request.query_params.get('sort_by')
-        sort_order = self.request.query_params.get('order', 'asc')
-        if sort_field and sort_field in ["name", "zone", "date"]:
-            sort_field = "created_at" if sort_field == "date" else sort_field # TODO: Handle this differently
-            if sort_order != "asc":
-                sort_field = f"-{sort_field}"
-            queryset = queryset.order_by(sort_field)
-        return queryset
+    filter_backends = (OrderingFilter,)
+    ordering_fields = ['name', 'zone']
 
 
 class ItemAwardedViewSet(viewsets.ModelViewSet):
     queryset = models.ItemAwarded.objects.all()
     serializer_class = ItemAwardedSerializer
     permission_classes = (PERMISSION_CLASS_DEBUG,)
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['player', 'raid']
+    ordering_fields = ['player', 'raid']
 
 
 class PreferredPixelViewSet(viewsets.ModelViewSet):
