@@ -47,24 +47,6 @@ export function PlayerListView() {
         <Container>
             <Container sx={{ marginTop: 10, display: 'flex' }}>
                 <Container>
-                    <InputLabel sx={{ color: 'white' }}>Order</InputLabel>
-                    <Select
-                        {...selectComponentProps}
-                        onChange={handleOrderChange}
-                        variant="standard"
-                        label="order"
-                        value={order}
-                    >
-                        {['asc', 'desc'].map((choice, i) => {
-                            return (
-                                <MenuItem key={i} value={choice}>
-                                    {choice}
-                                </MenuItem>
-                            );
-                        })}
-                    </Select>
-                </Container>
-                <Container>
                     <InputLabel sx={{ color: 'white' }}>Sort By</InputLabel>
                     <Select
                         {...selectComponentProps}
@@ -82,6 +64,24 @@ export function PlayerListView() {
                         })}
                     </Select>
                 </Container>
+                <Container>
+                    <InputLabel sx={{ color: 'white' }}>Order</InputLabel>
+                    <Select
+                        {...selectComponentProps}
+                        onChange={handleOrderChange}
+                        variant="standard"
+                        label="order"
+                        value={order}
+                    >
+                        {['asc', 'desc'].map((choice, i) => {
+                            return (
+                                <MenuItem key={i} value={choice}>
+                                    {choice}
+                                </MenuItem>
+                            );
+                        })}
+                    </Select>
+                </Container>
             </Container>
             <PaginationController
                 styles={{ marginTop: 5 }}
@@ -91,6 +91,7 @@ export function PlayerListView() {
                 next={data.next}
             />
             <PlayerListTable
+                sortable={false}
                 data={data.results}
                 rowStyles={{
                     '& .MuiTableCell-root': {
