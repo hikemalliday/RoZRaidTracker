@@ -6,6 +6,10 @@ import { useMessage } from '../context/MessageContext.jsx';
 import { useNavigate } from 'react-router';
 import { handleAscDesc } from '../views/utils.jsx';
 
+// Means to emulate 'no pagination' for hooks that don;t want it.
+// Keeps data shape consistent on list responses
+const PAGE_SIZE_NO_PAGINATION = 9999;
+
 // GET LIST
 export function usePlayerList(queryParams) {
     const client = useAxios(BACKEND_BASE_URL_DEV);
@@ -14,9 +18,26 @@ export function usePlayerList(queryParams) {
         queryFn: async () => {
             const { data } = await client.get('/players/', {
                 params: {
-                    sort_by: queryParams?.sortBy || '',
-                    page: queryParams?.page || 1,
-                    order: queryParams?.order || null,
+                    ...queryParams,
+                    page_size: PAGE_SIZE_NO_PAGINATION,
+                },
+            });
+            return data;
+        },
+    });
+    return { isPending, error, data };
+}
+
+export function usePlayerListPaginated(queryParams) {
+    const client = useAxios(BACKEND_BASE_URL_DEV);
+    const { ordering, orderDir, page } = queryParams;
+    const { isPending, error, data } = useQuery({
+        queryKey: ['players', queryParams],
+        queryFn: async () => {
+            const { data } = await client.get('/players/', {
+                params: {
+                    ordering: handleAscDesc(orderDir || 'asc', ordering),
+                    page,
                 },
             });
             return data;
@@ -58,14 +79,31 @@ export function useRaidAttendanceList(queryParams) {
 
 export function useItemAwardedList(queryParams) {
     const client = useAxios(BACKEND_BASE_URL_DEV);
-
     const { isPending, error, data } = useQuery({
         queryKey: ['items_awarded', queryParams],
         queryFn: async () => {
             const { data } = await client.get('/items_awarded/', {
                 params: {
-                    ordering: handleAscDesc(queryParams?.order || 'asc', queryParams?.sortBy || ''),
-                    page: queryParams?.page || 1,
+                    ...queryParams,
+                    page_size: PAGE_SIZE_NO_PAGINATION,
+                },
+            });
+            return data;
+        },
+    });
+    return { isPending, error, data };
+}
+
+export function useItemAwardedListPaginated(queryParams) {
+    const client = useAxios(BACKEND_BASE_URL_DEV);
+    const { ordering, orderDir, page } = queryParams;
+    const { isPending, error, data } = useQuery({
+        queryKey: ['items_awarded', queryParams],
+        queryFn: async () => {
+            const { data } = await client.get('/items_awarded/', {
+                params: {
+                    ordering: handleAscDesc(orderDir || 'asc', ordering),
+                    page,
                 },
             });
             return data;
