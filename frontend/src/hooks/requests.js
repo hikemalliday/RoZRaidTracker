@@ -24,12 +24,18 @@ export function usePlayerList(queryParams) {
     return { isPending, error, data };
 }
 
-export function useRaidList() {
+export function useRaidList(queryParams) {
     const client = useAxios(BACKEND_BASE_URL_DEV);
     const { isPending, error, data } = useQuery({
-        queryKey: ['raids'],
+        queryKey: ['raids', queryParams],
         queryFn: async () => {
-            const { data } = await client.get('/raids/');
+            const { data } = await client.get('/raids/', {
+                params: {
+                    sort_by: queryParams?.sortBy || '',
+                    page: queryParams?.page || 1,
+                    order: queryParams?.order || null,
+                },
+            });
             return data;
         },
     });

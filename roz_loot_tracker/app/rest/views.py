@@ -30,6 +30,7 @@ class ZoneViewSet(viewsets.ModelViewSet):
     permission_classes = (PERMISSION_CLASS_DEBUG,)
 
 
+# TODO: Abstract filter logic into mixin class
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = models.Player.objects.all()
     serializer_class = PlayerSerializer
@@ -53,12 +54,10 @@ class PlayerViewSet(viewsets.ModelViewSet):
 
         sort_field = self.request.query_params.get('sort_by')
         sort_order = self.request.query_params.get('order', "asc")
-        if sort_field:
-            allowed_fields = ['name', 'lifetime_ra']
-            if sort_field in allowed_fields:
-                if sort_order != "asc":
-                    sort_field = f"-{sort_field}"
-                queryset = queryset.order_by(sort_field)
+        if sort_field and sort_field in ['name', 'lifetime_ra']:
+            if sort_order != "asc":
+                sort_field = f"-{sort_field}"
+            queryset = queryset.order_by(sort_field)
         return queryset
 
 
@@ -74,6 +73,17 @@ class RaidViewSet(viewsets.ModelViewSet):
     queryset = models.Raid.objects.all()
     serializer_class = RaidSerializer
     permission_classes = (PERMISSION_CLASS_DEBUG,)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        sort_field = self.request.query_params.get('sort_by')
+        sort_order = self.request.query_params.get('order', 'asc')
+        if sort_field and sort_field in ["name", "zone", "date"]:
+            sort_field = "created_at" if sort_field == "date" else sort_field # TODO: Handle this differently
+            if sort_order != "asc":
+                sort_field = f"-{sort_field}"
+            queryset = queryset.order_by(sort_field)
+        return queryset
 
 
 class ItemAwardedViewSet(viewsets.ModelViewSet):
