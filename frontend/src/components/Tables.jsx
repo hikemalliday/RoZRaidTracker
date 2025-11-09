@@ -1,53 +1,45 @@
-import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
-import {Link} from "react-router";
-import React, {useState} from "react";
-
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Link } from 'react-router';
+import React, { useEffect, useState } from 'react';
 
 export const getLinkCell = (val, route, extraText) => {
     return (
         <TableCell id="clickable-cell">
-            <Link to={route}>
-                {val}
-            </Link>
+            <Link to={route}>{val}</Link>
             <span id={extraText?.id}>{extraText?.text}</span>
         </TableCell>
-    )
-}
+    );
+};
 
-export const getCell = (val) => {
+export const getCell = val => {
+    return <TableCell id="non-clickable-cell">{val}</TableCell>;
+};
+
+export const getItemIconCell = iconId => {
     return (
         <TableCell id="non-clickable-cell">
-            {val}
+            <img id="item-icon" src={`/item_icons/item_${iconId}.png`} alt={'null'} />
         </TableCell>
-    )
-}
-
-export const getItemIconCell = (iconId) => {
-    return (
-        <TableCell id="non-clickable-cell">
-            <img
-                id="item-icon"
-                src={`/item_icons/item_${iconId}.png`}
-                alt={"null"}
-            />
-        </TableCell>
-    )
-}
+    );
+};
 
 // Order of keys in 'headerMap' matters, as the keys are used for rendering cols / headers
-export function TableList({data, getTableRows, headerMap = {} }) {
+export function TableList({ data, getTableRows, headerMap = {}, sortable = false }) {
     const [sorted, setSorted] = useState(data);
     const [sortDirection, setSortDirection] = useState('asc');
     const reducedData = getTableRows(sorted);
 
+    useEffect(() => {
+        setSorted(data);
+    }, [data]);
+
     const _getNestedValue = (obj, path) => {
         return path.split('.').reduce((current, key) => {
-           return current && typeof current === 'object' ? current[key] : undefined;
+            return current && typeof current === 'object' ? current[key] : undefined;
         }, obj);
     };
 
-
-    const _sortByCol = (header) => {
+    const _sortByCol = header => {
         if (!header) return;
         const colToSortBy = headerMap[header];
 
@@ -62,38 +54,39 @@ export function TableList({data, getTableRows, headerMap = {} }) {
             }
 
             const sortMapString = {
-                "asc": () => {
-                    setSortDirection("desc");
+                asc: () => {
+                    setSortDirection('desc');
                     return valB.localeCompare(valA);
                 },
-                "desc": () => {
-                    setSortDirection("asc");
+                desc: () => {
+                    setSortDirection('asc');
                     return valA.localeCompare(valB);
                 },
-            }
+            };
 
             const sortMapNumber = {
-                "asc": () => {
-                    setSortDirection("desc");
+                asc: () => {
+                    setSortDirection('desc');
                     return valB - valA;
                 },
-                "desc": () => {
-                    setSortDirection("asc");
+                desc: () => {
+                    setSortDirection('asc');
                     return valA - valB;
-                }
-            }
+                },
+            };
 
             const dataType = typeof valA;
-            return dataType === "string"  ? sortMapString[sortDirection]() : sortMapNumber[sortDirection]();
+            return dataType === 'string'
+                ? sortMapString[sortDirection]()
+                : sortMapNumber[sortDirection]();
         });
         return setSorted(newSorted);
-    }
+    };
 
-    const _getHeaderId = (header) => {
+    const _getHeaderId = header => {
         const headerMapVal = headerMap[header];
-        return headerMapVal ? "table-header-sortable" : "table-header";
-    }
-
+        return headerMapVal ? 'table-header-sortable' : 'table-header';
+    };
 
     return (
         <Table>
@@ -101,18 +94,22 @@ export function TableList({data, getTableRows, headerMap = {} }) {
                 <TableRow>
                     {Object.entries(headerMap).map(([header, _], i) => {
                         return (
-                            <TableCell key={i} id={_getHeaderId(header)} onClick={(_) => _sortByCol(header)}>
+                            <TableCell
+                                key={i}
+                                id={_getHeaderId(header)}
+                                onClick={_ => (sortable ? _sortByCol(header) : null)}
+                            >
                                 {header}
                             </TableCell>
-                        )
+                        );
                     })}
                 </TableRow>
             </TableHead>
             <TableBody>
-                {reducedData.map((row) => {
-                    return row
+                {reducedData.map(row => {
+                    return row;
                 })}
             </TableBody>
         </Table>
-    )
+    );
 }
