@@ -6,7 +6,7 @@ import { useMessage } from '../context/MessageContext.jsx';
 import { useNavigate } from 'react-router';
 import { handleAscDesc } from '../views/utils.jsx';
 
-// Means to emulate 'no pagination' for hooks that don;t want it.
+// Means to emulate 'no pagination' for hooks that don't want it.
 // Keeps data shape consistent on list responses
 const PAGE_SIZE_NO_PAGINATION = 9999;
 

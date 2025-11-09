@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Container, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { Autocomplete, Container, TextField, Typography } from '@mui/material';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { useItemAwardedList, usePlayerList } from '../hooks/requests.js';
 import { renderErrors } from './utils.jsx';
-import { selectComponentProps } from '../styles.js';
 
 export function CompareView() {
     const [playerId1, setPlayerId1] = useState('');
@@ -42,19 +41,19 @@ export function CompareView() {
 
     if (errorsArray.some(Boolean)) return <>{renderErrors(errorsArray)}</>;
 
-    const handlePlayerId1Change = e => {
-        setPlayerId1(e.target.value);
+    const handlePlayerId1Change = playerId => {
+        setPlayerId1(playerId);
     };
 
-    const handlePlayerId2Change = e => {
-        setPlayerId2(e.target.value);
+    const handlePlayerId2Change = playerId => {
+        setPlayerId2(playerId);
     };
 
-    const handlePlayerId3Change = e => {
-        setPlayerId3(e.target.value);
+    const handlePlayerId3Change = playerId => {
+        setPlayerId3(playerId);
     };
 
-    const getPlayersMap = data => {
+    const getPlayersIdMap = data => {
         const results = {};
         for (const player of data) {
             results[player.name] = player.id.toString();
@@ -62,8 +61,60 @@ export function CompareView() {
         return results;
     };
 
-    const playersMap = getPlayersMap(playersData.results);
-    const playersNamesArray = Object.keys(playersMap);
+    const getPlayersNameMap = data => {
+        const results = {};
+        for (const player of data) {
+            results[player.id.toString()] = player.name;
+        }
+        return results;
+    };
+
+    const playersIdMap = getPlayersIdMap(playersData.results);
+    const playersNameMap = getPlayersNameMap(playersData.results);
+    const playersNamesArray = Object.keys(playersIdMap).sort();
+
+    const getPlayerAutoComplete = (playerId, changeHandler, label) => {
+        return (
+            <Container>
+                <Autocomplete
+                    options={playersNamesArray}
+                    value={playerId ? playersNameMap[playerId] : null}
+                    onChange={(e, playerName) => {
+                        if (playerName) return changeHandler(playersIdMap[playerName]);
+                        return changeHandler('');
+                    }}
+                    renderInput={params => (
+                        <TextField
+                            {...params}
+                            variant="standard"
+                            label={label}
+                            sx={{ input: { color: 'white' } }}
+                        />
+                    )}
+                />
+            </Container>
+        );
+    };
+
+    const getItemAwardedInfo = itemAwardedData => {
+        return (
+            <Typography sx={{ mt: 5 }} variant="h6">
+                Items Awarded - Total: {itemAwardedData.count}
+            </Typography>
+        );
+    };
+
+    const getLifetimeRa = (playerId, playersList) => {
+        if (!playerId) return null;
+        const playerDetail = playersList.find(player => {
+            return player.id == playerId;
+        });
+        return (
+            <Typography variant="h6" sx={{ mt: 3 }}>
+                {`Lifetime RA: ${playerDetail.lifetime_ra}%`}
+            </Typography>
+        );
+    };
 
     return (
         <Container
@@ -79,30 +130,11 @@ export function CompareView() {
         >
             <Container>
                 <Container>
-                    <Container>
-                        <InputLabel sx={{ color: 'white' }}>Player</InputLabel>
-                        <Select
-                            {...selectComponentProps}
-                            variant="standard"
-                            onChange={handlePlayerId1Change}
-                            label="player1"
-                            value={playerId1}
-                        >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            {playersNamesArray.map((name, i) => (
-                                <MenuItem key={i} value={playersMap[name]}>
-                                    {name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </Container>
+                    {getPlayerAutoComplete(playerId1, handlePlayerId1Change, 'Player 1')}
+                    {getLifetimeRa(playerId1, playersData.results)}
                     {!isItemAwardedPending1 && playerId1 && (
                         <>
-                            <Typography sx={{ mt: 5 }} variant="h6">
-                                Items Awarded - Total: {itemAwardedData1.count}
-                            </Typography>
+                            {getItemAwardedInfo(itemAwardedData1)}
                             <ItemAwardedListTable data={itemAwardedData1.results} />
                         </>
                     )}
@@ -110,30 +142,11 @@ export function CompareView() {
             </Container>
             <Container>
                 <Container>
-                    <Container>
-                        <InputLabel sx={{ color: 'white' }}>Player</InputLabel>
-                        <Select
-                            {...selectComponentProps}
-                            variant="standard"
-                            onChange={handlePlayerId2Change}
-                            label="player2"
-                            value={playerId2}
-                        >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            {playersNamesArray.map((name, i) => (
-                                <MenuItem key={i} value={playersMap[name]}>
-                                    {name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </Container>
+                    {getPlayerAutoComplete(playerId2, handlePlayerId2Change, 'Player 2')}
+                    {getLifetimeRa(playerId2, playersData.results)}
                     {!isItemAwardedPending2 && playerId2 && (
                         <>
-                            <Typography sx={{ mt: 5 }} variant="h6">
-                                Items Awarded - Total: {itemAwardedData2.count}
-                            </Typography>
+                            {getItemAwardedInfo(itemAwardedData2)}
                             <ItemAwardedListTable data={itemAwardedData2.results} />
                         </>
                     )}
@@ -141,30 +154,11 @@ export function CompareView() {
             </Container>
             <Container>
                 <Container>
-                    <Container>
-                        <InputLabel sx={{ color: 'white' }}>Player</InputLabel>
-                        <Select
-                            {...selectComponentProps}
-                            variant="standard"
-                            onChange={handlePlayerId3Change}
-                            label="player3"
-                            value={playerId3}
-                        >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            {playersNamesArray.map((name, i) => (
-                                <MenuItem key={i} value={playersMap[name]}>
-                                    {name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </Container>
+                    {getPlayerAutoComplete(playerId3, handlePlayerId3Change, 'Player 3')}
+                    {getLifetimeRa(playerId3, playersData.results)}
                     {!isItemAwardedPending3 && playerId3 && (
                         <>
-                            <Typography sx={{ mt: 5 }} variant="h6">
-                                Items Awarded - Total: {itemAwardedData3.count}
-                            </Typography>
+                            {getItemAwardedInfo(itemAwardedData3)}
                             <ItemAwardedListTable data={itemAwardedData3.results} />
                         </>
                     )}
