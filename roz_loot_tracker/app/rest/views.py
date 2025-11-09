@@ -117,6 +117,7 @@ class RaidAttendanceViewSet(viewsets.ModelViewSet):
     permission_classes = (PERMISSION_CLASS_DEBUG,)
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['player', 'raid']
+    pagination_class = AllowNoPagination
 
 
 class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):

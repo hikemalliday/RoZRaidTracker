@@ -76,7 +76,7 @@ export function CompareView() {
     const playersNameMap = getPlayersNameMap(playersData.results);
     const playersNamesArray = Object.keys(playersIdMap).sort();
 
-    const getPlayerAutoComplete = (playerId, changeHandler, label) => {
+    const getPlayerAutoComplete = (playerId, changeHandler) => {
         const veryDarkGray = '#333';
 
         return (
@@ -100,13 +100,13 @@ export function CompareView() {
                                     transform: 'translateX(25px)',
                                 },
                                 '& .MuiInput-underline:after': {
-                                    borderBottom: 'none', // Remove active underline
+                                    borderBottom: 'none',
                                 },
                                 '& .MuiInput-underline:before': {
-                                    borderBottom: 'none', // Remove inactive underline
+                                    borderBottom: 'none',
                                 },
                                 '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-                                    borderBottom: 'none', // Remove hover underlineonal)
+                                    borderBottom: 'none',
                                 },
                             }}
                         />
@@ -157,7 +157,7 @@ export function CompareView() {
         >
             <Container>
                 <Container>
-                    {getPlayerAutoComplete(playerId1, handlePlayerId1Change, 'Player 1')}
+                    {getPlayerAutoComplete(playerId1, handlePlayerId1Change)}
                     {getRaInfo(playerId1, playersData.results)}
                     {!isItemAwardedPending1 && playerId1 && (
                         <>
@@ -169,7 +169,7 @@ export function CompareView() {
             </Container>
             <Container>
                 <Container>
-                    {getPlayerAutoComplete(playerId2, handlePlayerId2Change, 'Player 2')}
+                    {getPlayerAutoComplete(playerId2, handlePlayerId2Change)}
                     {getRaInfo(playerId2, playersData.results)}
                     {!isItemAwardedPending2 && playerId2 && (
                         <>
@@ -181,7 +181,7 @@ export function CompareView() {
             </Container>
             <Container>
                 <Container>
-                    {getPlayerAutoComplete(playerId3, handlePlayerId3Change, 'Player 3')}
+                    {getPlayerAutoComplete(playerId3, handlePlayerId3Change)}
                     {getRaInfo(playerId3, playersData.results)}
                     {!isItemAwardedPending3 && playerId3 && (
                         <>
