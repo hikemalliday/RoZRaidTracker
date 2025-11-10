@@ -72,6 +72,8 @@ class RaidAttendanceSerializer(serializers.ModelSerializer):
 
 
 class RaidAttendanceApprovalSerializer(serializers.ModelSerializer):
+    created_at = serializers.DateTimeField(format='%m-%d-%y', read_only=True)
+
     class Meta:
         model = RaidAttendanceApproval
         fields = '__all__'
