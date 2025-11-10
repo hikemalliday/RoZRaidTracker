@@ -129,6 +129,10 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def approve(self, request, pk=None):
+        raid_attendance_approval = self.get_object()
+        if raid_attendance_approval.is_approved == True:
+            raise ValidationError(f"Raid has already been approved. If you think this is a mistake, contact admin.")
+
         players = request.data.get("players")
         raid_name = request.data.get("raid_name")
         with transaction.atomic():
@@ -145,7 +149,6 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
                 except models.Player.DoesNotExist:
                     raise ValidationError(f"Player {player_name} does not exist. Create player first and try again.")
 
-            raid_attendance_approval = self.get_object()
             raid_attendance_approval.is_approved = True
             raid_attendance_approval.save()
 
