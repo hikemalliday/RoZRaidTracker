@@ -1,5 +1,5 @@
 import { useAxios } from './useAxios.jsx';
-import { BACKEND_BASE_URL_DEV } from '../config.js';
+import { API_KEY, BACKEND_BASE_URL_DEV } from '../config.js';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useMessage } from '../context/MessageContext.jsx';
@@ -70,7 +70,6 @@ export function useItemAwardedListPaginated(queryParams) {
     return _useListPaginated('items_awarded', '/items_awarded/', queryParams);
 }
 
-// TODO: Generate new API key and ABSTRACT AWAY INTO CONFIG or env vars
 export function useRaidAttendanceApprovalList(queryParams) {
     const axiosInstance = axios.create({ baseURL: BACKEND_BASE_URL_DEV });
     const { isPending, error, data } = useQuery({
@@ -79,7 +78,7 @@ export function useRaidAttendanceApprovalList(queryParams) {
             const { data } = await axiosInstance.get(`/raid_attendance_approval/`, {
                 params: queryParams,
                 headers: {
-                    Authorization: `Api-Key qaE6Pe7n.rO3qVVUxyop5b8wNbTOQCAXBhqJQrAau`,
+                    Authorization: API_KEY,
                 },
             });
             return data;
