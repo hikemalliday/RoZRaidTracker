@@ -22,7 +22,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from app.rest.views import ItemViewSet, ZoneViewSet, PlayerViewSet, CharacterViewSet, RaidViewSet, ItemAwardedViewSet, \
-    PreferredPixelViewSet, RaidAttendanceViewSet, RaidAttendanceApprovalViewSet
+    PreferredPixelViewSet, RaidAttendanceViewSet, RaidAttendanceApprovalViewSet, index_view
 
 router = routers.DefaultRouter()
 router.register(r'items', ItemViewSet)
@@ -36,6 +36,7 @@ router.register(r'raid_attendance', RaidAttendanceViewSet)
 router.register(r'raid_attendance_approval', RaidAttendanceApprovalViewSet)
 
 urlpatterns = [
+    path("", index_view, name="index"),
     path("api/", include(router.urls)),
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
