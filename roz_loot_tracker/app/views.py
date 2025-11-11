@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from app.models import Player, Raid, RaidAttendance
-from django.shortcuts import render
+
 
 
 
@@ -79,7 +79,3 @@ class RaidAttendanceUpdateView(UpdateView):
     template_name = 'raid_attendance/raid_attendance_update.html'
     fields = '__all__'
     success_url = reverse_lazy('raid-attendance-list')
-
-
-def index_view(request):
-    return render(request, "index.html")

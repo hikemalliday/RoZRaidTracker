@@ -14,15 +14,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.shortcuts import render
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from rest_framework import routers
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 from app.rest.views import ItemViewSet, ZoneViewSet, PlayerViewSet, CharacterViewSet, RaidViewSet, ItemAwardedViewSet, \
-    PreferredPixelViewSet, RaidAttendanceViewSet, RaidAttendanceApprovalViewSet, index_view
+    PreferredPixelViewSet, RaidAttendanceViewSet, RaidAttendanceApprovalViewSet
+
+
+
+def index_view(request):
+    return render(request, "index.html")
 
 router = routers.DefaultRouter()
 router.register(r'items', ItemViewSet)
@@ -36,7 +42,7 @@ router.register(r'raid_attendance', RaidAttendanceViewSet)
 router.register(r'raid_attendance_approval', RaidAttendanceApprovalViewSet)
 
 urlpatterns = [
-    path("", index_view, name="index"),
+    re_path(r'^.*$', index_view),
     path("api/", include(router.urls)),
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
