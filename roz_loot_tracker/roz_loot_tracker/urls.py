@@ -42,9 +42,9 @@ router.register(r'raid_attendance', RaidAttendanceViewSet)
 router.register(r'raid_attendance_approval', RaidAttendanceApprovalViewSet)
 
 urlpatterns = [
-    re_path(r'^.*$', index_view),
     path("api/", include(router.urls)),
     path('admin/', admin.site.urls),
     path('api/token/', csrf_exempt(TokenObtainPairView.as_view()), name='token_obtain_pair'),
     path('api/token/refresh/', csrf_exempt(TokenRefreshView.as_view()), name='token_refresh'),
+    re_path(r'^.*$', index_view),
 ]
