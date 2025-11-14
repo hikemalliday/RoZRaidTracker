@@ -92,7 +92,7 @@ class RaidViewSet(viewsets.ModelViewSet):
     serializer_class = RaidSerializer
     permission_classes = (PERMISSION_CLASS_DEBUG,)
     filter_backends = (OrderingFilter,)
-    ordering_fields = ['name', 'zone']
+    ordering_fields = ['name', 'zone', 'created_at']
 
 
 class ItemAwardedViewSet(viewsets.ModelViewSet):
@@ -101,7 +101,7 @@ class ItemAwardedViewSet(viewsets.ModelViewSet):
     permission_classes = (PERMISSION_CLASS_DEBUG,)
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['player', 'raid']
-    ordering_fields = ['player', 'raid']
+    ordering_fields = ['player__name', 'raid__name', 'created_at', 'item__name']
     pagination_class = AllowNoPagination
 
 

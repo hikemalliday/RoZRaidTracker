@@ -8,6 +8,12 @@ export function ItemAwardedListView() {
             requestHook={useItemAwardedListPaginated}
             TableComponent={ItemAwardedListTable}
             sortChoices={['name', 'player', 'raid', 'date']}
+            sortMap={{
+                name: 'item__name',
+                player: 'player__name',
+                date: 'created_at',
+                raid: 'raid__name',
+            }}
         />
     );
 }

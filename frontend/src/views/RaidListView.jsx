@@ -9,6 +9,7 @@ export function RaidListView() {
             requestHook={useRaidListPaginated}
             TableComponent={RaidListTable}
             sortChoices={['name', 'zone', 'date']}
+            sortMap={{ date: 'created_at' }}
         />
     );
 }

@@ -16,9 +16,6 @@ export const getCell = val => {
     return <TableCell id="non-clickable-cell">{val}</TableCell>;
 };
 
-console.log('DEBUG IMAGE PATH:');
-console.log(IMAGE_PATH);
-
 export const getItemIconCell = iconId => {
     return (
         <TableCell id="non-clickable-cell">

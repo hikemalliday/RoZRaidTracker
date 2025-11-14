@@ -3,22 +3,34 @@ import { Container, InputLabel, MenuItem, Select, Typography } from '@mui/materi
 import { selectComponentProps } from '../styles.js';
 import { PaginationController } from './PaginationController.jsx';
 
-export function PaginatedListTable({ requestHook, TableComponent, sortChoices = [] }) {
+export function PaginatedListTable({
+    requestHook,
+    TableComponent,
+    sortChoices = [],
+    sortMap = {},
+}) {
+    const _getOrdering = str => {
+        return sortMap?.[str] || str;
+    };
+
     const [page, setPage] = useState(1);
     const [orderDir, setOrderDir] = useState('asc');
-    const [ordering, setOrdering] = useState('name');
-    const { data, isPending, error } = requestHook({ page, ordering, orderDir });
-
-    if (isPending) return <>LOADING...</>;
-    if (error) return <>{error.message}</>;
+    const [ordering, setOrdering] = useState(sortChoices[0] || 'name');
+    const { data, isPending, error } = requestHook({
+        page,
+        ordering: _getOrdering(ordering),
+        orderDir,
+    });
 
     const handleOrderDirChange = e => {
         return setOrderDir(e.target.value);
     };
 
     const handleOrderingChange = e => {
-        return setOrdering(e.target.value);
+        return setOrdering(_getOrdering(e.target.value));
     };
+
+    if (error) return <>{error.message}</>;
 
     return (
         <Container>
@@ -60,24 +72,30 @@ export function PaginatedListTable({ requestHook, TableComponent, sortChoices = 
                     </Select>
                 </Container>
             </Container>
-            <PaginationController
-                styles={{ marginTop: 5 }}
-                page={page}
-                setPage={setPage}
-                previous={data.previous}
-                next={data.next}
-            />
-            <Typography>{`total: ${data.count}`}</Typography>
-            <TableComponent
-                sortable={false}
-                data={data.results}
-                rowStyles={{
-                    '& .MuiTableCell-root': {
-                        padding: '4px',
-                    },
-                    height: '36px',
-                }}
-            />
+            {isPending ? (
+                <>LOADING...</>
+            ) : (
+                <>
+                    <PaginationController
+                        styles={{ marginTop: 5 }}
+                        page={page}
+                        setPage={setPage}
+                        previous={data.previous}
+                        next={data.next}
+                    />
+                    <Typography>{`total: ${data.count}`}</Typography>
+                    <TableComponent
+                        sortable={false}
+                        data={data.results}
+                        rowStyles={{
+                            '& .MuiTableCell-root': {
+                                padding: '4px',
+                            },
+                            height: '36px',
+                        }}
+                    />
+                </>
+            )}
         </Container>
     );
 }
