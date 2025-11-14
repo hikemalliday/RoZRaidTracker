@@ -24,7 +24,7 @@ from rest_framework_simplejwt.views import (
 )
 from app.rest.views import ItemViewSet, ZoneViewSet, PlayerViewSet, CharacterViewSet, RaidViewSet, ItemAwardedViewSet, \
     PreferredPixelViewSet, RaidAttendanceViewSet, RaidAttendanceApprovalViewSet
-
+from django.views.decorators.csrf import csrf_exempt
 
 
 def index_view(request):
@@ -45,6 +45,6 @@ urlpatterns = [
     re_path(r'^.*$', index_view),
     path("api/", include(router.urls)),
     path('admin/', admin.site.urls),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/', csrf_exempt(TokenObtainPairView.as_view()), name='token_obtain_pair'),
+    path('api/token/refresh/', csrf_exempt(TokenRefreshView.as_view()), name='token_refresh'),
 ]
