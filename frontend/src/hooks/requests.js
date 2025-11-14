@@ -69,17 +69,14 @@ export function useRaidListPaginated(queryParams) {
 export function useItemAwardedListPaginated(queryParams) {
     return _useListPaginated('items_awarded', '/items_awarded/', queryParams);
 }
-// TODO: Why are we doing API key here instead of token?
+
 export function useRaidAttendanceApprovalList(queryParams) {
-    const axiosInstance = axios.create({ baseURL: BASE_URL });
+    const client = useAxios(BASE_URL);
     const { isPending, error, data } = useQuery({
         queryKey: ['raid_attendance_approval', queryParams],
         queryFn: async () => {
-            const { data } = await axiosInstance.get(`/raid_attendance_approval/`, {
+            const { data } = await client.get(`/raid_attendance_approval/`, {
                 params: queryParams,
-                headers: {
-                    Authorization: API_KEY,
-                },
             });
             return data;
         },

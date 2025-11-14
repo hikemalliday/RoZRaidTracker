@@ -123,7 +123,7 @@ class RaidAttendanceViewSet(viewsets.ModelViewSet):
 class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
     queryset = models.RaidAttendanceApproval.objects.all()
     serializer_class = RaidAttendanceApprovalSerializer
-    permission_classes = [HasAPIKey | PERMISSION_CLASS_DEBUG]
+    permission_classes = (PERMISSION_CLASS_DEBUG,)
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['is_approved']
 
