@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    container_name: django-app
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_DB=dev-db
+
+  nginx:
+    image: nginx:stable
+    container_name: nginx-app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+      - /etc/letsencrypt/live/roz.yeetorskeet.com:/etc/letsencrypt/live/roz.yeetorskeet.com
+      - /etc/letsencrypt/archive:/etc/letsencrypt/archive
+    depends_on:
+      - app
