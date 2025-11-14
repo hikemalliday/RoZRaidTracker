@@ -1,6 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { Link } from 'react-router';
 import React, { useEffect, useState } from 'react';
+import { IMAGE_PATH } from '../config.js';
 
 export const getLinkCell = (val, route, extraText) => {
     return (
@@ -18,7 +19,7 @@ export const getCell = val => {
 export const getItemIconCell = iconId => {
     return (
         <TableCell id="non-clickable-cell">
-            <img id="item-icon" src={`/item_icons/item_${iconId}.png`} alt={'null'} />
+            <img id="item-icon" src={`${IMAGE_PATH}/item_${iconId}.png`} alt={'null'} />
         </TableCell>
     );
 };
