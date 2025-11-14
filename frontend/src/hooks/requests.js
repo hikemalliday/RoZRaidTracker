@@ -1,5 +1,5 @@
 import { useAxios } from './useAxios.jsx';
-import { API_KEY, BACKEND_BASE_URL_DEV } from '../config.js';
+import { API_KEY, BASE_URL } from '../config.js';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useMessage } from '../context/MessageContext.jsx';
@@ -11,7 +11,7 @@ import { handleAscDesc } from '../views/utils.jsx';
 const PAGE_SIZE_NO_PAGINATION = 9999;
 
 export const useList = (queryKey, route, queryParams = {}) => {
-    const client = useAxios(BACKEND_BASE_URL_DEV);
+    const client = useAxios(BASE_URL);
     const { isPending, error, data } = useQuery({
         queryKey: [queryKey, queryParams],
         queryFn: async () => {
@@ -28,7 +28,7 @@ export const useList = (queryKey, route, queryParams = {}) => {
 };
 
 export const _useListPaginated = (queryKey, route, queryParams) => {
-    const client = useAxios(BACKEND_BASE_URL_DEV);
+    const client = useAxios(BASE_URL);
     const { ordering, orderDir, page } = queryParams;
     const { isPending, error, data } = useQuery({
         queryKey: [queryKey, queryParams],
@@ -46,7 +46,7 @@ export const _useListPaginated = (queryKey, route, queryParams) => {
 };
 
 export const useDetail = (queryKey, route, id) => {
-    const client = useAxios(BACKEND_BASE_URL_DEV);
+    const client = useAxios(BASE_URL);
     const { isPending, error, data } = useQuery({
         queryKey: [queryKey, id],
         queryFn: async () => {
@@ -69,9 +69,9 @@ export function useRaidListPaginated(queryParams) {
 export function useItemAwardedListPaginated(queryParams) {
     return _useListPaginated('items_awarded', '/items_awarded/', queryParams);
 }
-
+// TODO: Why are we doing API key here instead of token?
 export function useRaidAttendanceApprovalList(queryParams) {
-    const axiosInstance = axios.create({ baseURL: BACKEND_BASE_URL_DEV });
+    const axiosInstance = axios.create({ baseURL: BASE_URL });
     const { isPending, error, data } = useQuery({
         queryKey: ['raid_attendance_approval', queryParams],
         queryFn: async () => {
@@ -91,7 +91,7 @@ export function useRaidAttendanceApprovalMutation(id) {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const { addMessage } = useMessage();
-    const client = useAxios(BACKEND_BASE_URL_DEV);
+    const client = useAxios(BASE_URL);
     return useMutation({
         mutationFn: async ({ payload }) => {
             const { data } = await client.post(`/raid_attendance_approval/${id}/approve/`, payload);

@@ -4,6 +4,7 @@ import { useAuthContext } from '../context/AuthContext.jsx';
 import { useNavigate } from 'react-router';
 import { useMessage } from '../context/MessageContext.jsx';
 import { buttonStyles } from '../styles.js';
+import { BASE_URL } from '../config.js';
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -18,7 +19,7 @@ export default function Login() {
     async function getTokenPair(e) {
         e.preventDefault();
         try {
-            const resp = await axios.post('http://127.0.0.1:8000/api/token/', {
+            const resp = await axios.post(`${BASE_URL}/token/`, {
                 username,
                 password,
             });
