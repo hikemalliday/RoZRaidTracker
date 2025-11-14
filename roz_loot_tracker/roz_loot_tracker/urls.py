@@ -46,5 +46,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/token/', csrf_exempt(TokenObtainPairView.as_view()), name='token_obtain_pair'),
     path('api/token/refresh/', csrf_exempt(TokenRefreshView.as_view()), name='token_refresh'),
-    re_path(r'^.*$', index_view),
+    re_path(r'^(?!admin/|api/).*$', index_view),
 ]
