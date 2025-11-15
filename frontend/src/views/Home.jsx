@@ -1,4 +1,4 @@
-import {useNavigate} from "react-router";
+import { useNavigate } from 'react-router';
 
 export default function Home() {
     const navigate = useNavigate();
@@ -6,15 +6,18 @@ export default function Home() {
     return (
         <>
             <h1>Home / Dashboard</h1>
-            <div style={{
-                "display": "flex",
-                "flexDirection": "column",
-                "cursor": "pointer",
-            }}>
-                <a onClick={(_) => navigate("/player/")}>Players</a>
-                <a onClick={(_) => navigate("/raid/")}>Raids</a>
-                <a onClick={(_) => navigate("/item_awarded/")}>Items Awarded</a>
-                <a onClick={(_) => navigate("/raid_attendance/")}>Raid Attendance</a>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    cursor: 'pointer',
+                }}
+            >
+                <a onClick={_ => navigate('/ra_approval/')}>Approval</a>
+                <a onClick={_ => navigate('/compare/')}>Compare</a>
+                <a onClick={_ => navigate('/player/')}>Players</a>
+                <a onClick={_ => navigate('/raid/')}>Raids</a>
+                <a onClick={_ => navigate('/item_awarded/')}>Items Awarded</a>
             </div>
         </>
     );
