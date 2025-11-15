@@ -70,6 +70,7 @@ export function useItemAwardedListPaginated(queryParams) {
     return _useListPaginated('items_awarded', '/items_awarded/', queryParams);
 }
 
+// TODO: Use helper instead
 export function useRaidAttendanceApprovalList(queryParams) {
     const client = useAxios(BASE_URL);
     const { isPending, error, data } = useQuery({

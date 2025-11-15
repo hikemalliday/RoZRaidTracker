@@ -1,7 +1,7 @@
 import { getCell, getItemIconCell, getLinkCell, TableList } from './Tables.jsx';
 import { TableRow } from '@mui/material';
 
-export function ItemAwardedListTable({ data, highlight21Day = false }) {
+export function ItemAwardedListTable({ data, highlight21Day = false, ...rest }) {
     const veryDarkGray = '#333';
 
     const rowStyles = {
@@ -65,5 +65,7 @@ export function ItemAwardedListTable({ data, highlight21Day = false }) {
         Raid: 'raid.name',
         Date: 'raid.created_at',
     };
-    return <TableList headerMap={headerMap} data={data} getTableRows={getItemAwardedRows} />;
+    return (
+        <TableList headerMap={headerMap} data={data} getTableRows={getItemAwardedRows} {...rest} />
+    );
 }

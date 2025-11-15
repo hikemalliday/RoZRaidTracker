@@ -35,12 +35,13 @@ export function PlayerDetailView() {
             </Typography>
             <Container>
                 <Typography sx={{ mt: 1 }}>Lifetime RA: {playerData?.lifetime_ra}%</Typography>
+                <Typography sx={{ mt: 1 }}>21 Day RA: {playerData?.ra_21_day}%</Typography>
             </Container>
             <Container>
                 <Typography sx={{ mt: 5 }} variant="h6">
                     Items Awarded - Total: {itemAwardedData.count}
                 </Typography>
-                <ItemAwardedListTable data={itemAwardedData.results} />
+                <ItemAwardedListTable data={itemAwardedData.results} sortable />
             </Container>
             <Container sx={{ mt: 9 }}>
                 <Typography variant="h6">Characters</Typography>

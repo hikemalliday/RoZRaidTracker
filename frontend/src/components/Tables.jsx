@@ -86,7 +86,7 @@ export function TableList({ data, getTableRows, headerMap = {}, sortable = false
 
     const _getHeaderId = header => {
         const headerMapVal = headerMap[header];
-        return headerMapVal ? 'table-header-sortable' : 'table-header';
+        return headerMapVal && sortable ? 'table-header-sortable' : 'table-header';
     };
 
     return (

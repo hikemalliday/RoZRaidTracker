@@ -162,7 +162,11 @@ export function CompareView() {
                     {!isItemAwardedPending1 && playerId1 && (
                         <>
                             {getItemAwardedInfo(itemAwardedData1)}
-                            <ItemAwardedListTable data={itemAwardedData1.results} highlight21Day />
+                            <ItemAwardedListTable
+                                data={itemAwardedData1.results}
+                                highlight21Day
+                                sortable
+                            />
                         </>
                     )}
                 </Container>
@@ -174,7 +178,11 @@ export function CompareView() {
                     {!isItemAwardedPending2 && playerId2 && (
                         <>
                             {getItemAwardedInfo(itemAwardedData2)}
-                            <ItemAwardedListTable data={itemAwardedData2.results} highlight21Day />
+                            <ItemAwardedListTable
+                                data={itemAwardedData2.results}
+                                highlight21Day
+                                sortable
+                            />
                         </>
                     )}
                 </Container>
@@ -186,7 +194,11 @@ export function CompareView() {
                     {!isItemAwardedPending3 && playerId3 && (
                         <>
                             {getItemAwardedInfo(itemAwardedData3)}
-                            <ItemAwardedListTable data={itemAwardedData3.results} highlight21Day />
+                            <ItemAwardedListTable
+                                data={itemAwardedData3.results}
+                                highlight21Day
+                                sortable
+                            />
                         </>
                     )}
                 </Container>

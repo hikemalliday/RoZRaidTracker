@@ -19,6 +19,14 @@ export function RaidDetailView() {
         error: itemAwardedError,
     } = useList('items_awarded', '/items_awarded/', { raid: id });
 
+    const _sortPlayers = data => {
+        return data.sort((a, b) => {
+            const valA = a.player.name;
+            const valB = b.player.name;
+            return valA.localeCompare(valB);
+        });
+    };
+
     const pendingList = [isPending, isRaPending, isItemAwardedPending];
     const errorList = [error, raError, itemAwardedError];
 
@@ -47,13 +55,14 @@ export function RaidDetailView() {
             </Typography>
             <Container>
                 <RaidAttendanceListTable
-                    data={raData.results}
+                    data={_sortPlayers(raData.results)}
                     rowStyles={{
                         '& .MuiTableCell-root': {
                             padding: '4px',
                         },
                         height: '36px',
                     }}
+                    sortable
                 />
             </Container>
         </Container>
