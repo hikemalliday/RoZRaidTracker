@@ -1,33 +1,31 @@
-import axios from "axios";
-import {useAuthContext} from "../context/AuthContext.jsx";
-
+import axios from 'axios';
+import { useAuthContext } from '../context/AuthContext.jsx';
 
 export const useAxios = (baseURL, enableInterceptors = true) => {
-    const axiosInstance = axios.create({baseURL});
-    const {accessToken, refreshToken, login, logout} = useAuthContext();
+    const axiosInstance = axios.create({ baseURL });
+    const { accessToken, refreshToken, login, logout } = useAuthContext();
 
     if (!enableInterceptors) return axiosInstance;
 
     axiosInstance.interceptors.request.use(
-        (config) => {
+        config => {
             if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
             return config;
         },
-        (err) => Promise.reject(err)
-    )
+        err => Promise.reject(err)
+    );
 
     axiosInstance.interceptors.response.use(
-        (response) => {
+        response => {
             return response;
         },
-        async (err) => {
+        async err => {
             const originalRequest = err.config;
-            console.log(err);
             if (err.response.status === 401 && !originalRequest._retry) {
                 originalRequest._retry = true;
                 try {
-                    const refreshAxios = axios.create({ baseURL })
-                    const {data} = await refreshAxios.post("/token/refresh/", {
+                    const refreshAxios = axios.create({ baseURL });
+                    const { data } = await refreshAxios.post('/token/refresh/', {
                         refresh: refreshToken,
                     });
                     const tokens = {
@@ -44,8 +42,6 @@ export const useAxios = (baseURL, enableInterceptors = true) => {
             }
             return Promise.reject(err);
         }
-    )
+    );
     return axiosInstance;
 };
-
-

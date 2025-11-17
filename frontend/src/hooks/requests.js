@@ -1,7 +1,6 @@
 import { useAxios } from './useAxios.jsx';
-import { API_KEY, BASE_URL } from '../config.js';
+import { BASE_URL } from '../config.js';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { useMessage } from '../context/MessageContext.jsx';
 import { useNavigate } from 'react-router';
 import { handleAscDesc } from '../views/utils.jsx';
@@ -23,6 +22,25 @@ export const useList = (queryKey, route, queryParams = {}) => {
             });
             return data;
         },
+    });
+    return { isPending, error, data };
+};
+
+export const useListDebounced = (queryKey, route, filterField, filterVal) => {
+    const queryParams = { [filterField]: filterVal };
+    const client = useAxios(BASE_URL);
+    const { isPending, error, data } = useQuery({
+        queryKey: [queryKey, filterField, filterVal],
+        queryFn: async () => {
+            const { data } = await client.get(route, {
+                params: {
+                    ...queryParams,
+                    page_size: PAGE_SIZE_NO_PAGINATION,
+                },
+            });
+            return data;
+        },
+        enabled: filterVal.length > 3,
     });
     return { isPending, error, data };
 };
@@ -101,7 +119,8 @@ export function useRaidAttendanceApprovalMutation(id) {
             navigate('/ra_approval/');
         },
         onError: error => {
-            addMessage(`Failed to fetch player data: ${error.message}`, 'error');
+            const errorMessage = error?.response?.data?.error || 'Unknown error';
+            addMessage(`Failed to approve raid: ${errorMessage}`, 'error');
         },
     });
 }

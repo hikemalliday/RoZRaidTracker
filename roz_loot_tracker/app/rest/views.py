@@ -1,23 +1,33 @@
+from datetime import timedelta
+
 from app import models
 from app.serializers.serializers import PlayerSerializer, ItemSerializer, RaidSerializer, \
     ZoneSerializer, CharacterSerializer, ItemAwardedSerializer, PreferredPixelSerializer, RaidAttendanceSerializer, \
     RaidAttendanceApprovalSerializer
 from django.db import transaction
 from django.db.models import Count, F, FloatField, ExpressionWrapper, Func, Q
+from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.filters import OrderingFilter
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework_api_key.permissions import HasAPIKey
-from rest_framework.pagination import PageNumberPagination
-from django.utils import timezone
-from datetime import timedelta
+from django_filters import rest_framework as filters
 
 
 PERMISSION_CLASS_DEBUG = IsAuthenticated  # TODO: Dev purposes
+
+
+class ItemFilter(filters.FilterSet):
+    name = filters.CharFilter(field_name="name", lookup_expr="icontains")
+
+    class Meta:
+        model = models.Item
+        fields = ["name"]
+
 
 
 class AllowNoPagination(PageNumberPagination):
@@ -29,6 +39,8 @@ class ItemViewSet(viewsets.ModelViewSet):
     queryset = models.Item.objects.all()
     serializer_class = ItemSerializer
     permission_classes = (PERMISSION_CLASS_DEBUG,)
+    pagination_class = AllowNoPagination
+    filterset_class = ItemFilter
 
 
 class ZoneViewSet(viewsets.ModelViewSet):
@@ -133,8 +145,16 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
         if raid_attendance_approval.is_approved == True:
             raise ValidationError(f"Raid has already been approved. If you think this is a mistake, contact admin.")
 
-        players = request.data.get("players")
+        players = request.data.get("players_list")
+        if not players:
+            raise ValidationError({"error": f"No players assigned to raid."})
+
         raid_name = request.data.get("raid_name")
+        if not raid_name:
+            raise ValidationError({"error": f"Please provide a name for the Raid."})
+
+        items_awarded = request.data.get("items_awarded", [])
+
         with transaction.atomic():
             raid = models.Raid.objects.create(
                 name=raid_name,
@@ -147,9 +167,23 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
                         raid=raid,
                     )
                 except models.Player.DoesNotExist:
-                    raise ValidationError(f"Player {player_name} does not exist. Create player first and try again.")
+                    raise ValidationError({"error": f"Player '{player_name}' does not exist. Create player first and try again."})
+
+            for item_awarded in items_awarded:
+                if "player" not in item_awarded.keys():
+                    raise ValidationError({"error": f"Must assign an Item to a Player."})
+                if "item" not in item_awarded.keys():
+                    raise ValidationError({"error": f"Must assign a Player to an Item."})
+
+                models.ItemAwarded.objects.create(
+                    player_id=item_awarded['player']['id'],
+                    item_id=item_awarded['item']['id'],
+                    raid=raid,
+                )
 
             raid_attendance_approval.is_approved = True
             raid_attendance_approval.save()
 
         return Response({"message": f"Success: added raid '{raid_name} + attendees.'"}, status=200)
+
+
