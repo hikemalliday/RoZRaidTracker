@@ -168,3 +168,8 @@ CORS_ALLOWED_ORIGINS = [
     "https://45.55.129.24",
     "https://roz.yeetorskeet.com",
 ]
+
+# Needed to add this, was getting an error when trying to access admin terminal otherwise (in production)
+CSRF_TRUSTED_ORIGINS = [
+    "https://roz.yeetorskeet.com",
+]
