@@ -16,6 +16,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django_filters import rest_framework as filters
+from rest_framework_api_key.permissions import HasAPIKey
 
 
 PERMISSION_CLASS_DEBUG = IsAuthenticated  # TODO: Dev purposes
@@ -135,7 +136,7 @@ class RaidAttendanceViewSet(viewsets.ModelViewSet):
 class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
     queryset = models.RaidAttendanceApproval.objects.all()
     serializer_class = RaidAttendanceApprovalSerializer
-    permission_classes = (PERMISSION_CLASS_DEBUG,)
+    permission_classes = [PERMISSION_CLASS_DEBUG, HasAPIKey]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['is_approved']
 
