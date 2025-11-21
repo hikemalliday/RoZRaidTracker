@@ -20,6 +20,7 @@ import { buttonStyles } from '../styles.js';
 import { useDebounce } from '../hooks/useDebounce.js';
 import { v4 as uuidv4 } from 'uuid';
 import { getCell } from '../components/Tables.jsx';
+import { useAuthContext } from '../context/AuthContext.jsx';
 
 const textFieldStyles = {
     '& .MuiOutlinedInput-root': {
@@ -137,6 +138,7 @@ function ItemAwardedField({ fieldsResults, fieldKey }) {
 }
 
 export function ApprovalDetailView() {
+    const { isSuperUser } = useAuthContext();
     const { id } = useParams();
     const fieldsResults = useRef({});
     const [itemAwardedFields, setItemAwardedFields] = useState({});
@@ -155,6 +157,7 @@ export function ApprovalDetailView() {
 
     if (isPending) return <>LOADING...</>;
     if (error) return <>{error.message}</>;
+    if (!isSuperUser) return <>Unauthorized.</>;
 
     const getPlayersRows = players => {
         const _getPlayerCheckbox = player => {

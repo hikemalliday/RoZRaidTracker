@@ -3,7 +3,7 @@ import { useAuthContext } from '../context/AuthContext.jsx';
 
 export function NavBar() {
     const navigate = useNavigate();
-    const { isAuthenticated } = useAuthContext();
+    const { isAuthenticated, isSuperUser } = useAuthContext();
     const navBarLinks = () => {
         if (!isAuthenticated) return <div></div>;
         return (
@@ -11,10 +11,15 @@ export function NavBar() {
                 <a id="nav-bar-items-awarded-link" onClick={() => navigate('/compare')}>
                     COMPARE
                 </a>
-                {/*-*/}
-                {/*<a id="nav-bar-players-link" onClick={() => navigate('/ra_approval')}>*/}
-                {/*    APPROVAL*/}
-                {/*</a>*/}-
+                -
+                {isSuperUser && (
+                    <>
+                        <a id="nav-bar-players-link" onClick={() => navigate('/ra_approval')}>
+                            APPROVAL
+                        </a>
+                        -
+                    </>
+                )}
                 <a id="nav-bar-players-link" onClick={() => navigate('/player')}>
                     PLAYERS
                 </a>
