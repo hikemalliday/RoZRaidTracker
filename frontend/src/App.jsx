@@ -27,7 +27,7 @@ function App() {
                         <Route path="/player" element={<PlayerListView />} />
                         <Route path="/raid" element={<RaidListView />} />
                         <Route path="/item_awarded" element={<ItemAwardedListView />} />
-                        <Route path="/ra_approval" element={<ApprovalListView />} />
+                        {/*<Route path="/ra_approval" element={<ApprovalListView />} />*/}
                         */ Detail Views */
                         <Route path="/player/:id" element={<PlayerDetailView />} />
                         <Route path="/raid/:id" element={<RaidDetailView />} />

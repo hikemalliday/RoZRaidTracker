@@ -1,5 +1,5 @@
 services:
-  app-dev:
+  app:
     build: .
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
@@ -7,5 +7,5 @@ services:
       - .:/app
     ports:
       - "8000:8000"
-  environment:
-    - DJANGO_DB=dev-db
+    environment:
+      - DJANGO_DB=dev-db

@@ -3,7 +3,7 @@ from datetime import timedelta
 from app import models
 from app.serializers.serializers import PlayerSerializer, ItemSerializer, RaidSerializer, \
     ZoneSerializer, CharacterSerializer, ItemAwardedSerializer, PreferredPixelSerializer, RaidAttendanceSerializer, \
-    RaidAttendanceApprovalSerializer
+    RaidAttendanceApprovalSerializer, TokenObtainPairSerializer
 from django.db import transaction
 from django.db.models import Count, F, FloatField, ExpressionWrapper, Func, Q
 from django.utils import timezone
@@ -17,6 +17,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django_filters import rest_framework as filters
 from rest_framework_api_key.permissions import HasAPIKey
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 PERMISSION_CLASS_DEBUG = IsAuthenticated  # TODO: Dev purposes
@@ -187,4 +188,7 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
 
         return Response({"message": f"Success: added raid '{raid_name} + attendees.'"}, status=200)
 
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = TokenObtainPairSerializer
 

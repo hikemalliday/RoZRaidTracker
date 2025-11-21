@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from app.models import Player, Item, Zone, Character, Raid, ItemAwarded, PreferredPixel, RaidAttendance, RaidAttendanceApproval
-
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -77,3 +77,15 @@ class RaidAttendanceApprovalSerializer(serializers.ModelSerializer):
     class Meta:
         model = RaidAttendanceApproval
         fields = '__all__'
+
+
+class TokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        token["username"] = user.username
+        token["roles"] = [group.name for group in user.groups.all()]
+        token["is_superuser"] = user.is_superuser
+
+        return token

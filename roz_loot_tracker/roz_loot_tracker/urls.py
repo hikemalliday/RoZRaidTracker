@@ -18,12 +18,8 @@ from django.shortcuts import render
 from django.contrib import admin
 from django.urls import path, include, re_path
 from rest_framework import routers
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
 from app.rest.views import ItemViewSet, ZoneViewSet, PlayerViewSet, CharacterViewSet, RaidViewSet, ItemAwardedViewSet, \
-    PreferredPixelViewSet, RaidAttendanceViewSet, RaidAttendanceApprovalViewSet
+    PreferredPixelViewSet, RaidAttendanceViewSet, RaidAttendanceApprovalViewSet, CustomTokenObtainPairView
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -44,7 +40,7 @@ router.register(r'raid_attendance_approval', RaidAttendanceApprovalViewSet)
 urlpatterns = [
     path("api/", include(router.urls)),
     path('admin/', admin.site.urls),
-    path('api/token/', csrf_exempt(TokenObtainPairView.as_view()), name='token_obtain_pair'),
-    path('api/token/refresh/', csrf_exempt(TokenRefreshView.as_view()), name='token_refresh'),
+    path('api/token/', csrf_exempt(CustomTokenObtainPairView.as_view()), name='token_obtain_pair'),
+    path('api/token/refresh/', csrf_exempt(CustomTokenObtainPairView.as_view()), name='token_refresh'),
     re_path(r'^(?!admin/|api/).*$', index_view),
 ]

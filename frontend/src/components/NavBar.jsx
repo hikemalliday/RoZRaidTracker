@@ -11,11 +11,10 @@ export function NavBar() {
                 <a id="nav-bar-items-awarded-link" onClick={() => navigate('/compare')}>
                     COMPARE
                 </a>
-                -
-                <a id="nav-bar-players-link" onClick={() => navigate('/ra_approval')}>
-                    APPROVAL
-                </a>
-                -
+                {/*-*/}
+                {/*<a id="nav-bar-players-link" onClick={() => navigate('/ra_approval')}>*/}
+                {/*    APPROVAL*/}
+                {/*</a>*/}-
                 <a id="nav-bar-players-link" onClick={() => navigate('/player')}>
                     PLAYERS
                 </a>
