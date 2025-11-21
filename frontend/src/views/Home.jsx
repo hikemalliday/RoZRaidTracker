@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router';
+import { useAuthContext } from '../context/AuthContext.jsx';
 
 export default function Home() {
+    const { isSuperUser } = useAuthContext();
     const navigate = useNavigate();
 
     return (
@@ -13,7 +15,11 @@ export default function Home() {
                     cursor: 'pointer',
                 }}
             >
-                <a onClick={_ => navigate('/ra_approval/')}>Approval</a>
+                {isSuperUser && (
+                    <>
+                        <a onClick={_ => navigate('/ra_approval/')}>Approval</a>
+                    </>
+                )}
                 <a onClick={_ => navigate('/compare/')}>Compare</a>
                 <a onClick={_ => navigate('/player/')}>Players</a>
                 <a onClick={_ => navigate('/raid/')}>Raids</a>
