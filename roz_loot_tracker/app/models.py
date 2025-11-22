@@ -140,3 +140,8 @@ class RaidAttendanceApproval(models.Model):
     is_approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    # This field is added so that the user will enter a raid name when entering the discord bot command.
+    # The purpose of this is to simply 'pre-populate' the 'raid name' field in the frontend, nothing more.
+    # It simply serves as a way to provide more info for the 'approval' row. Because when they start stacking up, you
+    # forget which is which.
+    raid_name = models.CharField(max_length=100, **NOT_REQUIRED)

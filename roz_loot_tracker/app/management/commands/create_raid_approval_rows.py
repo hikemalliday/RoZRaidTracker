@@ -1,0 +1,40 @@
+from django.core.management.base import BaseCommand
+from django.db import transaction
+from app.models import RaidAttendanceApproval
+from datetime import datetime
+
+
+
+# As of 11/21/25 before raid time, there are 7 to be added here, and 7 to be added from the bot, 14 total
+class Command(BaseCommand):
+    help = "create a raid attendance rows"
+    def handle(self, *args, **options):
+        dates_created = [
+            "11/17/25",
+            "11/17/25",
+            "11/17/25",
+            "11/17/25",
+            "11/17/25",
+            "11/18/25",
+        ]
+        players_lists = [
+            ['Bodied', 'Shinaba', 'Mcoy', 'Nuke', 'Cybercop', 'Vaporise', 'Nerfed', 'stryne', 'Titanuk', 'jAH', 'Revy', 'Silikten', 'Kugaz', 'Tune', 'Mendl', 'Retticus', 'Sraalok', 'Sars', 'Biglime', 'Knife', 'Noidz', 'Roger', 'Birdop', 'Charming', 'afflictx', 'Nocsucow', 'Taquisha', 'Gream', 'Kilkur', 'Big G', 'Visible', 'Mortii', 'Volture', 'Blueflower', 'Sharknado', 'Maxisthefoat', 'QuiexVZ'],
+            ['Bodied', 'Shinaba', 'Mcoy', 'Nuke', 'Cybercop', 'Vaporise', 'Nerfed', 'stryne', 'Titanuk', 'jAH', 'Revy', 'Silikten', 'Kugaz', 'Tune', 'Mendl', 'Retticus', 'Sraalok', 'Sars', 'Biglime', 'Knife', 'Noidz', 'Roger', 'Birdop', 'Charming', 'afflictx', 'Nocsucow', 'Taquisha', 'Gream', 'Kilkur', 'Big G', 'Visible', 'Mortii', 'Volture', 'Blueflower', 'Sharknado', 'Maxisthefoat', 'QuiexVZ', 'darkhorn', 'Skitter', 'Apes', 'Ksah', 'Shakirra'],
+            ['Bodied', 'Mcoy', 'Cybercop', 'Vaporise', 'Nerfed', 'stryne', 'Titanuk', 'jAH', 'Revy', 'Silikten', 'Kugaz', 'Tune', 'Retticus', 'Sraalok', 'Sars', 'Biglime', 'Knife', 'Noidz', 'Roger', 'Birdop', 'Charming', 'afflictx', 'Nocsucow', 'Taquisha', 'Gream', 'Kilkur', 'Big G', 'Visible', 'Mortii', 'Blueflower', 'Sharknado', 'Maxisthefoat', 'QuiexVZ', 'darkhorn', 'Skitter', 'Apes', 'Ksah', 'Shakirra', 'Machete'],
+            ['Mcoy', 'Cybercop', 'Nerfed', 'stryne', 'Titanuk', 'jAH', 'Revy', 'Kugaz', 'Tune', 'Sraalok', 'Sars', 'Noidz', 'Roger', 'Birdop', 'Charming', 'afflictx', 'Nocsucow', 'Gream', 'Kilkur', 'Big G', 'Visible', 'Mortii', 'Sharknado', 'QuiexVZ', 'darkhorn', 'Skitter', 'Apes', 'Ksah', 'Shakirra', 'Machete', 'Little', 'Nuke', 'Retticus', 'Mendl', 'crip'],
+            ['Mcoy', 'Cybercop', 'Nerfed', 'stryne', 'Titanuk', 'jAH', 'Revy', 'Kugaz', 'Tune', 'Sraalok', 'Sars', 'Noidz', 'Roger', 'Birdop', 'Charming', 'afflictx', 'Nocsucow', 'Gream', 'Kilkur', 'Big G', 'Visible', 'Mortii', 'Sharknado', 'QuiexVZ', 'darkhorn', 'Skitter', 'Apes', 'Ksah', 'Shakirra', 'Machete', 'Little', 'Nuke', 'Mendl', 'crip', 'Greyn', 'Retticus', 'Frodo'],
+            ['Noidz', 'Sraalok', 'Silikten', 'Mcoy', 'Nerfed', 'Kugaz', 'Tune', 'Ksah', 'Nuke', 'Mortii', 'stryne', 'Vaporise', 'Blueflower', 'Sars', 'Gream', 'afflictx', 'Mendl', 'Big G', 'Machete', 'Shakirra', 'jAH', 'Revy', 'Knife', 'Fictive', 'Roger', 'Dustmop', 'Birdop', 'Titanuk', 'Skitter', 'Kodo', 'Visible', 'boat'],
+        ]
+        with transaction.atomic():
+            RaidAttendanceApproval._meta.get_field('created_at').auto_now_add = False
+            for date_created, players_list in zip(dates_created, players_lists):
+                dt_naive = None
+                try:
+                    dt_naive = datetime.strptime(date_created, "%m/%d/%Y")
+                except:
+                    dt_naive = datetime.now()
+                RaidAttendanceApproval.objects.create(
+                    players_list=players_list,
+                    created_at=dt_naive,
+                )
+        self.stdout.write(self.style.SUCCESS(f'Successfully added {len(players_lists)} RaidAttendanceApproval entries.'))
