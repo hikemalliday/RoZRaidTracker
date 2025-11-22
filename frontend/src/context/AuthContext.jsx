@@ -30,8 +30,6 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         if (accessToken) {
             const decoded = jwtDecode(accessToken);
-            console.log('decoded:');
-            console.log(decoded);
             setIsSuperUser(decoded.is_superuser);
         }
     }, [accessToken]);

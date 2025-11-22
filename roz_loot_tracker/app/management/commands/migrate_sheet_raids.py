@@ -4,8 +4,9 @@ from datetime import datetime
 from app.models import Raid, RaidAttendance, Player
 from django.db import transaction
 
-
-with open('raid_players_11_1.csv', newline='') as csvfile:
+# TODO: NOTE:
+# Requires 2 files. One for raid meta and one for raid players. Create CSVs by copy pasting from titty's sheet
+with open('raid_players_11_14.csv', newline='') as csvfile:
     reader = list(csv.reader(csvfile))
 
 transposed = list(zip(*reader))
@@ -14,7 +15,7 @@ for col in transposed:
     players = [p.strip() for p in col if p and p.strip()]
     player_cols.append(players)
 
-with open('raid_meta_11_1.csv', newline='') as csvfile:
+with open('raid_meta_11_14.csv', newline='') as csvfile:
     reader = list(csv.reader(csvfile))
 
 transposed = list(zip(*reader))

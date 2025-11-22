@@ -152,7 +152,8 @@ export function ApprovalDetailView() {
     const [playersToSubmit, setPlayersToSubmit] = useState([]);
 
     useEffect(() => {
-        return setPlayersToSubmit(data?.players_list);
+        setRaid(data?.raid_name);
+        setPlayersToSubmit(data?.players_list);
     }, [data]);
 
     if (isPending) return <>LOADING...</>;
@@ -287,6 +288,7 @@ export function ApprovalDetailView() {
                             color: 'white',
                         },
                     }}
+                    value={raid}
                     onChange={handleTextInput}
                 />
                 <Button
