@@ -8,14 +8,15 @@ export function PaginatedListTable({
     TableComponent,
     sortChoices = [],
     sortMap = {},
+    defaultSort = {},
 }) {
     const _getOrdering = str => {
         return sortMap?.[str] || str;
     };
 
     const [page, setPage] = useState(1);
-    const [orderDir, setOrderDir] = useState('asc');
-    const [ordering, setOrdering] = useState(sortChoices[0] || 'name');
+    const [orderDir, setOrderDir] = useState(defaultSort?.orderDir || 'asc');
+    const [ordering, setOrdering] = useState(defaultSort?.ordering || 'name');
     const { data, isPending, error } = requestHook({
         page,
         ordering: _getOrdering(ordering),

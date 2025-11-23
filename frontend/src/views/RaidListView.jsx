@@ -10,6 +10,10 @@ export function RaidListView() {
             TableComponent={RaidListTable}
             sortChoices={['name', 'zone', 'date']}
             sortMap={{ date: 'created_at' }}
+            defaultSort={{
+                orderDir: 'desc',
+                ordering: 'created_at',
+            }}
         />
     );
 }
