@@ -61,7 +61,7 @@ export function PlayerDetailView() {
             </Container>
             <Container>
                 <Typography sx={{ mt: 5 }} variant="h6">
-                    Raids Attended: {itemAwardedData.count}
+                    Raids Attended: {raidsData.count}
                 </Typography>
                 <RaidAttendanceListTable data={_sortRaData(raidsData?.results)} sortable />
             </Container>
