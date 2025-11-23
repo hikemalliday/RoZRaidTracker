@@ -137,6 +137,58 @@ function ItemAwardedField({ fieldsResults, fieldKey }) {
     );
 }
 
+function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
+    const { data: playersData, isPending: isPlayersPending } = useList('players', '/players/');
+    const [selectedPlayer, setSelectedPlayer] = useState(null);
+    const _getReducedResults = results => {
+        if (!results) return [];
+        return results.map(res => {
+            return { id: res.id, label: res.name };
+        });
+    };
+
+    const _sortReducedList = results => {
+        return results.sort((a, b) => {
+            const valA = a.label;
+            const valB = b.label;
+            return valA.localeCompare(valB);
+        });
+    };
+
+    const getPlayersListFinal = results => {
+        const reducedList = _getReducedResults(results);
+        return _sortReducedList(reducedList);
+    };
+
+    const handleSubmit = () => {
+        if (!selectedPlayer) return;
+        if (playersToSubmit.some(p => p.name === selectedPlayer.name)) return;
+        const newPlayersToSubmit = [...playersToSubmit];
+        newPlayersToSubmit.unshift(selectedPlayer);
+        return setPlayersToSubmit(newPlayersToSubmit);
+    };
+
+    return (
+        <Container
+            sx={{
+                ...styles,
+                display: 'flex',
+            }}
+        >
+            <Autocomplete
+                renderInput={params => (
+                    <TextField {...params} label="Player" sx={textFieldStyles} size="small" />
+                )}
+                options={!isPlayersPending ? getPlayersListFinal(playersData.results) : []}
+                onChange={(_, option) => {
+                    setSelectedPlayer({ name: option.label, is_selected: true });
+                }}
+            />
+            <button onClick={handleSubmit}>ADD PLAYER</button>
+        </Container>
+    );
+}
+
 export function ApprovalDetailView() {
     const { isSuperUser } = useAuthContext();
     const { id } = useParams();
@@ -153,7 +205,11 @@ export function ApprovalDetailView() {
 
     useEffect(() => {
         setRaid(data?.raid_name);
-        setPlayersToSubmit(data?.players_list);
+        setPlayersToSubmit(
+            data?.players_list.map(player => {
+                return { name: player, is_selected: true };
+            })
+        );
     }, [data]);
 
     if (isPending) return <>LOADING...</>;
@@ -164,14 +220,9 @@ export function ApprovalDetailView() {
         const _getPlayerCheckbox = player => {
             const _handleCheckboxClick = e => {
                 const newPlayersToSubmit = [...playersToSubmit];
-                if (e.target.checked) {
-                    return setPlayersToSubmit([...newPlayersToSubmit, player]);
-                }
-                return setPlayersToSubmit(
-                    newPlayersToSubmit.filter(plyr => {
-                        return plyr !== player;
-                    })
-                );
+                const playerToMutate = newPlayersToSubmit.filter(p => p.name === player.name);
+                playerToMutate.is_selected = !!e.target.checked;
+                return setPlayersToSubmit(newPlayersToSubmit);
             };
 
             return (
@@ -194,7 +245,7 @@ export function ApprovalDetailView() {
                     }}
                     key={i}
                 >
-                    {getCell(player)}
+                    {getCell(player.name)}
                     {getCell(_getPlayerCheckbox(player))}
                 </TableRow>
             );
@@ -228,14 +279,13 @@ export function ApprovalDetailView() {
         });
     };
 
-    // TODO: We might want to reduce our 'fieldsResults' objects so that the backend doesn't have to deal with it
     const handleSubmit = _ => {
         if (!raid) return;
         if (playersToSubmit.length === 0) return;
 
         const payload = {
             raid_name: raid,
-            players_list: playersToSubmit,
+            players_list: playersToSubmit.map(player => player.name),
         };
         const itemsAwarded = Object.values(fieldsResults.current).map(itemAwarded => itemAwarded);
         if (itemsAwarded) payload.items_awarded = itemsAwarded;
@@ -248,6 +298,7 @@ export function ApprovalDetailView() {
                 ? Object.values(itemAwardedFields).map(field => field)
                 : null}
             <button onClick={addItemAwardedField}>ADD ITEM</button>
+
             <Container
                 sx={{
                     marginTop: 5,
@@ -257,6 +308,13 @@ export function ApprovalDetailView() {
                     alignItems: 'center',
                 }}
             >
+                {
+                    <AddPlayerField
+                        styles={{ marginLeft: 20 }}
+                        playersToSubmit={playersToSubmit}
+                        setPlayersToSubmit={setPlayersToSubmit}
+                    />
+                }
                 <TextField
                     label="Raid Name"
                     color="secondary"
@@ -311,7 +369,7 @@ export function ApprovalDetailView() {
                     justifyContent: 'center',
                 }}
             >
-                <TableBody>{getPlayersRows(data.players_list)}</TableBody>
+                <TableBody>{getPlayersRows(playersToSubmit ?? [])}</TableBody>
             </Table>
         </Container>
     );
