@@ -38,12 +38,14 @@ export function RaidDetailView() {
 
     return (
         <Container>
-            {isSuperUser && (
+            {isSuperUser === true ? (
                 <>
                     <button style={{ marginTop: 5 }} onClick={_ => navigate('edit')}>
                         EDIT RAID
                     </button>
                 </>
+            ) : (
+                <></>
             )}
             <Typography sx={{ mt: 5 }} variant="h5">
                 {data?.name}
