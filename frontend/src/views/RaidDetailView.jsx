@@ -4,9 +4,11 @@ import { Container, Typography } from '@mui/material';
 import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.jsx';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { renderErrors } from './utils.jsx';
+import { useAuthContext } from '../context/AuthContext.jsx';
 
 export function RaidDetailView() {
     const { id } = useParams();
+    const { isSuperUser } = useAuthContext();
     const navigate = useNavigate();
     const { isPending, data, error } = useDetail('raids', '/raids/', id);
     const {
@@ -36,9 +38,13 @@ export function RaidDetailView() {
 
     return (
         <Container>
-            <button style={{ marginTop: 5 }} onClick={_ => navigate('edit')}>
-                EDIT RAID
-            </button>
+            {isSuperUser && (
+                <>
+                    <button style={{ marginTop: 5 }} onClick={_ => navigate('edit')}>
+                        EDIT RAID
+                    </button>
+                </>
+            )}
             <Typography sx={{ mt: 5 }} variant="h5">
                 {data?.name}
             </Typography>
