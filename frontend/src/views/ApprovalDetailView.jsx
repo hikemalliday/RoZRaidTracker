@@ -190,8 +190,8 @@ function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
 }
 
 export function ApprovalDetailView() {
-    const { isSuperUser } = useAuthContext();
     const { id } = useParams();
+    const { isSuperUser } = useAuthContext();
     const fieldsResults = useRef({});
     const [itemAwardedFields, setItemAwardedFields] = useState({});
     const { isPending, data, error } = useDetail(

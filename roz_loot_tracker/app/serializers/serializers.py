@@ -66,6 +66,19 @@ class RaidAttendanceSerializer(serializers.ModelSerializer):
     player = PlayerSerializer(read_only=True)
     raid = RaidSerializer(read_only=True)
 
+    # Simple IDs for writing (WRITE-ONLY)
+    player_id = serializers.PrimaryKeyRelatedField(
+        queryset=Player.objects.all(),
+        source="player",
+        write_only=True
+    )
+    raid_id = serializers.PrimaryKeyRelatedField(
+        queryset=Raid.objects.all(),
+        source="raid",
+        write_only=True
+    )
+
+
     class Meta:
         model = RaidAttendance
         fields = '__all__'

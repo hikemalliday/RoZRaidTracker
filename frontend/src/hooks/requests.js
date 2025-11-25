@@ -124,3 +124,44 @@ export function useRaidAttendanceApprovalMutation(id) {
         },
     });
 }
+
+export function useRaidAttendanceMutation() {
+    const queryClient = useQueryClient();
+    const { addMessage } = useMessage();
+    const client = useAxios(BASE_URL);
+    return useMutation({
+        mutationFn: async ({ payload }) => {
+            console.log(payload);
+            const { data } = await client.post(`/raid_attendance/`, payload);
+            return data;
+        },
+        onSuccess: async _ => {
+            addMessage('Successfully added Raid Attendance row.');
+            await queryClient.refetchQueries(['raid_attendance']);
+        },
+        onError: error => {
+            const errorMessage = error?.response?.data?.error || 'Unknown error';
+            addMessage(`Failed to add Raid Attendance row: ${errorMessage}`, 'error');
+        },
+    });
+}
+
+export function useRaidAttendanceDelete() {
+    const queryClient = useQueryClient();
+    const { addMessage } = useMessage();
+    const client = useAxios(BASE_URL);
+    return useMutation({
+        mutationFn: async id => {
+            const { data } = await client.delete(`/raid_attendance/${id}/`);
+            return data;
+        },
+        onSuccess: async _ => {
+            addMessage('Successfully removed Raid Attendance row.');
+            await queryClient.refetchQueries(['raid_attendance']);
+        },
+        onError: error => {
+            const errorMessage = error?.response?.data?.error || 'Unknown error';
+            addMessage(`Failed to remove Raid Attendance row: ${errorMessage}`, 'error');
+        },
+    });
+}

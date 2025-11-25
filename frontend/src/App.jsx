@@ -12,6 +12,7 @@ import { RaidDetailView } from './views/RaidDetailView.jsx';
 import { ApprovalListView } from './views/ApprovalListView.jsx';
 import { CompareView } from './views/CompareView.jsx';
 import { ApprovalDetailView } from './views/ApprovalDetailView.jsx';
+import { RaidEditView } from './views/RaidEditView.jsx';
 
 function App() {
     const queryClient = new QueryClient();
@@ -32,6 +33,8 @@ function App() {
                         <Route path="/player/:id" element={<PlayerDetailView />} />
                         <Route path="/raid/:id" element={<RaidDetailView />} />
                         <Route path="/ra_approval/:id" element={<ApprovalDetailView />} />
+                        */ Edit Views */
+                        <Route path="/raid/:id/edit" element={<RaidEditView />} />
                         */ MISC */
                         <Route path="/compare" element={<CompareView />} />
                     </Route>
