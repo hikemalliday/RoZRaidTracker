@@ -48,7 +48,14 @@ body {
   gap: 10px;
   padding-right: 10px;
   align-items: center;
+  user-select: none;
 }
+
+#nav-bar-link {
+  margin: 10px;
+}
+
+
 
 
 

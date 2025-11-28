@@ -1,8 +1,8 @@
 import { useRaidAttendanceApprovalList } from '../hooks/requests.js';
-import { ApprovalListTable } from '../components/ApprovalListTable.jsx';
+import { ApprovalPendingListTable } from '../components/ApprovalPendingListTable.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
 
-export function ApprovalListView() {
+export function ApprovalPendingListView() {
     const { isSuperUser } = useAuthContext();
     const { isPending, data, error } = useRaidAttendanceApprovalList({ is_approved: false });
 
@@ -10,5 +10,5 @@ export function ApprovalListView() {
     if (error) return <>{error.message}</>;
     if (data.results.length === 0) return <>No raids to approve.</>;
     if (!isSuperUser) return <>Unauthorized.</>;
-    return <ApprovalListTable data={data.results} />;
+    return <ApprovalPendingListTable data={data.results} />;
 }

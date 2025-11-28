@@ -16,53 +16,14 @@ import {
     Typography,
 } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
-import { buttonStyles } from '../styles.js';
+import { buttonStyles, listBoxStyles, textFieldStyles } from '../styles.js';
 import { useDebounce } from '../hooks/useDebounce.js';
 import { v4 as uuidv4 } from 'uuid';
 import { getCell } from '../components/Tables.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
+import { getPlayersListFinal, _getReducedResults } from './utils.jsx';
 
-const textFieldStyles = {
-    '& .MuiOutlinedInput-root': {
-        width: 600,
-        color: 'white',
-        '& fieldset': {
-            borderColor: 'rgba(255,255,255,0.4)',
-        },
-        '&:hover fieldset': {
-            borderColor: 'rgba(255,255,255,0.7)',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: '#66b2ff', // same as MUI docs
-            borderWidth: 2,
-        },
-    },
-    '& .MuiInputLabel-root': {
-        color: 'rgba(255,255,255,0.7)',
-    },
-    '& label.Mui-focused': {
-        color: '#66b2ff',
-    },
-};
-
-const listBoxStyles = {
-    backgroundColor: '#121212',
-    color: 'white',
-    border: '1px solid rgba(255,255,255,0.2)',
-    '& .MuiAutocomplete-option': {
-        padding: '8px 12px',
-        '&.Mui-focused': {
-            backgroundColor: 'rgba(255,255,255,0.12)',
-        },
-        '&.Mui-selected': {
-            backgroundColor: 'rgba(102,178,255,0.25)',
-        },
-        '&.Mui-selected:hover': {
-            backgroundColor: 'rgba(102,178,255,0.35)',
-        },
-    },
-};
-
+// TODO: Theres a 'key' render warning in this view, not really sure how to fix it given the way I decoded to render some of the fields
 // TODO: Dev notes:
 // In this file, in order to handle the dynamically generated fields, we pass an object 'fieldsResults' to all rendered children,
 // and we also use UUID's for each field to use as a key to mutate said object. Best I could come up with.
@@ -82,13 +43,6 @@ function ItemAwardedField({ fieldsResults, fieldKey }) {
         debounced
     );
     const { data: playersData, isPending: isPlayersPending } = useList('players', '/players/');
-
-    const _getReducedResults = results => {
-        if (!results) return [];
-        return results.map(res => {
-            return { id: res.id, label: res.name };
-        });
-    };
 
     const _sortReducedList = results => {
         return results.sort((a, b) => {
@@ -140,25 +94,6 @@ function ItemAwardedField({ fieldsResults, fieldKey }) {
 function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
     const { data: playersData, isPending: isPlayersPending } = useList('players', '/players/');
     const [selectedPlayer, setSelectedPlayer] = useState(null);
-    const _getReducedResults = results => {
-        if (!results) return [];
-        return results.map(res => {
-            return { id: res.id, label: res.name };
-        });
-    };
-
-    const _sortReducedList = results => {
-        return results.sort((a, b) => {
-            const valA = a.label;
-            const valB = b.label;
-            return valA.localeCompare(valB);
-        });
-    };
-
-    const getPlayersListFinal = results => {
-        const reducedList = _getReducedResults(results);
-        return _sortReducedList(reducedList);
-    };
 
     const handleSubmit = () => {
         if (!selectedPlayer) return;
@@ -189,7 +124,7 @@ function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
     );
 }
 
-export function ApprovalDetailView() {
+export function ApprovalPendingDetailView() {
     const { id } = useParams();
     const { isSuperUser } = useAuthContext();
     const fieldsResults = useRef({});
@@ -234,7 +169,13 @@ export function ApprovalDetailView() {
             );
         };
 
-        return players.map((player, i) => {
+        const sortedPlayers = players.sort((a, b) => {
+            const valA = a.name;
+            const valB = b.name;
+            return valA.localeCompare(valB);
+        });
+
+        return sortedPlayers.map(player => {
             return (
                 <TableRow
                     sx={{
@@ -243,7 +184,7 @@ export function ApprovalDetailView() {
                         },
                         height: '36px',
                     }}
-                    key={i}
+                    key={player.id}
                 >
                     {getCell(player.name)}
                     {getCell(_getPlayerCheckbox(player))}

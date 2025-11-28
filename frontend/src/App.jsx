@@ -9,10 +9,11 @@ import { RaidListView } from './views/RaidListView.jsx';
 import { ItemAwardedListView } from './views/itemAwardedListView.jsx';
 import { PlayerDetailView } from './views/PlayerDetailView.jsx';
 import { RaidDetailView } from './views/RaidDetailView.jsx';
-import { ApprovalListView } from './views/ApprovalListView.jsx';
+import { ApprovalPendingListView } from './views/ApprovalPendingListView.jsx';
 import { CompareView } from './views/CompareView.jsx';
-import { ApprovalDetailView } from './views/ApprovalDetailView.jsx';
+import { ApprovalPendingDetailView } from './views/ApprovalPendingDetailView.jsx';
 import { RaidEditView } from './views/RaidEditView.jsx';
+import { ApprovalHistoryListView } from './views/ApprovalHistoryListView.jsx';
 
 function App() {
     const queryClient = new QueryClient();
@@ -28,11 +29,15 @@ function App() {
                         <Route path="/player" element={<PlayerListView />} />
                         <Route path="/raid" element={<RaidListView />} />
                         <Route path="/item_awarded" element={<ItemAwardedListView />} />
-                        <Route path="/ra_approval" element={<ApprovalListView />} />
+                        <Route path="/ra_approval_pending" element={<ApprovalPendingListView />} />
+                        <Route path="/ra_approval_history" element={<ApprovalHistoryListView />} />
                         */ Detail Views */
                         <Route path="/player/:id" element={<PlayerDetailView />} />
                         <Route path="/raid/:id" element={<RaidDetailView />} />
-                        <Route path="/ra_approval/:id" element={<ApprovalDetailView />} />
+                        <Route
+                            path="/ra_approval_pending/:id"
+                            element={<ApprovalPendingDetailView />}
+                        />
                         */ Edit Views */
                         <Route path="/raid/:id/edit" element={<RaidEditView />} />
                         */ MISC */

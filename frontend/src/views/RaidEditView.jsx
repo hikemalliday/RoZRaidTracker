@@ -7,57 +7,15 @@ import {
 } from '../hooks/requests.js';
 import { useAuthContext } from '../context/AuthContext.jsx';
 import { Autocomplete, Container, TextField, Typography } from '@mui/material';
-import { renderErrors } from './utils.jsx';
+import { getPlayersListFinal, renderErrors } from './utils.jsx';
 import { useEffect, useRef, useState } from 'react';
 import { useMessage } from '../context/MessageContext.jsx';
-
-// TODO: Abstract away, also used in ApprovalDetailView
-const textFieldStyles = {
-    '& .MuiOutlinedInput-root': {
-        width: 600,
-        color: 'white',
-        '& fieldset': {
-            borderColor: 'rgba(255,255,255,0.4)',
-        },
-        '&:hover fieldset': {
-            borderColor: 'rgba(255,255,255,0.7)',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: '#66b2ff',
-            borderWidth: 2,
-        },
-    },
-    '& .MuiInputLabel-root': {
-        color: 'rgba(255,255,255,0.7)',
-    },
-    '& label.Mui-focused': {
-        color: '#66b2ff',
-    },
-};
+import { textFieldStyles } from '../styles.js';
 
 function AddPlayerField({ raidId, styles = {} }) {
     const { data: playersData, isPending: isPlayersPending } = useList('players', '/players/');
     const [selectedPlayer, setSelectedPlayer] = useState(null);
     const { mutate } = useRaidAttendanceMutation();
-    const _getReducedResults = results => {
-        if (!results) return [];
-        return results.map(res => {
-            return { id: res.id, label: res.name };
-        });
-    };
-
-    const _sortReducedList = results => {
-        return results.sort((a, b) => {
-            const valA = a.label;
-            const valB = b.label;
-            return valA.localeCompare(valB);
-        });
-    };
-
-    const getPlayersListFinal = results => {
-        const reducedList = _getReducedResults(results);
-        return _sortReducedList(reducedList);
-    };
 
     const handleSubmit = () => {
         const payload = {

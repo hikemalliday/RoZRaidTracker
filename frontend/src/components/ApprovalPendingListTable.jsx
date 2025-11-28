@@ -1,18 +1,16 @@
 import { TableRow } from '@mui/material';
 import { getLinkCell, TableList } from './Tables.jsx';
+import { joinAndTruncate } from '../views/utils.jsx';
 
-export function ApprovalListTable({ data }) {
-    function _joinAndTruncate(playersArray) {
-        return playersArray.join(', ').slice(0, 50) + '...';
-    }
+export function ApprovalPendingListTable({ data }) {
     const getApprovalRows = sorted => {
         return sorted.map((row, i) => {
-            const detailRoute = `/ra_approval/${row?.id}`;
+            const detailRoute = `/ra_approval_pending/${row?.id}`;
             return (
                 <TableRow key={i}>
                     {getLinkCell(row?.id, detailRoute)}
                     {getLinkCell(row?.raid_name, detailRoute)}
-                    {getLinkCell(_joinAndTruncate(row?.players_list), detailRoute)}
+                    {getLinkCell(joinAndTruncate(row?.players_list, 100), detailRoute)}
                     {getLinkCell(row?.created_at, detailRoute)}
                 </TableRow>
             );
