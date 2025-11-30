@@ -157,12 +157,17 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
 
         items_awarded = request.data.get("items_awarded", [])
 
+        player_name_map = {
+            "Goatassin/Oceanman": "Goatassin",
+        }
+
         with transaction.atomic():
             raid = models.Raid.objects.create(
                 name=raid_name,
             )
             for player_name in players:
                 try:
+                    player_name = player_name_map.get(player_name, player_name)
                     player = models.Player.objects.get(name=player_name.title())
                     models.RaidAttendance.objects.create(
                         player=player,
