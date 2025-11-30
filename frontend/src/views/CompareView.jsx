@@ -30,8 +30,6 @@ export function CompareView() {
         error: itemAwardedError3,
     } = useList('items_awarded', '/items_awarded/', { player: playerId3 });
 
-    const errorsArray = [playersError, itemAwardedError1, itemAwardedError2, itemAwardedError3];
-
     useEffect(() => {
         if (playersData?.results && playersData.results.length > 0) {
             const players = playersData.results;
@@ -41,6 +39,7 @@ export function CompareView() {
         }
     }, [playersData]);
 
+    const errorsArray = [playersError, itemAwardedError1, itemAwardedError2, itemAwardedError3];
     if (isPlayersPending) return <>LOADING...</>;
     if (errorsArray.some(Boolean)) return <>{renderErrors(errorsArray)}</>;
 
@@ -75,6 +74,12 @@ export function CompareView() {
     const playersIdMap = getPlayersIdMap(playersData.results);
     const playersNameMap = getPlayersNameMap(playersData.results);
     const playersNamesArray = Object.keys(playersIdMap).sort();
+
+    const sortItemsById = results => {
+        return results.sort((a, b) => {
+            return b.id - a.id;
+        });
+    };
 
     const getPlayerAutoComplete = (playerId, changeHandler) => {
         const veryDarkGray = '#333';
@@ -163,7 +168,7 @@ export function CompareView() {
                         <>
                             {getItemAwardedInfo(itemAwardedData1)}
                             <ItemAwardedListTable
-                                data={itemAwardedData1.results}
+                                data={sortItemsById(itemAwardedData1.results)}
                                 highlight21Day
                                 sortable
                             />
@@ -179,7 +184,7 @@ export function CompareView() {
                         <>
                             {getItemAwardedInfo(itemAwardedData2)}
                             <ItemAwardedListTable
-                                data={itemAwardedData2.results}
+                                data={sortItemsById(itemAwardedData2.results)}
                                 highlight21Day
                                 sortable
                             />
@@ -195,7 +200,7 @@ export function CompareView() {
                         <>
                             {getItemAwardedInfo(itemAwardedData3)}
                             <ItemAwardedListTable
-                                data={itemAwardedData3.results}
+                                data={sortItemsById(itemAwardedData3.results)}
                                 highlight21Day
                                 sortable
                             />
