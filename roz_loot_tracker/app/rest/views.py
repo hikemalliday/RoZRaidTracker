@@ -140,6 +140,7 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
     permission_classes = [PERMISSION_CLASS_DEBUG | HasAPIKey]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['is_approved']
+    pagination_class = AllowNoPagination
 
     @action(detail=True, methods=['post'])
     def approve(self, request, pk=None):

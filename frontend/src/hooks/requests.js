@@ -95,7 +95,7 @@ export function useRaidAttendanceApprovalList(queryParams) {
         queryKey: ['raid_attendance_approval', queryParams],
         queryFn: async () => {
             const { data } = await client.get(`/raid_attendance_approval/`, {
-                params: queryParams,
+                params: { ...queryParams, page_size: PAGE_SIZE_NO_PAGINATION },
             });
             return data;
         },
