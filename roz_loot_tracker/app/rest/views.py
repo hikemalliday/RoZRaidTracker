@@ -159,6 +159,7 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
 
         player_name_map = {
             "Goatassin/Oceanman": "Goatassin",
+            "Vanco (edging)": "Vanco",
         }
 
         with transaction.atomic():
