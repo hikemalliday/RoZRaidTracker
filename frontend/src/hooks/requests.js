@@ -116,7 +116,7 @@ export function useRaidAttendanceApprovalMutation(id) {
         onSuccess: async _ => {
             addMessage('Successfully approved raid.');
             await queryClient.refetchQueries(['raid_attendance_approval']);
-            navigate('/ra_approval/');
+            navigate('/ra_approval_pending/');
         },
         onError: error => {
             const errorMessage = error?.response?.data?.error || 'Unknown error';

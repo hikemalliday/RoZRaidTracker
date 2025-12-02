@@ -15,11 +15,6 @@ export default function Home() {
                     cursor: 'pointer',
                 }}
             >
-                {isSuperUser && (
-                    <>
-                        <a onClick={_ => navigate('/ra_approval/')}>Approval</a>
-                    </>
-                )}
                 <a onClick={_ => navigate('/compare/')}>Compare</a>
                 <a onClick={_ => navigate('/player/')}>Players</a>
                 <a onClick={_ => navigate('/raid/')}>Raids</a>
