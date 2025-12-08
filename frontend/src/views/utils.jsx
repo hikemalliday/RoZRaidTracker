@@ -22,7 +22,7 @@ export const _getReducedResults = results => {
 export const _getReducedRaidsList = results => {
     if (!results) return [];
     return results.map(res => {
-        return { id: res.id, label: `${res.name} ${res.id}` };
+        return { id: res.id, label: `${res.name} ${res.created_at}` };
     });
 };
 
