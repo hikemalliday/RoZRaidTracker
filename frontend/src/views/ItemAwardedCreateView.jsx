@@ -2,7 +2,7 @@ import { useItemAwardedCreate, useList, useListDebounced } from '../hooks/reques
 import { Autocomplete, Button, Container, TextField, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { useDebounce } from '../hooks/useDebounce.js';
-import { _getReducedResults, getPlayersListFinal } from './utils.jsx';
+import { _getReducedResults, getRaidsListFinal } from './utils.jsx';
 import { buttonStyles, listBoxStyles, textFieldStyles } from '../styles.js';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router';
@@ -23,7 +23,7 @@ function AddRaidField({ setRaidToSubmit, styles = {} }) {
                 renderInput={params => (
                     <TextField {...params} label="Raid" sx={textFieldStyles} size="small" />
                 )}
-                options={!isRaidsPending ? getPlayersListFinal(raidsData.results) : []}
+                options={!isRaidsPending ? getRaidsListFinal(raidsData.results) : []}
                 onChange={(_, option) => {
                     console.log(option);
                     setRaidToSubmit(option.id);

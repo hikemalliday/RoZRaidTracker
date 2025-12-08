@@ -19,6 +19,13 @@ export const _getReducedResults = results => {
     });
 };
 
+export const _getReducedRaidsList = results => {
+    if (!results) return [];
+    return results.map(res => {
+        return { id: res.id, label: `${res.name} ${res.id}` };
+    });
+};
+
 const _sortReducedList = results => {
     return results.sort((a, b) => {
         const valA = a.label;
@@ -30,6 +37,10 @@ const _sortReducedList = results => {
 export const getPlayersListFinal = results => {
     const reducedList = _getReducedResults(results);
     return _sortReducedList(reducedList);
+};
+
+export const getRaidsListFinal = results => {
+    return _getReducedRaidsList(results);
 };
 
 export function joinAndTruncate(array, truncateLength = 50) {
