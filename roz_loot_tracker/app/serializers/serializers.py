@@ -3,6 +3,7 @@ from rest_framework import serializers
 from app.models import Player, Item, Zone, Character, Raid, ItemAwarded, PreferredPixel, RaidAttendance, RaidAttendanceApproval
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
@@ -48,6 +49,22 @@ class ItemAwardedSerializer(serializers.ModelSerializer):
     item = ItemSerializer(read_only=True)
     raid = RaidSerializer(read_only=True)
     player = PlayerSerializer(read_only=True)
+
+    player_id = serializers.PrimaryKeyRelatedField(
+        queryset=Player.objects.all(),
+        source="player",
+        write_only=True
+    )
+    raid_id = serializers.PrimaryKeyRelatedField(
+        queryset=Raid.objects.all(),
+        source="raid",
+        write_only=True
+    )
+    item_id = serializers.PrimaryKeyRelatedField(
+        queryset=Item.objects.all(),
+        source="item",
+        write_only=True
+    )
 
     class Meta:
         model = ItemAwarded
@@ -96,9 +113,7 @@ class TokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-
         token["username"] = user.username
         token["roles"] = [group.name for group in user.groups.all()]
         token["is_superuser"] = user.is_superuser
-
         return token

@@ -131,7 +131,6 @@ export function useRaidAttendanceMutation() {
     const client = useAxios(BASE_URL);
     return useMutation({
         mutationFn: async ({ payload }) => {
-            console.log(payload);
             const { data } = await client.post(`/raid_attendance/`, payload);
             return data;
         },
@@ -162,6 +161,28 @@ export function useRaidAttendanceDelete() {
         onError: error => {
             const errorMessage = error?.response?.data?.error || 'Unknown error';
             addMessage(`Failed to remove Raid Attendance row: ${errorMessage}`, 'error');
+        },
+    });
+}
+
+export function useItemAwardedCreate() {
+    const queryClient = useQueryClient();
+    const { addMessage } = useMessage();
+    const client = useAxios(BASE_URL);
+    return useMutation({
+        mutationFn: async ({ payload }) => {
+            console.log('payload print:');
+            console.log(payload);
+            const { data } = await client.post(`/items_awarded/`, payload);
+            return data;
+        },
+        onSuccess: async _ => {
+            addMessage('Successfully created Item Awarded row.');
+            await queryClient.refetchQueries(['item_awarded']);
+        },
+        onError: error => {
+            const errorMessage = error?.response?.data?.error || 'Unknown error';
+            addMessage(`Failed to create Item Awarded row: ${errorMessage}`, 'error');
         },
     });
 }

@@ -1,19 +1,21 @@
 import { useNavigate } from 'react-router';
 import { useAuthContext } from '../context/AuthContext.jsx';
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export function NavBar() {
     const navigate = useNavigate();
     const { isAuthenticated, isSuperUser, logout } = useAuthContext();
     const [approvalOpen, setApprovalOpen] = useState(false);
-    const approvalRef = useRef(null);
+    const [itemAwardedOpen, setItemAwardedOpen] = useState(false);
+    const dropdownRef = useRef(null);
 
     // TODO: Ref to close the dropdown if we click anywhere that does NOT contain the ref
     // TODO: We have placed the ref in the dropdown menu, therefore clicking outside of it will set to false
     useEffect(() => {
         function handleClickOutside(e) {
-            if (approvalRef.current && !approvalRef.current.contains(e.target)) {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
                 setApprovalOpen(false);
+                setItemAwardedOpen(false);
             }
         }
         document.addEventListener('mousedown', handleClickOutside);
@@ -22,6 +24,7 @@ export function NavBar() {
 
     const handleLinkClick = route => {
         setApprovalOpen(false);
+        setItemAwardedOpen(false);
         navigate(route);
     };
 
@@ -29,7 +32,9 @@ export function NavBar() {
         if (!isAuthenticated) return <div></div>;
         return (
             <div
-                ref={approvalRef}
+                ref={
+                    dropdownRef
+                } /* Why is the dropdownRef in the parent here? How can we handle different refs for different dropdowns?*/
                 style={{
                     display: 'inline-block',
                     position: 'relative',
@@ -77,9 +82,29 @@ export function NavBar() {
                     RAIDS
                 </a>
                 -
-                <a id="nav-bar-link" onClick={() => handleLinkClick('/item_awarded')}>
+                <a id="nav-bar-link" onClick={() => setItemAwardedOpen(prev => !prev)}>
                     ITEMS AWARDED
                 </a>
+                {itemAwardedOpen && (
+                    <div
+                        style={{
+                            position: 'absolute',
+                            right: '96px',
+                            background: '#222',
+                            padding: '8px',
+                            borderRadius: '4px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            minWidth: '120px',
+                            zIndex: 10,
+                        }}
+                    >
+                        {isSuperUser && (
+                            <a onClick={() => handleLinkClick('item_awarded_create')}>Create</a>
+                        )}
+                        <a onClick={() => handleLinkClick('item_awarded')}>List</a>
+                    </div>
+                )}
                 -
                 <a id="nav-bar-link" onClick={() => logout()}>
                     LOG OUT

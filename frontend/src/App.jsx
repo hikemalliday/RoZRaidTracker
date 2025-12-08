@@ -14,6 +14,8 @@ import { CompareView } from './views/CompareView.jsx';
 import { ApprovalPendingDetailView } from './views/ApprovalPendingDetailView.jsx';
 import { RaidEditView } from './views/RaidEditView.jsx';
 import { ApprovalHistoryListView } from './views/ApprovalHistoryListView.jsx';
+import { MageloEditView } from './views/MageloEditView.jsx';
+import { ItemAwardedCreateView } from './views/ItemAwardedCreateView.jsx';
 
 function App() {
     const queryClient = new QueryClient();
@@ -38,8 +40,11 @@ function App() {
                             path="/ra_approval_pending/:id"
                             element={<ApprovalPendingDetailView />}
                         />
+                        */ Create Views */
+                        <Route path="/item_awarded_create" element={<ItemAwardedCreateView />} />
                         */ Edit Views */
                         <Route path="/raid/:id/edit" element={<RaidEditView />} />
+                        <Route path="/magelo/:id/edit" element={<MageloEditView />} />
                         */ MISC */
                         <Route path="/compare" element={<CompareView />} />
                     </Route>

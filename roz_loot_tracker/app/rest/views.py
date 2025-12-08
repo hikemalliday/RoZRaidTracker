@@ -20,7 +20,7 @@ from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 
-PERMISSION_CLASS_DEBUG = IsAuthenticated  # TODO: Dev purposes
+PERMISSION_CLASS_DEBUG = IsAuthenticated
 
 
 class ItemFilter(filters.FilterSet):
@@ -29,7 +29,6 @@ class ItemFilter(filters.FilterSet):
     class Meta:
         model = models.Item
         fields = ["name"]
-
 
 
 class AllowNoPagination(PageNumberPagination):
@@ -108,6 +107,15 @@ class RaidViewSet(viewsets.ModelViewSet):
     filter_backends = (OrderingFilter,)
     ordering_fields = ['name', 'zone', 'created_at']
 
+    def get_queryset(self):
+        qs = models.Raid.objects.all().order_by('-id')
+        limit = self.request.query_params.get("limit", None)
+        if limit:
+            limit = int(limit)
+            qs = qs[:limit]
+        return qs
+
+
 
 class ItemAwardedViewSet(viewsets.ModelViewSet):
     queryset = models.ItemAwarded.objects.all()
@@ -133,7 +141,8 @@ class RaidAttendanceViewSet(viewsets.ModelViewSet):
     filterset_fields = ['player', 'raid']
     pagination_class = AllowNoPagination
 
-
+# TODO: 12/7: Undergoing a refactor to how raids + item approval are handled. Commented out related code in custom endpoint
+# TODO: Leave the commented out code in "just in case"
 class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
     queryset = models.RaidAttendanceApproval.objects.all()
     serializer_class = RaidAttendanceApprovalSerializer
@@ -156,7 +165,7 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
         if not raid_name:
             raise ValidationError({"error": f"Please provide a name for the Raid."})
 
-        items_awarded = request.data.get("items_awarded", [])
+        # items_awarded = request.data.get("items_awarded", [])
 
         player_name_map = {
             "Goatassin/Oceanman": "Goatassin",
@@ -178,17 +187,17 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
                 except models.Player.DoesNotExist:
                     raise ValidationError({"error": f"Player '{player_name}' does not exist. Create player first and try again."})
 
-            for item_awarded in items_awarded:
-                if "player" not in item_awarded.keys():
-                    raise ValidationError({"error": f"Must assign an Item to a Player."})
-                if "item" not in item_awarded.keys():
-                    raise ValidationError({"error": f"Must assign a Player to an Item."})
-
-                models.ItemAwarded.objects.create(
-                    player_id=item_awarded['player']['id'],
-                    item_id=item_awarded['item']['id'],
-                    raid=raid,
-                )
+            # for item_awarded in items_awarded:
+            #     if "player" not in item_awarded.keys():
+            #         raise ValidationError({"error": f"Must assign an Item to a Player."})
+            #     if "item" not in item_awarded.keys():
+            #         raise ValidationError({"error": f"Must assign a Player to an Item."})
+            #
+            #     models.ItemAwarded.objects.create(
+            #         player_id=item_awarded['player']['id'],
+            #         item_id=item_awarded['item']['id'],
+            #         raid=raid,
+            #     )
 
             raid_attendance_approval.is_approved = True
             raid_attendance_approval.save()
@@ -198,4 +207,3 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = TokenObtainPairSerializer
-
