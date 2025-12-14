@@ -6,7 +6,6 @@ export function NavBar() {
     const navigate = useNavigate();
     const { isAuthenticated, isSuperUser, logout } = useAuthContext();
     const [approvalOpen, setApprovalOpen] = useState(false);
-    const [itemAwardedOpen, setItemAwardedOpen] = useState(false);
     const dropdownRef = useRef(null);
 
     // TODO: Ref to close the dropdown if we click anywhere that does NOT contain the ref
@@ -15,7 +14,6 @@ export function NavBar() {
         function handleClickOutside(e) {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
                 setApprovalOpen(false);
-                setItemAwardedOpen(false);
             }
         }
         document.addEventListener('mousedown', handleClickOutside);
@@ -24,7 +22,6 @@ export function NavBar() {
 
     const handleLinkClick = route => {
         setApprovalOpen(false);
-        setItemAwardedOpen(false);
         navigate(route);
     };
 
@@ -82,29 +79,9 @@ export function NavBar() {
                     RAIDS
                 </a>
                 -
-                <a id="nav-bar-link" onClick={() => setItemAwardedOpen(prev => !prev)}>
+                <a id="nav-bar-link" onClick={() => handleLinkClick('item_awarded')}>
                     ITEMS AWARDED
                 </a>
-                {itemAwardedOpen && (
-                    <div
-                        style={{
-                            position: 'absolute',
-                            right: '96px',
-                            background: '#222',
-                            padding: '8px',
-                            borderRadius: '4px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            minWidth: '120px',
-                            zIndex: 10,
-                        }}
-                    >
-                        {isSuperUser && (
-                            <a onClick={() => handleLinkClick('item_awarded_create')}>Create</a>
-                        )}
-                        <a onClick={() => handleLinkClick('item_awarded')}>List</a>
-                    </div>
-                )}
                 -
                 <a id="nav-bar-link" onClick={() => logout()}>
                     LOG OUT

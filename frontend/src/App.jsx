@@ -40,8 +40,6 @@ function App() {
                             path="/ra_approval_pending/:id"
                             element={<ApprovalPendingDetailView />}
                         />
-                        */ Create Views */
-                        <Route path="/item_awarded_create" element={<ItemAwardedCreateView />} />
                         */ Edit Views */
                         <Route path="/raid/:id/edit" element={<RaidEditView />} />
                         <Route path="/magelo/:id/edit" element={<MageloEditView />} />

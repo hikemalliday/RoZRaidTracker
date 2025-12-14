@@ -171,8 +171,6 @@ export function useItemAwardedCreate() {
     const client = useAxios(BASE_URL);
     return useMutation({
         mutationFn: async ({ payload }) => {
-            console.log('payload print:');
-            console.log(payload);
             const { data } = await client.post(`/items_awarded/`, payload);
             return data;
         },
@@ -183,6 +181,27 @@ export function useItemAwardedCreate() {
         onError: error => {
             const errorMessage = error?.response?.data?.error || 'Unknown error';
             addMessage(`Failed to create Item Awarded row: ${errorMessage}`, 'error');
+        },
+    });
+}
+// TODO: 12/14: Make abstraction for delete hooks
+// TODO: 12/14: Rename other mutation hooks to their respective verbs
+export function useItemAwardedDelete() {
+    const queryClient = useQueryClient();
+    const { addMessage } = useMessage();
+    const client = useAxios(BASE_URL);
+    return useMutation({
+        mutationFn: async id => {
+            const { data } = await client.delete(`/items_awarded/${id}/`);
+            return data;
+        },
+        onSuccess: async _ => {
+            addMessage('Successfully removed Item Awarded row.');
+            await queryClient.refetchQueries(['items_awarded']);
+        },
+        onError: error => {
+            const errorMessage = error?.response?.data?.error || 'Unknown error';
+            addMessage(`Failed to remove Item Awarded row: ${errorMessage}`, 'error');
         },
     });
 }

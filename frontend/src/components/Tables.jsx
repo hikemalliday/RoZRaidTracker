@@ -24,6 +24,14 @@ export const getItemIconCell = iconId => {
     );
 };
 
+export const getCheckboxCell = changeHandler => {
+    return (
+        <TableCell>
+            <input type="checkbox" onChange={e => changeHandler(e)} />
+        </TableCell>
+    );
+};
+
 // Order of keys in 'headerMap' matters, as the keys are used for rendering cols / headers
 export function TableList({ data, getTableRows, headerMap = {}, sortable = false }) {
     const [sorted, setSorted] = useState(data);
