@@ -53,8 +53,12 @@ export function ItemAwardedListTableEditable({ data, highlight21Day = false, ...
     const getItemAwardedRows = data => {
         return data.map((row, i) => {
             const handleCheckboxClick = e => {
-                if (e.target.checked) itemsToRemove.current.add(row?.id);
-                return itemsToRemove.current.delete(row?.id);
+                if (e.target.checked) {
+                    console.log('check box: true');
+                    itemsToRemove.current.add(row?.id);
+                } else {
+                    return itemsToRemove.current.delete(row?.id);
+                }
             };
             const is21Day = getIs21Day(row?.raid?.created_at);
             return (
