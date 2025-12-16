@@ -172,6 +172,8 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
             "Vanco (edging)": "Vanco",
             "billieboyo": "Sangre",
             "Sangre (Boomshaka Laka)": "Sangre",
+            "ivvdovvn": "Iovvdovvn",
+            "Ivvdovvn": "Iovvdovvn",
         }
 
         with transaction.atomic():
