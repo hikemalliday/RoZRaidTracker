@@ -50,7 +50,7 @@ export function joinAndTruncate(array, truncateLength = 50) {
 export function getLootType(itemObj) {
     let lootType = '';
     // Preferred
-    if (itemObj.preferred) lootType = 'Preferred';
+    if (itemObj.preferred && !itemObj.alt_loot) lootType = 'Preferred';
     // Magelo and main
     else if (itemObj.magelo && !itemObj.alt_loot) lootType = 'Main, Magelo';
     // Main

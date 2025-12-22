@@ -15,7 +15,6 @@ import { ApprovalPendingDetailView } from './views/ApprovalPendingDetailView.jsx
 import { RaidEditView } from './views/RaidEditView.jsx';
 import { ApprovalHistoryListView } from './views/ApprovalHistoryListView.jsx';
 import { MageloEditView } from './views/MageloEditView.jsx';
-import { ItemAwardedCreateView } from './views/ItemAwardedCreateView.jsx';
 
 function App() {
     const queryClient = new QueryClient();

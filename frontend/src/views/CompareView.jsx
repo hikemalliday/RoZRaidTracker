@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Autocomplete, Container, TextField, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Autocomplete, Box, Container, TextField, Typography } from '@mui/material';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { useList } from '../hooks/requests.js';
 import { renderErrors } from './utils.jsx';
@@ -121,10 +121,10 @@ export function CompareView() {
         );
     };
 
-    const getItemAwardedInfo = itemAwardedData => {
+    const getItemAwardedCount = itemAwardedCount => {
         return (
             <Typography sx={{ mt: 5 }} variant="h6">
-                Items Awarded - Total: {itemAwardedData.count}
+                Items Awarded - Total: {itemAwardedCount}
             </Typography>
         );
     };
@@ -148,6 +148,115 @@ export function CompareView() {
         );
     };
 
+    function CompareTable({
+        playerId,
+        playersList,
+        handlePlayerIdChange,
+        isPending,
+        itemAwardedData,
+    }) {
+        // Using a Set here will allow us to simplify adding or removing filters based on checkbox inputs
+        const [filters, setFilters] = useState(
+            new Set(['main', 'alt_loot', 'preferred', 'magelo'])
+        );
+        function _filterItems(results) {
+            // This is kinda funky, but since 'main' is not an actual field in the ItemAwarded table, we needed a way to handle filtering by 'main' loot
+            if (!results) return [];
+            const modelFields = ['alt_loot', 'preferred', 'magelo'];
+            const fieldsToFilterOn = [...filters];
+            const includeMain = fieldsToFilterOn.includes('main');
+
+            return results.filter(item => {
+                const realMatch = fieldsToFilterOn.some(field => item[field] === true);
+                if (realMatch) {
+                    return true;
+                }
+                // No matches for filters that are actual fields on ItemAwardedModel, so now we check for 'main'
+                if (includeMain) {
+                    return modelFields.every(field => item[field] === false);
+                }
+                return false;
+            });
+        }
+
+        const _handleCheckbox = (e, filter) => {
+            if (e.target.checked)
+                setFilters(prev => {
+                    const filters = new Set(prev);
+                    filters.add(filter);
+                    return filters;
+                });
+            else
+                setFilters(prev => {
+                    const filters = new Set(prev);
+                    filters.delete(filter);
+                    return filters;
+                });
+        };
+
+        const filteredData = _filterItems(itemAwardedData?.results, filters);
+        return (
+            <Container disableGutters>
+                <Container>
+                    {getPlayerAutoComplete(playerId, handlePlayerIdChange)}
+                    {getRaInfo(playerId, playersList)}
+                    {!isPending && playerId && (
+                        <>
+                            {getItemAwardedCount(itemAwardedData.count)}
+                            <Box
+                                sx={{
+                                    mt: '20px',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    gap: '40px',
+                                }}
+                            >
+                                <Box>
+                                    <Typography>Main</Typography>
+                                    <input
+                                        type="checkbox"
+                                        defaultChecked
+                                        onChange={e => _handleCheckbox(e, 'main')}
+                                    />
+                                </Box>
+                                <Box>
+                                    <Typography>Alt</Typography>
+                                    <input
+                                        type="checkbox"
+                                        defaultChecked
+                                        onChange={e => _handleCheckbox(e, 'alt_loot')}
+                                    />
+                                </Box>
+                                <Box>
+                                    <Typography>Preferred</Typography>
+                                    <input
+                                        type="checkbox"
+                                        defaultChecked
+                                        onChange={e => _handleCheckbox(e, 'preferred')}
+                                    />
+                                </Box>
+                                <Box>
+                                    <Typography>Magelo</Typography>
+                                    <input
+                                        type="checkbox"
+                                        defaultChecked
+                                        onChange={e => _handleCheckbox(e, 'magelo')}
+                                    />
+                                </Box>
+                            </Box>
+                            <ItemAwardedListTable
+                                data={sortItemsById(filteredData)}
+                                highlight21Day
+                                sortable
+                                styledRows
+                            />
+                        </>
+                    )}
+                </Container>
+            </Container>
+        );
+    }
+
     return (
         <Container
             disableGutters
@@ -159,57 +268,33 @@ export function CompareView() {
                 width: '100%',
             }}
         >
-            <Container disableGutters>
-                <Container>
-                    {getPlayerAutoComplete(playerId1, handlePlayerId1Change)}
-                    {getRaInfo(playerId1, playersData.results)}
-                    {!isItemAwardedPending1 && playerId1 && (
-                        <>
-                            {getItemAwardedInfo(itemAwardedData1)}
-                            <ItemAwardedListTable
-                                data={sortItemsById(itemAwardedData1.results)}
-                                highlight21Day
-                                sortable
-                                styledRows
-                            />
-                        </>
-                    )}
-                </Container>
-            </Container>
-            <Container disableGutters>
-                <Container>
-                    {getPlayerAutoComplete(playerId2, handlePlayerId2Change)}
-                    {getRaInfo(playerId2, playersData.results)}
-                    {!isItemAwardedPending2 && playerId2 && (
-                        <>
-                            {getItemAwardedInfo(itemAwardedData2)}
-                            <ItemAwardedListTable
-                                data={sortItemsById(itemAwardedData2.results)}
-                                highlight21Day
-                                sortable
-                                styledRows
-                            />
-                        </>
-                    )}
-                </Container>
-            </Container>
-            <Container disableGutters>
-                <Container>
-                    {getPlayerAutoComplete(playerId3, handlePlayerId3Change)}
-                    {getRaInfo(playerId3, playersData.results)}
-                    {!isItemAwardedPending3 && playerId3 && (
-                        <>
-                            {getItemAwardedInfo(itemAwardedData3)}
-                            <ItemAwardedListTable
-                                data={sortItemsById(itemAwardedData3.results)}
-                                highlight21Day
-                                sortable
-                                styledRows
-                            />
-                        </>
-                    )}
-                </Container>
-            </Container>
+            {
+                <CompareTable
+                    playerId={playerId1}
+                    playersList={playersData.results}
+                    handlePlayerIdChange={handlePlayerId1Change}
+                    isPending={isItemAwardedPending1}
+                    itemAwardedData={itemAwardedData1}
+                />
+            }
+            {
+                <CompareTable
+                    playerId={playerId2}
+                    playersList={playersData.results}
+                    handlePlayerIdChange={handlePlayerId2Change}
+                    isPending={isItemAwardedPending2}
+                    itemAwardedData={itemAwardedData2}
+                />
+            }
+            {
+                <CompareTable
+                    playerId={playerId3}
+                    playersList={playersData.results}
+                    handlePlayerIdChange={handlePlayerId3Change}
+                    isPending={isItemAwardedPending3}
+                    itemAwardedData={itemAwardedData3}
+                />
+            }
         </Container>
     );
 }
