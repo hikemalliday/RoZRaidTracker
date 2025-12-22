@@ -57,7 +57,7 @@ export function PlayerDetailView() {
                 <Typography sx={{ mt: 5 }} variant="h6">
                     Items Awarded - Total: {itemAwardedData.count}
                 </Typography>
-                <ItemAwardedListTable data={itemAwardedData.results} sortable />
+                <ItemAwardedListTable data={itemAwardedData.results} sortable styledRows />
             </Container>
             <Container>
                 <Typography sx={{ mt: 5 }} variant="h6">

@@ -173,18 +173,12 @@ export function RaidEditView() {
         data: itemAwardedData,
         error: itemAwardedError,
     } = useList('items_awarded', '/items_awarded/', { raid: id });
-    const {
-        isPending: isPlayersPending,
-        data: playersData,
-        error: playersError,
-    } = useList('players', '/players/');
     const { mutate } = useRaidAttendanceDelete();
     const [playersToRender, setPlayersToRender] = useState([]);
     const raRowsToDelete = useRef([]);
-    const { addMessage } = useMessage();
 
-    const pendingList = [isPending, isRaPending, isItemAwardedPending, isPlayersPending];
-    const errorList = [error, raError, itemAwardedError, playersError];
+    const pendingList = [isPending, isRaPending, isItemAwardedPending];
+    const errorList = [error, raError, itemAwardedError];
 
     useEffect(() => {
         const playersList = raData?.results
@@ -198,17 +192,10 @@ export function RaidEditView() {
         setPlayersToRender(playersList);
     }, [raData]);
 
-    const _sortPlayers = data => {
-        return data.sort((a, b) => {
-            const valA = a.player.name;
-            const valB = b.player.name;
-            return valA.localeCompare(valB);
-        });
-    };
-
     if (pendingList.some(Boolean)) return <>LOADING...</>;
     if (errorList.some(Boolean)) return <>{renderErrors(errorList)}</>;
     if (!isSuperUser) return <>Unauthorized.</>;
+    if (!playersToRender) return <>LOADING...</>;
 
     const getEditPlayerFields = () => {
         return playersToRender.map(([playerName, raId], i) => {
@@ -245,7 +232,7 @@ export function RaidEditView() {
                 <AddItemAwardedField raidId={id} />
             </Container>
             {itemAwardedData.results.length > 0 && (
-                <ItemAwardedListTableEditable data={itemAwardedData.results} />
+                <ItemAwardedListTableEditable data={itemAwardedData.results} styledRows={true} />
             )}
             <Typography sx={{ mb: 2, mt: 4 }} variant="h6">
                 Attendees - Total: {raData.count}

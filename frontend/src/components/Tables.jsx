@@ -33,7 +33,13 @@ export const getCheckboxCell = changeHandler => {
 };
 
 // Order of keys in 'headerMap' matters, as the keys are used for rendering cols / headers
-export function TableList({ data, getTableRows, headerMap = {}, sortable = false }) {
+export function TableList({
+    data,
+    getTableRows,
+    headerMap = {},
+    sortable = false,
+    styledRows = false,
+}) {
     const [sorted, setSorted] = useState(data);
     const [sortDirection, setSortDirection] = useState('asc');
     const reducedData = getTableRows(sorted);
@@ -98,7 +104,16 @@ export function TableList({ data, getTableRows, headerMap = {}, sortable = false
     };
 
     return (
-        <Table>
+        <Table
+            sx={
+                styledRows
+                    ? {
+                          borderCollapse: 'separate',
+                          borderSpacing: '0 8px', // 0 horizontal, 8px vertical gap between rows
+                      }
+                    : {}
+            }
+        >
             <TableHead>
                 <TableRow>
                     {Object.entries(headerMap).map(([header, _], i) => {

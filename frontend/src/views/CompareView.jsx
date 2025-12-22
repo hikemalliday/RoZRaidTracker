@@ -155,12 +155,11 @@ export function CompareView() {
             sx={{
                 marginTop: 5,
                 display: 'flex',
-                gap: 1,
                 height: '100%',
                 width: '100%',
             }}
         >
-            <Container>
+            <Container disableGutters>
                 <Container>
                     {getPlayerAutoComplete(playerId1, handlePlayerId1Change)}
                     {getRaInfo(playerId1, playersData.results)}
@@ -171,12 +170,13 @@ export function CompareView() {
                                 data={sortItemsById(itemAwardedData1.results)}
                                 highlight21Day
                                 sortable
+                                styledRows
                             />
                         </>
                     )}
                 </Container>
             </Container>
-            <Container>
+            <Container disableGutters>
                 <Container>
                     {getPlayerAutoComplete(playerId2, handlePlayerId2Change)}
                     {getRaInfo(playerId2, playersData.results)}
@@ -187,12 +187,13 @@ export function CompareView() {
                                 data={sortItemsById(itemAwardedData2.results)}
                                 highlight21Day
                                 sortable
+                                styledRows
                             />
                         </>
                     )}
                 </Container>
             </Container>
-            <Container>
+            <Container disableGutters>
                 <Container>
                     {getPlayerAutoComplete(playerId3, handlePlayerId3Change)}
                     {getRaInfo(playerId3, playersData.results)}
@@ -203,6 +204,7 @@ export function CompareView() {
                                 data={sortItemsById(itemAwardedData3.results)}
                                 highlight21Day
                                 sortable
+                                styledRows
                             />
                         </>
                     )}

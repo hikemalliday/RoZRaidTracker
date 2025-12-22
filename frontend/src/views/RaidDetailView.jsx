@@ -60,7 +60,7 @@ export function RaidDetailView() {
                 Items Awarded - Total: {itemAwardedData.count}
             </Typography>
             <Container>
-                <ItemAwardedListTable data={itemAwardedData.results} />
+                <ItemAwardedListTable data={itemAwardedData.results} styledRows />
             </Container>
             <Typography sx={{ mt: 5 }} variant="h6">
                 Attendees - Total: {raData.count}

@@ -1,3 +1,5 @@
+export const VERY_DARK_GRAY = '#333';
+
 export const buttonStyles = {
     color: 'white',
     margin: 0.5,
@@ -80,4 +82,82 @@ export const listBoxStyles = {
             backgroundColor: 'rgba(102,178,255,0.35)',
         },
     },
+};
+
+export const getIs21Day = dateString => {
+    if (!dateString) return false;
+
+    // Regex for MM-DD-YY
+    const regex = /^(\d{2})-(\d{2})-(\d{2})$/;
+    if (!regex.test(dateString)) {
+        console.error('Invalid date format. Expected MM-DD-YY');
+        return false;
+    }
+
+    // Parse month, day, year
+    const [month, day, year] = dateString.split('-').map(Number);
+
+    // Adjust two-digit year (e.g., 25 -> 2025)
+    const fullYear = year < 50 ? 2000 + year : 1900 + year;
+    const inputDate = new Date(fullYear, month - 1, day); // Month is 0-based in JS
+
+    // Check if the date is valid
+    if (isNaN(inputDate.getTime())) {
+        console.error('Invalid date');
+        return false;
+    }
+
+    // Get current date
+    const currentDate = new Date();
+
+    // Calculate time difference
+    const timeDifference = currentDate - inputDate;
+    const twentyOneDaysInMs = 21 * 24 * 60 * 60 * 1000;
+
+    // Return true if within 21 days and not in the future
+    return Math.abs(timeDifference) <= twentyOneDaysInMs;
+};
+
+export const getRowStyles = itemObj => {
+    const _getStyleObject = color => {
+        return {
+            // Apply top and bottom border to ALL cells in the row
+            '& td': {
+                borderTop: `2px solid ${color}`,
+                borderBottom: `2px solid ${color}`,
+                // Important: remove any left/right borders from inner cells
+                borderLeft: 'none',
+                borderRight: 'none',
+            },
+            // Only the first cell gets left border + rounded corners
+            '& td:first-of-type': {
+                borderLeft: `2px solid ${color}`,
+                borderTopLeftRadius: '4px',
+                borderBottomLeftRadius: '4px',
+            },
+            // Only the last cell gets right border + rounded corners
+            '& td:last-of-type': {
+                borderRight: `2px solid ${color}`,
+                borderTopRightRadius: '4px',
+                borderBottomRightRadius: '4px',
+            },
+        };
+    };
+    let borderColor = null;
+    // Preferred
+    if (itemObj.preferred) borderColor = 'yellow';
+    // Magelo and main
+    else if (itemObj.magelo && !itemObj.alt_loot) borderColor = 'red';
+    // Main. Do we want to leave main un-styled? Ya I think gray is the play.
+    else if (!itemObj.alt_loot && !itemObj.magelo) borderColor = 'gray';
+    // Alt + Magelo
+    else if (itemObj.alt_loot && itemObj.magelo) borderColor = 'orange';
+    // Alt
+    else if (itemObj.alt_loot && !itemObj.magelo) borderColor = 'purple';
+    return _getStyleObject(borderColor);
+};
+
+export const get21DayStyles = itemObj => {
+    const is21day = getIs21Day(itemObj?.created_at);
+    return is21day ? { backgroundColor: VERY_DARK_GRAY } : {};
 };

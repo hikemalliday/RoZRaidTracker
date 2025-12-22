@@ -46,3 +46,18 @@ export const getRaidsListFinal = results => {
 export function joinAndTruncate(array, truncateLength = 50) {
     return array.join(', ').slice(0, truncateLength) + '...';
 }
+
+export function getLootType(itemObj) {
+    let lootType = '';
+    // Preferred
+    if (itemObj.preferred) lootType = 'Preferred';
+    // Magelo and main
+    else if (itemObj.magelo && !itemObj.alt_loot) lootType = 'Main, Magelo';
+    // Main
+    else if (!itemObj.alt_loot && !itemObj.magelo) lootType = 'Main';
+    // Alt + Magelo
+    else if (itemObj.alt_loot && itemObj.magelo) lootType = 'Alt, Magelo';
+    // Alt
+    else if (itemObj.alt_loot && !itemObj.magelo) lootType = 'Alt';
+    return lootType;
+}
