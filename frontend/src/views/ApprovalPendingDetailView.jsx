@@ -1,10 +1,5 @@
 import { useParams } from 'react-router';
-import {
-    useDetail,
-    useList,
-    useListDebounced,
-    useRaidAttendanceApprovalMutation,
-} from '../hooks/requests.js';
+import { useDetail, useList, useRaidAttendanceApprovalMutation } from '../hooks/requests.js';
 import {
     Autocomplete,
     Button,
@@ -16,96 +11,10 @@ import {
     Typography,
 } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
-import { buttonStyles, listBoxStyles, textFieldStyles } from '../styles.js';
-import { useDebounce } from '../hooks/useDebounce.js';
-import { v4 as uuidv4 } from 'uuid';
+import { buttonStyles, textFieldStyles } from '../styles.js';
 import { getCell } from '../components/Tables.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
-import { getPlayersListFinal, _getReducedResults } from './utils.jsx';
-
-// TODO: Theres a 'key' render warning in this view, not really sure how to fix it given the way I decoded to render some of the fields
-// TODO: Dev notes:
-// In this file, in order to handle the dynamically generated fields, we pass an object 'fieldsResults' to all rendered children,
-// and we also use UUID's for each field to use as a key to mutate said object. Best I could come up with.
-
-// function ItemAwardedField({ fieldsResults, fieldKey }) {
-//     /* 'fieldsResults' prop is the 'form' data object, so to speak, passed down from the parent.
-//      * The selected option will be stored in this object, and then ultimately posted to the backend.
-//      * 'fieldKey' prop is string UUID and is necessary so that we can save the selected field in the 'fieldResults object',
-//      * and have a way to differentiate from the other rendered 'SearchableField' components.
-//      * */
-//     const [itemValue, setItemValue] = useState('');
-//     const debounced = useDebounce(itemValue || '', 300);
-//     const { data: itemsData, isPending: isItemsPending } = useListDebounced(
-//         'items',
-//         '/items/',
-//         'name',
-//         debounced
-//     );
-//     const { data: playersData, isPending: isPlayersPending } = useList('players', '/players/');
-//
-//     const _sortReducedList = results => {
-//         return results.sort((a, b) => {
-//             const valA = a.label;
-//             const valB = b.label;
-//             return valA.localeCompare(valB);
-//         });
-//     };
-//
-//     const getPlayersListFinal = results => {
-//         const reducedList = _getReducedResults(results);
-//         return _sortReducedList(reducedList);
-//     };
-//
-//     const _handleAltLootCheckBox = e => {
-//         return (fieldsResults.current[fieldKey].alt_loot = !!e.target.checked);
-//     };
-//
-//     const _handlePreferredCheckBox = e => {
-//         return (fieldsResults.current[fieldKey].preferred = !!e.target.checked);
-//     };
-//
-//     return (
-//         <Container
-//             sx={{
-//                 display: 'flex',
-//             }}
-//         >
-//             <Autocomplete
-//                 renderInput={params => <TextField {...params} label="Item" sx={textFieldStyles} />}
-//                 options={!isItemsPending ? _getReducedResults(itemsData.results) : []}
-//                 filterOptions={x => x}
-//                 onInputChange={(event, newInputValue) => {
-//                     setItemValue(newInputValue);
-//                 }}
-//                 inputValue={itemValue}
-//                 slotProps={{ listbox: { sx: listBoxStyles } }}
-//                 onChange={(_, option) => {
-//                     if (!fieldsResults.current[fieldKey]) fieldsResults.current[fieldKey] = {};
-//                     fieldsResults.current[fieldKey].item = option;
-//                 }}
-//             />
-//             <Autocomplete
-//                 renderInput={params => (
-//                     <TextField {...params} label="Player" sx={textFieldStyles} />
-//                 )}
-//                 options={!isPlayersPending ? getPlayersListFinal(playersData.results) : []}
-//                 onChange={(_, option) => {
-//                     if (!fieldsResults.current[fieldKey]) fieldsResults.current[fieldKey] = {};
-//                     fieldsResults.current[fieldKey].player = option;
-//                 }}
-//             />
-//             <Container>
-//                 <Typography>Alt Loot</Typography>
-//                 <input type="checkbox" onChange={e => _handleAltLootCheckBox(e, player)} />
-//             </Container>
-//             <Container>
-//                 <Typography>Preferred</Typography>
-//                 <input type="checkbox" onChange={e => _handlePreferredCheckBox(e, player)} />
-//             </Container>
-//         </Container>
-//     );
-// }
+import { getPlayersListFinal } from './utils.jsx';
 
 function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
     const { data: playersData, isPending: isPlayersPending } = useList('players', '/players/');
@@ -171,7 +80,7 @@ export function ApprovalPendingDetailView() {
         const _getPlayerCheckbox = player => {
             const _handleCheckboxClick = e => {
                 const newPlayersToSubmit = [...playersToSubmit];
-                const playerToMutate = newPlayersToSubmit.filter(p => p.name === player.name);
+                const playerToMutate = newPlayersToSubmit.find(p => p.name === player.name);
                 playerToMutate.is_selected = !!e.target.checked;
                 return setPlayersToSubmit(newPlayersToSubmit);
             };
