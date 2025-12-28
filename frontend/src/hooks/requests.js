@@ -47,7 +47,7 @@ export const useListDebounced = (queryKey, route, filterField, filterVal) => {
 
 export const _useListPaginated = (queryKey, route, queryParams) => {
     const client = useAxios(BASE_URL);
-    const { ordering, orderDir, page } = queryParams;
+    const { ordering, orderDir, page, ...rest } = queryParams;
     const { isPending, error, data } = useQuery({
         queryKey: [queryKey, queryParams],
         queryFn: async () => {
@@ -55,6 +55,7 @@ export const _useListPaginated = (queryKey, route, queryParams) => {
                 params: {
                     ordering: handleAscDesc(orderDir || 'asc', ordering),
                     page,
+                    ...rest,
                 },
             });
             return data;
@@ -202,6 +203,46 @@ export function useItemAwardedDelete() {
         onError: error => {
             const errorMessage = error?.response?.data?.error || 'Unknown error';
             addMessage(`Failed to remove Item Awarded row: ${errorMessage}`, 'error');
+        },
+    });
+}
+
+export function useCharacterCreate() {
+    const queryClient = useQueryClient();
+    const { addMessage } = useMessage();
+    const client = useAxios(BASE_URL);
+    return useMutation({
+        mutationFn: async ({ payload }) => {
+            const { data } = await client.post(`/characters/`, payload);
+            return data;
+        },
+        onSuccess: async _ => {
+            addMessage('Successfully created Character row.');
+            await queryClient.refetchQueries(['characters']);
+        },
+        onError: error => {
+            const errorMessage = error?.response?.data?.error || 'Unknown error';
+            addMessage(`Failed to create Character row: ${errorMessage}`, 'error');
+        },
+    });
+}
+
+export function useRaidAttendanceApprovalDelete() {
+    const queryClient = useQueryClient();
+    const { addMessage } = useMessage();
+    const client = useAxios(BASE_URL);
+    return useMutation({
+        mutationFn: async id => {
+            const { data } = await client.delete(`/raid_attendance_approval/${id}/`);
+            return data;
+        },
+        onSuccess: async _ => {
+            addMessage('Successfully removed Raid Attendance Approval row.');
+            await queryClient.refetchQueries(['raid_attendance_approval']);
+        },
+        onError: error => {
+            const errorMessage = error?.response?.data?.error || 'Unknown error';
+            addMessage(`Failed to remove Raid Attendance Approval row: ${errorMessage}`, 'error');
         },
     });
 }
