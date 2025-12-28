@@ -81,7 +81,11 @@ export function ApprovalPendingDetailView() {
             const _handleCheckboxClick = e => {
                 const newPlayersToSubmit = [...playersToSubmit];
                 const playerToMutate = newPlayersToSubmit.find(p => p.name === player.name);
+                console.log(1);
+                console.log(playerToMutate);
                 playerToMutate.is_selected = !!e.target.checked;
+                console.log(2);
+                console.log(playerToMutate);
                 return setPlayersToSubmit(newPlayersToSubmit);
             };
 
@@ -149,9 +153,12 @@ export function ApprovalPendingDetailView() {
         if (!raid) return;
         if (playersToSubmit.length === 0) return;
 
+        const playersToSubmitCopy = [...playersToSubmit];
+        const _getTruthyPlayersToSubmit = playersToSubmitCopy.filter(p => p.is_selected === true);
+
         const payload = {
             raid_name: raid,
-            players_list: playersToSubmit.map(player => player.name),
+            players_list: _getTruthyPlayersToSubmit.map(player => player.name),
         };
         // const itemsAwarded = Object.values(fieldsResults.current).map(itemAwarded => itemAwarded);
         // if (itemsAwarded) payload.items_awarded = itemsAwarded;
