@@ -1,27 +1,56 @@
 import { useState } from 'react';
-import { Container, InputLabel, MenuItem, Select, Typography } from '@mui/material';
-import { selectComponentProps } from '../styles.js';
+import {
+    Autocomplete,
+    Box,
+    Container,
+    InputLabel,
+    MenuItem,
+    Select,
+    TextField,
+    Typography,
+} from '@mui/material';
+import { selectComponentProps, textFieldStyles } from '../styles.js';
 import { PaginationController } from './PaginationController.jsx';
 
+// TODO: 12/23: The way we dynamically handle the optional search bar could have been simplified by avoiding the 'over-abstraction' we did via 'useList'
+// TODO: This is to say that, we should have make individual request hooks for each model, instead of a 'one-size-fits-all' approach that led to 'param hell' (too many params for little gain)
+// TODO: Also note that, the other paginated list view (ITEMS AWARDED) would want a debounced item search bar, which this abstraction doesnt really even allow.
 export function PaginatedListTable({
     requestHook,
     TableComponent,
     sortChoices = [],
     sortMap = {},
     defaultSort = {},
+    searchParam = null,
+    useOptions = (qKey, route) => {
+        return { data: [], isPending: false };
+    },
+    optionsHookParams = {
+        optionsQueryKey: '',
+        optionsRoute: '',
+    },
+    getOptions = () => [],
 }) {
     const _getOrdering = str => {
         return sortMap?.[str] || str;
     };
 
+    const { optionsQueryKey, optionsRoute } = optionsHookParams;
     const [page, setPage] = useState(1);
     const [orderDir, setOrderDir] = useState(defaultSort?.orderDir || 'asc');
     const [ordering, setOrdering] = useState(defaultSort?.ordering || 'name');
+    const [searchVal, setSearchVal] = useState('');
+    const qParam = searchParam ? { [searchParam]: searchVal } : {};
     const { data, isPending, error } = requestHook({
         page,
         ordering: _getOrdering(ordering),
         orderDir,
+        ...qParam,
     });
+    const { data: optionsData, isPending: isOptionsPending } = useOptions(
+        optionsQueryKey,
+        optionsRoute
+    );
 
     const handleOrderDirChange = e => {
         return setOrderDir(e.target.value);
@@ -35,7 +64,25 @@ export function PaginatedListTable({
 
     return (
         <Container>
-            <Container sx={{ marginTop: 10, display: 'flex' }}>
+            {searchParam && (
+                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+                    <Autocomplete
+                        renderInput={params => (
+                            <TextField
+                                {...params}
+                                label={optionsQueryKey}
+                                sx={textFieldStyles}
+                                size="small"
+                            />
+                        )}
+                        options={!isOptionsPending ? getOptions(optionsData.results) : []}
+                        onChange={(_, option) => {
+                            setSearchVal(option.label);
+                        }}
+                    />
+                </Box>
+            )}
+            <Container sx={{ marginTop: 5, display: 'flex' }}>
                 <Container>
                     <InputLabel sx={{ color: 'white' }}>Sort By</InputLabel>
                     <Select
