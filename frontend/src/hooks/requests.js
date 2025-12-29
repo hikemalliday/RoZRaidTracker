@@ -1,20 +1,18 @@
-import { useAxios } from './useAxios.jsx';
-import { BASE_URL } from '../config.js';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMessage } from '../context/MessageContext.jsx';
 import { useNavigate } from 'react-router';
 import { handleAscDesc } from '../views/utils.jsx';
+import { api } from '../api.js';
 
 // Means to emulate 'no pagination' for hooks that don't want it.
 // Keeps data shape consistent on list responses
 const PAGE_SIZE_NO_PAGINATION = 9999;
 
 export const useList = (queryKey, route, queryParams = {}) => {
-    const client = useAxios(BASE_URL);
     const { isPending, error, data } = useQuery({
         queryKey: [queryKey, queryParams],
         queryFn: async () => {
-            const { data } = await client.get(route, {
+            const { data } = await api.get(route, {
                 params: {
                     ...queryParams,
                     page_size: PAGE_SIZE_NO_PAGINATION,
@@ -28,11 +26,10 @@ export const useList = (queryKey, route, queryParams = {}) => {
 
 export const useListDebounced = (queryKey, route, filterField, filterVal) => {
     const queryParams = { [filterField]: filterVal };
-    const client = useAxios(BASE_URL);
     const { isPending, error, data } = useQuery({
         queryKey: [queryKey, filterField, filterVal],
         queryFn: async () => {
-            const { data } = await client.get(route, {
+            const { data } = await api.get(route, {
                 params: {
                     ...queryParams,
                     page_size: PAGE_SIZE_NO_PAGINATION,
@@ -46,12 +43,11 @@ export const useListDebounced = (queryKey, route, filterField, filterVal) => {
 };
 
 export const _useListPaginated = (queryKey, route, queryParams) => {
-    const client = useAxios(BASE_URL);
     const { ordering, orderDir, page, ...rest } = queryParams;
     const { isPending, error, data } = useQuery({
         queryKey: [queryKey, queryParams],
         queryFn: async () => {
-            const { data } = await client.get(route, {
+            const { data } = await api.get(route, {
                 params: {
                     ordering: handleAscDesc(orderDir || 'asc', ordering),
                     page,
@@ -65,11 +61,10 @@ export const _useListPaginated = (queryKey, route, queryParams) => {
 };
 
 export const useDetail = (queryKey, route, id) => {
-    const client = useAxios(BASE_URL);
     const { isPending, error, data } = useQuery({
         queryKey: [queryKey, id],
         queryFn: async () => {
-            const { data } = await client.get(`${route}${id}/`);
+            const { data } = await api.get(`${route}${id}/`);
             return data;
         },
     });
@@ -91,11 +86,10 @@ export function useItemAwardedListPaginated(queryParams) {
 
 // TODO: Use helper instead
 export function useRaidAttendanceApprovalList(queryParams) {
-    const client = useAxios(BASE_URL);
     const { isPending, error, data } = useQuery({
         queryKey: ['raid_attendance_approval', queryParams],
         queryFn: async () => {
-            const { data } = await client.get(`/raid_attendance_approval/`, {
+            const { data } = await api.get(`/raid_attendance_approval/`, {
                 params: { ...queryParams, page_size: PAGE_SIZE_NO_PAGINATION },
             });
             return data;
@@ -108,10 +102,9 @@ export function useRaidAttendanceApprovalMutation(id) {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const { addMessage } = useMessage();
-    const client = useAxios(BASE_URL);
     return useMutation({
         mutationFn: async ({ payload }) => {
-            const { data } = await client.post(`/raid_attendance_approval/${id}/approve/`, payload);
+            const { data } = await api.post(`/raid_attendance_approval/${id}/approve/`, payload);
             return data;
         },
         onSuccess: async _ => {
@@ -129,10 +122,9 @@ export function useRaidAttendanceApprovalMutation(id) {
 export function useRaidAttendanceMutation() {
     const queryClient = useQueryClient();
     const { addMessage } = useMessage();
-    const client = useAxios(BASE_URL);
     return useMutation({
         mutationFn: async ({ payload }) => {
-            const { data } = await client.post(`/raid_attendance/`, payload);
+            const { data } = await api.post(`/raid_attendance/`, payload);
             return data;
         },
         onSuccess: async _ => {
@@ -149,10 +141,9 @@ export function useRaidAttendanceMutation() {
 export function useRaidAttendanceDelete() {
     const queryClient = useQueryClient();
     const { addMessage } = useMessage();
-    const client = useAxios(BASE_URL);
     return useMutation({
         mutationFn: async id => {
-            const { data } = await client.delete(`/raid_attendance/${id}/`);
+            const { data } = await api.delete(`/raid_attendance/${id}/`);
             return data;
         },
         onSuccess: async _ => {
@@ -169,10 +160,9 @@ export function useRaidAttendanceDelete() {
 export function useItemAwardedCreate() {
     const queryClient = useQueryClient();
     const { addMessage } = useMessage();
-    const client = useAxios(BASE_URL);
     return useMutation({
         mutationFn: async ({ payload }) => {
-            const { data } = await client.post(`/items_awarded/`, payload);
+            const { data } = await api.post(`/items_awarded/`, payload);
             return data;
         },
         onSuccess: async _ => {
@@ -190,10 +180,9 @@ export function useItemAwardedCreate() {
 export function useItemAwardedDelete() {
     const queryClient = useQueryClient();
     const { addMessage } = useMessage();
-    const client = useAxios(BASE_URL);
     return useMutation({
         mutationFn: async id => {
-            const { data } = await client.delete(`/items_awarded/${id}/`);
+            const { data } = await api.delete(`/items_awarded/${id}/`);
             return data;
         },
         onSuccess: async _ => {
@@ -210,10 +199,9 @@ export function useItemAwardedDelete() {
 export function useCharacterCreate() {
     const queryClient = useQueryClient();
     const { addMessage } = useMessage();
-    const client = useAxios(BASE_URL);
     return useMutation({
         mutationFn: async ({ payload }) => {
-            const { data } = await client.post(`/characters/`, payload);
+            const { data } = await api.post(`/characters/`, payload);
             return data;
         },
         onSuccess: async _ => {
@@ -227,18 +215,38 @@ export function useCharacterCreate() {
     });
 }
 
+// export function useCharacterEdit() {
+//     const queryClient = useQueryClient();
+//     const { addMessage } = useMessage();
+//     const client = useAxios(BASE_URL);
+//     return useMutation({
+//         mutationFn: async ({ payload }) => {
+//             const { data } = await client.patch(`/characters/${payload.id}/`, payload);
+//             return data;
+//         },
+//         onSuccess: async _ => {
+//             addMessage('Successfully edited Character row.');
+//             await queryClient.refetchQueries(['characters']);
+//         },
+//         onError: error => {
+//             const errorMessage = error?.response?.data?.error || 'Unknown error';
+//             addMessage(`Failed to edit Character row: ${errorMessage}`, 'error');
+//         },
+//     });
+// }
+
 export function useCharacterEdit() {
     const queryClient = useQueryClient();
     const { addMessage } = useMessage();
-    const client = useAxios(BASE_URL);
+
     return useMutation({
         mutationFn: async ({ payload }) => {
-            const { data } = await client.patch(`/characters/${payload.id}/`, payload);
+            const { data } = await api.patch(`/characters/${payload.id}/`, payload);
             return data;
         },
-        onSuccess: async _ => {
+        onSuccess: async () => {
             addMessage('Successfully edited Character row.');
-            await queryClient.refetchQueries(['characters']);
+            await queryClient.refetchQueries({ queryKey: ['characters'] });
         },
         onError: error => {
             const errorMessage = error?.response?.data?.error || 'Unknown error';
@@ -250,10 +258,9 @@ export function useCharacterEdit() {
 export function useRaidAttendanceApprovalDelete() {
     const queryClient = useQueryClient();
     const { addMessage } = useMessage();
-    const client = useAxios(BASE_URL);
     return useMutation({
         mutationFn: async id => {
-            const { data } = await client.delete(`/raid_attendance_approval/${id}/`);
+            const { data } = await api.delete(`/raid_attendance_approval/${id}/`);
             return data;
         },
         onSuccess: async _ => {

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { jwtDecode } from 'jwt-decode';
+import { api } from '../api.js';
 
 const AuthContext = createContext(null);
 
@@ -33,6 +34,42 @@ export const AuthProvider = ({ children }) => {
             setIsSuperUser(decoded.is_superuser);
         }
     }, [accessToken]);
+
+    useEffect(() => {
+        const req = api.interceptors.request.use(config => {
+            if (accessToken) {
+                config.headers.Authorization = `Bearer ${accessToken}`;
+            }
+            return config;
+        });
+
+        const res = api.interceptors.response.use(
+            res => res,
+            async err => {
+                const original = err.config;
+
+                if (err.response?.status === 401 && !original._retry && refreshToken) {
+                    original._retry = true;
+                    try {
+                        const { data } = await api.post('/token/refresh/', {
+                            refresh: refreshToken,
+                        });
+                        login(data);
+                        original.headers.Authorization = `Bearer ${data.access}`;
+                        return api(original);
+                    } catch {
+                        logout();
+                    }
+                }
+                return Promise.reject(err);
+            }
+        );
+
+        return () => {
+            api.interceptors.request.eject(req);
+            api.interceptors.response.eject(res);
+        };
+    }, [accessToken, refreshToken]);
 
     return (
         <AuthContext.Provider
