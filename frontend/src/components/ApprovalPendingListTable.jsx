@@ -3,7 +3,7 @@ import { getCheckboxCell, getLinkCell, TableList } from './Tables.jsx';
 import { joinAndTruncate } from '../views/utils.jsx';
 import { useEffect, useState } from 'react';
 import { useRaidAttendanceApprovalDelete } from '../hooks/requests.js';
-
+// Table that allows user to delete options
 export function ApprovalPendingListTable({ data }) {
     const [raidsToDelete, setRaidsToDelete] = useState(new Set());
     const { mutate } = useRaidAttendanceApprovalDelete();

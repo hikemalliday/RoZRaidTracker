@@ -43,6 +43,54 @@ export const selectComponentProps = {
     },
 };
 
+const textFieldStylesHelperObj = {
+    '& .MuiOutlinedInput-root': {
+        width: 600,
+        color: 'white',
+        '& fieldset': {
+            borderColor: 'rgba(255,255,255,0.4)',
+        },
+        '&:hover fieldset': {
+            borderColor: 'rgba(255,255,255,0.7)',
+        },
+        '&.Mui-focused fieldset': {
+            borderColor: '#66b2ff', // same as MUI docs
+            borderWidth: 2,
+        },
+    },
+    '& .MuiInputLabel-root': {
+        color: 'rgba(255,255,255,0.7)',
+    },
+    '& label.Mui-focused': {
+        color: '#66b2ff',
+    },
+};
+
+export const getTextFieldStyles = (width = 600) => {
+    return {
+        '& .MuiOutlinedInput-root': {
+            width: width,
+            color: 'white',
+            '& fieldset': {
+                borderColor: 'rgba(255,255,255,0.4)',
+            },
+            '&:hover fieldset': {
+                borderColor: 'rgba(255,255,255,0.7)',
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: '#66b2ff', // same as MUI docs
+                borderWidth: 2,
+            },
+        },
+        '& .MuiInputLabel-root': {
+            color: 'rgba(255,255,255,0.7)',
+        },
+        '& label.Mui-focused': {
+            color: '#66b2ff',
+        },
+    };
+};
+
 export const textFieldStyles = {
     '& .MuiOutlinedInput-root': {
         width: 600,

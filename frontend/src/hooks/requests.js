@@ -227,6 +227,26 @@ export function useCharacterCreate() {
     });
 }
 
+export function useCharacterEdit() {
+    const queryClient = useQueryClient();
+    const { addMessage } = useMessage();
+    const client = useAxios(BASE_URL);
+    return useMutation({
+        mutationFn: async ({ payload }) => {
+            const { data } = await client.patch(`/characters/${payload.id}/`, payload);
+            return data;
+        },
+        onSuccess: async _ => {
+            addMessage('Successfully edited Character row.');
+            await queryClient.refetchQueries(['characters']);
+        },
+        onError: error => {
+            const errorMessage = error?.response?.data?.error || 'Unknown error';
+            addMessage(`Failed to edit Character row: ${errorMessage}`, 'error');
+        },
+    });
+}
+
 export function useRaidAttendanceApprovalDelete() {
     const queryClient = useQueryClient();
     const { addMessage } = useMessage();

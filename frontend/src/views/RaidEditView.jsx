@@ -11,9 +11,7 @@ import { useAuthContext } from '../context/AuthContext.jsx';
 import { Autocomplete, Box, Container, TextField, Typography } from '@mui/material';
 import { _getReducedResults, getPlayersListFinal, renderErrors } from './utils.jsx';
 import { useEffect, useRef, useState } from 'react';
-import { useMessage } from '../context/MessageContext.jsx';
 import { listBoxStyles, textFieldStyles } from '../styles.js';
-import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { useDebounce } from '../hooks/useDebounce.js';
 import { ItemAwardedListTableEditable } from '../components/ItemAwardedListTableEditable.jsx';
 

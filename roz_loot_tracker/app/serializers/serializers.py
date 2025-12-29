@@ -17,10 +17,38 @@ class ZoneSerializer(serializers.ModelSerializer):
 
 
 class CharacterSerializer(serializers.ModelSerializer):
+    player_id = serializers.PrimaryKeyRelatedField(
+        queryset=Player.objects.all(),
+        source="player",
+        write_only=True
+    )
     class Meta:
         model = Character
         fields = '__all__'
         depth = 1
+
+    def validate(self, attrs):
+        player = attrs.get('player')
+        is_main = attrs.get('is_main', False)
+        is_main_alt = attrs.get('is_main_alt', False)
+
+        if is_main and Character.objects.filter(
+            player=player,
+            is_main=True,
+        ).exists():
+            raise serializers.ValidationError({
+                'error': 'This player already has a main character.'
+            })
+
+        if is_main_alt and Character.objects.filter(
+            player=player,
+            is_main_alt=True,
+        ).exists():
+            raise serializers.ValidationError({
+                'error': 'This player already has a main alt character.'
+            })
+
+        return attrs
 
 
 class PlayerSerializer(serializers.ModelSerializer):

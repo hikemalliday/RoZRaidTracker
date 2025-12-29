@@ -30,6 +30,13 @@ class ItemFilter(filters.FilterSet):
         model = models.Item
         fields = ["name"]
 
+class PlayerFilter(filters.FilterSet):
+    name = filters.CharFilter(field_name="name", lookup_expr="icontains")
+
+    class Meta:
+        model = models.Player
+        fields = ["name"]
+
 
 class AllowNoPagination(PageNumberPagination):
     page_size_query_param = "page_size"
@@ -57,6 +64,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     ordering_fields = ['name', 'lifetime_ra']
     pagination_class = AllowNoPagination
+    filterset_class = PlayerFilter
 
     def get_queryset(self):
         total_raids = models.Raid.objects.count() or 1

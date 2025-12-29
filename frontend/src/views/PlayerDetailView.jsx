@@ -1,13 +1,16 @@
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { useDetail, useList } from '../hooks/requests.js';
 import { Container, Typography } from '@mui/material';
 import { renderErrors } from './utils.jsx';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { CharacterListTable } from '../components/CharacterListTable.jsx';
 import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.jsx';
+import { useAuthContext } from '../context/AuthContext.jsx';
 
 export function PlayerDetailView() {
     const { id } = useParams();
+    const navigate = useNavigate();
+    const { isSuperUser } = useAuthContext();
     const {
         isPending: isPlayerPending,
         data: playerData,
@@ -46,10 +49,23 @@ export function PlayerDetailView() {
 
     return (
         <Container>
+            {isSuperUser === true ? (
+                <>
+                    <button style={{ marginTop: 5 }} onClick={_ => navigate('edit')}>
+                        EDIT PLAYER
+                    </button>
+                </>
+            ) : (
+                <></>
+            )}
             <Typography sx={{ mt: 5 }} variant="h5">
                 Player: {playerData.name}
             </Typography>
-            <Container>
+            <Container sx={{ mt: 5 }}>
+                <Typography variant="h6">Characters</Typography>
+                <CharacterListTable data={characterData.results} />
+            </Container>
+            <Container sx={{ mt: 7 }}>
                 <Typography sx={{ mt: 1 }}>Lifetime RA: {playerData?.lifetime_ra}%</Typography>
                 <Typography sx={{ mt: 1 }}>21 Day RA: {playerData?.ra_21_day}%</Typography>
             </Container>
@@ -64,10 +80,6 @@ export function PlayerDetailView() {
                     Raids Attended: {raidsData.count}
                 </Typography>
                 <RaidAttendanceListTable data={_sortRaData(raidsData?.results)} sortable />
-            </Container>
-            <Container sx={{ mt: 9 }}>
-                <Typography variant="h6">Characters</Typography>
-                <CharacterListTable data={characterData.results} />
             </Container>
         </Container>
     );

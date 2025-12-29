@@ -15,6 +15,7 @@ import { ApprovalPendingDetailView } from './views/ApprovalPendingDetailView.jsx
 import { RaidEditView } from './views/RaidEditView.jsx';
 import { ApprovalHistoryListView } from './views/ApprovalHistoryListView.jsx';
 import { MageloEditView } from './views/MageloEditView.jsx';
+import { PlayerEditView } from './views/PlayerEditView.jsx';
 
 function App() {
     const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ function App() {
                         */ Edit Views */
                         <Route path="/raid/:id/edit" element={<RaidEditView />} />
                         <Route path="/magelo/:id/edit" element={<MageloEditView />} />
+                        <Route path="/player/:id/edit" element={<PlayerEditView />} />
                         */ MISC */
                         <Route path="/compare" element={<CompareView />} />
                     </Route>
