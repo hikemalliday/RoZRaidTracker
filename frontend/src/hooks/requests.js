@@ -28,7 +28,7 @@ export const usePlayersList = (queryParams = {}) => {
     return useList('players', '/players/', queryParams);
 };
 
-export const useItemsList = (queryParams = {}) => {
+export const useItemsAwardedList = (queryParams = {}) => {
     return useList('items_awarded', '/items_awarded/', queryParams);
 };
 

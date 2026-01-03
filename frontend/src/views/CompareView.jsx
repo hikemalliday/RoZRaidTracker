@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Autocomplete, Box, Container, TextField, Typography } from '@mui/material';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
-import { useItemsList, useList, usePlayersList } from '../hooks/requests.js';
+import { useItemsAwardedList, usePlayersList } from '../hooks/requests.js';
 import { renderErrors } from './utils.jsx';
 
 export function CompareView() {
@@ -18,17 +18,17 @@ export function CompareView() {
         isPending: isItemAwardedPending1,
         data: itemAwardedData1,
         error: itemAwardedError1,
-    } = useItemsList({ player: playerId1 });
+    } = useItemsAwardedList({ player: playerId1 });
     const {
         isPending: isItemAwardedPending2,
         data: itemAwardedData2,
         error: itemAwardedError2,
-    } = useItemsList({ player: playerId2 });
+    } = useItemsAwardedList({ player: playerId2 });
     const {
         isPending: isItemAwardedPending3,
         data: itemAwardedData3,
         error: itemAwardedError3,
-    } = useItemsList({ player: playerId3 });
+    } = useItemsAwardedList({ player: playerId3 });
 
     useEffect(() => {
         if (playersData?.results && playersData.results.length > 0) {
