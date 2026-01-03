@@ -24,6 +24,14 @@ export const useList = (queryKey, route, queryParams = {}) => {
     return { isPending, error, data };
 };
 
+export const usePlayersList = (queryParams = {}) => {
+    return useList('players', '/players/', queryParams);
+};
+
+export const useItemsList = (queryParams = {}) => {
+    return useList('items_awarded', '/items_awarded/', queryParams);
+};
+
 export const useListDebounced = (queryKey, route, filterField, filterVal) => {
     const queryParams = { [filterField]: filterVal };
     const { isPending, error, data } = useQuery({
