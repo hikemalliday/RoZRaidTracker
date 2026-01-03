@@ -1,5 +1,5 @@
 import { useParams } from 'react-router';
-import { useDetail, useList, useRaidAttendanceApprovalMutation } from '../hooks/requests.js';
+import { useDetail, usePlayersList, useRaidAttendanceApprovalMutation } from '../hooks/requests.js';
 import {
     Autocomplete,
     Button,
@@ -10,14 +10,14 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { buttonStyles, textFieldStyles } from '../styles.js';
 import { getCell } from '../components/Tables.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
 import { getPlayersListFinal } from './utils.jsx';
 
 function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
-    const { data: playersData, isPending: isPlayersPending } = useList('players', '/players/');
+    const { data: playersData, isPending: isPlayersPending } = usePlayersList();
     const [selectedPlayer, setSelectedPlayer] = useState(null);
 
     const handleSubmit = () => {
@@ -52,8 +52,6 @@ function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
 export function ApprovalPendingDetailView() {
     const { id } = useParams();
     const { isSuperUser } = useAuthContext();
-    const fieldsResults = useRef({});
-    // const [itemAwardedFields, setItemAwardedFields] = useState({});
     const { isPending, data, error } = useDetail(
         'raid_attendance_approval',
         '/raid_attendance_approval/',
@@ -126,28 +124,6 @@ export function ApprovalPendingDetailView() {
         if (e.key === 'enter') return e.preventDefault();
         setRaid(e.target.value);
     };
-    // // TODO: 12/7: Related to items
-    // const removeField = (e, fieldKey) => {
-    //     delete fieldsResults.current[fieldKey];
-    //     setItemAwardedFields(prev => {
-    //         const newState = { ...prev };
-    //         delete newState[fieldKey];
-    //         return newState;
-    //     });
-    // };
-    //
-    // const addItemAwardedField = () => {
-    //     const fieldKey = uuidv4();
-    //     const field = (
-    //         <Container sx={{ display: 'flex' }} key={fieldKey}>
-    //             <button onClick={_ => removeField(_, fieldKey)}>-</button>
-    //             <ItemAwardedField fieldsResults={fieldsResults} fieldKey={fieldKey} />
-    //         </Container>
-    //     );
-    //     setItemAwardedFields(prev => {
-    //         return { ...prev, [fieldKey]: field };
-    //     });
-    // };
 
     const handleSubmit = _ => {
         if (!raid) return;
@@ -160,18 +136,13 @@ export function ApprovalPendingDetailView() {
             raid_name: raid,
             players_list: _getTruthyPlayersToSubmit.map(player => player.name),
         };
-        // const itemsAwarded = Object.values(fieldsResults.current).map(itemAwarded => itemAwarded);
-        // if (itemsAwarded) payload.items_awarded = itemsAwarded;
+
         mutate({ payload });
     };
 
     return (
         <Container sx={{ marginTop: 5 }}>
-            {/*{Object.keys(itemAwardedFields).length*/}
-            {/*    ? Object.values(itemAwardedFields).map(field => field)*/}
-            {/*    : null}*/}
-            {/*<button onClick={addItemAwardedField}>ADD ITEM</button>*/}
-
+            {/* Can styles be abstracted here?*/}
             <Container
                 sx={{
                     marginTop: 5,
