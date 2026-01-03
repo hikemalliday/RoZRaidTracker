@@ -1,7 +1,7 @@
 import { useParams } from 'react-router';
 import { useAuthContext } from '../context/AuthContext.jsx';
 import { Autocomplete, Box, Container, TableRow, TextField, Typography } from '@mui/material';
-import { useCharacterCreate, useCharacterEdit, useList } from '../hooks/requests.js';
+import { useCharacterCreate, useCharacterEdit, useCharactersList } from '../hooks/requests.js';
 import { renderErrors } from './utils.jsx';
 import { useEffect, useState } from 'react';
 import { getTextFieldStyles, textFieldStyles } from '../styles.js';
@@ -221,7 +221,7 @@ function EditableCharacterListTable({ data }) {
 export function PlayerEditView() {
     const { id } = useParams();
     const { isSuperUser } = useAuthContext();
-    const { data, isPending, error } = useList('characters', '/characters/', {
+    const { data, isPending, error } = useCharactersList({
         player: id,
     });
 
