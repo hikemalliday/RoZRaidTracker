@@ -1,5 +1,9 @@
 import { useParams } from 'react-router';
-import { useDetail, usePlayersList, useRaidAttendanceApprovalMutation } from '../hooks/requests.js';
+import {
+    usePlayersList,
+    useRaidAttendanceApprovalDetail,
+    useRaidAttendanceApprovalMutation,
+} from '../hooks/requests.js';
 import {
     Autocomplete,
     Button,
@@ -52,11 +56,7 @@ function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
 export function ApprovalPendingDetailView() {
     const { id } = useParams();
     const { isSuperUser } = useAuthContext();
-    const { isPending, data, error } = useDetail(
-        'raid_attendance_approval',
-        '/raid_attendance_approval/',
-        id
-    );
+    const { isPending, data, error } = useRaidAttendanceApprovalDetail(id);
     const { mutate } = useRaidAttendanceApprovalMutation(id);
     const [raid, setRaid] = useState('');
     const [playersToSubmit, setPlayersToSubmit] = useState([]);
@@ -79,11 +79,7 @@ export function ApprovalPendingDetailView() {
             const _handleCheckboxClick = e => {
                 const newPlayersToSubmit = [...playersToSubmit];
                 const playerToMutate = newPlayersToSubmit.find(p => p.name === player.name);
-                console.log(1);
-                console.log(playerToMutate);
                 playerToMutate.is_selected = !!e.target.checked;
-                console.log(2);
-                console.log(playerToMutate);
                 return setPlayersToSubmit(newPlayersToSubmit);
             };
 

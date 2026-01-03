@@ -87,7 +87,10 @@ export const useDetail = (queryKey, route, id) => {
     return { isPending, error, data };
 };
 
-// GET LIST PAGINATED
+export const useRaidAttendanceApprovalDetail = id => {
+    return useDetail('raid_attendance_approval', '/raid_attendance_approval/', id);
+};
+
 export function usePlayerListPaginated(queryParams) {
     return _useListPaginated('players', '/players/', queryParams);
 }
