@@ -95,6 +95,10 @@ export const usePlayerDetail = id => {
     return useDetail('players', '/players/', id);
 };
 
+export const useRaidDetail = id => {
+    return useDetail('raids', '/raids/', id);
+};
+
 export function usePlayerListPaginated(queryParams) {
     return _useListPaginated('players', '/players/', queryParams);
 }

@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router';
-import { useDetail, useItemsAwardedList, useRaidAttendanceList } from '../hooks/requests.js';
+import { useItemsAwardedList, useRaidAttendanceList, useRaidDetail } from '../hooks/requests.js';
 import { Container, Typography } from '@mui/material';
 import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.jsx';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
@@ -10,7 +10,7 @@ export function RaidDetailView() {
     const { id } = useParams();
     const { isSuperUser } = useAuthContext();
     const navigate = useNavigate();
-    const { isPending, data, error } = useDetail('raids', '/raids/', id);
+    const { isPending, data, error } = useRaidDetail(id);
     const {
         isPending: isRaPending,
         data: raData,
