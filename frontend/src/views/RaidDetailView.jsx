@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router';
-import { useDetail, useList } from '../hooks/requests.js';
+import { useDetail, useItemsAwardedList, useRaidAttendanceList } from '../hooks/requests.js';
 import { Container, Typography } from '@mui/material';
 import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.jsx';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
@@ -15,12 +15,12 @@ export function RaidDetailView() {
         isPending: isRaPending,
         data: raData,
         error: raError,
-    } = useList('raid_attendance', '/raid_attendance/', { raid: id });
+    } = useRaidAttendanceList({ raid: id });
     const {
         isPending: isItemAwardedPending,
         data: itemAwardedData,
         error: itemAwardedError,
-    } = useList('items_awarded', '/items_awarded/', { raid: id });
+    } = useItemsAwardedList({ raid: id });
 
     const _sortPlayers = data => {
         return data.sort((a, b) => {
