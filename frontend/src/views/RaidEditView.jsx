@@ -1,6 +1,5 @@
 import { useParams } from 'react-router';
 import {
-    useDetail,
     useItemAwardedCreate,
     useItemsAwardedList,
     useListDebounced,
@@ -8,6 +7,7 @@ import {
     useRaidAttendanceDelete,
     useRaidAttendanceList,
     useRaidAttendanceMutation,
+    useRaidDetail,
 } from '../hooks/requests.js';
 import { useAuthContext } from '../context/AuthContext.jsx';
 import { Autocomplete, Box, Container, TextField, Typography } from '@mui/material';
@@ -162,7 +162,7 @@ function EditPlayerField({ playerName, raId, raRowsToDelete, styles = {} }) {
 export function RaidEditView() {
     const { id } = useParams();
     const { isSuperUser } = useAuthContext();
-    const { isPending, data, error } = useDetail('raids', '/raids/', id);
+    const { isPending, data, error } = useRaidDetail(id);
     const {
         isPending: isRaPending,
         data: raData,
