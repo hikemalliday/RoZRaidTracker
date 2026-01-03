@@ -2,9 +2,11 @@ import { useParams } from 'react-router';
 import {
     useDetail,
     useItemAwardedCreate,
-    useList,
+    useItemsAwardedList,
     useListDebounced,
+    usePlayersList,
     useRaidAttendanceDelete,
+    useRaidAttendanceList,
     useRaidAttendanceMutation,
 } from '../hooks/requests.js';
 import { useAuthContext } from '../context/AuthContext.jsx';
@@ -23,7 +25,7 @@ function AddItemAwardedField({ raidId, styles = {} }) {
     const [altLoot, setAltLoot] = useState(false);
     const [preferred, setPreffered] = useState(false);
     const [magelo, setMagelo] = useState(false);
-    const { data: playersData, isPending: isPlayersPending } = useList('players', '/players/');
+    const { data: playersData, isPending: isPlayersPending } = usePlayersList();
     const { data: itemsData, isPending: isItemsPending } = useListDebounced(
         'items',
         '/items/',
@@ -101,7 +103,7 @@ function AddItemAwardedField({ raidId, styles = {} }) {
 }
 
 function AddPlayerField({ raidId, styles = {} }) {
-    const { data: playersData, isPending: isPlayersPending } = useList('players', '/players/');
+    const { data: playersData, isPending: isPlayersPending } = usePlayersList();
     const [selectedPlayer, setSelectedPlayer] = useState(null);
     const { mutate } = useRaidAttendanceMutation();
 
@@ -165,12 +167,12 @@ export function RaidEditView() {
         isPending: isRaPending,
         data: raData,
         error: raError,
-    } = useList('raid_attendance', '/raid_attendance/', { raid: id });
+    } = useRaidAttendanceList({ raid: id });
     const {
         isPending: isItemAwardedPending,
         data: itemAwardedData,
         error: itemAwardedError,
-    } = useList('items_awarded', '/items_awarded/', { raid: id });
+    } = useItemsAwardedList({ raid: id });
     const { mutate } = useRaidAttendanceDelete();
     const [playersToRender, setPlayersToRender] = useState([]);
     const raRowsToDelete = useRef([]);
