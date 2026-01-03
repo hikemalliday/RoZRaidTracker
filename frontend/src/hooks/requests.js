@@ -76,7 +76,7 @@ export const _useListPaginated = (queryKey, route, queryParams) => {
     return { isPending, error, data };
 };
 
-export const useDetail = (queryKey, route, id) => {
+export const _useDetail = (queryKey, route, id) => {
     const { isPending, error, data } = useQuery({
         queryKey: [queryKey, id],
         queryFn: async () => {
@@ -88,15 +88,15 @@ export const useDetail = (queryKey, route, id) => {
 };
 
 export const useRaidAttendanceApprovalDetail = id => {
-    return useDetail('raid_attendance_approval', '/raid_attendance_approval/', id);
+    return _useDetail('raid_attendance_approval', '/raid_attendance_approval/', id);
 };
 
 export const usePlayerDetail = id => {
-    return useDetail('players', '/players/', id);
+    return _useDetail('players', '/players/', id);
 };
 
 export const useRaidDetail = id => {
-    return useDetail('raids', '/raids/', id);
+    return _useDetail('raids', '/raids/', id);
 };
 
 export function usePlayerListPaginated(queryParams) {
