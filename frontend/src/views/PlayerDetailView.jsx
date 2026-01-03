@@ -1,5 +1,10 @@
 import { useNavigate, useParams } from 'react-router';
-import { useDetail, useList } from '../hooks/requests.js';
+import {
+    useCharactersList,
+    useDetail,
+    useItemsAwardedList,
+    useRaidAttendanceList,
+} from '../hooks/requests.js';
 import { Container, Typography } from '@mui/material';
 import { renderErrors } from './utils.jsx';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
@@ -20,18 +25,18 @@ export function PlayerDetailView() {
         isPending: isItemAwardedPending,
         data: itemAwardedData,
         error: itemAwardedError,
-    } = useList('items_awarded', '/items_awarded/', { player: id });
+    } = useItemsAwardedList({ player: id });
     const {
         isPending: isCharacterPending,
         data: characterData,
         error: characterError,
-    } = useList('characters', '/characters/', { player: id });
+    } = useCharactersList({ player: id });
 
     const {
         isPending: isRaidsPending,
         data: raidsData,
         error: raidsError,
-    } = useList('raid_attendance', '/raid_attendance/', { player: id });
+    } = useRaidAttendanceList({ player: id });
 
     if (isPlayerPending || isItemAwardedPending || isCharacterPending || isRaidsPending)
         return <>LOADING...</>;
