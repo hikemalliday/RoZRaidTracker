@@ -1,8 +1,8 @@
 import { useNavigate, useParams } from 'react-router';
 import {
     useCharactersList,
-    useDetail,
     useItemsAwardedList,
+    usePlayerDetail,
     useRaidAttendanceList,
 } from '../hooks/requests.js';
 import { Container, Typography } from '@mui/material';
@@ -20,7 +20,7 @@ export function PlayerDetailView() {
         isPending: isPlayerPending,
         data: playerData,
         error: playerError,
-    } = useDetail('players', '/players/', id);
+    } = usePlayerDetail(id);
     const {
         isPending: isItemAwardedPending,
         data: itemAwardedData,

@@ -91,6 +91,10 @@ export const useRaidAttendanceApprovalDetail = id => {
     return useDetail('raid_attendance_approval', '/raid_attendance_approval/', id);
 };
 
+export const usePlayerDetail = id => {
+    return useDetail('players', '/players/', id);
+};
+
 export function usePlayerListPaginated(queryParams) {
     return _useListPaginated('players', '/players/', queryParams);
 }
