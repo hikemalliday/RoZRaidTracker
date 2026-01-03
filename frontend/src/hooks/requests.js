@@ -8,7 +8,7 @@ import { api } from '../api.js';
 // Keeps data shape consistent on list responses
 const PAGE_SIZE_NO_PAGINATION = 9999;
 
-export const useList = (queryKey, route, queryParams = {}) => {
+export const _useList = (queryKey, route, queryParams = {}) => {
     const { isPending, error, data } = useQuery({
         queryKey: [queryKey, queryParams],
         queryFn: async () => {
@@ -25,19 +25,19 @@ export const useList = (queryKey, route, queryParams = {}) => {
 };
 
 export const usePlayersList = (queryParams = {}) => {
-    return useList('players', '/players/', queryParams);
+    return _useList('players', '/players/', queryParams);
 };
 
 export const useItemsAwardedList = (queryParams = {}) => {
-    return useList('items_awarded', '/items_awarded/', queryParams);
+    return _useList('items_awarded', '/items_awarded/', queryParams);
 };
 
 export const useCharactersList = (queryParams = {}) => {
-    return useList('characters', '/characters/', queryParams);
+    return _useList('characters', '/characters/', queryParams);
 };
 
 export const useRaidAttendanceList = (queryParams = {}) => {
-    return useList('raid_attendance', '/raid_attendance/', queryParams);
+    return _useList('raid_attendance', '/raid_attendance/', queryParams);
 };
 
 export const useListDebounced = (queryKey, route, filterField, filterVal) => {
@@ -230,26 +230,6 @@ export function useCharacterCreate() {
         },
     });
 }
-
-// export function useCharacterEdit() {
-//     const queryClient = useQueryClient();
-//     const { addMessage } = useMessage();
-//     const client = useAxios(BASE_URL);
-//     return useMutation({
-//         mutationFn: async ({ payload }) => {
-//             const { data } = await client.patch(`/characters/${payload.id}/`, payload);
-//             return data;
-//         },
-//         onSuccess: async _ => {
-//             addMessage('Successfully edited Character row.');
-//             await queryClient.refetchQueries(['characters']);
-//         },
-//         onError: error => {
-//             const errorMessage = error?.response?.data?.error || 'Unknown error';
-//             addMessage(`Failed to edit Character row: ${errorMessage}`, 'error');
-//         },
-//     });
-// }
 
 export function useCharacterEdit() {
     const queryClient = useQueryClient();

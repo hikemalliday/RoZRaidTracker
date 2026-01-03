@@ -12,9 +12,6 @@ import {
 import { selectComponentProps, textFieldStyles } from '../styles.js';
 import { PaginationController } from './PaginationController.jsx';
 
-// TODO: 12/23: The way we dynamically handle the optional search bar could have been simplified by avoiding the 'over-abstraction' we did via 'useList'
-// TODO: This is to say that, we should have make individual request hooks for each model, instead of a 'one-size-fits-all' approach that led to 'param hell' (too many params for little gain)
-// TODO: Also note that, the other paginated list view (ITEMS AWARDED) would want a debounced item search bar, which this abstraction doesnt really even allow.
 export function PaginatedListTable({
     requestHook,
     TableComponent,
@@ -22,20 +19,16 @@ export function PaginatedListTable({
     sortMap = {},
     defaultSort = {},
     searchParam = null,
-    useOptions = (qKey, route) => {
+    useOptions = () => {
         return { data: [], isPending: false };
     },
-    optionsHookParams = {
-        optionsQueryKey: '',
-        optionsRoute: '',
-    },
-    getOptions = () => [],
+    optionsLabel = '',
+    reduceOptions = () => [],
 }) {
     const _getOrdering = str => {
         return sortMap?.[str] || str;
     };
 
-    const { optionsQueryKey, optionsRoute } = optionsHookParams;
     const [page, setPage] = useState(1);
     const [orderDir, setOrderDir] = useState(defaultSort?.orderDir || 'asc');
     const [ordering, setOrdering] = useState(defaultSort?.ordering || 'name');
@@ -47,10 +40,7 @@ export function PaginatedListTable({
         orderDir,
         ...qParam,
     });
-    const { data: optionsData, isPending: isOptionsPending } = useOptions(
-        optionsQueryKey,
-        optionsRoute
-    );
+    const { data: optionsData, isPending: isOptionsPending } = useOptions();
 
     const handleOrderDirChange = e => {
         return setOrderDir(e.target.value);
@@ -70,12 +60,12 @@ export function PaginatedListTable({
                         renderInput={params => (
                             <TextField
                                 {...params}
-                                label={optionsQueryKey}
+                                label={optionsLabel}
                                 sx={textFieldStyles}
                                 size="small"
                             />
                         )}
-                        options={!isOptionsPending ? getOptions(optionsData.results) : []}
+                        options={!isOptionsPending ? reduceOptions(optionsData.results) : []}
                         onChange={(_, option) => {
                             setSearchVal(option.label);
                         }}
