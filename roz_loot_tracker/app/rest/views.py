@@ -46,7 +46,7 @@ class AllowNoPagination(PageNumberPagination):
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = models.Item.objects.all()
     serializer_class = ItemSerializer
-    permission_classes = (PERMISSION_CLASS_DEBUG,)
+    # permission_classes = (PERMISSION_CLASS_DEBUG,)
     pagination_class = AllowNoPagination
     filterset_class = ItemFilter
 
@@ -60,7 +60,7 @@ class ZoneViewSet(viewsets.ModelViewSet):
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = models.Player.objects.all()
     serializer_class = PlayerSerializer
-    permission_classes = (PERMISSION_CLASS_DEBUG,)
+    # permission_classes = (PERMISSION_CLASS_DEBUG,)
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     ordering_fields = ['name', 'lifetime_ra']
     pagination_class = AllowNoPagination
@@ -103,7 +103,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
 class CharacterViewSet(viewsets.ModelViewSet):
     queryset = models.Character.objects.all()
     serializer_class = CharacterSerializer
-    permission_classes = (PERMISSION_CLASS_DEBUG,)
+    # permission_classes = (PERMISSION_CLASS_DEBUG,)
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['player']
 
@@ -111,7 +111,7 @@ class CharacterViewSet(viewsets.ModelViewSet):
 class RaidViewSet(viewsets.ModelViewSet):
     queryset = models.Raid.objects.all()
     serializer_class = RaidSerializer
-    permission_classes = (PERMISSION_CLASS_DEBUG,)
+    # permission_classes = (PERMISSION_CLASS_DEBUG,)
     filter_backends = (OrderingFilter,)
     ordering_fields = ['name', 'zone', 'created_at']
 
@@ -128,7 +128,7 @@ class RaidViewSet(viewsets.ModelViewSet):
 class ItemAwardedViewSet(viewsets.ModelViewSet):
     queryset = models.ItemAwarded.objects.all()
     serializer_class = ItemAwardedSerializer
-    permission_classes = (PERMISSION_CLASS_DEBUG,)
+    # permission_classes = (PERMISSION_CLASS_DEBUG,)
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['player', 'raid']
     ordering_fields = ['player__name', 'raid__name', 'created_at', 'item__name']
@@ -144,7 +144,7 @@ class PreferredPixelViewSet(viewsets.ModelViewSet):
 class RaidAttendanceViewSet(viewsets.ModelViewSet):
     queryset = models.RaidAttendance.objects.all()
     serializer_class = RaidAttendanceSerializer
-    permission_classes = (PERMISSION_CLASS_DEBUG,)
+    # permission_classes = (PERMISSION_CLASS_DEBUG,)
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['player', 'raid']
     pagination_class = AllowNoPagination

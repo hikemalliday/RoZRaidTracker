@@ -24,27 +24,25 @@ function App() {
             <QueryClientProvider client={queryClient}>
                 <Routes>
                     <Route path="/login" element={<Login />} />
+                    <Route path="/" element={<Home />} />
+                    <Route path="/player" element={<PlayerListView />} />
+                    <Route path="/raid" element={<RaidListView />} />
+                    <Route path="/item_awarded" element={<ItemAwardedListView />} />
+                    <Route path="/player/:id" element={<PlayerDetailView />} />
+                    <Route path="/raid/:id" element={<RaidDetailView />} />
+                    <Route path="/compare" element={<CompareView />} />
+
                     <Route element={<ProtectedRoute />}>
-                        <Route path="/" element={<Home />} />
-                        */ List Views */
-                        <Route path="/player" element={<PlayerListView />} />
-                        <Route path="/raid" element={<RaidListView />} />
-                        <Route path="/item_awarded" element={<ItemAwardedListView />} />
                         <Route path="/ra_approval_pending" element={<ApprovalPendingListView />} />
                         <Route path="/ra_approval_history" element={<ApprovalHistoryListView />} />
-                        */ Detail Views */
-                        <Route path="/player/:id" element={<PlayerDetailView />} />
-                        <Route path="/raid/:id" element={<RaidDetailView />} />
                         <Route
                             path="/ra_approval_pending/:id"
                             element={<ApprovalPendingDetailView />}
                         />
-                        */ Edit Views */
                         <Route path="/raid/:id/edit" element={<RaidEditView />} />
                         <Route path="/player/:id/edit" element={<PlayerEditView />} />
-                        */ MISC */
-                        <Route path="/compare" element={<CompareView />} />
                     </Route>
+
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </QueryClientProvider>

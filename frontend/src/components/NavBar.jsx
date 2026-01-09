@@ -26,7 +26,6 @@ export function NavBar() {
     };
 
     const navBarLinks = () => {
-        if (!isAuthenticated) return <div></div>;
         return (
             <div
                 ref={
@@ -41,7 +40,7 @@ export function NavBar() {
                     COMPARE
                 </a>
                 -
-                {isSuperUser && (
+                {isAuthenticated && isSuperUser && (
                     <>
                         <a id="nav-bar-link" onClick={() => setApprovalOpen(prev => !prev)}>
                             APPROVAL
@@ -83,9 +82,15 @@ export function NavBar() {
                     ITEMS AWARDED
                 </a>
                 -
-                <a id="nav-bar-link" onClick={() => logout()}>
-                    LOG OUT
-                </a>
+                {isAuthenticated ? (
+                    <a id="nav-bar-link" onClick={() => logout()}>
+                        LOG OUT
+                    </a>
+                ) : (
+                    <a id="nav-bar-link" onClick={() => handleLinkClick('/login')}>
+                        LOG IN
+                    </a>
+                )}
             </div>
         );
     };

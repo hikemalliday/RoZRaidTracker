@@ -8,7 +8,7 @@ import { useAuthContext } from '../context/AuthContext.jsx';
 
 export function RaidDetailView() {
     const { id } = useParams();
-    const { isSuperUser } = useAuthContext();
+    const { isSuperUser, isAuthenticated } = useAuthContext();
     const navigate = useNavigate();
     const { isPending, data, error } = useRaidDetail(id);
     const {
@@ -38,7 +38,7 @@ export function RaidDetailView() {
 
     return (
         <Container>
-            {isSuperUser === true ? (
+            {isAuthenticated && isSuperUser === true ? (
                 <>
                     <button style={{ marginTop: 5 }} onClick={_ => navigate('edit')}>
                         EDIT RAID

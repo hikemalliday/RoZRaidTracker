@@ -15,7 +15,7 @@ import { useAuthContext } from '../context/AuthContext.jsx';
 export function PlayerDetailView() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { isSuperUser } = useAuthContext();
+    const { isSuperUser, isAuthenticated } = useAuthContext();
     const {
         isPending: isPlayerPending,
         data: playerData,
@@ -54,7 +54,7 @@ export function PlayerDetailView() {
 
     return (
         <Container>
-            {isSuperUser === true ? (
+            {isAuthenticated && isSuperUser === true ? (
                 <>
                     <button style={{ marginTop: 5 }} onClick={_ => navigate('edit')}>
                         EDIT PLAYER
