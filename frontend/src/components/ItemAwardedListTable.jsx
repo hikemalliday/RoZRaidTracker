@@ -13,6 +13,7 @@ export function ItemAwardedListTable({
     data,
     highlight21Day = false,
     styledRows = false,
+    enableToolTip = true,
     dataTestId = null,
     ...rest
 }) {
@@ -23,7 +24,9 @@ export function ItemAwardedListTable({
             return (
                 <TableRow key={i} sx={rowStyles}>
                     {getItemIconCell(row?.item?.icon_id)}
-                    {getHoverTooltipCell(row?.item?.name, row?.item?.eq_item_id)}
+                    {enableToolTip
+                        ? getHoverTooltipCell(row?.item?.name, row?.item?.eq_item_id)
+                        : getCell(row?.item?.name)}
                     {getLinkCell(row?.player?.name, `/player/${row?.player?.id}`)}
                     {getLinkCell(row?.raid?.name, `/raid/${row?.raid?.id}`)}
                     {getCell(row?.raid?.created_at)}
