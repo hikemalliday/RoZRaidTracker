@@ -56,10 +56,6 @@ body {
 }
 
 
-
-
-
-
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -78,8 +74,6 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
-
-
 
 
 #list-view-links {
@@ -129,4 +123,42 @@ a:active {
 #error-list {
   display: flex;
   flex-direction: column;
+}
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  color: white !important;
+}
+
+.tooltip-content {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #222;
+  color: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  min-width: 150px;      /* optional base width */
+  max-width: 90vw;       /* ensures tooltip never exceeds viewport */
+  width: auto;           /* grow naturally with content */
+  white-space: normal;   /* allow wrapping for long content */
+  z-index: 1000;
+  display: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.tooltip-content table,
+.tooltip-content td,
+.tooltip-content th,
+.tooltip-content div {
+  border: none !important;
+  margin: 0;
+  padding: 0;
+}
+
+.tooltip-wrapper:hover .tooltip-content {
+  display: block;
 }

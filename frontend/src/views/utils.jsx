@@ -81,3 +81,38 @@ export function sortItemsByType(results) {
         return 0;
     });
 }
+
+export async function getItemInfo(itemId) {
+    try {
+        const res = await fetch(`https://www.pqdi.cc/get-item-tooltip/${itemId}`);
+        const html = await res.text();
+        return html;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+export function fixLinks(htmlString, baseUrl = 'https://www.pqdi.cc/') {
+    // Parse the HTML
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, 'text/html');
+
+    // Find all <a> tags
+    const links = doc.querySelectorAll('a');
+    links.forEach(link => {
+        const href = link.getAttribute('href');
+
+        // Prepend baseUrl if link is relative (doesn't start with http or #)
+        if (href && !href.startsWith('http') && !href.startsWith('#')) {
+            // Remove any leading slashes in href to avoid double slashes
+            const cleanHref = href.replace(/^\/+/, '');
+            link.setAttribute('href', `${baseUrl}${cleanHref}`);
+        }
+
+        // Make link open in new tab safely
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer');
+    });
+
+    return doc.body.innerHTML;
+}

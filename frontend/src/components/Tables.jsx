@@ -2,6 +2,41 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { Link } from 'react-router';
 import React, { useEffect, useState } from 'react';
 import { IMAGE_PATH } from '../config.js';
+import { fixLinks, getItemInfo } from '../views/utils.jsx';
+
+export function getHoverTooltipCell(val, itemId) {
+    const [itemHtml, setItemHtml] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [hovered, setHovered] = useState(false);
+
+    const handleMouseEnter = async () => {
+        setHovered(true);
+        if (!itemHtml && !isLoading) {
+            setIsLoading(true);
+            const html = await getItemInfo(itemId);
+            setItemHtml(fixLinks(html));
+            setIsLoading(false);
+        }
+    };
+
+    const handleMouseLeave = () => {
+        setHovered(false);
+    };
+
+    return (
+        <TableCell
+            className="tooltip-wrapper"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
+            {val}
+            {hovered && itemHtml && (
+                <div className="tooltip-content" dangerouslySetInnerHTML={{ __html: itemHtml }} />
+            )}
+            {hovered && !itemHtml && <div className="tooltip-content">Loading...</div>}
+        </TableCell>
+    );
+}
 
 export const getLinkCell = (val, route, extraText) => {
     return (
@@ -47,6 +82,7 @@ export function TableList({
     headerMap = {},
     sortable = false,
     styledRows = false,
+    dataTestId = null,
 }) {
     const [sorted, setSorted] = useState(data);
     const [sortDirection, setSortDirection] = useState('asc');
@@ -121,6 +157,7 @@ export function TableList({
                       }
                     : {}
             }
+            data-testid={dataTestId ? `table-list-${dataTestId}` : `table-list-test-id`}
         >
             <TableHead>
                 <TableRow>

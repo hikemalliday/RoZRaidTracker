@@ -1,8 +1,6 @@
 import { useNavigate } from 'react-router';
-import { useAuthContext } from '../context/AuthContext.jsx';
 
 export default function Home() {
-    const { isSuperUser } = useAuthContext();
     const navigate = useNavigate();
 
     return (

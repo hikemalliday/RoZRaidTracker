@@ -1,12 +1,19 @@
-import { getCell, getItemIconCell, getLinkCell, TableList } from './Tables.jsx';
+import {
+    getCell,
+    getHoverTooltipCell,
+    getItemIconCell,
+    getLinkCell,
+    TableList,
+} from './Tables.jsx';
 import { TableRow } from '@mui/material';
-import { get21DayStyles, getIs21Day, getRowStyles, VERY_DARK_GRAY } from '../styles.js';
+import { get21DayStyles, getRowStyles } from '../styles.js';
 import { getLootType } from '../views/utils.jsx';
 
 export function ItemAwardedListTable({
     data,
     highlight21Day = false,
     styledRows = false,
+    dataTestId = null,
     ...rest
 }) {
     const getItemAwardedRows = data => {
@@ -16,7 +23,7 @@ export function ItemAwardedListTable({
             return (
                 <TableRow key={i} sx={rowStyles}>
                     {getItemIconCell(row?.item?.icon_id)}
-                    {getCell(row?.item?.name)}
+                    {getHoverTooltipCell(row?.item?.name, row?.item?.eq_item_id)}
                     {getLinkCell(row?.player?.name, `/player/${row?.player?.id}`)}
                     {getLinkCell(row?.raid?.name, `/raid/${row?.raid?.id}`)}
                     {getCell(row?.raid?.created_at)}
@@ -41,6 +48,7 @@ export function ItemAwardedListTable({
             data={data}
             getTableRows={getItemAwardedRows}
             styledRows={styledRows}
+            dataTestId={dataTestId}
             {...rest}
         />
     );
