@@ -250,6 +250,7 @@ export function CompareView() {
                                 highlight21Day
                                 sortable
                                 styledRows
+                                enableToolTip={false}
                                 dataTestId={playerId}
                             />
                         </>
