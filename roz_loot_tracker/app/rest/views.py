@@ -62,7 +62,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
     serializer_class = PlayerSerializer
     # permission_classes = (PERMISSION_CLASS_DEBUG,)
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-    ordering_fields = ['name', 'lifetime_ra']
+    ordering_fields = ['name', 'lifetime_ra', 'ra_21_day']
     pagination_class = AllowNoPagination
     filterset_class = PlayerFilter
 

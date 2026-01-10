@@ -12,7 +12,7 @@ export function RaidListView() {
             sortMap={{ date: 'created_at' }}
             defaultSort={{
                 orderDir: 'desc',
-                ordering: 'created_at',
+                ordering: 'date',
             }}
         />
     );

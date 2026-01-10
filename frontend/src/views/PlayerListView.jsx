@@ -8,11 +8,19 @@ export function PlayerListView() {
         <PaginatedListTable
             requestHook={usePlayerListPaginated}
             TableComponent={PlayerListTable}
-            sortChoices={['name', 'lifetime_ra']}
+            sortChoices={['name', 'lifetime ra', '21 day']}
             searchParam="name"
             useOptions={usePlayersList}
             optionsLabel="players"
             reduceOptions={getPlayersListFinal}
+            sortMap={{
+                '21 day': 'ra_21_day',
+                'lifetime ra': 'lifetime_ra',
+            }}
+            defaultSort={{
+                orderDir: 'desc',
+                ordering: '21 day',
+            }}
         />
     );
 }

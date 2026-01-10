@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Autocomplete, Box, Container, TextField, Typography } from '@mui/material';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { useItemsAwardedList, usePlayersList } from '../hooks/requests.js';
-import { renderErrors } from './utils.jsx';
+import { renderErrors, sortItemsByType } from './utils.jsx';
 
 export function CompareView() {
     const [playerId1, setPlayerId1] = useState('');
@@ -195,6 +195,7 @@ export function CompareView() {
         };
 
         const filteredData = _filterItems(itemAwardedData?.results, filters);
+
         return (
             <Container disableGutters>
                 <Container>
@@ -202,7 +203,7 @@ export function CompareView() {
                     {getRaInfo(playerId, playersList)}
                     {!isPending && playerId && (
                         <>
-                            {getItemAwardedCount(itemAwardedData.count)}
+                            {getItemAwardedCount(filteredData.length)}
                             <Box
                                 sx={{
                                     mt: '20px',
@@ -245,10 +246,11 @@ export function CompareView() {
                                 </Box>
                             </Box>
                             <ItemAwardedListTable
-                                data={sortItemsById(filteredData)}
+                                data={sortItemsByType(sortItemsById(filteredData))}
                                 highlight21Day
                                 sortable
                                 styledRows
+                                dataTestId={playerId}
                             />
                         </>
                     )}

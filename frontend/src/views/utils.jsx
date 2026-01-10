@@ -61,3 +61,23 @@ export function getLootType(itemObj) {
     else if (itemObj.alt_loot && !itemObj.magelo) lootType = 'Alt';
     return lootType;
 }
+
+export function sortItemsByType(results) {
+    if (!results) return [];
+
+    return [...results].sort((a, b) => {
+        if (a.preferred !== b.preferred) {
+            return a.preferred ? -1 : 1;
+        }
+
+        if (a.magelo !== b.magelo) {
+            return a.magelo ? -1 : 1;
+        }
+
+        if (a.alt_loot !== b.alt_loot) {
+            return a.alt_loot ? -1 : 1;
+        }
+
+        return 0;
+    });
+}

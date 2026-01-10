@@ -47,7 +47,7 @@ export function PaginatedListTable({
     };
 
     const handleOrderingChange = e => {
-        return setOrdering(_getOrdering(e.target.value));
+        return setOrdering(e.target.value);
     };
 
     if (error) return <>{error.message}</>;

@@ -6,7 +6,7 @@ import {
     useRaidAttendanceList,
 } from '../hooks/requests.js';
 import { Container, Typography } from '@mui/material';
-import { renderErrors } from './utils.jsx';
+import { renderErrors, sortItemsByType } from './utils.jsx';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { CharacterListTable } from '../components/CharacterListTable.jsx';
 import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.jsx';
@@ -52,6 +52,12 @@ export function PlayerDetailView() {
         });
     };
 
+    const sortItemsById = results => {
+        return results.sort((a, b) => {
+            return b.id - a.id;
+        });
+    };
+
     return (
         <Container>
             {isAuthenticated && isSuperUser === true ? (
@@ -78,7 +84,11 @@ export function PlayerDetailView() {
                 <Typography sx={{ mt: 5 }} variant="h6">
                     Items Awarded - Total: {itemAwardedData.count}
                 </Typography>
-                <ItemAwardedListTable data={itemAwardedData.results} sortable styledRows />
+                <ItemAwardedListTable
+                    data={sortItemsByType(sortItemsById(itemAwardedData.results))}
+                    sortable
+                    styledRows
+                />
             </Container>
             <Container>
                 <Typography sx={{ mt: 5 }} variant="h6">

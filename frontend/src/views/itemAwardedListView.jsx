@@ -14,6 +14,10 @@ export function ItemAwardedListView() {
                 date: 'created_at',
                 raid: 'raid__name',
             }}
+            defaultSort={{
+                orderDir: 'desc',
+                ordering: 'date',
+            }}
         />
     );
 }
