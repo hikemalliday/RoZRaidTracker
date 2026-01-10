@@ -82,6 +82,10 @@ export function NavBar() {
                     ITEMS AWARDED
                 </a>
                 -
+                <a id="nav-bar-link" onClick={() => handleLinkClick('screenshots')}>
+                    SCREENSHOTS
+                </a>
+                -
                 {isAuthenticated ? (
                     <a id="nav-bar-link" onClick={() => logout()}>
                         LOG OUT

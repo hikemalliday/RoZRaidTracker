@@ -15,6 +15,7 @@ import { ApprovalPendingDetailView } from './views/ApprovalPendingDetailView.jsx
 import { RaidEditView } from './views/RaidEditView.jsx';
 import { ApprovalHistoryListView } from './views/ApprovalHistoryListView.jsx';
 import { PlayerEditView } from './views/PlayerEditView.jsx';
+import { Screenshots } from './views/Screenshots.jsx';
 
 function App() {
     const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ function App() {
                     <Route path="/player/:id" element={<PlayerDetailView />} />
                     <Route path="/raid/:id" element={<RaidDetailView />} />
                     <Route path="/compare" element={<CompareView />} />
+                    <Route path="/screenshots" element={<Screenshots />} />
 
                     <Route element={<ProtectedRoute />}>
                         <Route path="/ra_approval_pending" element={<ApprovalPendingListView />} />
