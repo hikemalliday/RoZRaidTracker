@@ -65,21 +65,10 @@ export function getLootType(itemObj) {
 export function sortItemsByType(results) {
     if (!results) return [];
 
-    return [...results].sort((a, b) => {
-        if (a.preferred !== b.preferred) {
-            return a.preferred ? -1 : 1;
-        }
+    const score = item =>
+        (item.preferred ? 100 : 0) + (item.magelo ? 10 : 0) - (item.alt_loot ? 1 : 0);
 
-        if (a.magelo !== b.magelo) {
-            return a.magelo ? -1 : 1;
-        }
-
-        if (a.alt_loot !== b.alt_loot) {
-            return a.alt_loot ? -1 : 1;
-        }
-
-        return 0;
-    });
+    return [...results].sort((a, b) => score(b) - score(a));
 }
 
 export async function getItemInfo(itemId) {
