@@ -6,7 +6,7 @@ import {
     useRaidAttendanceList,
 } from '../hooks/requests.js';
 import { Container, Typography } from '@mui/material';
-import { renderErrors, sortItemsByType } from './utils.jsx';
+import { renderErrors } from './utils.jsx';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { CharacterListTable } from '../components/CharacterListTable.jsx';
 import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.jsx';
@@ -85,7 +85,7 @@ export function PlayerDetailView() {
                     Items Awarded - Total: {itemAwardedData.count}
                 </Typography>
                 <ItemAwardedListTable
-                    data={sortItemsByType(sortItemsById(itemAwardedData.results))}
+                    data={sortItemsById(itemAwardedData.results)}
                     sortable
                     styledRows
                 />

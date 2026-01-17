@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Autocomplete, Box, Container, TextField, Typography } from '@mui/material';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { useItemsAwardedList, usePlayersList } from '../hooks/requests.js';
-import { renderErrors, sortItemsByType } from './utils.jsx';
+import { renderErrors } from './utils.jsx';
 
 export function CompareView() {
     const [playerId1, setPlayerId1] = useState('');
@@ -75,9 +75,9 @@ export function CompareView() {
     const playersNameMap = getPlayersNameMap(playersData.results);
     const playersNamesArray = Object.keys(playersIdMap).sort();
 
-    const sortItemsById = results => {
+    const sortItemsById = (results, asc = false) => {
         return results.sort((a, b) => {
-            return b.id - a.id;
+            return asc ? a.id - b.id : b.id - a.id;
         });
     };
 
@@ -195,7 +195,6 @@ export function CompareView() {
         };
 
         const filteredData = _filterItems(itemAwardedData?.results, filters);
-
         return (
             <Container disableGutters>
                 <Container>
@@ -246,7 +245,7 @@ export function CompareView() {
                                 </Box>
                             </Box>
                             <ItemAwardedListTable
-                                data={sortItemsByType(sortItemsById(filteredData))}
+                                data={sortItemsById(filteredData)}
                                 highlight21Day
                                 sortable
                                 styledRows

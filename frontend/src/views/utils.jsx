@@ -61,7 +61,7 @@ export function getLootType(itemObj) {
     else if (itemObj.alt_loot && !itemObj.magelo) lootType = 'Alt';
     return lootType;
 }
-
+// TODO: 1/17/26: Decided against this post-sorting for now. Could implemented at a later date, if desired.
 export function sortItemsByType(results) {
     if (!results) return [];
 
