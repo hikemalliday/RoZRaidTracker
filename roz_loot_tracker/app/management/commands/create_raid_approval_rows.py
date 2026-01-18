@@ -4,18 +4,16 @@ from app.models import RaidAttendanceApproval
 from datetime import datetime
 
 
-
-# As of 11/21/25 before raid time, there are 7 to be added here, and 7 to be added from the bot, 14 total
 class Command(BaseCommand):
     help = "create a raid attendance rows"
     def handle(self, *args, **options):
         dates_created = [
-            "11/17/25",
-            "11/17/25",
-            "11/17/25",
-            "11/17/25",
-            "11/17/25",
-            "11/18/25",
+            "11/17/2025",
+            "11/17/2025",
+            "11/17/2025",
+            "11/17/2025",
+            "11/17/2025",
+            "11/18/2025",
         ]
         players_lists = [
             ['Bodied', 'Shinaba', 'Mcoy', 'Nuke', 'Cybercop', 'Vaporise', 'Nerfed', 'stryne', 'Titanuk', 'jAH', 'Revy', 'Silikten', 'Kugaz', 'Tune', 'Mendl', 'Retticus', 'Sraalok', 'Sars', 'Biglime', 'Knife', 'Noidz', 'Roger', 'Birdop', 'Charming', 'afflictx', 'Nocsucow', 'Taquisha', 'Gream', 'Kilkur', 'Big G', 'Visible', 'Mortii', 'Volture', 'Blueflower', 'Sharknado', 'Maxisthefoat', 'QuiexVZ'],

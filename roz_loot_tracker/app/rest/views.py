@@ -173,8 +173,7 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
         if not raid_name:
             raise ValidationError({"error": f"Please provide a name for the Raid."})
 
-        # items_awarded = request.data.get("items_awarded", [])
-
+        # TODO: Hacky work-around to an issue in which a player is not registered to the bot yet, yada yada.
         player_name_map = {
             "Goatassin/Oceanman": "Goatassin",
             "Vanco (edging)": "Vanco",
@@ -186,31 +185,28 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
         }
 
         with transaction.atomic():
-            raid = models.Raid.objects.create(
-                name=raid_name,
-            )
-            for player_name in players:
-                try:
-                    player_name = player_name_map.get(player_name, player_name)
-                    player = models.Player.objects.get(name=player_name.title())
-                    models.RaidAttendance.objects.create(
-                        player=player,
-                        raid=raid,
-                    )
-                except models.Player.DoesNotExist:
-                    raise ValidationError({"error": f"Player '{player_name}' does not exist. Create player first and try again."})
+            # TODO: Some hacky BS to allow us to pass in a custom time stamp. Def need to change the actual model for Raid
+            field = models.Raid._meta.get_field('created_at')
+            old_auto_now_add = field.auto_now_add
+            field.auto_now_add = False
+            try:
+                raid = models.Raid.objects.create(
+                    name=raid_name,
+                    created_at=raid_attendance_approval.created_at,
+                )
+                for player_name in players:
+                    try:
+                        player_name = player_name_map.get(player_name, player_name)
+                        player = models.Player.objects.get(name=player_name.title())
+                        models.RaidAttendance.objects.create(
+                            player=player,
+                            raid=raid,
+                        )
+                    except models.Player.DoesNotExist:
+                        raise ValidationError({"error": f"Player '{player_name}' does not exist. Create player first and try again."})
+            finally:
+                field.auto_now_add = old_auto_now_add
 
-            # for item_awarded in items_awarded:
-            #     if "player" not in item_awarded.keys():
-            #         raise ValidationError({"error": f"Must assign an Item to a Player."})
-            #     if "item" not in item_awarded.keys():
-            #         raise ValidationError({"error": f"Must assign a Player to an Item."})
-            #
-            #     models.ItemAwarded.objects.create(
-            #         player_id=item_awarded['player']['id'],
-            #         item_id=item_awarded['item']['id'],
-            #         raid=raid,
-            #     )
 
             raid_attendance_approval.is_approved = True
             raid_attendance_approval.save()
