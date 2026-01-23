@@ -160,21 +160,27 @@ export function CompareView() {
             new Set(['main', 'alt_loot', 'preferred', 'magelo'])
         );
         function _filterItems(results) {
-            // This is kinda funky, but since 'main' is not an actual field in the ItemAwarded table, we needed a way to handle filtering by 'main' loot
             if (!results) return [];
-            const modelFields = ['alt_loot', 'preferred', 'magelo'];
+
             const fieldsToFilterOn = [...filters];
             const includeMain = fieldsToFilterOn.includes('main');
+            const includeAltLoot = fieldsToFilterOn.includes('alt_loot');
+            const includeMagelo = fieldsToFilterOn.includes('magelo');
+            const includePreferred = fieldsToFilterOn.includes('preferred');
 
             return results.filter(item => {
-                const realMatch = fieldsToFilterOn.some(field => item[field] === true);
-                if (realMatch) {
-                    return true;
-                }
-                // No matches for filters that are actual fields on ItemAwardedModel, so now we check for 'main'
-                if (includeMain) {
-                    return modelFields.every(field => item[field] === false);
-                }
+                const isMainItem =
+                    item.alt_loot === false && item.preferred === false && item.magelo === false;
+                const isAltItem = item.alt_loot === true && item.magelo === false;
+                const isMageloMainItem = item.magelo === true && item.alt_loot === false;
+                const isMageloAltItem = item.magelo === true && item.alt_loot === true;
+                const isPreferredItem = item.preferred === true;
+
+                if (isPreferredItem && includePreferred) return true;
+                if (isMageloMainItem && includeMagelo && includeMain) return true;
+                if (isMageloAltItem && includeMagelo && includeAltLoot) return true;
+                if (isAltItem && includeAltLoot) return true;
+                if (isMainItem && includeMain) return true;
                 return false;
             });
         }
