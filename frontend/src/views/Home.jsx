@@ -1,14 +1,17 @@
 import { useNavigate } from 'react-router';
 import { Box, Typography } from '@mui/material';
+import { useAuthContext } from '../context/AuthContext.jsx';
 
 export default function Home() {
     const navigate = useNavigate();
+    const { isSuperUser, isAuthenticated } = useAuthContext();
 
     const cards = [
         { label: 'Compare', path: '/compare/', description: 'Compare players side by side' },
         { label: 'Players', path: '/player/', description: 'View all players' },
         { label: 'Raids', path: '/raid/', description: 'Browse raid history' },
         { label: 'Items Awarded', path: '/item_awarded/', description: 'Browse loot drops' },
+        { label: 'Approval', path: '/ra_approval_pending/', description: 'Approve raids' },
     ];
 
     return (
@@ -24,30 +27,33 @@ export default function Home() {
                     justifyContent: 'center',
                 }}
             >
-                {cards.map(card => (
-                    <Box
-                        key={card.path}
-                        onClick={() => navigate(card.path)}
-                        sx={{
-                            width: 200,
-                            padding: 3,
-                            backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
-                            borderRadius: 2,
-                            cursor: 'pointer',
-                            transition: 'all 0.15s ease',
-                            '&:hover': {
-                                backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                                borderColor: 'rgba(255, 255, 255, 0.2)',
-                            },
-                        }}
-                    >
-                        <Typography sx={{ fontWeight: 600, mb: 1 }}>{card.label}</Typography>
-                        <Typography sx={{ fontSize: '0.8rem', color: 'gray' }}>
-                            {card.description}
-                        </Typography>
-                    </Box>
-                ))}
+                {cards.map(card => {
+                    if (card.label === 'Approval' && !isSuperUser && !isAuthenticated) return <></>;
+                    return (
+                        <Box
+                            key={card.path}
+                            onClick={() => navigate(card.path)}
+                            sx={{
+                                width: 200,
+                                padding: 3,
+                                backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                                border: '1px solid rgba(255, 255, 255, 0.1)',
+                                borderRadius: 2,
+                                cursor: 'pointer',
+                                transition: 'all 0.15s ease',
+                                '&:hover': {
+                                    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+                                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                                },
+                            }}
+                        >
+                            <Typography sx={{ fontWeight: 600, mb: 1 }}>{card.label}</Typography>
+                            <Typography sx={{ fontSize: '0.8rem', color: 'gray' }}>
+                                {card.description}
+                            </Typography>
+                        </Box>
+                    );
+                })}
             </Box>
         </Box>
     );

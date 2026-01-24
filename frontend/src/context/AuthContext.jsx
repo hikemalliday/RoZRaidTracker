@@ -32,6 +32,8 @@ export const AuthProvider = ({ children }) => {
         if (accessToken) {
             const decoded = jwtDecode(accessToken);
             setIsSuperUser(decoded.is_superuser);
+        } else {
+            setIsSuperUser(false);
         }
     }, [accessToken]);
     // TODO: 1/3/26: New approach that fixes the logout after mutation bug.
