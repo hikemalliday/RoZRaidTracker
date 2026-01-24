@@ -12,6 +12,7 @@ import { CharacterListTable } from '../components/CharacterListTable.jsx';
 import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
 import { labelStyles } from '../styles.js';
+import { MetaDetail } from '../components/generic.jsx';
 
 export function PlayerDetailView() {
     const { id } = useParams();
@@ -60,7 +61,7 @@ export function PlayerDetailView() {
     };
 
     return (
-        <Container>
+        <Container sx={{ mt: 1 }}>
             {isAuthenticated && isSuperUser === true ? (
                 <>
                     <button style={{ marginTop: 5 }} onClick={_ => navigate('edit')}>
@@ -70,34 +71,14 @@ export function PlayerDetailView() {
             ) : (
                 <></>
             )}
-            <Typography sx={{ mt: 5 }} variant="h5">
-                Player: {playerData.name}
-            </Typography>
+            <MetaDetail label={'Player'} val={playerData.name} />
             <Container sx={{ mt: 5 }}>
                 <Typography sx={labelStyles}>Characters</Typography>
                 <CharacterListTable data={characterData.results} />
             </Container>
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, mt: 4 }}>
-                <Box>
-                    <Typography
-                        sx={{ fontSize: '0.7rem', color: 'gray', textTransform: 'uppercase' }}
-                    >
-                        Lifetime RA
-                    </Typography>
-                    <Typography sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
-                        {playerData?.lifetime_ra}
-                    </Typography>
-                </Box>
-                <Box>
-                    <Typography
-                        sx={{ fontSize: '0.7rem', color: 'gray', textTransform: 'uppercase' }}
-                    >
-                        21 Day RA
-                    </Typography>
-                    <Typography sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
-                        {playerData?.ra_21_day}%
-                    </Typography>
-                </Box>
+                <MetaDetail label={'Lifetime Ra'} val={playerData?.lifetime_ra} />
+                <MetaDetail label={'21 Day Ra'} val={playerData?.ra_21_day} />
             </Box>
             <Container>
                 <Typography sx={labelStyles}>

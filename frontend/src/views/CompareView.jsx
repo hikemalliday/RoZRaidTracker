@@ -11,6 +11,7 @@ import {
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { useItemsAwardedList, usePlayersList } from '../hooks/requests.js';
 import { labelStyles } from '../styles.js';
+import { MetaDetail } from '../components/generic.jsx';
 
 export function CompareView() {
     const { isPending: isPlayersPending, data: playersData } = usePlayersList();
@@ -107,24 +108,10 @@ export function CompareView() {
                 }}
             >
                 <Box sx={{ textAlign: 'center' }}>
-                    <Typography
-                        sx={{ fontSize: '0.7rem', color: 'gray', textTransform: 'uppercase' }}
-                    >
-                        Lifetime RA
-                    </Typography>
-                    <Typography sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
-                        {playerDetail.lifetime_ra}%
-                    </Typography>
+                    <MetaDetail label={'Lifetime RA'} val={playerDetail.lifetime_ra} />
                 </Box>
                 <Box sx={{ textAlign: 'center' }}>
-                    <Typography
-                        sx={{ fontSize: '0.7rem', color: 'gray', textTransform: 'uppercase' }}
-                    >
-                        21 Day RA
-                    </Typography>
-                    <Typography sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
-                        {playerDetail.ra_21_day}%
-                    </Typography>
+                    <MetaDetail label={'21 Day RA'} val={playerDetail.ra_21_day} />
                 </Box>
             </Box>
         );
