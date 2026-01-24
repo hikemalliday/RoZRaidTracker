@@ -51,6 +51,12 @@ body {
   user-select: none;
 }
 
+@media (max-width: 899px) {
+  #nav-bar-links {
+    display: none;
+  }
+}
+
 #nav-bar-link {
   margin: 10px;
 }

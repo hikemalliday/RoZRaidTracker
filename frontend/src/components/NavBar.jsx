@@ -1,15 +1,16 @@
 import { useNavigate } from 'react-router';
 import { useAuthContext } from '../context/AuthContext.jsx';
 import { useEffect, useRef, useState } from 'react';
+import { Box, Drawer, IconButton, List, ListItem, ListItemText } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 
 export function NavBar() {
     const navigate = useNavigate();
     const { isAuthenticated, isSuperUser, logout } = useAuthContext();
     const [approvalOpen, setApprovalOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const dropdownRef = useRef(null);
 
-    // TODO: Ref to close the dropdown if we click anywhere that does NOT contain the ref
-    // TODO: We have placed the ref in the dropdown menu, therefore clicking outside of it will set to false
     useEffect(() => {
         function handleClickOutside(e) {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -22,15 +23,27 @@ export function NavBar() {
 
     const handleLinkClick = route => {
         setApprovalOpen(false);
+        setMobileMenuOpen(false);
         navigate(route);
     };
+
+    const handleLogout = () => {
+        setMobileMenuOpen(false);
+        logout();
+    };
+
+    const navLinks = [
+        { label: 'COMPARE', path: '/compare' },
+        { label: 'PLAYERS', path: '/player' },
+        { label: 'RAIDS', path: '/raid' },
+        { label: 'ITEMS AWARDED', path: '/item_awarded' },
+        { label: 'SCREENSHOTS', path: '/screenshots' },
+    ];
 
     const navBarLinks = () => {
         return (
             <div
-                ref={
-                    dropdownRef
-                } /* Why is the dropdownRef in the parent here? How can we handle different refs for different dropdowns?*/
+                ref={dropdownRef}
                 style={{
                     display: 'inline-block',
                     position: 'relative',
@@ -99,12 +112,72 @@ export function NavBar() {
         );
     };
 
+    const mobileDrawer = () => (
+        <Drawer
+            anchor="right"
+            open={mobileMenuOpen}
+            onClose={() => setMobileMenuOpen(false)}
+            PaperProps={{
+                sx: {
+                    backgroundColor: '#111',
+                    color: 'white',
+                    width: 200,
+                },
+            }}
+        >
+            <List>
+                {navLinks.map(link => (
+                    <ListItem
+                        key={link.path}
+                        onClick={() => handleLinkClick(link.path)}
+                        sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' } }}
+                    >
+                        <ListItemText primary={link.label} />
+                    </ListItem>
+                ))}
+                {isAuthenticated && isSuperUser && (
+                    <>
+                        <ListItem
+                            onClick={() => handleLinkClick('/ra_approval_pending')}
+                            sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' } }}
+                        >
+                            <ListItemText primary="APPROVAL - PENDING" />
+                        </ListItem>
+                        <ListItem
+                            onClick={() => handleLinkClick('/ra_approval_history')}
+                            sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' } }}
+                        >
+                            <ListItemText primary="APPROVAL - HISTORY" />
+                        </ListItem>
+                    </>
+                )}
+                <ListItem
+                    onClick={isAuthenticated ? handleLogout : () => handleLinkClick('/login')}
+                    sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' } }}
+                >
+                    <ListItemText primary={isAuthenticated ? 'LOG OUT' : 'LOG IN'} />
+                </ListItem>
+            </List>
+        </Drawer>
+    );
+
     return (
         <div id="nav-bar-main">
             <div id="nav-bar-logo" onClick={() => navigate('/')}>
                 ZEK
             </div>
-            <div id="nav-bar-links">{navBarLinks()}</div>
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }} id="nav-bar-links">
+                {navBarLinks()}
+            </Box>
+            <Box sx={{ display: { xs: 'flex', md: 'none' }, paddingRight: 1 }}>
+                <IconButton
+                    onClick={() => setMobileMenuOpen(true)}
+                    sx={{ color: 'white' }}
+                >
+                    <MenuIcon />
+                </IconButton>
+            </Box>
+            {mobileDrawer()}
         </div>
     );
 }
