@@ -1,10 +1,4 @@
-import {
-    getCell,
-    getHoverTooltipCell,
-    getItemIconCell,
-    getLinkCell,
-    TableList,
-} from './Tables.jsx';
+import { getCell, HoverTooltipCell, getItemIconCell, getLinkCell, TableList } from './Tables.jsx';
 import { TableRow } from '@mui/material';
 import { get21DayStyles, getRowStyles } from '../styles.js';
 import { getLootType } from '../views/utils.jsx';
@@ -24,9 +18,11 @@ export function ItemAwardedListTable({
             return (
                 <TableRow key={i} sx={rowStyles}>
                     {getItemIconCell(row?.item?.icon_id)}
-                    {enableToolTip
-                        ? getHoverTooltipCell(row?.item?.name, row?.item?.eq_item_id)
-                        : getCell(row?.item?.name)}
+                    {enableToolTip ? (
+                        <HoverTooltipCell val={row?.item?.name} itemId={row?.item?.eq_item_id} />
+                    ) : (
+                        getCell(row?.item?.name)
+                    )}
                     {getLinkCell(row?.player?.name, `/player/${row?.player?.id}`)}
                     {getLinkCell(row?.raid?.name, `/raid/${row?.raid?.id}`)}
                     {getCell(row?.raid?.created_at)}

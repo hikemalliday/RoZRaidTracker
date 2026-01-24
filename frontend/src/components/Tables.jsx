@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { IMAGE_PATH } from '../config.js';
 import { fixLinks, getItemInfo } from '../views/utils.jsx';
 
-export function getHoverTooltipCell(val, itemId) {
+export function HoverTooltipCell({ val, itemId }) {
     const [itemHtml, setItemHtml] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [hovered, setHovered] = useState(false);
