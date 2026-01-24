@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Autocomplete, Box, Container, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Checkbox, Container, FormControlLabel, TextField, Typography } from '@mui/material';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { useItemsAwardedList, usePlayersList } from '../hooks/requests.js';
 
@@ -35,49 +35,64 @@ export function CompareView() {
     };
 
     const getPlayerAutoComplete = (playerId, changeHandler) => {
-        const veryDarkGray = '#333';
-
         return (
-            <>
-                <Autocomplete
-                    options={playersNamesArray}
-                    value={playerId ? playersNameMap[playerId] : null}
-                    onChange={(e, playerName) => {
-                        if (playerName) return changeHandler(playersIdMap[playerName]);
-                        return changeHandler('');
-                    }}
-                    renderInput={params => (
-                        <TextField
-                            {...params}
-                            variant="standard"
-                            sx={{
-                                input: {
-                                    color: 'white',
-                                    backgroundColor: veryDarkGray,
-                                    textAlign: 'center',
-                                    transform: 'translateX(25px)',
+            <Autocomplete
+                disableClearable
+                options={playersNamesArray}
+                value={playerId ? playersNameMap[playerId] : null}
+                onChange={(e, playerName) => {
+                    if (playerName) return changeHandler(playersIdMap[playerName]);
+                    return changeHandler('');
+                }}
+                sx={{
+                    width: '200px',
+                    margin: '0 auto',
+                }}
+                renderInput={params => (
+                    <TextField
+                        {...params}
+                        variant="outlined"
+                        size="small"
+                        placeholder="Select player"
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                color: 'white',
+                                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                borderRadius: '6px',
+                                '& fieldset': {
+                                    borderColor: 'rgba(255, 255, 255, 0.1)',
                                 },
-                                '& .MuiInput-underline:after': {
-                                    borderBottom: 'none',
+                                '&:hover fieldset': {
+                                    borderColor: 'rgba(255, 255, 255, 0.2)',
                                 },
-                                '& .MuiInput-underline:before': {
-                                    borderBottom: 'none',
+                                '&.Mui-focused fieldset': {
+                                    borderColor: 'white',
                                 },
-                                '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-                                    borderBottom: 'none',
-                                },
-                            }}
-                        />
-                    )}
-                />
-            </>
+                            },
+                            input: {
+                                textAlign: 'center',
+                            },
+                        }}
+                    />
+                )}
+            />
         );
     };
 
     const getItemAwardedCount = itemAwardedCount => {
         return (
-            <Typography sx={{ mt: 5 }} variant="h6">
-                Items Awarded - Total: {itemAwardedCount}
+            <Typography
+                sx={{
+                    mt: 4,
+                    mb: 1,
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                    color: 'white',
+                }}
+            >
+                Items Awarded: {itemAwardedCount}
             </Typography>
         );
     };
@@ -88,16 +103,31 @@ export function CompareView() {
             return player.id == playerId;
         });
         return (
-            <>
-                <Typography sx={{ mt: 3 }}>
-                    {`Lifetime RA: `}
-                    <span style={{ fontWeight: 'bold' }}>{playerDetail.lifetime_ra}%</span>
-                </Typography>
-                <Typography>
-                    {`21 Day RA: `}
-                    <span style={{ fontWeight: 'bold' }}>{playerDetail.ra_21_day}%</span>
-                </Typography>
-            </>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: 3,
+                    mt: 2,
+                }}
+            >
+                <Box sx={{ textAlign: 'center' }}>
+                    <Typography sx={{ fontSize: '0.7rem', color: 'gray', textTransform: 'uppercase' }}>
+                        Lifetime RA
+                    </Typography>
+                    <Typography sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
+                        {playerDetail.lifetime_ra}%
+                    </Typography>
+                </Box>
+                <Box sx={{ textAlign: 'center' }}>
+                    <Typography sx={{ fontSize: '0.7rem', color: 'gray', textTransform: 'uppercase' }}>
+                        21 Day RA
+                    </Typography>
+                    <Typography sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
+                        {playerDetail.ra_21_day}%
+                    </Typography>
+                </Box>
+            </Box>
         );
     };
 
@@ -169,44 +199,46 @@ export function CompareView() {
                             {getItemAwardedCount(filteredData.length)}
                             <Box
                                 sx={{
-                                    mt: '20px',
+                                    mt: 2,
                                     display: 'flex',
                                     justifyContent: 'center',
-                                    gap: '40px',
+                                    gap: 1,
+                                    flexWrap: 'wrap',
                                 }}
                             >
-                                <Box>
-                                    <Typography>Main</Typography>
-                                    <input
-                                        type="checkbox"
-                                        defaultChecked
-                                        onChange={e => _handleCheckbox(e, 'main')}
+                                {[
+                                    { label: 'Main', filter: 'main' },
+                                    { label: 'Alt', filter: 'alt_loot' },
+                                    { label: 'Preferred', filter: 'preferred' },
+                                    { label: 'Magelo', filter: 'magelo' },
+                                ].map(({ label, filter }) => (
+                                    <FormControlLabel
+                                        key={filter}
+                                        control={
+                                            <Checkbox
+                                                defaultChecked
+                                                size="small"
+                                                onChange={e => _handleCheckbox(e, filter)}
+                                                sx={{
+                                                    color: 'rgba(255, 255, 255, 0.3)',
+                                                    '&.Mui-checked': {
+                                                        color: 'rgba(255, 255, 255, 0.5)',
+                                                    },
+                                                    '&:hover': {
+                                                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                                    },
+                                                }}
+                                            />
+                                        }
+                                        label={label}
+                                        sx={{
+                                            '& .MuiFormControlLabel-label': {
+                                                fontSize: '0.8rem',
+                                                color: 'white',
+                                            },
+                                        }}
                                     />
-                                </Box>
-                                <Box>
-                                    <Typography>Alt</Typography>
-                                    <input
-                                        type="checkbox"
-                                        defaultChecked
-                                        onChange={e => _handleCheckbox(e, 'alt_loot')}
-                                    />
-                                </Box>
-                                <Box>
-                                    <Typography>Preferred</Typography>
-                                    <input
-                                        type="checkbox"
-                                        defaultChecked
-                                        onChange={e => _handleCheckbox(e, 'preferred')}
-                                    />
-                                </Box>
-                                <Box>
-                                    <Typography>Magelo</Typography>
-                                    <input
-                                        type="checkbox"
-                                        defaultChecked
-                                        onChange={e => _handleCheckbox(e, 'magelo')}
-                                    />
-                                </Box>
+                                ))}
                             </Box>
                             <ItemAwardedListTable
                                 data={sortItemsById(filteredData)}
