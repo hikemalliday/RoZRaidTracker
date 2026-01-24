@@ -5,6 +5,7 @@ import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.j
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { renderErrors } from './utils.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
+import { labelStyles } from '../styles.js';
 
 export function RaidDetailView() {
     const { id } = useParams();
@@ -50,21 +51,14 @@ export function RaidDetailView() {
             <Typography sx={{ mt: 5 }} variant="h5">
                 {data?.name}
             </Typography>
-            <Container>
-                <Typography>
-                    <strong>Zone:</strong> {data?.zone?.name}
-                </Typography>
+            <Container sx={{ mt: 1 }}>
                 <strong>Date:</strong> {data?.created_at}
             </Container>
-            <Typography sx={{ mt: 5 }} variant="h6">
-                Items Awarded - Total: {itemAwardedData.count}
-            </Typography>
+            <Typography sx={labelStyles}>Items Awarded - Total: {itemAwardedData.count}</Typography>
             <Container>
                 <ItemAwardedListTable data={itemAwardedData.results} styledRows />
             </Container>
-            <Typography sx={{ mt: 5 }} variant="h6">
-                Attendees - Total: {raData.count}
-            </Typography>
+            <Typography sx={labelStyles}>Attendees - Total: {raData.count}</Typography>
             <Container>
                 <RaidAttendanceListTable
                     data={_sortPlayers(raData.results)}

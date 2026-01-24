@@ -1,14 +1,14 @@
-import {getCell, getLinkCell, TableList} from "./Tables.jsx";
-import {TableRow} from "@mui/material";
+import { getCell, getLinkCell, TableList } from './Tables.jsx';
+import { TableRow } from '@mui/material';
 
 export function CharacterListTable({ data }) {
-    const _getCharStatus = (char) => {
-        if (char.is_main) return "Main";
-        if (char.is_main_alt) return "Main Alt";
-        return "Alt";
-    }
+    const _getCharStatus = char => {
+        if (char.is_main) return 'Main';
+        if (char.is_main_alt) return 'Main Alt';
+        return 'Alt';
+    };
 
-    const getCharacterRows = (sorted) => {
+    const getCharacterRows = sorted => {
         return sorted.map((row, i) => {
             return (
                 <TableRow key={i}>
@@ -17,17 +17,19 @@ export function CharacterListTable({ data }) {
                     {getCell(_getCharStatus(row))}
                     {getLinkCell(row?.player.name, `/player/${row?.player?.id}`)}
                 </TableRow>
-            )
-        })
+            );
+        });
     };
 
     // Null vals here means cols are not sortable
     const headerMap = {
-        "Name": null,
-        "Class": null,
-        "Status": null,
-        "Player": null,
-    }
+        Name: null,
+        Class: null,
+        Status: null,
+        Player: null,
+    };
 
-    return <TableList data={data} getTableRows={getCharacterRows} headerMap={headerMap} />
+    if (data.length === 0) return <>No characters found.</>;
+
+    return <TableList data={data} getTableRows={getCharacterRows} headerMap={headerMap} />;
 }

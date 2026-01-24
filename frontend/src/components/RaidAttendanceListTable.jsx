@@ -8,7 +8,6 @@ export function RaidAttendanceListTable({ data, rowStyles = {}, ...rest }) {
                 <TableRow key={i} sx={rowStyles}>
                     {getLinkCell(row?.player?.name, `/player/${row?.player?.id}`)}
                     {getLinkCell(row?.raid?.name, `/raid/${row?.raid?.id}`)}
-                    {getCell(row?.raid.zone?.name)}
                     {getCell(row?.created_at)}
                 </TableRow>
             );
@@ -18,7 +17,6 @@ export function RaidAttendanceListTable({ data, rowStyles = {}, ...rest }) {
     const headerMap = {
         Player: 'player.name',
         Raid: 'raid.name',
-        Zone: 'raid.zone.name',
         Date: 'created_at',
     };
     return <TableList headerMap={headerMap} data={data} getTableRows={getRaRows} {...rest} />;

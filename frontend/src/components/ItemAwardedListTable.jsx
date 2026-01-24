@@ -41,6 +41,9 @@ export function ItemAwardedListTable({
         Date: 'raid.created_at',
         Type: null,
     };
+
+    if (data.length === 0) return <>No items found.</>;
+
     return (
         <TableList
             headerMap={headerMap}

@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Autocomplete, Box, Checkbox, Container, FormControlLabel, TextField, Typography } from '@mui/material';
+import {
+    Autocomplete,
+    Box,
+    Checkbox,
+    Container,
+    FormControlLabel,
+    TextField,
+    Typography,
+} from '@mui/material';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { useItemsAwardedList, usePlayersList } from '../hooks/requests.js';
+import { labelStyles } from '../styles.js';
 
 export function CompareView() {
     const { isPending: isPlayersPending, data: playersData } = usePlayersList();
@@ -80,21 +89,7 @@ export function CompareView() {
     };
 
     const getItemAwardedCount = itemAwardedCount => {
-        return (
-            <Typography
-                sx={{
-                    mt: 4,
-                    mb: 1,
-                    fontSize: '0.75rem',
-                    fontWeight: 600,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
-                    color: 'white',
-                }}
-            >
-                Items Awarded: {itemAwardedCount}
-            </Typography>
-        );
+        return <Typography sx={labelStyles}>Items Awarded: {itemAwardedCount}</Typography>;
     };
 
     const getRaInfo = (playerId, playersList) => {
@@ -112,7 +107,9 @@ export function CompareView() {
                 }}
             >
                 <Box sx={{ textAlign: 'center' }}>
-                    <Typography sx={{ fontSize: '0.7rem', color: 'gray', textTransform: 'uppercase' }}>
+                    <Typography
+                        sx={{ fontSize: '0.7rem', color: 'gray', textTransform: 'uppercase' }}
+                    >
                         Lifetime RA
                     </Typography>
                     <Typography sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
@@ -120,7 +117,9 @@ export function CompareView() {
                     </Typography>
                 </Box>
                 <Box sx={{ textAlign: 'center' }}>
-                    <Typography sx={{ fontSize: '0.7rem', color: 'gray', textTransform: 'uppercase' }}>
+                    <Typography
+                        sx={{ fontSize: '0.7rem', color: 'gray', textTransform: 'uppercase' }}
+                    >
                         21 Day RA
                     </Typography>
                     <Typography sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>

@@ -5,12 +5,13 @@ import {
     usePlayerDetail,
     useRaidAttendanceList,
 } from '../hooks/requests.js';
-import { Container, Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import { renderErrors } from './utils.jsx';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { CharacterListTable } from '../components/CharacterListTable.jsx';
 import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
+import { labelStyles } from '../styles.js';
 
 export function PlayerDetailView() {
     const { id } = useParams();
@@ -73,15 +74,33 @@ export function PlayerDetailView() {
                 Player: {playerData.name}
             </Typography>
             <Container sx={{ mt: 5 }}>
-                <Typography variant="h6">Characters</Typography>
+                <Typography sx={labelStyles}>Characters</Typography>
                 <CharacterListTable data={characterData.results} />
             </Container>
-            <Container sx={{ mt: 7 }}>
-                <Typography sx={{ mt: 1 }}>Lifetime RA: {playerData?.lifetime_ra}%</Typography>
-                <Typography sx={{ mt: 1 }}>21 Day RA: {playerData?.ra_21_day}%</Typography>
-            </Container>
+            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, mt: 4 }}>
+                <Box>
+                    <Typography
+                        sx={{ fontSize: '0.7rem', color: 'gray', textTransform: 'uppercase' }}
+                    >
+                        Lifetime RA
+                    </Typography>
+                    <Typography sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
+                        {playerData?.lifetime_ra}
+                    </Typography>
+                </Box>
+                <Box>
+                    <Typography
+                        sx={{ fontSize: '0.7rem', color: 'gray', textTransform: 'uppercase' }}
+                    >
+                        21 Day RA
+                    </Typography>
+                    <Typography sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
+                        {playerData?.ra_21_day}%
+                    </Typography>
+                </Box>
+            </Box>
             <Container>
-                <Typography sx={{ mt: 5 }} variant="h6">
+                <Typography sx={labelStyles}>
                     Items Awarded - Total: {itemAwardedData.count}
                 </Typography>
                 <ItemAwardedListTable
@@ -91,9 +110,7 @@ export function PlayerDetailView() {
                 />
             </Container>
             <Container>
-                <Typography sx={{ mt: 5 }} variant="h6">
-                    Raids Attended: {raidsData.count}
-                </Typography>
+                <Typography sx={labelStyles}>Raids Attended: {raidsData.count}</Typography>
                 <RaidAttendanceListTable data={_sortRaData(raidsData?.results)} sortable />
             </Container>
         </Container>

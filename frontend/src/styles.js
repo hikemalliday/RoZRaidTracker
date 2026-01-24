@@ -209,3 +209,13 @@ export const get21DayStyles = itemObj => {
     const is21day = getIs21Day(itemObj?.created_at);
     return is21day ? { backgroundColor: VERY_DARK_GRAY } : {};
 };
+
+export const labelStyles = {
+    mt: 4,
+    mb: 1,
+    fontSize: '0.75rem',
+    fontWeight: 600,
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+    color: 'white',
+};
