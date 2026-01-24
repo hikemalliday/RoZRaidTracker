@@ -28,6 +28,7 @@ export function ItemAwardedListTableEditable({
 
             return (
                 <TableRow key={row?.id} sx={stylesObj}>
+                    {<button> edit</button>}
                     {getItemIconCell(row?.item?.icon_id)}
                     {getCell(row?.item?.name)}
                     {getLinkCell(row?.player?.name, `/player/${row?.player?.id}`)}

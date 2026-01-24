@@ -3,10 +3,11 @@ import { useItemsAwardedList, useRaidAttendanceList, useRaidDetail } from '../ho
 import { Box, Container, Typography } from '@mui/material';
 import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.jsx';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
-import { renderErrors } from './utils.jsx';
+import { getItemAwardedMetaData, renderErrors } from './utils.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
 import { labelStyles } from '../styles.js';
 import { MetaDetail } from '../components/generic.jsx';
+import React from 'react';
 
 export function RaidDetailView() {
     const { id } = useParams();
@@ -64,7 +65,7 @@ export function RaidDetailView() {
                 <MetaDetail label={'Date:'} val={data?.created_at} />
             </Box>
 
-            <Typography sx={labelStyles}>Items Awarded - Total: {itemAwardedData.count}</Typography>
+            {getItemAwardedMetaData(itemAwardedData.results)}
             <Container>
                 <ItemAwardedListTable data={itemAwardedData.results} styledRows />
             </Container>

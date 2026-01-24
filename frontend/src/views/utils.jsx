@@ -1,3 +1,8 @@
+import { Box, Typography } from '@mui/material';
+import { labelStyles } from '../styles.js';
+import { MetaDetail } from '../components/generic.jsx';
+import React from 'react';
+
 export const renderErrors = errorsList => {
     return (
         <div id="errors-list">
@@ -105,3 +110,63 @@ export function fixLinks(htmlString, baseUrl = 'https://www.pqdi.cc/') {
 
     return doc.body.innerHTML;
 }
+
+export const getItemAwardedMetaData = itemsResults => {
+    if (!itemsResults) return [];
+
+    const _getItemsResultsMeta = res => {
+        if (!res) return {};
+        const resultsObj = {};
+        res.forEach(item => {
+            const isMainItem =
+                item.alt_loot === false && item.preferred === false && item.magelo === false;
+            const isAltItem = item.alt_loot === true && item.magelo === false;
+            const isMageloMainItem = item.magelo === true && item.alt_loot === false;
+            const isMageloAltItem = item.magelo === true && item.alt_loot === true;
+            const isPreferredItem = item.preferred === true;
+
+            if (isMainItem) resultsObj.main = resultsObj.main ? (resultsObj.main += 1) : 1;
+            if (isAltItem) resultsObj.alt = resultsObj.alt ? (resultsObj.alt += 1) : 1;
+            if (isMageloMainItem)
+                resultsObj.mageloMain = resultsObj.mageloMain ? (resultsObj.mageloMain += 1) : 1;
+            if (isMageloAltItem)
+                resultsObj.mageloAlt = resultsObj.mageloAlt ? (resultsObj.mageloAlt += 1) : 1;
+            if (isPreferredItem)
+                resultsObj.preferred = resultsObj.preferred ? (resultsObj.preferred += 1) : 1;
+        });
+        return resultsObj;
+    };
+
+    const itemsResultsMeta = _getItemsResultsMeta(itemsResults);
+    return (
+        <>
+            <Typography sx={{ ...labelStyles, fontSize: '1rem' }}>
+                Total Items Shown: {itemsResults.length}
+            </Typography>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: 3,
+                    mt: 2,
+                }}
+            >
+                <Box sx={{ textAlign: 'center' }}>
+                    <MetaDetail label={'Magelo Main'} val={itemsResultsMeta.mageloMain || 0} />
+                </Box>
+                <Box sx={{ textAlign: 'center' }}>
+                    <MetaDetail label={'Magelo Alt'} val={itemsResultsMeta.mageloAlt || 0} />
+                </Box>
+                <Box sx={{ textAlign: 'center' }}>
+                    <MetaDetail label={'Preferred'} val={itemsResultsMeta.preferred || 0} />
+                </Box>
+                <Box sx={{ textAlign: 'center' }}>
+                    <MetaDetail label={'Main'} val={itemsResultsMeta.main || 0} />
+                </Box>
+                <Box sx={{ textAlign: 'center' }}>
+                    <MetaDetail label={'Alt'} val={itemsResultsMeta.alt || 0} />
+                </Box>
+            </Box>
+        </>
+    );
+};
