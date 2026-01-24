@@ -1,11 +1,12 @@
 import { useNavigate, useParams } from 'react-router';
 import { useItemsAwardedList, useRaidAttendanceList, useRaidDetail } from '../hooks/requests.js';
-import { Container, Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.jsx';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { renderErrors } from './utils.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
 import { labelStyles } from '../styles.js';
+import { MetaDetail } from '../components/generic.jsx';
 
 export function RaidDetailView() {
     const { id } = useParams();
@@ -38,7 +39,11 @@ export function RaidDetailView() {
     if (errorList.some(Boolean)) return <>{renderErrors(errorList)}</>;
 
     return (
-        <Container>
+        <Container
+            sx={{
+                mt: 2,
+            }}
+        >
             {isAuthenticated && isSuperUser === true ? (
                 <>
                     <button style={{ marginTop: 5 }} onClick={_ => navigate('edit')}>
@@ -48,12 +53,17 @@ export function RaidDetailView() {
             ) : (
                 <></>
             )}
-            <Typography sx={{ mt: 5 }} variant="h5">
-                {data?.name}
-            </Typography>
-            <Container sx={{ mt: 1 }}>
-                <strong>Date:</strong> {data?.created_at}
-            </Container>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: 5,
+                }}
+            >
+                <MetaDetail label={'Raid'} val={data?.name} />
+                <MetaDetail label={'Date:'} val={data?.created_at} />
+            </Box>
+
             <Typography sx={labelStyles}>Items Awarded - Total: {itemAwardedData.count}</Typography>
             <Container>
                 <ItemAwardedListTable data={itemAwardedData.results} styledRows />
