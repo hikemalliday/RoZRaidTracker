@@ -89,8 +89,65 @@ export function CompareView() {
         );
     };
 
-    const getItemAwardedCount = itemAwardedCount => {
-        return <Typography sx={labelStyles}>Items Awarded: {itemAwardedCount}</Typography>;
+    const getItemAwardedMetaData = (itemAwardedCount, itemsResults) => {
+        const _getItemsResultsMeta = res => {
+            if (!res) return {};
+            const resultsObj = {};
+            res.forEach(item => {
+                const isMainItem =
+                    item.alt_loot === false && item.preferred === false && item.magelo === false;
+                const isAltItem = item.alt_loot === true && item.magelo === false;
+                const isMageloMainItem = item.magelo === true && item.alt_loot === false;
+                const isMageloAltItem = item.magelo === true && item.alt_loot === true;
+                const isPreferredItem = item.preferred === true;
+
+                if (isMainItem) resultsObj.main = resultsObj.main ? (resultsObj.main += 1) : 1;
+                else if (isAltItem) resultsObj.alt = resultsObj.alt ? (resultsObj.alt += 1) : 1;
+                else if (isMageloMainItem)
+                    resultsObj.mageloMain = resultsObj.mageloMain
+                        ? (resultsObj.mageloMain += 1)
+                        : 1;
+                else if (isMageloAltItem)
+                    resultsObj.mageloAlt = resultsObj.mageloAlt ? (resultsObj.mageloAlt += 1) : 1;
+                else if (isPreferredItem)
+                    resultsObj.preferred = resultsObj.preferred ? (resultsObj.preferred += 1) : 1;
+            });
+            return resultsObj;
+        };
+
+        const itemsResultsMeta = _getItemsResultsMeta(itemsResults);
+
+        return (
+            <>
+                <Typography sx={{ ...labelStyles, fontSize: '1rem' }}>
+                    Total Items Shown: {itemAwardedCount}
+                </Typography>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        gap: 3,
+                        mt: 2,
+                    }}
+                >
+                    <Box sx={{ textAlign: 'center' }}>
+                        <MetaDetail label={'Magelo Main'} val={itemsResultsMeta.mageloMain || 0} />
+                    </Box>
+                    <Box sx={{ textAlign: 'center' }}>
+                        <MetaDetail label={'Magelo Alt'} val={itemsResultsMeta.mageloAlt || 0} />
+                    </Box>
+                    <Box sx={{ textAlign: 'center' }}>
+                        <MetaDetail label={'Preferred'} val={itemsResultsMeta.preferred || 0} />
+                    </Box>
+                    <Box sx={{ textAlign: 'center' }}>
+                        <MetaDetail label={'Main'} val={itemsResultsMeta.main || 0} />
+                    </Box>
+                    <Box sx={{ textAlign: 'center' }}>
+                        <MetaDetail label={'Alt'} val={itemsResultsMeta.alt || 0} />
+                    </Box>
+                </Box>
+            </>
+        );
     };
 
     const getRaInfo = (playerId, playersList) => {
@@ -108,10 +165,10 @@ export function CompareView() {
                 }}
             >
                 <Box sx={{ textAlign: 'center' }}>
-                    <MetaDetail label={'Lifetime RA'} val={playerDetail.lifetime_ra} />
+                    <MetaDetail label={'Lifetime RA'} val={`${playerDetail.lifetime_ra}%`} />
                 </Box>
                 <Box sx={{ textAlign: 'center' }}>
-                    <MetaDetail label={'21 Day RA'} val={playerDetail.ra_21_day} />
+                    <MetaDetail label={'21 Day RA'} val={`${playerDetail.ra_21_day}%`} />
                 </Box>
             </Box>
         );
@@ -182,7 +239,7 @@ export function CompareView() {
                     {getRaInfo(playerId, playersList)}
                     {!isPending && playerId && (
                         <>
-                            {getItemAwardedCount(filteredData.length)}
+                            {getItemAwardedMetaData(filteredData.length, itemsState)}
                             <Box
                                 sx={{
                                     mt: 2,

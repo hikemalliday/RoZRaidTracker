@@ -21,13 +21,7 @@ export const _getReducedResults = results => {
 
 export const _getReduceItemAwardedResults = results => {
     if (!results) return [];
-    let counter = 1;
     return results.map(item => {
-        if (item.name === 'Cloak of Destruction') {
-            console.log(item);
-            console.log(counter);
-            counter += 1;
-        }
         return { id: item.id, label: item.name };
     });
 };
