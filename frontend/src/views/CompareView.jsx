@@ -2,58 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Autocomplete, Box, Container, TextField, Typography } from '@mui/material';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { useItemsAwardedList, usePlayersList } from '../hooks/requests.js';
-import { renderErrors } from './utils.jsx';
 
 export function CompareView() {
-    const [playerId1, setPlayerId1] = useState('');
-    const [playerId2, setPlayerId2] = useState('');
-    const [playerId3, setPlayerId3] = useState('');
+    const { isPending: isPlayersPending, data: playersData } = usePlayersList();
 
-    const {
-        isPending: isPlayersPending,
-        data: playersData,
-        error: playersError,
-    } = usePlayersList();
-    const {
-        isPending: isItemAwardedPending1,
-        data: itemAwardedData1,
-        error: itemAwardedError1,
-    } = useItemsAwardedList({ player: playerId1 });
-    const {
-        isPending: isItemAwardedPending2,
-        data: itemAwardedData2,
-        error: itemAwardedError2,
-    } = useItemsAwardedList({ player: playerId2 });
-    const {
-        isPending: isItemAwardedPending3,
-        data: itemAwardedData3,
-        error: itemAwardedError3,
-    } = useItemsAwardedList({ player: playerId3 });
-
-    useEffect(() => {
-        if (playersData?.results && playersData.results.length > 0) {
-            const players = playersData.results;
-            setPlayerId1(players[0]?.id?.toString() || '');
-            setPlayerId2(players[1]?.id?.toString() || '');
-            setPlayerId3(players[2]?.id?.toString() || '');
-        }
-    }, [playersData]);
-
-    const errorsArray = [playersError, itemAwardedError1, itemAwardedError2, itemAwardedError3];
     if (isPlayersPending) return <>LOADING...</>;
-    if (errorsArray.some(Boolean)) return <>{renderErrors(errorsArray)}</>;
-
-    const handlePlayerId1Change = playerId => {
-        setPlayerId1(playerId);
-    };
-
-    const handlePlayerId2Change = playerId => {
-        setPlayerId2(playerId);
-    };
-
-    const handlePlayerId3Change = playerId => {
-        setPlayerId3(playerId);
-    };
 
     const getPlayersIdMap = data => {
         const results = {};
@@ -148,17 +101,22 @@ export function CompareView() {
         );
     };
 
-    function CompareTable({
-        playerId,
-        playersList,
-        handlePlayerIdChange,
-        isPending,
-        itemAwardedData,
-    }) {
-        // Using a Set here will allow us to simplify adding or removing filters based on checkbox inputs
+    function CompareTable({ playersList, defaultPlayerId = 1 }) {
+        const [playerId, setPlayerId] = useState(defaultPlayerId);
+        const { isPending, data: itemAwardedData } = useItemsAwardedList({ player: playerId });
+        const [itemsState, setItemsState] = useState(itemAwardedData?.results || []);
         const [filters, setFilters] = useState(
             new Set(['main', 'alt_loot', 'preferred', 'magelo'])
         );
+
+        useEffect(() => {
+            setItemsState(itemAwardedData?.results);
+        }, [itemAwardedData]);
+
+        const handlePlayerIdChange = playerIdArg => {
+            setPlayerId(playerIdArg);
+        };
+
         function _filterItems(results) {
             if (!results) return [];
 
@@ -200,7 +158,7 @@ export function CompareView() {
                 });
         };
 
-        const filteredData = _filterItems(itemAwardedData?.results, filters);
+        const filteredData = _filterItems(itemsState);
         return (
             <Container disableGutters>
                 <Container>
@@ -276,33 +234,9 @@ export function CompareView() {
                 width: '100%',
             }}
         >
-            {
-                <CompareTable
-                    playerId={playerId1}
-                    playersList={playersData.results}
-                    handlePlayerIdChange={handlePlayerId1Change}
-                    isPending={isItemAwardedPending1}
-                    itemAwardedData={itemAwardedData1}
-                />
-            }
-            {
-                <CompareTable
-                    playerId={playerId2}
-                    playersList={playersData.results}
-                    handlePlayerIdChange={handlePlayerId2Change}
-                    isPending={isItemAwardedPending2}
-                    itemAwardedData={itemAwardedData2}
-                />
-            }
-            {
-                <CompareTable
-                    playerId={playerId3}
-                    playersList={playersData.results}
-                    handlePlayerIdChange={handlePlayerId3Change}
-                    isPending={isItemAwardedPending3}
-                    itemAwardedData={itemAwardedData3}
-                />
-            }
+            {<CompareTable playersList={playersData.results} defaultPlayerId={1} />}
+            {<CompareTable playersList={playersData.results} defaultPlayerId={2} />}
+            {<CompareTable playersList={playersData.results} defaultPlayerId={3} />}
         </Container>
     );
 }
