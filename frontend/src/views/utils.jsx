@@ -55,7 +55,10 @@ export function joinAndTruncate(array, truncateLength = 50) {
 export function getLootType(itemObj) {
     let lootType = '';
     // Preferred
-    if (itemObj.preferred && !itemObj.alt_loot) lootType = 'Preferred';
+    if (itemObj.preferred && !itemObj.alt_loot && !itemObj.magelo) lootType = 'Preferred';
+    // Preferred + Magelo
+    else if (itemObj.preferred && !itemObj.alt_loot && itemObj.magelo)
+        lootType = 'Preferred, Magelo';
     // Magelo and main
     else if (itemObj.magelo && !itemObj.alt_loot) lootType = 'Main, Magelo';
     // Main
@@ -65,15 +68,6 @@ export function getLootType(itemObj) {
     // Alt
     else if (itemObj.alt_loot && !itemObj.magelo) lootType = 'Alt';
     return lootType;
-}
-// TODO: 1/17/26: Decided against this post-sorting for now. Could implemented at a later date, if desired.
-export function sortItemsByType(results) {
-    if (!results) return [];
-
-    const score = item =>
-        (item.preferred ? 100 : 0) + (item.magelo ? 10 : 0) - (item.alt_loot ? 1 : 0);
-
-    return [...results].sort((a, b) => score(b) - score(a));
 }
 
 export async function getItemInfo(itemId) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Autocomplete, Box, Checkbox, Container, FormControlLabel, TextField } from '@mui/material';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { useItemsAwardedList, usePlayersList } from '../hooks/requests.js';
@@ -108,14 +108,9 @@ export function CompareView() {
     function CompareTable({ playersList, defaultPlayerId = 1 }) {
         const [playerId, setPlayerId] = useState(defaultPlayerId);
         const { isPending, data: itemAwardedData } = useItemsAwardedList({ player: playerId });
-        const [itemsState, setItemsState] = useState(itemAwardedData?.results || []);
         const [filters, setFilters] = useState(
             new Set(['main', 'alt_loot', 'preferred', 'magelo'])
         );
-
-        useEffect(() => {
-            setItemsState(itemAwardedData?.results);
-        }, [itemAwardedData]);
 
         const handlePlayerIdChange = playerIdArg => {
             setPlayerId(playerIdArg);
@@ -162,7 +157,7 @@ export function CompareView() {
                 });
         };
 
-        const filteredData = _filterItems(itemsState);
+        const filteredData = _filterItems(itemAwardedData?.results);
         return (
             <Container disableGutters>
                 <Container>
@@ -170,7 +165,7 @@ export function CompareView() {
                     {getRaInfo(playerId, playersList)}
                     {!isPending && playerId && (
                         <>
-                            {getItemAwardedMetaData(itemsState)}
+                            {getItemAwardedMetaData(itemAwardedData?.results)}
                             <Box
                                 sx={{
                                     mt: 2,
