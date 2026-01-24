@@ -33,9 +33,11 @@ export function PaginatedListTable({
             return { data: [], isPending: false };
         },
         reduceOptions: () => [],
+        useOptionLabel: true,
     },
 }) {
-    const { searchParam, optionsLabel, useOptions, reduceOptions } = autoCompleteOptions;
+    const { searchParam, optionsLabel, useOptions, reduceOptions, useOptionLabel } =
+        autoCompleteOptions;
 
     const _getOrdering = str => {
         return sortMap?.[str] || str;
@@ -131,9 +133,16 @@ export function PaginatedListTable({
                                 }}
                             />
                         )}
-                        options={!isOptionsPending ? reduceOptions(optionsData.results) : []}
+                        options={
+                            !isOptionsPending
+                                ? reduceOptions(optionsData.results || optionsData)
+                                : []
+                        }
+                        getOptionLabel={option => option.label || ''}
+                        getOptionKey={option => option.id}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
                         onChange={(_, option) => {
-                            setSearchVal(option.label);
+                            setSearchVal(useOptionLabel ? option.label : option.id);
                         }}
                     />
                 )}

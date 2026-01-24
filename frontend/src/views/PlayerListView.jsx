@@ -22,6 +22,7 @@ export function PlayerListView() {
                 optionsLabel: 'players',
                 useOptions: usePlayersList,
                 reduceOptions: getPlayersListFinal,
+                useOptionLabel: true,
             }}
         />
     );

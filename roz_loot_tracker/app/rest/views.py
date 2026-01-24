@@ -50,6 +50,12 @@ class ItemViewSet(viewsets.ModelViewSet):
     pagination_class = AllowNoPagination
     filterset_class = ItemFilter
 
+    @action(detail=False, methods=['get'])
+    def get_options(self, request, pk=None):
+        qs = models.Item.objects.filter(itemawarded__isnull=False).distinct().order_by('name')
+        serializer = self.get_serializer(qs, many=True)
+        return Response(serializer.data)
+
 
 class ZoneViewSet(viewsets.ModelViewSet):
     queryset = models.Zone.objects.all()
@@ -130,7 +136,7 @@ class ItemAwardedViewSet(viewsets.ModelViewSet):
     serializer_class = ItemAwardedSerializer
     # permission_classes = (PERMISSION_CLASS_DEBUG,)
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ['player', 'raid']
+    filterset_fields = ['player', 'raid', 'item__id']
     ordering_fields = ['player__name', 'raid__name', 'created_at', 'item__name']
     pagination_class = AllowNoPagination
 

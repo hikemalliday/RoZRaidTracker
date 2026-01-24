@@ -1,6 +1,7 @@
-import { useItemAwardedListPaginated } from '../hooks/requests.js';
+import { useItemAwardedListPaginated, useItemOptionsList } from '../hooks/requests.js';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { PaginatedListTable } from '../components/PaginatedListTable.jsx';
+import { getItemOptionsListFinal } from './utils.jsx';
 
 export function ItemAwardedListView() {
     return (
@@ -17,6 +18,13 @@ export function ItemAwardedListView() {
             defaultSort={{
                 orderDir: 'desc',
                 ordering: 'date',
+            }}
+            autoCompleteOptions={{
+                searchParam: 'item__id',
+                optionsLabel: 'item name',
+                useOptions: useItemOptionsList,
+                reduceOptions: getItemOptionsListFinal,
+                useOptionLabel: false,
             }}
         />
     );

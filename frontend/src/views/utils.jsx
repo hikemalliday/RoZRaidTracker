@@ -19,10 +19,16 @@ export const _getReducedResults = results => {
     });
 };
 
-export const _getReducedRaidsList = results => {
+export const _getReduceItemAwardedResults = results => {
     if (!results) return [];
-    return results.map(res => {
-        return { id: res.id, label: `${res.name} ${res.created_at}` };
+    let counter = 1;
+    return results.map(item => {
+        if (item.name === 'Cloak of Destruction') {
+            console.log(item);
+            console.log(counter);
+            counter += 1;
+        }
+        return { id: item.id, label: item.name };
     });
 };
 
@@ -39,8 +45,8 @@ export const getPlayersListFinal = results => {
     return _sortReducedList(reducedList);
 };
 
-export const getRaidsListFinal = results => {
-    return _getReducedRaidsList(results);
+export const getItemOptionsListFinal = results => {
+    return _getReduceItemAwardedResults(results);
 };
 
 export function joinAndTruncate(array, truncateLength = 50) {

@@ -24,6 +24,10 @@ export const _useList = (queryKey, route, queryParams = {}) => {
     return { isPending, error, data };
 };
 
+export const useItemOptionsList = (queryParams = {}) => {
+    return _useList('items', '/items/get_options/', queryParams);
+};
+
 export const usePlayersList = (queryParams = {}) => {
     return _useList('players', '/players/', queryParams);
 };
