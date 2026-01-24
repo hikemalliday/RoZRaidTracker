@@ -55,31 +55,9 @@ export function NavBar() {
                 -
                 {isAuthenticated && isSuperUser && (
                     <>
-                        <a id="nav-bar-link" onClick={() => setApprovalOpen(prev => !prev)}>
+                        <a id="nav-bar-link" onClick={() => handleLinkClick('ra_approval_pending')}>
                             APPROVAL
                         </a>
-                        {approvalOpen && (
-                            <div
-                                style={{
-                                    position: 'absolute',
-                                    left: '75px',
-                                    background: '#222',
-                                    padding: '8px',
-                                    borderRadius: '4px',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    minWidth: '120px',
-                                    zIndex: 10,
-                                }}
-                            >
-                                <a onClick={() => handleLinkClick('ra_approval_pending')}>
-                                    Pending
-                                </a>
-                                <a onClick={() => handleLinkClick('ra_approval_history')}>
-                                    History
-                                </a>
-                            </div>
-                        )}
                         -
                     </>
                 )}
@@ -130,7 +108,10 @@ export function NavBar() {
                     <ListItem
                         key={link.path}
                         onClick={() => handleLinkClick(link.path)}
-                        sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' } }}
+                        sx={{
+                            cursor: 'pointer',
+                            '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' },
+                        }}
                     >
                         <ListItemText primary={link.label} />
                     </ListItem>
@@ -139,13 +120,19 @@ export function NavBar() {
                     <>
                         <ListItem
                             onClick={() => handleLinkClick('/ra_approval_pending')}
-                            sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' } }}
+                            sx={{
+                                cursor: 'pointer',
+                                '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' },
+                            }}
                         >
                             <ListItemText primary="APPROVAL - PENDING" />
                         </ListItem>
                         <ListItem
                             onClick={() => handleLinkClick('/ra_approval_history')}
-                            sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' } }}
+                            sx={{
+                                cursor: 'pointer',
+                                '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' },
+                            }}
                         >
                             <ListItemText primary="APPROVAL - HISTORY" />
                         </ListItem>
@@ -153,7 +140,10 @@ export function NavBar() {
                 )}
                 <ListItem
                     onClick={isAuthenticated ? handleLogout : () => handleLinkClick('/login')}
-                    sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' } }}
+                    sx={{
+                        cursor: 'pointer',
+                        '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' },
+                    }}
                 >
                     <ListItemText primary={isAuthenticated ? 'LOG OUT' : 'LOG IN'} />
                 </ListItem>
@@ -170,10 +160,7 @@ export function NavBar() {
                 {navBarLinks()}
             </Box>
             <Box sx={{ display: { xs: 'flex', md: 'none' }, paddingRight: 1 }}>
-                <IconButton
-                    onClick={() => setMobileMenuOpen(true)}
-                    sx={{ color: 'white' }}
-                >
+                <IconButton onClick={() => setMobileMenuOpen(true)} sx={{ color: 'white' }}>
                     <MenuIcon />
                 </IconButton>
             </Box>
