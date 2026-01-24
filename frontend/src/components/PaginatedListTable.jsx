@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import {
     Autocomplete,
-    Box,
     Container,
     Divider,
     FormControl,
@@ -18,20 +17,26 @@ import SortIcon from '@mui/icons-material/Sort';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
 import { textFieldStyles } from '../styles.js';
 import { PaginationController } from './PaginationController.jsx';
-
+// In order to dynamically pass in different search bars to query on, we use 'autoCompleteOptions' prop object.
+// Since the auto complete depends on state that exists inside PaginatedListTable (setSearchVal), I cannot pass in an autocomplete component,
+// have to instead pass in the options object.
 export function PaginatedListTable({
     requestHook,
     TableComponent,
     sortChoices = [],
     sortMap = {},
     defaultSort = {},
-    searchParam = null,
-    useOptions = () => {
-        return { data: [], isPending: false };
+    autoCompleteOptions = {
+        searchParam: '',
+        optionsLabel: '',
+        useOptions: () => {
+            return { data: [], isPending: false };
+        },
+        reduceOptions: () => [],
     },
-    optionsLabel = '',
-    reduceOptions = () => [],
 }) {
+    const { searchParam, optionsLabel, useOptions, reduceOptions } = autoCompleteOptions;
+
     const _getOrdering = str => {
         return sortMap?.[str] || str;
     };
@@ -126,11 +131,7 @@ export function PaginatedListTable({
                                 }}
                             />
                         )}
-                        options={
-                            !isOptionsPending
-                                ? reduceOptions(optionsData.results)
-                                : []
-                        }
+                        options={!isOptionsPending ? reduceOptions(optionsData.results) : []}
                         onChange={(_, option) => {
                             setSearchVal(option.label);
                         }}
@@ -193,10 +194,7 @@ export function PaginatedListTable({
                         alignItems="center"
                         sx={{ marginTop: 3 }}
                     >
-                        <Typography
-                            variant="body2"
-                            sx={{ color: 'rgba(255,255,255,0.6)' }}
-                        >
+                        <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.6)' }}>
                             {data.count} results
                         </Typography>
                         <PaginationController

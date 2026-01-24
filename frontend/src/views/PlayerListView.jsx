@@ -9,10 +9,6 @@ export function PlayerListView() {
             requestHook={usePlayerListPaginated}
             TableComponent={PlayerListTable}
             sortChoices={['name', 'lifetime ra', '21 day']}
-            searchParam="name"
-            useOptions={usePlayersList}
-            optionsLabel="players"
-            reduceOptions={getPlayersListFinal}
             sortMap={{
                 '21 day': 'ra_21_day',
                 'lifetime ra': 'lifetime_ra',
@@ -20,6 +16,12 @@ export function PlayerListView() {
             defaultSort={{
                 orderDir: 'desc',
                 ordering: '21 day',
+            }}
+            autoCompleteOptions={{
+                searchParam: 'name',
+                optionsLabel: 'players',
+                useOptions: usePlayersList,
+                reduceOptions: getPlayersListFinal,
             }}
         />
     );
