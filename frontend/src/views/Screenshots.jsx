@@ -20,7 +20,7 @@ function ImageItem({ src }) {
 }
 
 export function Screenshots({}) {
-    const images = import.meta.glob('../../public/screenshots/*.{jpg,jpeg,png}', { eager: true });
+    const images = import.meta.glob('../screenshots/*.{jpg,jpeg,png}', { eager: true });
     const imageList = Object.values(images).map(m => m.default);
     const loadMoreRef = useRef(null);
     const PAGE_SIZE = 5;
