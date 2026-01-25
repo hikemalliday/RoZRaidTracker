@@ -6,7 +6,7 @@ import {
     useRaidAttendanceList,
 } from '../hooks/requests.js';
 import { Box, Container, Typography } from '@mui/material';
-import { renderErrors } from './utils.jsx';
+import { getItemAwardedMetaData, renderErrors } from './utils.jsx';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { CharacterListTable } from '../components/CharacterListTable.jsx';
 import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.jsx';
@@ -64,7 +64,10 @@ export function PlayerDetailView() {
         <Container sx={{ mt: 1 }}>
             {isAuthenticated && isSuperUser === true ? (
                 <>
-                    <button style={{ marginTop: 5 }} onClick={_ => navigate('edit')}>
+                    <button
+                        style={{ marginTop: 5, marginBottom: 20 }}
+                        onClick={_ => navigate('edit')}
+                    >
                         EDIT PLAYER
                     </button>
                 </>
@@ -72,28 +75,37 @@ export function PlayerDetailView() {
                 <></>
             )}
             <MetaDetail label={'Player'} val={playerData.name} />
-            <Container sx={{ mt: 5 }}>
-                <Typography sx={labelStyles}>Characters</Typography>
-                <CharacterListTable data={characterData.results} />
-            </Container>
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, mt: 4 }}>
                 <MetaDetail label={'Lifetime Ra'} val={playerData?.lifetime_ra} />
                 <MetaDetail label={'21 Day Ra'} val={playerData?.ra_21_day} />
             </Box>
+            <Container sx={{ mt: 5, mb: 5 }}>
+                <Typography sx={labelStyles}>Characters</Typography>
+                <CharacterListTable data={characterData.results} />
+            </Container>
             <Container>
-                <Typography sx={labelStyles}>
-                    Items Awarded - Total: {itemAwardedData.count}
-                </Typography>
+                <Box
+                    sx={{
+                        mb: 4,
+                    }}
+                >
+                    {getItemAwardedMetaData(
+                        itemAwardedData.results,
+                        itemAwardedData.results.length
+                    )}
+                </Box>
                 <ItemAwardedListTable
                     data={sortItemsById(itemAwardedData.results)}
                     sortable
                     styledRows
                 />
             </Container>
-            <Container>
-                <Typography sx={labelStyles}>Raids Attended: {raidsData.count}</Typography>
+            <Box>
+                <Typography sx={{ ...labelStyles, mb: 4 }}>
+                    Raids Attended: {raidsData.count}
+                </Typography>
                 <RaidAttendanceListTable data={_sortRaData(raidsData?.results)} sortable />
-            </Container>
+            </Box>
         </Container>
     );
 }

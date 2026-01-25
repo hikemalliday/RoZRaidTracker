@@ -129,7 +129,6 @@ export function TableList({
     getTableRows,
     headerMap = {},
     sortable = false,
-    styledRows = false,
     dataTestId = null,
 }) {
     const [sorted, setSorted] = useState(data);
