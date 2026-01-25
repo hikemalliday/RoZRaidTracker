@@ -1,42 +1,7 @@
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { Link } from 'react-router';
 import React, { useEffect, useState } from 'react';
 import { IMAGE_PATH } from '../config.js';
-import { fixLinks, getItemInfo } from '../views/utils.jsx';
-
-export function HoverTooltipCell({ val, itemId }) {
-    const [itemHtml, setItemHtml] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [hovered, setHovered] = useState(false);
-
-    const handleMouseEnter = async () => {
-        setHovered(true);
-        if (!itemHtml && !isLoading) {
-            setIsLoading(true);
-            const html = await getItemInfo(itemId);
-            setItemHtml(fixLinks(html));
-            setIsLoading(false);
-        }
-    };
-
-    const handleMouseLeave = () => {
-        setHovered(false);
-    };
-
-    return (
-        <TableCell
-            className="tooltip-wrapper"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-        >
-            {val}
-            {hovered && itemHtml && (
-                <div className="tooltip-content" dangerouslySetInnerHTML={{ __html: itemHtml }} />
-            )}
-            {hovered && !itemHtml && <div className="tooltip-content">Loading...</div>}
-        </TableCell>
-    );
-}
 
 export const getLinkCell = (val, route, extraText) => {
     return (
@@ -71,6 +36,89 @@ export const getCheckboxCellControlled = (changeHandler, state) => {
     return (
         <TableCell>
             <input type="checkbox" checked={state} onChange={e => changeHandler(e)} />
+        </TableCell>
+    );
+};
+
+export const getLootTypeBadgeCell = lootType => {
+    const getBadgeStyle = type => {
+        if (!type) return null;
+        const typeUpper = type.toUpperCase();
+        // Preferred -> yellow
+        if (typeUpper.includes('PREFERRED')) {
+            return {
+                background: 'rgba(234, 179, 8, 0.15)',
+                color: '#facc15',
+                border: '1px solid rgba(234, 179, 8, 0.3)',
+            };
+        }
+        // Preferred + Magelo -> gold
+        if (typeUpper.includes('PREFERRED') && typeUpper.includes('MAGELO')) {
+            return {
+                background: 'rgba(245, 158, 11, 0.15)',
+                color: '#fbbf24',
+                border: '1px solid rgba(245, 158, 11, 0.3)',
+            };
+        }
+        // Main, Magelo -> red
+        if (typeUpper.includes('MAIN') && typeUpper.includes('MAGELO')) {
+            return {
+                background: 'rgba(239, 68, 68, 0.15)',
+                color: '#f87171',
+                border: '1px solid rgba(239, 68, 68, 0.3)',
+            };
+        }
+        // Alt, Magelo -> orange
+        if (typeUpper.includes('ALT') && typeUpper.includes('MAGELO')) {
+            return {
+                background: 'rgba(249, 115, 22, 0.15)',
+                color: '#fb923c',
+                border: '1px solid rgba(249, 115, 22, 0.3)',
+            };
+        }
+        // Alt -> purple
+        if (typeUpper.includes('ALT')) {
+            return {
+                background: 'rgba(139, 92, 246, 0.15)',
+                color: '#a78bfa',
+                border: '1px solid rgba(139, 92, 246, 0.3)',
+            };
+        }
+        // Main (without Magelo) -> gray
+        if (typeUpper.includes('MAIN')) {
+            return {
+                background: 'rgba(107, 114, 128, 0.15)',
+                color: '#9ca3af',
+                border: '1px solid rgba(107, 114, 128, 0.3)',
+            };
+        }
+        return null;
+    };
+
+    const badgeStyle = getBadgeStyle(lootType);
+
+    if (!badgeStyle) {
+        return <TableCell id="non-clickable-cell">{lootType}</TableCell>;
+    }
+
+    return (
+        <TableCell id="non-clickable-cell">
+            <Box
+                sx={{
+                    display: 'inline-block',
+                    padding: '4px 10px',
+                    borderRadius: '4px',
+                    border: badgeStyle.border,
+                    background: badgeStyle.background,
+                    color: badgeStyle.color,
+                    fontSize: '12px',
+                    textTransform: 'uppercase',
+                    fontWeight: 500,
+                    letterSpacing: '0.3px',
+                }}
+            >
+                {lootType}
+            </Box>
         </TableCell>
     );
 };
@@ -149,14 +197,10 @@ export function TableList({
 
     return (
         <Table
-            sx={
-                styledRows
-                    ? {
-                          borderCollapse: 'separate',
-                          borderSpacing: '0 8px', // 0 horizontal, 8px vertical gap between rows
-                      }
-                    : {}
-            }
+            sx={{
+                width: '100%',
+                borderCollapse: 'collapse',
+            }}
             data-testid={dataTestId ? `table-list-${dataTestId}` : `table-list-test-id`}
         >
             <TableHead>

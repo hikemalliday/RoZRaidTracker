@@ -1,7 +1,8 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, IconButton } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { labelStyles } from '../styles.js';
-import { MetaDetail } from '../components/generic.jsx';
 import React from 'react';
+import { MetaDetail } from '../components/generic.jsx';
 
 export const renderErrors = errorsList => {
     return (
@@ -105,7 +106,200 @@ export function fixLinks(htmlString, baseUrl = 'https://www.pqdi.cc/') {
     return doc.body.innerHTML;
 }
 
-export const getItemAwardedMetaData = itemsResults => {
+export const getItemAwardedMetaDataEditable = (
+    itemsResults,
+    isAuthenticated = false,
+    isSuperUser = false,
+    onEditClick = null
+) => {
+    if (!itemsResults) return null;
+
+    const _getItemsResultsMeta = res => {
+        if (!res) return {};
+        const resultsObj = {};
+        res.forEach(item => {
+            const isMainItem =
+                item.alt_loot === false && item.preferred === false && item.magelo === false;
+            const isAltItem = item.alt_loot === true && item.magelo === false;
+            const isMageloMainItem = item.magelo === true && item.alt_loot === false;
+            const isMageloAltItem = item.magelo === true && item.alt_loot === true;
+            const isPreferredItem = item.preferred === true;
+
+            if (isMainItem) resultsObj.main = resultsObj.main ? (resultsObj.main += 1) : 1;
+            if (isAltItem) resultsObj.alt = resultsObj.alt ? (resultsObj.alt += 1) : 1;
+            if (isMageloMainItem)
+                resultsObj.mageloMain = resultsObj.mageloMain ? (resultsObj.mageloMain += 1) : 1;
+            if (isMageloAltItem)
+                resultsObj.mageloAlt = resultsObj.mageloAlt ? (resultsObj.mageloAlt += 1) : 1;
+            if (isPreferredItem)
+                resultsObj.preferred = resultsObj.preferred ? (resultsObj.preferred += 1) : 1;
+        });
+        return resultsObj;
+    };
+
+    const itemsResultsMeta = _getItemsResultsMeta(itemsResults);
+    return (
+        <Box
+            sx={{
+                background: '#1a1a1a',
+                border: '1px solid #2a2a2a',
+                borderRadius: '8px',
+                padding: '20px',
+                marginBottom: '30px',
+                width: 'calc(100% + 80px)',
+                marginLeft: '-20px',
+                marginRight: '-20px',
+                boxSizing: 'border-box',
+            }}
+        >
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    gap: '16px',
+                }}
+            >
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: '32px',
+                        flexWrap: 'wrap',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Typography
+                        sx={{
+                            color: '#9ca3af',
+                            fontSize: '13px',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px',
+                        }}
+                    >
+                        Total Items Shown: {itemsResults.length}
+                    </Typography>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography
+                            sx={{
+                                color: '#6b7280',
+                                fontSize: '12px',
+                                marginBottom: '4px',
+                            }}
+                        >
+                            Magelo Main
+                        </Typography>
+                        <Typography
+                            sx={{
+                                color: '#fff',
+                                fontSize: '18px',
+                                fontWeight: 600,
+                            }}
+                        >
+                            {itemsResultsMeta.mageloMain || 0}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography
+                            sx={{
+                                color: '#6b7280',
+                                fontSize: '12px',
+                                marginBottom: '4px',
+                            }}
+                        >
+                            Magelo Alt
+                        </Typography>
+                        <Typography
+                            sx={{
+                                color: '#fff',
+                                fontSize: '18px',
+                                fontWeight: 600,
+                            }}
+                        >
+                            {itemsResultsMeta.mageloAlt || 0}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography
+                            sx={{
+                                color: '#6b7280',
+                                fontSize: '12px',
+                                marginBottom: '4px',
+                            }}
+                        >
+                            Preferred
+                        </Typography>
+                        <Typography
+                            sx={{
+                                color: '#fff',
+                                fontSize: '18px',
+                                fontWeight: 600,
+                            }}
+                        >
+                            {itemsResultsMeta.preferred || 0}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography
+                            sx={{
+                                color: '#6b7280',
+                                fontSize: '12px',
+                                marginBottom: '4px',
+                            }}
+                        >
+                            Main
+                        </Typography>
+                        <Typography
+                            sx={{
+                                color: '#fff',
+                                fontSize: '18px',
+                                fontWeight: 600,
+                            }}
+                        >
+                            {itemsResultsMeta.main || 0}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography
+                            sx={{
+                                color: '#6b7280',
+                                fontSize: '12px',
+                                marginBottom: '4px',
+                            }}
+                        >
+                            Alt
+                        </Typography>
+                        <Typography
+                            sx={{
+                                color: '#fff',
+                                fontSize: '18px',
+                                fontWeight: 600,
+                            }}
+                        >
+                            {itemsResultsMeta.alt || 0}
+                        </Typography>
+                    </Box>
+                </Box>
+                {isAuthenticated && isSuperUser && onEditClick && (
+                    <IconButton
+                        onClick={onEditClick}
+                        sx={{
+                            color: '#9ca3af',
+                            '&:hover': {
+                                color: '#fff',
+                                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                            },
+                        }}
+                    >
+                        EDIT
+                    </IconButton>
+                )}
+            </Box>
+        </Box>
+    );
+};
+
+export const getItemAwardedMetaData = (itemsResults, filteredDataLen) => {
     if (!itemsResults) return [];
 
     const _getItemsResultsMeta = res => {
@@ -134,8 +328,8 @@ export const getItemAwardedMetaData = itemsResults => {
     const itemsResultsMeta = _getItemsResultsMeta(itemsResults);
     return (
         <>
-            <Typography sx={{ ...labelStyles, fontSize: '1rem' }}>
-                Total Items Shown: {itemsResults.length}
+            <Typography sx={{ ...labelStyles, fontSize: '0.8rem', mt: 2 }}>
+                Total Items Shown: {filteredDataLen}
             </Typography>
             <Box
                 sx={{

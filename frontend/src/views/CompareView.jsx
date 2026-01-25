@@ -91,8 +91,8 @@ export function CompareView() {
                 sx={{
                     display: 'flex',
                     justifyContent: 'center',
-                    gap: 3,
-                    mt: 2,
+                    gap: 2,
+                    mt: 1,
                 }}
             >
                 <Box sx={{ textAlign: 'center' }}>
@@ -163,12 +163,12 @@ export function CompareView() {
                 <Container>
                     {getPlayerAutoComplete(playerId, handlePlayerIdChange)}
                     {getRaInfo(playerId, playersList)}
+                    {getItemAwardedMetaData(itemAwardedData?.results, filteredData.length)}
                     {!isPending && playerId && (
                         <>
-                            {getItemAwardedMetaData(itemAwardedData?.results)}
                             <Box
                                 sx={{
-                                    mt: 2,
+                                    mt: 1,
                                     display: 'flex',
                                     justifyContent: 'center',
                                     gap: 1,
@@ -229,7 +229,7 @@ export function CompareView() {
             disableGutters
             maxWidth={false}
             sx={{
-                marginTop: 5,
+                marginTop: 2,
                 display: 'flex',
                 height: '100%',
                 width: '100%',

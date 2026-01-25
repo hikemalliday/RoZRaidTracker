@@ -1,8 +1,15 @@
-import { getCell, getCheckboxCell, getItemIconCell, getLinkCell, TableList } from './Tables.jsx';
+import {
+    getCell,
+    getCheckboxCell,
+    getItemIconCell,
+    getLinkCell,
+    getLootTypeBadgeCell,
+    TableList,
+} from './Tables.jsx';
 import { TableRow } from '@mui/material';
 import { useRef } from 'react';
 import { useItemAwardedDelete } from '../hooks/requests.js';
-import { get21DayStyles, getRowStyles } from '../styles.js';
+import { get21DayStyles } from '../styles.js';
 import { getLootType } from '../views/utils.jsx';
 
 export function ItemAwardedListTableEditable({
@@ -24,16 +31,15 @@ export function ItemAwardedListTableEditable({
                 }
             };
             const styles21Day = get21DayStyles(row);
-            const stylesObj = styledRows ? { ...getRowStyles(row), ...styles21Day } : styles21Day;
 
             return (
-                <TableRow key={row?.id} sx={stylesObj}>
+                <TableRow key={row?.id} sx={styles21Day}>
                     {getItemIconCell(row?.item?.icon_id)}
                     {getCell(row?.item?.name)}
                     {getLinkCell(row?.player?.name, `/player/${row?.player?.id}`)}
                     {getLinkCell(row?.raid?.name, `/raid/${row?.raid?.id}`)}
                     {getCell(row?.raid?.created_at)}
-                    {getCell(getLootType(row))}
+                    {getLootTypeBadgeCell(getLootType(row))}
                     {getCheckboxCell(handleCheckboxClick)}
                 </TableRow>
             );
