@@ -1,6 +1,6 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, IconButton } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { labelStyles } from '../styles.js';
-import { MetaDetail } from '../components/generic.jsx';
 import React from 'react';
 
 export const renderErrors = errorsList => {
@@ -105,8 +105,8 @@ export function fixLinks(htmlString, baseUrl = 'https://www.pqdi.cc/') {
     return doc.body.innerHTML;
 }
 
-export const getItemAwardedMetaData = itemsResults => {
-    if (!itemsResults) return [];
+export const getItemAwardedMetaData = (itemsResults, isAuthenticated = false, isSuperUser = false, onEditClick = null) => {
+    if (!itemsResults) return null;
 
     const _getItemsResultsMeta = res => {
         if (!res) return {};
@@ -133,34 +133,158 @@ export const getItemAwardedMetaData = itemsResults => {
 
     const itemsResultsMeta = _getItemsResultsMeta(itemsResults);
     return (
-        <>
-            <Typography sx={{ ...labelStyles, fontSize: '1rem' }}>
-                Total Items Shown: {itemsResults.length}
-            </Typography>
+        <Box
+            sx={{
+                background: '#1a1a1a',
+                border: '1px solid #2a2a2a',
+                borderRadius: '8px',
+                padding: '20px',
+                marginBottom: '30px',
+            }}
+        >
             <Box
                 sx={{
                     display: 'flex',
-                    justifyContent: 'center',
-                    gap: 3,
-                    mt: 2,
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    gap: '16px',
                 }}
             >
-                <Box sx={{ textAlign: 'center' }}>
-                    <MetaDetail label={'Magelo Main'} val={itemsResultsMeta.mageloMain || 0} />
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: '32px',
+                        flexWrap: 'wrap',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Typography
+                        sx={{
+                            color: '#9ca3af',
+                            fontSize: '13px',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px',
+                        }}
+                    >
+                        Total Items Shown: {itemsResults.length}
+                    </Typography>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography
+                            sx={{
+                                color: '#6b7280',
+                                fontSize: '12px',
+                                marginBottom: '4px',
+                            }}
+                        >
+                            Magelo Main
+                        </Typography>
+                        <Typography
+                            sx={{
+                                color: '#fff',
+                                fontSize: '18px',
+                                fontWeight: 600,
+                            }}
+                        >
+                            {itemsResultsMeta.mageloMain || 0}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography
+                            sx={{
+                                color: '#6b7280',
+                                fontSize: '12px',
+                                marginBottom: '4px',
+                            }}
+                        >
+                            Magelo Alt
+                        </Typography>
+                        <Typography
+                            sx={{
+                                color: '#fff',
+                                fontSize: '18px',
+                                fontWeight: 600,
+                            }}
+                        >
+                            {itemsResultsMeta.mageloAlt || 0}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography
+                            sx={{
+                                color: '#6b7280',
+                                fontSize: '12px',
+                                marginBottom: '4px',
+                            }}
+                        >
+                            Preferred
+                        </Typography>
+                        <Typography
+                            sx={{
+                                color: '#fff',
+                                fontSize: '18px',
+                                fontWeight: 600,
+                            }}
+                        >
+                            {itemsResultsMeta.preferred || 0}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography
+                            sx={{
+                                color: '#6b7280',
+                                fontSize: '12px',
+                                marginBottom: '4px',
+                            }}
+                        >
+                            Main
+                        </Typography>
+                        <Typography
+                            sx={{
+                                color: '#fff',
+                                fontSize: '18px',
+                                fontWeight: 600,
+                            }}
+                        >
+                            {itemsResultsMeta.main || 0}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography
+                            sx={{
+                                color: '#6b7280',
+                                fontSize: '12px',
+                                marginBottom: '4px',
+                            }}
+                        >
+                            Alt
+                        </Typography>
+                        <Typography
+                            sx={{
+                                color: '#fff',
+                                fontSize: '18px',
+                                fontWeight: 600,
+                            }}
+                        >
+                            {itemsResultsMeta.alt || 0}
+                        </Typography>
+                    </Box>
                 </Box>
-                <Box sx={{ textAlign: 'center' }}>
-                    <MetaDetail label={'Magelo Alt'} val={itemsResultsMeta.mageloAlt || 0} />
-                </Box>
-                <Box sx={{ textAlign: 'center' }}>
-                    <MetaDetail label={'Preferred'} val={itemsResultsMeta.preferred || 0} />
-                </Box>
-                <Box sx={{ textAlign: 'center' }}>
-                    <MetaDetail label={'Main'} val={itemsResultsMeta.main || 0} />
-                </Box>
-                <Box sx={{ textAlign: 'center' }}>
-                    <MetaDetail label={'Alt'} val={itemsResultsMeta.alt || 0} />
-                </Box>
+                {isAuthenticated && isSuperUser && onEditClick && (
+                    <IconButton
+                        onClick={onEditClick}
+                        sx={{
+                            color: '#9ca3af',
+                            '&:hover': {
+                                color: '#fff',
+                                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                            },
+                        }}
+                    >
+                        <SettingsIcon />
+                    </IconButton>
+                )}
             </Box>
-        </>
+        </Box>
     );
 };

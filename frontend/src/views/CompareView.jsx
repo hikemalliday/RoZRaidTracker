@@ -3,7 +3,6 @@ import { Autocomplete, Box, Checkbox, Container, FormControlLabel, TextField } f
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { useItemsAwardedList, usePlayersList } from '../hooks/requests.js';
 import { MetaDetail } from '../components/generic.jsx';
-import { getItemAwardedMetaData } from './utils.jsx';
 
 export function CompareView() {
     const { isPending: isPlayersPending, data: playersData } = usePlayersList();
@@ -91,8 +90,8 @@ export function CompareView() {
                 sx={{
                     display: 'flex',
                     justifyContent: 'center',
-                    gap: 3,
-                    mt: 2,
+                    gap: 2,
+                    mt: 1,
                 }}
             >
                 <Box sx={{ textAlign: 'center' }}>
@@ -165,10 +164,9 @@ export function CompareView() {
                     {getRaInfo(playerId, playersList)}
                     {!isPending && playerId && (
                         <>
-                            {getItemAwardedMetaData(itemAwardedData?.results)}
                             <Box
                                 sx={{
-                                    mt: 2,
+                                    mt: 1,
                                     display: 'flex',
                                     justifyContent: 'center',
                                     gap: 1,
@@ -229,7 +227,7 @@ export function CompareView() {
             disableGutters
             maxWidth={false}
             sx={{
-                marginTop: 5,
+                marginTop: 2,
                 display: 'flex',
                 height: '100%',
                 width: '100%',

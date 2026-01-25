@@ -11,6 +11,7 @@ import {
     Stack,
     TextField,
     Typography,
+    Box,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import SortIcon from '@mui/icons-material/Sort';
@@ -93,7 +94,13 @@ export function PaginatedListTable({
     };
 
     return (
-        <Container>
+        <Container
+            sx={{
+                maxWidth: '1400px',
+                margin: '0 auto',
+                padding: '20px',
+            }}
+        >
             <Stack
                 direction="row"
                 spacing={3}
@@ -214,16 +221,20 @@ export function PaginatedListTable({
                             styles={{ marginBottom: 0 }}
                         />
                     </Stack>
-                    <TableComponent
-                        sortable={false}
-                        data={data.results}
-                        rowStyles={{
-                            '& .MuiTableCell-root': {
-                                padding: '4px',
-                            },
-                            height: '36px',
+                    <Box
+                        sx={{
+                            background: '#1a1a1a',
+                            border: '1px solid #2a2a2a',
+                            borderRadius: '8px',
+                            overflow: 'hidden',
+                            marginTop: '20px',
                         }}
-                    />
+                    >
+                        <TableComponent
+                            sortable={false}
+                            data={data.results}
+                        />
+                    </Box>
                 </>
             )}
         </Container>
