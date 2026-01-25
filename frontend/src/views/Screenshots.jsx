@@ -26,6 +26,14 @@ export function Screenshots({}) {
     const PAGE_SIZE = 5;
 
     const [page, setPage] = useState(1);
+    // Randomize images list (Fisher-Yates shuffle)
+    // Note that Math.random() always returns a num from 0 to 1, exclusive. Its going to be either a zero or a decimal val, but NEVER 1.
+    // We loop backwards down the array, in order to not swap elements twice. I think this has to do with the fact that
+    // Math.floor() is always 0 - 1, but im not 100% sure.
+    for (let i = imageList.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [imageList[i], imageList[j]] = [imageList[j], imageList[i]];
+    }
 
     const visibleImages = useMemo(() => imageList.slice(0, page * PAGE_SIZE), [page, imageList]);
 
