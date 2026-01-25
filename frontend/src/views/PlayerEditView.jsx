@@ -118,7 +118,7 @@ function EditableCharacterListTable({ data }) {
         if (char.is_main_alt) return 'Main Alt';
         return 'Alt';
     };
-    // TODO: Do we make a useRef or useState right here based on 'data' ?
+
     const [formObject, setFormObject] = useState({});
     const { mutate } = useCharacterEdit();
 

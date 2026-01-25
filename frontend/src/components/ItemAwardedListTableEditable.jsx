@@ -1,4 +1,11 @@
-import { getCell, getCheckboxCell, getItemIconCell, getLinkCell, getLootTypeBadgeCell, TableList } from './Tables.jsx';
+import {
+    getCell,
+    getCheckboxCell,
+    getItemIconCell,
+    getLinkCell,
+    getLootTypeBadgeCell,
+    TableList,
+} from './Tables.jsx';
 import { TableRow } from '@mui/material';
 import { useRef } from 'react';
 import { useItemAwardedDelete } from '../hooks/requests.js';
@@ -24,12 +31,9 @@ export function ItemAwardedListTableEditable({
                 }
             };
             const styles21Day = get21DayStyles(row);
-            // Removed getRowStyles to eliminate colored borders for cleaner, minimalistic appearance
-            const stylesObj = styles21Day;
 
             return (
-                <TableRow key={row?.id} sx={stylesObj}>
-                    {<button> edit</button>}
+                <TableRow key={row?.id} sx={styles21Day}>
                     {getItemIconCell(row?.item?.icon_id)}
                     {getCell(row?.item?.name)}
                     {getLinkCell(row?.player?.name, `/player/${row?.player?.id}`)}

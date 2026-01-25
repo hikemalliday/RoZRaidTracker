@@ -2,6 +2,7 @@ import { Box, Typography, IconButton } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { labelStyles } from '../styles.js';
 import React from 'react';
+import { MetaDetail } from '../components/generic.jsx';
 
 export const renderErrors = errorsList => {
     return (
@@ -105,7 +106,12 @@ export function fixLinks(htmlString, baseUrl = 'https://www.pqdi.cc/') {
     return doc.body.innerHTML;
 }
 
-export const getItemAwardedMetaData = (itemsResults, isAuthenticated = false, isSuperUser = false, onEditClick = null) => {
+export const getItemAwardedMetaDataEditable = (
+    itemsResults,
+    isAuthenticated = false,
+    isSuperUser = false,
+    onEditClick = null
+) => {
     if (!itemsResults) return null;
 
     const _getItemsResultsMeta = res => {
@@ -140,6 +146,10 @@ export const getItemAwardedMetaData = (itemsResults, isAuthenticated = false, is
                 borderRadius: '8px',
                 padding: '20px',
                 marginBottom: '30px',
+                width: 'calc(100% + 80px)',
+                marginLeft: '-20px',
+                marginRight: '-20px',
+                boxSizing: 'border-box',
             }}
         >
             <Box
@@ -281,10 +291,70 @@ export const getItemAwardedMetaData = (itemsResults, isAuthenticated = false, is
                             },
                         }}
                     >
-                        <SettingsIcon />
+                        EDIT
                     </IconButton>
                 )}
             </Box>
         </Box>
+    );
+};
+
+export const getItemAwardedMetaData = (itemsResults, filteredDataLen) => {
+    if (!itemsResults) return [];
+
+    const _getItemsResultsMeta = res => {
+        if (!res) return {};
+        const resultsObj = {};
+        res.forEach(item => {
+            const isMainItem =
+                item.alt_loot === false && item.preferred === false && item.magelo === false;
+            const isAltItem = item.alt_loot === true && item.magelo === false;
+            const isMageloMainItem = item.magelo === true && item.alt_loot === false;
+            const isMageloAltItem = item.magelo === true && item.alt_loot === true;
+            const isPreferredItem = item.preferred === true;
+
+            if (isMainItem) resultsObj.main = resultsObj.main ? (resultsObj.main += 1) : 1;
+            if (isAltItem) resultsObj.alt = resultsObj.alt ? (resultsObj.alt += 1) : 1;
+            if (isMageloMainItem)
+                resultsObj.mageloMain = resultsObj.mageloMain ? (resultsObj.mageloMain += 1) : 1;
+            if (isMageloAltItem)
+                resultsObj.mageloAlt = resultsObj.mageloAlt ? (resultsObj.mageloAlt += 1) : 1;
+            if (isPreferredItem)
+                resultsObj.preferred = resultsObj.preferred ? (resultsObj.preferred += 1) : 1;
+        });
+        return resultsObj;
+    };
+
+    const itemsResultsMeta = _getItemsResultsMeta(itemsResults);
+    return (
+        <>
+            <Typography sx={{ ...labelStyles, fontSize: '0.8rem', mt: 2 }}>
+                Total Items Shown: {filteredDataLen}
+            </Typography>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: 3,
+                    mt: 2,
+                }}
+            >
+                <Box sx={{ textAlign: 'center' }}>
+                    <MetaDetail label={'Magelo Main'} val={itemsResultsMeta.mageloMain || 0} />
+                </Box>
+                <Box sx={{ textAlign: 'center' }}>
+                    <MetaDetail label={'Magelo Alt'} val={itemsResultsMeta.mageloAlt || 0} />
+                </Box>
+                <Box sx={{ textAlign: 'center' }}>
+                    <MetaDetail label={'Preferred'} val={itemsResultsMeta.preferred || 0} />
+                </Box>
+                <Box sx={{ textAlign: 'center' }}>
+                    <MetaDetail label={'Main'} val={itemsResultsMeta.main || 0} />
+                </Box>
+                <Box sx={{ textAlign: 'center' }}>
+                    <MetaDetail label={'Alt'} val={itemsResultsMeta.alt || 0} />
+                </Box>
+            </Box>
+        </>
     );
 };

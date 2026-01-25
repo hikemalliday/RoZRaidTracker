@@ -54,12 +54,16 @@ function AddItemAwardedField({ raidId, styles = {} }) {
                 alignItems: 'center',
                 gap: 2,
                 mt: 2,
-                maxWidth: 900,
-                mx: 'auto',
+                mb: 1,
+                width: 'calc(100% + 80px)',
+                marginLeft: '-20px',
+                marginRight: '-20px',
+                boxSizing: 'border-box',
                 ...styles,
             }}
         >
             <Autocomplete
+                sx={{ flex: 1 }}
                 renderInput={params => (
                     <TextField {...params} label="Item" sx={textFieldStyles} size="small" />
                 )}
@@ -75,6 +79,7 @@ function AddItemAwardedField({ raidId, styles = {} }) {
                 }}
             />
             <Autocomplete
+                sx={{ flex: 1 }}
                 renderInput={params => (
                     <TextField {...params} label="Player" sx={textFieldStyles} size="small" />
                 )}
@@ -95,7 +100,7 @@ function AddItemAwardedField({ raidId, styles = {} }) {
                 <Typography>Magelo</Typography>
                 <input type="checkbox" onChange={e => setMagelo(!!e.target.checked)} />
             </Box>
-            <button style={{ whiteSpace: 'nowrap' }} onClick={handleSubmit}>
+            <button style={{ whiteSpace: 'nowrap', marginBottom: '5px' }} onClick={handleSubmit}>
                 ADD ITEM
             </button>
         </Box>
@@ -124,7 +129,12 @@ function AddPlayerField({ raidId, styles = {} }) {
         >
             <Autocomplete
                 renderInput={params => (
-                    <TextField {...params} label="Player" sx={textFieldStyles} size="small" />
+                    <TextField
+                        {...params}
+                        label="Player"
+                        sx={{ ...textFieldStyles, width: 500 }}
+                        size="small"
+                    />
                 )}
                 options={!isPlayersPending ? getPlayersListFinal(playersData.results) : []}
                 onChange={(_, option) => {
@@ -229,10 +239,26 @@ export function RaidEditView() {
                     <strong>Zone:</strong> {data?.zone?.name}
                 </Typography>
                 <strong>Date:</strong> {data?.created_at}
-                <AddItemAwardedField raidId={id} />
             </Container>
+            <AddItemAwardedField raidId={id} />
             {itemAwardedData.results.length > 0 && (
-                <ItemAwardedListTableEditable data={itemAwardedData.results} styledRows={true} />
+                <Box
+                    sx={{
+                        background: '#1a1a1a',
+                        border: '1px solid #2a2a2a',
+                        borderRadius: '8px',
+                        overflow: 'hidden',
+                        marginBottom: '30px',
+                        width: 'calc(100% + 80px)',
+                        marginLeft: '-20px',
+                        marginRight: '-20px',
+                    }}
+                >
+                    <ItemAwardedListTableEditable
+                        data={itemAwardedData.results}
+                        styledRows={true}
+                    />
+                </Box>
             )}
             <Typography sx={{ mb: 2, mt: 4 }} variant="h6">
                 Attendees - Total: {raData.count}

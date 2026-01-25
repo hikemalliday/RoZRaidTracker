@@ -41,20 +41,20 @@ export function ItemAwardedListTable({
             if (hovered && (itemHtml || isLoading) && wrapperRef.current && tooltipRef.current) {
                 const calculatePosition = () => {
                     if (!wrapperRef.current || !tooltipRef.current) return;
-                    
+
                     const wrapperRect = wrapperRef.current.getBoundingClientRect();
                     const tooltipRect = tooltipRef.current.getBoundingClientRect();
                     const viewportWidth = window.innerWidth;
                     const margin = 10; // Minimum margin from viewport edge
-                    
+
                     // Calculate top position: below the cell
                     const top = wrapperRect.bottom + 5;
-                    
+
                     // Calculate left position: center it by default
                     const centerX = wrapperRect.left + wrapperRect.width / 2;
                     const tooltipHalfWidth = tooltipRect.width / 2;
                     let left = centerX - tooltipHalfWidth;
-                    
+
                     // Check for overflow and adjust
                     if (left < margin) {
                         // Would overflow left, align to left edge with margin
@@ -63,22 +63,22 @@ export function ItemAwardedListTable({
                         // Would overflow right, align to right edge with margin
                         left = viewportWidth - tooltipRect.width - margin;
                     }
-                    
+
                     setTooltipStyle({ top, left });
                 };
-                
+
                 // Initial calculation
                 const rafId = requestAnimationFrame(() => {
                     setTimeout(calculatePosition, 0);
                 });
-                
+
                 // Recalculate on scroll and resize
                 const handleScroll = () => calculatePosition();
                 const handleResize = () => calculatePosition();
-                
+
                 window.addEventListener('scroll', handleScroll, true);
                 window.addEventListener('resize', handleResize);
-                
+
                 return () => {
                     cancelAnimationFrame(rafId);
                     window.removeEventListener('scroll', handleScroll, true);
@@ -88,37 +88,31 @@ export function ItemAwardedListTable({
         }, [hovered, itemHtml, isLoading]);
 
         return (
-            <TableCell 
+            <TableCell
                 ref={wrapperRef}
-                id="non-clickable-cell" 
-                className={enableToolTip ? "tooltip-wrapper" : ""}
+                id="non-clickable-cell"
+                className={enableToolTip ? 'tooltip-wrapper' : ''}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <img 
-                        id="item-icon" 
-                        src={`${IMAGE_PATH}/item_${item?.icon_id}.png`} 
-                        alt={'null'} 
+                    <img
+                        id="item-icon"
+                        src={`${IMAGE_PATH}/item_${item?.icon_id}.png`}
+                        alt={'null'}
                     />
-                    <Box sx={{ color: '#fff', fontWeight: 500 }}>
-                        {item?.name}
-                    </Box>
+                    <Box sx={{ color: '#fff', fontWeight: 500 }}>{item?.name}</Box>
                 </Box>
                 {enableToolTip && hovered && itemHtml && (
-                    <div 
+                    <div
                         ref={tooltipRef}
                         className="tooltip-content"
                         style={tooltipStyle}
-                        dangerouslySetInnerHTML={{ __html: itemHtml }} 
+                        dangerouslySetInnerHTML={{ __html: itemHtml }}
                     />
                 )}
                 {enableToolTip && hovered && !itemHtml && isLoading && (
-                    <div 
-                        ref={tooltipRef}
-                        className="tooltip-content"
-                        style={tooltipStyle}
-                    >
+                    <div ref={tooltipRef} className="tooltip-content" style={tooltipStyle}>
                         Loading...
                     </div>
                 )}
@@ -128,15 +122,15 @@ export function ItemAwardedListTable({
 
     const getItemAwardedRows = data => {
         return data.map((row, i) => {
-            const styles21Day = get21DayStyles(row);
-            // Removed getRowStyles to eliminate colored borders for cleaner, minimalistic appearance
-            const rowStyles = styles21Day;
             return (
-                <TableRow key={i} sx={rowStyles}>
+                <TableRow key={i} sx={get21DayStyles(row)}>
                     <ItemNameCell item={row?.item} enableToolTip={enableToolTip} />
                     {getLinkCell(row?.player?.name, `/player/${row?.player?.id}`)}
                     {getLinkCell(row?.raid?.name, `/raid/${row?.raid?.id}`)}
-                    <TableCell id="non-clickable-cell" sx={{ color: '#9ca3af', whiteSpace: 'nowrap' }}>
+                    <TableCell
+                        id="non-clickable-cell"
+                        sx={{ color: '#9ca3af', whiteSpace: 'nowrap' }}
+                    >
                         {row?.raid?.created_at}
                     </TableCell>
                     {getLootTypeBadgeCell(getLootType(row))}

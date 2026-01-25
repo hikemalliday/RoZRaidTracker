@@ -3,6 +3,7 @@ import { Autocomplete, Box, Checkbox, Container, FormControlLabel, TextField } f
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { useItemsAwardedList, usePlayersList } from '../hooks/requests.js';
 import { MetaDetail } from '../components/generic.jsx';
+import { getItemAwardedMetaData } from './utils.jsx';
 
 export function CompareView() {
     const { isPending: isPlayersPending, data: playersData } = usePlayersList();
@@ -162,6 +163,7 @@ export function CompareView() {
                 <Container>
                     {getPlayerAutoComplete(playerId, handlePlayerIdChange)}
                     {getRaInfo(playerId, playersList)}
+                    {getItemAwardedMetaData(itemAwardedData?.results, filteredData.length)}
                     {!isPending && playerId && (
                         <>
                             <Box
