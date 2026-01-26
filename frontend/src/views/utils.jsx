@@ -33,6 +33,7 @@ export const _getReduceItemAwardedResults = results => {
 };
 
 const _sortReducedList = results => {
+    if (!results) return [];
     return results.sort((a, b) => {
         const valA = a.label;
         const valB = b.label;
@@ -41,6 +42,7 @@ const _sortReducedList = results => {
 };
 
 export const getPlayersListFinal = results => {
+    if (!results) return [];
     const reducedList = _getReducedResults(results);
     return _sortReducedList(reducedList);
 };

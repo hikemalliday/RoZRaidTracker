@@ -235,9 +235,6 @@ export function RaidEditView() {
                 <Typography sx={{ mt: 1 }} variant="h5">
                     {data?.name}
                 </Typography>
-                <Typography>
-                    <strong>Zone:</strong> {data?.zone?.name}
-                </Typography>
                 <strong>Date:</strong> {data?.created_at}
             </Container>
             <AddItemAwardedField raidId={id} />

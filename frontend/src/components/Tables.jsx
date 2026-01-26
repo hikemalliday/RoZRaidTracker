@@ -1,7 +1,22 @@
-import { Box, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import {
+    Autocomplete,
+    Box,
+    MenuItem,
+    Select,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    TextField,
+} from '@mui/material';
 import { Link } from 'react-router';
 import React, { useEffect, useState } from 'react';
 import { IMAGE_PATH } from '../config.js';
+import { useDebounce } from '../hooks/useDebounce.js';
+import { useListDebounced } from '../hooks/requests.js';
+import { listBoxStyles, textFieldStyles } from '../styles.js';
+import { _getReducedResults, getLootType } from '../views/utils.jsx';
 
 export const getLinkCell = (val, route, extraText) => {
     return (
@@ -223,5 +238,145 @@ export function TableList({
                 })}
             </TableBody>
         </Table>
+    );
+}
+// TODO: Below are field components used for RaidEditView. Each component follows a pattern of taking in a 'formObject', this way the parent component has access to the mutated state.
+export function ItemAwardedNameEditableField({ formObject, itemAwardedDetail }) {
+    const itemAwardedId = itemAwardedDetail.id;
+    const itemId = itemAwardedDetail.item.id;
+    const itemName = itemAwardedDetail.item.name;
+    const itemOption = { id: itemId, label: itemName };
+
+    const [itemValue, setItemValue] = useState(itemName);
+    const debounced = useDebounce(itemValue || '', 300);
+    const [selectedItem, setSelectedItem] = useState(itemOption);
+    const { data: itemsData, isPending: isItemsPending } = useListDebounced(
+        'items',
+        '/items/',
+        'name',
+        debounced
+    );
+
+    return (
+        <TableCell>
+            <Autocomplete
+                sx={{ flex: 1 }}
+                disableClearable
+                renderInput={params => (
+                    <TextField
+                        {...params}
+                        label="Item"
+                        sx={{ ...textFieldStyles, width: 300 }}
+                        size="small"
+                    />
+                )}
+                options={!isItemsPending ? _getReducedResults(itemsData.results) : []}
+                getOptionLabel={option => option?.label || ''} // Tells the component to get the label from the 'label' key.
+                filterOptions={x => x} // Not sure why we do this
+                onInputChange={(event, newInputValue) => {
+                    setItemValue(newInputValue); // Related to the text that the user actually sees, not the true value inside the form.
+                }}
+                inputValue={itemValue} // What the user sees in the auto complete field. Coupled with 'onInputChange'
+                value={selectedItem} // Actual value inside the form. Couple with onChange.
+                slotProps={{ listbox: { sx: listBoxStyles } }}
+                onChange={(_, option) => {
+                    setSelectedItem(option);
+                    formObject.current[itemAwardedId].item = option?.id || null;
+                    formObject.current[itemAwardedId].dirty = true;
+                }}
+            />
+        </TableCell>
+    );
+}
+
+export function ItemAwardedPlayerEditableField({ formObject, playersOptions, itemAwardedDetail }) {
+    const playerId = itemAwardedDetail.player.id;
+    const playerName = itemAwardedDetail.player.name;
+    const itemAwardedId = itemAwardedDetail.id;
+    const playerOption = { id: playerId, label: playerName };
+    const [selectedPlayer, setSelectedPlayer] = useState(playerOption);
+    const [playerValue, setPlayerValue] = useState(playerName);
+
+    return (
+        <TableCell>
+            <Autocomplete
+                disableClearable
+                renderInput={params => (
+                    <TextField
+                        {...params}
+                        label="Player"
+                        sx={{ ...textFieldStyles, width: 200 }}
+                        size="small"
+                    />
+                )}
+                options={playersOptions || []}
+                getOptionLabel={option => option?.label || ''}
+                inputValue={playerValue}
+                value={selectedPlayer}
+                onInputChange={(event, newInputValue) => {
+                    setPlayerValue(newInputValue);
+                }}
+                onChange={(_, option) => {
+                    setSelectedPlayer(option);
+                    formObject.current[itemAwardedId].player = option?.id || null;
+                    formObject.current[itemAwardedId].dirty = true;
+                }}
+            />
+        </TableCell>
+    );
+}
+
+export function ItemAwardedTypeEditableField({ formObject, itemAwardedDetail }) {
+    const initialLootType = getLootType(itemAwardedDetail);
+
+    const [lootType, setLootType] = useState(initialLootType);
+
+    const lootTypeOptions = [
+        'Preferred',
+        'Preferred, Magelo',
+        'Main, Magelo',
+        'Main',
+        'Alt, Magelo',
+        'Alt',
+    ];
+
+    const handleChange = event => {
+        const value = event.target.value;
+        setLootType(value);
+        formObject.current[itemAwardedDetail.id].dirty = true;
+        formObject.current[itemAwardedDetail.id].lootType = value;
+    };
+
+    return (
+        <TableCell>
+            <Select
+                size="small"
+                fullWidth
+                value={lootType}
+                onChange={handleChange}
+                variant="outlined"
+                sx={{
+                    color: 'white', // text color
+                    '.MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'white',
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'white',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'white',
+                    },
+                    '.MuiSvgIcon-root': {
+                        color: 'white', // dropdown arrow
+                    },
+                }}
+            >
+                {lootTypeOptions.map(option => (
+                    <MenuItem key={option} value={option}>
+                        {option}
+                    </MenuItem>
+                ))}
+            </Select>
+        </TableCell>
     );
 }

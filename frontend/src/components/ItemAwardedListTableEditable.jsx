@@ -3,56 +3,128 @@ import {
     getCheckboxCell,
     getItemIconCell,
     getLinkCell,
-    getLootTypeBadgeCell,
+    ItemAwardedNameEditableField,
+    ItemAwardedPlayerEditableField,
+    ItemAwardedTypeEditableField,
     TableList,
 } from './Tables.jsx';
 import { TableRow } from '@mui/material';
 import { useRef } from 'react';
-import { useItemAwardedDelete } from '../hooks/requests.js';
+import { useItemAwardedDelete, useItemAwardedEdit, usePlayersList } from '../hooks/requests.js';
 import { get21DayStyles } from '../styles.js';
-import { getLootType } from '../views/utils.jsx';
+import { getPlayersListFinal } from '../views/utils.jsx';
 
 export function ItemAwardedListTableEditable({
     data,
     highlight21Day = false,
     styledRows = false,
+    formObject = {},
     ...rest
 }) {
-    const { mutate } = useItemAwardedDelete();
-    const itemsToRemove = useRef(new Set());
+    const { data: playersData, isPending: isPlayersPending } = usePlayersList();
+    const formObjectRef = useRef(formObject);
+    const { mutate: deleteItemAwarded } = useItemAwardedDelete();
+    const { mutate: editItemAwarded } = useItemAwardedEdit();
+
+    if (isPlayersPending) return <>Loading...</>;
+
+    // Pass in payload obj and add key / vals
+    const _addLootTypeFields = (lootType, payload) => {
+        if (lootType === 'Preferred') {
+            payload.alt_loot = false;
+            payload.preferred = true;
+            payload.magelo = false;
+        } else if (lootType === 'Preferred, Magelo') {
+            payload.alt_loot = false;
+            payload.preferred = true;
+            payload.magelo = true;
+        } else if (lootType === 'Main, Magelo') {
+            payload.alt_loot = false;
+            payload.preferred = false;
+            payload.magelo = true;
+        } else if (lootType === 'Main') {
+            payload.alt_loot = false;
+            payload.preferred = false;
+            payload.magelo = false;
+        } else if (lootType === 'Alt, Magelo') {
+            payload.alt_loot = true;
+            payload.preferred = false;
+            payload.magelo = true;
+        } else if (lootType === 'Alt') {
+            payload.alt_loot = true;
+            payload.preferred = false;
+            payload.preferred = false;
+        }
+    };
+
+    const handleSubmitEditItems = _ => {
+        // TODO: Currently, we are simply calling the mutation promises in line, and not really using these arrays.
+        // TODO: Unsure if we want to actually resolve the promises or not.
+        const deleteIds = [];
+        const patchPayloads = [];
+        let counter = 0;
+        Object.entries(formObjectRef.current).forEach(([itemAwardedId, form]) => {
+            const deleteBool = form.delete;
+            if (deleteBool === true) {
+                deleteIds.push(deleteItemAwarded(itemAwardedId));
+                delete formObjectRef.current[itemAwardedId];
+                return;
+            }
+
+            // Only send patch request if the row was actually edited (dirty flag is set)
+            if (!form.dirty) return;
+
+            const payload = {
+                id: itemAwardedId,
+            };
+            // Loop over 'form' param here
+            Object.entries(form).forEach(([field, val]) => {
+                if (field === 'delete' || field === 'dirty') return;
+                if (field === 'lootType') {
+                    _addLootTypeFields(val, payload);
+                } else if (field === 'player' || field === 'item' || field === 'raid') {
+                    // Backend expects player_id, item_id, raid_id
+                    payload[`${field}_id`] = val;
+                } else {
+                    payload[field] = val;
+                }
+            });
+            counter += 1;
+            patchPayloads.push(editItemAwarded({ payload }));
+        });
+    };
 
     const getItemAwardedRows = data => {
-        return data.map((row, i) => {
+        return data.map(row => {
             const handleCheckboxClick = e => {
-                if (e.target.checked) {
-                    itemsToRemove.current.add(row?.id);
-                } else {
-                    return itemsToRemove.current.delete(row?.id);
-                }
+                formObjectRef.current[row?.id].delete = !!e.target.checked;
+                console.log(formObjectRef);
             };
-            const styles21Day = get21DayStyles(row);
+            // Instantiate key / val with delete key. Used to determine if we will delete the row.
+            formObjectRef.current[row?.id] = { delete: false };
 
             return (
-                <TableRow key={row?.id} sx={styles21Day}>
+                <TableRow key={row?.id} sx={get21DayStyles(row)}>
                     {getItemIconCell(row?.item?.icon_id)}
-                    {getCell(row?.item?.name)}
-                    {getLinkCell(row?.player?.name, `/player/${row?.player?.id}`)}
+                    <ItemAwardedNameEditableField
+                        formObject={formObjectRef}
+                        itemAwardedDetail={row}
+                    />
+                    <ItemAwardedPlayerEditableField
+                        formObject={formObjectRef}
+                        itemAwardedDetail={row}
+                        playersOptions={getPlayersListFinal(playersData?.results) || []}
+                    />
                     {getLinkCell(row?.raid?.name, `/raid/${row?.raid?.id}`)}
                     {getCell(row?.raid?.created_at)}
-                    {getLootTypeBadgeCell(getLootType(row))}
+                    <ItemAwardedTypeEditableField
+                        formObject={formObjectRef}
+                        itemAwardedDetail={row}
+                    />
                     {getCheckboxCell(handleCheckboxClick)}
                 </TableRow>
             );
         });
-    };
-
-    const handleRemoveItemsAwardedSubmit = async () => {
-        if (itemsToRemove.current.size === 0) return;
-        const arrayOfItemsToRemove = [...itemsToRemove.current];
-        const promises = arrayOfItemsToRemove.map(itemId => {
-            return mutate(itemId);
-        });
-        await Promise.allSettled(promises);
     };
 
     // Null vals means col is not sortable (frontend table sorting)
@@ -81,9 +153,9 @@ export function ItemAwardedListTableEditable({
                     alignItems: 'left',
                     marginTop: 5,
                 }}
-                onClick={handleRemoveItemsAwardedSubmit}
+                onClick={handleSubmitEditItems}
             >
-                Remove Selected Items
+                Submit
             </button>
         </>
     );

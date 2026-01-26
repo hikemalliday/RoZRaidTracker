@@ -266,6 +266,26 @@ export function useCharacterEdit() {
     });
 }
 
+export function useItemAwardedEdit() {
+    const queryClient = useQueryClient();
+    const { addMessage } = useMessage();
+
+    return useMutation({
+        mutationFn: async ({ payload }) => {
+            const { data } = await api.patch(`/items_awarded/${payload.id}/`, payload);
+            return data;
+        },
+        onSuccess: async () => {
+            addMessage('Successfully edited Item Awarded row.');
+            await queryClient.refetchQueries({ queryKey: ['items_awarded'] });
+        },
+        onError: error => {
+            const errorMessage = error?.response?.data?.error || 'Unknown error';
+            addMessage(`Failed to edit Item Awarded row: ${errorMessage}`, 'error');
+        },
+    });
+}
+
 export function useRaidAttendanceApprovalDelete() {
     const queryClient = useQueryClient();
     const { addMessage } = useMessage();
