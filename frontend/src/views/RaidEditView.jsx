@@ -12,7 +12,15 @@ import {
     useRaidDetail,
 } from '../hooks/requests.js';
 import { useAuthContext } from '../context/AuthContext.jsx';
-import { Autocomplete, Box, Container, TableRow, TextField, Typography } from '@mui/material';
+import {
+    Autocomplete,
+    Box,
+    Container,
+    TableCell,
+    TableRow,
+    TextField,
+    Typography,
+} from '@mui/material';
 import { _getReducedResults, getPlayersListFinal, renderErrors } from './utils.jsx';
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -68,60 +76,79 @@ function AddItemAwardedField({ raidId, styles = {} }) {
     return (
         <Box
             sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 2,
-                mt: 2,
-                mb: 1,
+                background: '#1a1a1a',
+                border: '1px solid #2a2a2a',
+                borderRadius: '8px',
+                padding: '20px',
                 width: 'calc(100% + 80px)',
                 marginLeft: '-20px',
                 marginRight: '-20px',
                 boxSizing: 'border-box',
+                mt: 2,
+                mb: 1,
                 ...styles,
             }}
         >
-            <Autocomplete
-                sx={{ flex: 1 }}
-                renderInput={params => (
-                    <TextField {...params} label="Item" sx={textFieldStyles} size="small" />
-                )}
-                options={!isItemsPending ? _getReducedResults(itemsData.results) : []}
-                filterOptions={x => x}
-                onInputChange={(event, newInputValue) => {
-                    setItemValue(newInputValue);
+            <Typography
+                sx={{
+                    color: '#9ca3af',
+                    fontSize: '13px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                    marginBottom: '12px',
                 }}
-                inputValue={itemValue}
-                slotProps={{ listbox: { sx: listBoxStyles } }}
-                onChange={(_, option) => {
-                    setSelectedItem(option.id);
+            >
+                Add Item
+            </Typography>
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: 2,
                 }}
-            />
-            <Autocomplete
-                sx={{ flex: 1 }}
-                renderInput={params => (
-                    <TextField {...params} label="Player" sx={textFieldStyles} size="small" />
-                )}
-                options={!isPlayersPending ? getPlayersListFinal(playersData.results) : []}
-                onChange={(_, option) => {
-                    setSelectedPlayer(option.id);
-                }}
-            />
-            <Box>
-                <Typography>Alt</Typography>
-                <input type="checkbox" onChange={e => setAltLoot(!!e.target.checked)} />
+            >
+                <Autocomplete
+                    sx={{ flex: 1 }}
+                    renderInput={params => (
+                        <TextField {...params} label="Item" sx={textFieldStyles} size="small" />
+                    )}
+                    options={!isItemsPending ? _getReducedResults(itemsData.results) : []}
+                    filterOptions={x => x}
+                    onInputChange={(event, newInputValue) => {
+                        setItemValue(newInputValue);
+                    }}
+                    inputValue={itemValue}
+                    slotProps={{ listbox: { sx: listBoxStyles } }}
+                    onChange={(_, option) => {
+                        setSelectedItem(option.id);
+                    }}
+                />
+                <Autocomplete
+                    sx={{ flex: 1 }}
+                    renderInput={params => (
+                        <TextField {...params} label="Player" sx={textFieldStyles} size="small" />
+                    )}
+                    options={!isPlayersPending ? getPlayersListFinal(playersData.results) : []}
+                    onChange={(_, option) => {
+                        setSelectedPlayer(option.id);
+                    }}
+                />
+                <Box>
+                    <Typography>Alt</Typography>
+                    <input type="checkbox" onChange={e => setAltLoot(!!e.target.checked)} />
+                </Box>
+                <Box>
+                    <Typography>Preferred</Typography>
+                    <input type="checkbox" onChange={e => setPreffered(!!e.target.checked)} />
+                </Box>
+                <Box>
+                    <Typography>Magelo</Typography>
+                    <input type="checkbox" onChange={e => setMagelo(!!e.target.checked)} />
+                </Box>
+                <button style={{ whiteSpace: 'nowrap' }} onClick={handleSubmit}>
+                    ADD ITEM
+                </button>
             </Box>
-            <Box>
-                <Typography>Preferred</Typography>
-                <input type="checkbox" onChange={e => setPreffered(!!e.target.checked)} />
-            </Box>
-            <Box>
-                <Typography>Magelo</Typography>
-                <input type="checkbox" onChange={e => setMagelo(!!e.target.checked)} />
-            </Box>
-            <button style={{ whiteSpace: 'nowrap', marginBottom: '5px' }} onClick={handleSubmit}>
-                ADD ITEM
-            </button>
         </Box>
     );
 }
@@ -142,65 +169,67 @@ function AddPlayerField({ raidId, styles = {} }) {
     return (
         <Box
             sx={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                gap: 1,
+                background: '#1a1a1a',
+                border: '1px solid #2a2a2a',
+                borderRadius: '8px',
+                padding: '20px',
                 width: 'calc(100% + 80px)',
+                marginLeft: '-20px',
+                marginRight: '-20px',
                 boxSizing: 'border-box',
-                paddingRight: '17px',
                 ...styles,
             }}
         >
-            <Autocomplete
-                renderInput={params => (
-                    <TextField
-                        {...params}
-                        label="Player"
-                        sx={{ ...textFieldStyles, width: 500 }}
-                        size="small"
-                    />
-                )}
-                options={!isPlayersPending ? getPlayersListFinal(playersData.results) : []}
-                onChange={(_, option) => {
-                    setSelectedPlayer(option.id);
+            <Typography
+                sx={{
+                    color: '#9ca3af',
+                    fontSize: '13px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                    marginBottom: '12px',
                 }}
-            />
-            <button style={{ alignSelf: 'flex-start', marginLeft: 1 }} onClick={handleSubmit}>
-                ADD PLAYER
-            </button>
+            >
+                Add Attendee
+            </Typography>
+            <Box
+                sx={{
+                    display: 'flex',
+                    gap: 2,
+                    alignItems: 'flex-start',
+                }}
+            >
+                <Autocomplete
+                    sx={{ flex: 1 }}
+                    renderInput={params => (
+                        <TextField {...params} label="Player" sx={textFieldStyles} size="small" />
+                    )}
+                    options={!isPlayersPending ? getPlayersListFinal(playersData.results) : []}
+                    onChange={(_, option) => {
+                        setSelectedPlayer(option.id);
+                    }}
+                />
+                <button onClick={handleSubmit}>ADD PLAYER</button>
+            </Box>
         </Box>
     );
 }
 
-function EditPlayerField({ playerName, raId, raRowsToDelete, styles = {} }) {
-    const _handleCheckbox = e => {
+export function RemoveSelectedPlayersTable({ playersToRender, formObject, onSubmit, ...rest }) {
+    const _handleCheckbox = (e, raId) => {
         if (e.target.checked) {
-            return raRowsToDelete.current.push(raId);
+            return formObject.current.push(raId);
         }
-        raRowsToDelete.current = raRowsToDelete.current.filter(p => p !== raId);
+        formObject.current = formObject.current.filter(p => p !== raId);
     };
 
-    return (
-        <Container
-            sx={{
-                ...styles,
-                mt: 1,
-                display: 'flex',
-            }}
-        >
-            <Typography>{playerName}</Typography>
-            <input type="checkbox" onClick={_handleCheckbox} />
-        </Container>
-    );
-}
-
-export function RemoveSelectedPlayersTable({ playersToRender, formObject, ...rest }) {
     const getPlayersToRemoveRows = data => {
         return data.map(row => {
             return (
                 <TableRow key={row?.id} sx={get21DayStyles(row)}>
                     {getCell(row?.name)}
-                    {getCheckboxCell(() => null)}
+                    <TableCell align="right">
+                        <input type="checkbox" onChange={e => _handleCheckbox(e, row?.id)} />
+                    </TableCell>
                 </TableRow>
             );
         });
@@ -211,11 +240,15 @@ export function RemoveSelectedPlayersTable({ playersToRender, formObject, ...res
         Name: 'player.name',
         Remove: null,
     };
+    const headerAlign = {
+        Remove: 'right',
+    };
     if (!playersToRender) return <></>;
     return (
         <>
             <TableList
                 headerMap={headerMap}
+                headerAlign={headerAlign}
                 data={playersToRender}
                 getTableRows={getPlayersToRemoveRows}
                 styledRows={false}
@@ -227,9 +260,9 @@ export function RemoveSelectedPlayersTable({ playersToRender, formObject, ...res
                     alignItems: 'left',
                     marginTop: 5,
                 }}
-                onClick={() => null}
+                onClick={onSubmit}
             >
-                Submit
+                REMOVE SELECTED
             </button>
         </>
     );
@@ -327,6 +360,7 @@ export function RaidEditView() {
                 <RemoveSelectedPlayersTable
                     playersToRender={playersToRender}
                     formObject={raRowsToDelete}
+                    onSubmit={handleRemovePlayersSubmit}
                 />
             </Box>
         </Container>
