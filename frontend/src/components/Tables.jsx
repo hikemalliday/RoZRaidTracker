@@ -143,6 +143,7 @@ export function TableList({
     data,
     getTableRows,
     headerMap = {},
+    headerAlign = {},
     sortable = false,
     dataTestId = null,
 }) {
@@ -224,6 +225,7 @@ export function TableList({
                             <TableCell
                                 key={i}
                                 id={_getHeaderId(header)}
+                                align={headerAlign[header] || 'left'}
                                 onClick={_ => (sortable ? _sortByCol(header) : null)}
                             >
                                 {header}
