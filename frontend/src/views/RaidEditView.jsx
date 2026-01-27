@@ -1,6 +1,8 @@
 import { useParams } from 'react-router';
 import {
     useItemAwardedCreate,
+    useItemAwardedDelete,
+    useItemAwardedEdit,
     useItemsAwardedList,
     useListDebounced,
     usePlayersList,
@@ -10,12 +12,29 @@ import {
     useRaidDetail,
 } from '../hooks/requests.js';
 import { useAuthContext } from '../context/AuthContext.jsx';
-import { Autocomplete, Box, Container, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Container, TableRow, TextField, Typography } from '@mui/material';
 import { _getReducedResults, getPlayersListFinal, renderErrors } from './utils.jsx';
 import React, { useEffect, useRef, useState } from 'react';
-import { dataLabel, listBoxStyles, tableBox, textFieldStyles } from '../styles.js';
+import {
+    dataLabel,
+    get21DayStyles,
+    labelStyles,
+    listBoxStyles,
+    tableBox,
+    textFieldStyles,
+} from '../styles.js';
 import { useDebounce } from '../hooks/useDebounce.js';
 import { ItemAwardedListTableEditable } from '../components/ItemAwardedListTableEditable.jsx';
+import {
+    getCell,
+    getCheckboxCell,
+    getItemIconCell,
+    getLinkCell,
+    ItemAwardedNameEditableField,
+    ItemAwardedPlayerEditableField,
+    ItemAwardedTypeEditableField,
+    TableList,
+} from '../components/Tables.jsx';
 
 function AddItemAwardedField({ raidId, styles = {} }) {
     const [itemValue, setItemValue] = useState('');
@@ -121,10 +140,15 @@ function AddPlayerField({ raidId, styles = {} }) {
     };
 
     return (
-        <Container
+        <Box
             sx={{
-                ...styles,
                 display: 'flex',
+                justifyContent: 'flex-end',
+                gap: 1,
+                width: 'calc(100% + 80px)',
+                boxSizing: 'border-box',
+                paddingRight: '17px',
+                ...styles,
             }}
         >
             <Autocomplete
@@ -141,8 +165,10 @@ function AddPlayerField({ raidId, styles = {} }) {
                     setSelectedPlayer(option.id);
                 }}
             />
-            <button onClick={handleSubmit}>ADD PLAYER</button>
-        </Container>
+            <button style={{ alignSelf: 'flex-start', marginLeft: 1 }} onClick={handleSubmit}>
+                ADD PLAYER
+            </button>
+        </Box>
     );
 }
 
@@ -165,6 +191,47 @@ function EditPlayerField({ playerName, raId, raRowsToDelete, styles = {} }) {
             <Typography>{playerName}</Typography>
             <input type="checkbox" onClick={_handleCheckbox} />
         </Container>
+    );
+}
+
+export function RemoveSelectedPlayersTable({ playersToRender, formObject, ...rest }) {
+    const getPlayersToRemoveRows = data => {
+        return data.map(row => {
+            return (
+                <TableRow key={row?.id} sx={get21DayStyles(row)}>
+                    {getCell(row?.name)}
+                    {getCheckboxCell(() => null)}
+                </TableRow>
+            );
+        });
+    };
+
+    // Null vals means col is not sortable (frontend table sorting)
+    const headerMap = {
+        Name: 'player.name',
+        Remove: null,
+    };
+    if (!playersToRender) return <></>;
+    return (
+        <>
+            <TableList
+                headerMap={headerMap}
+                data={playersToRender}
+                getTableRows={getPlayersToRemoveRows}
+                styledRows={false}
+                {...rest}
+            />
+            <button
+                style={{
+                    display: 'flex',
+                    alignItems: 'left',
+                    marginTop: 5,
+                }}
+                onClick={() => null}
+            >
+                Submit
+            </button>
+        </>
     );
 }
 
@@ -192,10 +259,10 @@ export function RaidEditView() {
     useEffect(() => {
         const playersList = raData?.results
             .map(ra => {
-                return [ra.player.name, ra.id];
+                return { name: ra.player.name, id: ra.id };
             })
             .sort((a, b) => {
-                return a[0].localeCompare(b[0]);
+                return a.name.localeCompare(b.name);
             });
 
         setPlayersToRender(playersList);
@@ -205,19 +272,6 @@ export function RaidEditView() {
     if (errorList.some(Boolean)) return <>{renderErrors(errorList)}</>;
     if (!isSuperUser) return <>Unauthorized.</>;
     if (!playersToRender) return <>LOADING...</>;
-
-    const getEditPlayerFields = () => {
-        return playersToRender.map(([playerName, raId], i) => {
-            return (
-                <EditPlayerField
-                    key={raId}
-                    raRowsToDelete={raRowsToDelete}
-                    playerName={playerName}
-                    raId={raId}
-                />
-            );
-        });
-    };
 
     const handleRemovePlayersSubmit = async _ => {
         if (raRowsToDelete.current.length === 0) return;
@@ -264,21 +318,17 @@ export function RaidEditView() {
                     />
                 </Box>
             )}
-            <Typography sx={{ mb: 2, mt: 4 }} variant="h6">
-                Attendees - Total: {raData.count}
-            </Typography>
-            {<AddPlayerField raidId={id} />}
-            <button
-                style={{
-                    display: 'flex',
-                    alignItems: 'left',
-                    marginTop: 5,
-                }}
-                onClick={handleRemovePlayersSubmit}
-            >
-                Remove Selected Players
-            </button>
-            {getEditPlayerFields()}
+            <Box sx={{ mb: 3 }}>
+                <Box sx={dataLabel}>Attendees</Box>
+                <Box sx={{ color: '#fff', fontWeight: 600 }}>{raData.count}</Box>
+            </Box>
+            <AddPlayerField raidId={id} styles={{ mb: 2 }} />
+            <Box sx={tableBox}>
+                <RemoveSelectedPlayersTable
+                    playersToRender={playersToRender}
+                    formObject={raRowsToDelete}
+                />
+            </Box>
         </Container>
     );
 }

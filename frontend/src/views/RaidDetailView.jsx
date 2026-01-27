@@ -84,16 +84,18 @@ export function RaidDetailView() {
             </Box>
             <Typography sx={labelStyles}>Attendees - Total: {raData.count}</Typography>
             <Container>
-                <RaidAttendanceListTable
-                    data={_sortPlayers(raData.results)}
-                    rowStyles={{
-                        '& .MuiTableCell-root': {
-                            padding: '4px',
-                        },
-                        height: '36px',
-                    }}
-                    sortable
-                />
+                <Box sx={{ ...tableBox, mt: 4 }}>
+                    <RaidAttendanceListTable
+                        data={_sortPlayers(raData.results)}
+                        rowStyles={{
+                            '& .MuiTableCell-root': {
+                                padding: '4px',
+                            },
+                            height: '36px',
+                        }}
+                        sortable
+                    />
+                </Box>
             </Container>
         </Container>
     );
