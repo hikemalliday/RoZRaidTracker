@@ -12,8 +12,8 @@ import {
 import { useAuthContext } from '../context/AuthContext.jsx';
 import { Autocomplete, Box, Container, TextField, Typography } from '@mui/material';
 import { _getReducedResults, getPlayersListFinal, renderErrors } from './utils.jsx';
-import { useEffect, useRef, useState } from 'react';
-import { listBoxStyles, textFieldStyles } from '../styles.js';
+import React, { useEffect, useRef, useState } from 'react';
+import { dataLabel, listBoxStyles, tableBox, textFieldStyles } from '../styles.js';
 import { useDebounce } from '../hooks/useDebounce.js';
 import { ItemAwardedListTableEditable } from '../components/ItemAwardedListTableEditable.jsx';
 
@@ -146,7 +146,6 @@ function AddPlayerField({ raidId, styles = {} }) {
     );
 }
 
-// TODO: These are the "player name + checkbox" inputs
 function EditPlayerField({ playerName, raId, raRowsToDelete, styles = {} }) {
     const _handleCheckbox = e => {
         if (e.target.checked) {
@@ -232,25 +231,33 @@ export function RaidEditView() {
     return (
         <Container>
             <Container>
-                <Typography sx={{ mt: 1 }} variant="h5">
-                    {data?.name}
-                </Typography>
-                <strong>Date:</strong> {data?.created_at}
+                <Box
+                    sx={{
+                        textAlign: 'center',
+                        marginBottom: '40px',
+                    }}
+                >
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            gap: '40px',
+                        }}
+                    >
+                        <Box>
+                            <Box sx={dataLabel}>Raid</Box>
+                            <Box sx={{ color: '#fff', fontWeight: 600 }}>{data?.name}</Box>
+                        </Box>
+                        <Box>
+                            <Box sx={dataLabel}>Date</Box>
+                            <Box sx={{ color: '#fff', fontWeight: 600 }}>{data?.created_at}</Box>
+                        </Box>
+                    </Box>
+                </Box>
             </Container>
             <AddItemAwardedField raidId={id} />
             {itemAwardedData.results.length > 0 && (
-                <Box
-                    sx={{
-                        background: '#1a1a1a',
-                        border: '1px solid #2a2a2a',
-                        borderRadius: '8px',
-                        overflow: 'hidden',
-                        marginBottom: '30px',
-                        width: 'calc(100% + 80px)',
-                        marginLeft: '-20px',
-                        marginRight: '-20px',
-                    }}
-                >
+                <Box sx={tableBox}>
                     <ItemAwardedListTableEditable
                         data={itemAwardedData.results}
                         styledRows={true}

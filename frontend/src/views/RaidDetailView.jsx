@@ -5,8 +5,8 @@ import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.j
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { getItemAwardedMetaDataEditable, renderErrors } from './utils.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
-import { labelStyles } from '../styles.js';
-import React, { useEffect, useRef } from 'react';
+import { dataLabel, labelStyles, tableBox } from '../styles.js';
+import React, { useRef } from 'react';
 
 export function RaidDetailView() {
     const { id } = useParams();
@@ -62,32 +62,12 @@ export function RaidDetailView() {
                         gap: '40px',
                     }}
                 >
-                    <Box sx={{ fontSize: '16px' }}>
-                        <Box
-                            sx={{
-                                color: '#9ca3af',
-                                fontSize: '12px',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.5px',
-                                marginBottom: '4px',
-                            }}
-                        >
-                            Raid
-                        </Box>
+                    <Box>
+                        <Box sx={dataLabel}>Raid</Box>
                         <Box sx={{ color: '#fff', fontWeight: 600 }}>{data?.name}</Box>
                     </Box>
-                    <Box sx={{ fontSize: '16px' }}>
-                        <Box
-                            sx={{
-                                color: '#9ca3af',
-                                fontSize: '12px',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.5px',
-                                marginBottom: '4px',
-                            }}
-                        >
-                            Date
-                        </Box>
+                    <Box>
+                        <Box sx={dataLabel}>Date</Box>
                         <Box sx={{ color: '#fff', fontWeight: 600 }}>{data?.created_at}</Box>
                     </Box>
                 </Box>
@@ -99,19 +79,7 @@ export function RaidDetailView() {
                 isSuperUser,
                 () => navigate('edit')
             )}
-            <Box
-                ref={tableBoxRef}
-                sx={{
-                    background: '#1a1a1a',
-                    border: '1px solid #2a2a2a',
-                    borderRadius: '8px',
-                    overflow: 'hidden',
-                    marginBottom: '30px',
-                    width: 'calc(100% + 80px)',
-                    marginLeft: '-20px',
-                    marginRight: '-20px',
-                }}
-            >
+            <Box ref={tableBoxRef} sx={tableBox}>
                 <ItemAwardedListTable data={itemAwardedData.results} styledRows={false} />
             </Box>
             <Typography sx={labelStyles}>Attendees - Total: {raData.count}</Typography>

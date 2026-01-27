@@ -62,7 +62,7 @@ export function ItemAwardedListTableEditable({
         // TODO: Unsure if we want to actually resolve the promises or not.
         const deleteIds = [];
         const patchPayloads = [];
-        let counter = 0;
+
         Object.entries(formObjectRef.current).forEach(([itemAwardedId, form]) => {
             const deleteBool = form.delete;
             if (deleteBool === true) {
@@ -89,7 +89,7 @@ export function ItemAwardedListTableEditable({
                     payload[field] = val;
                 }
             });
-            counter += 1;
+
             patchPayloads.push(editItemAwarded({ payload }));
         });
     };

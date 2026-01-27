@@ -1,6 +1,5 @@
-import { Box, Typography, IconButton } from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
-import { labelStyles } from '../styles.js';
+import { Box, Typography } from '@mui/material';
+import { labelStyles, metaDataLabel, metaDataText } from '../styles.js';
 import React from 'react';
 import { MetaDetail } from '../components/generic.jsx';
 
@@ -182,119 +181,47 @@ export const getItemAwardedMetaDataEditable = (
                         Total Items Shown: {itemsResults.length}
                     </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <Typography
-                            sx={{
-                                color: '#6b7280',
-                                fontSize: '12px',
-                                marginBottom: '4px',
-                            }}
-                        >
-                            Magelo Main
-                        </Typography>
-                        <Typography
-                            sx={{
-                                color: '#fff',
-                                fontSize: '18px',
-                                fontWeight: 600,
-                            }}
-                        >
+                        <Typography sx={metaDataLabel}>Magelo Main</Typography>
+                        <Typography sx={metaDataText}>
                             {itemsResultsMeta.mageloMain || 0}
                         </Typography>
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <Typography
-                            sx={{
-                                color: '#6b7280',
-                                fontSize: '12px',
-                                marginBottom: '4px',
-                            }}
-                        >
-                            Magelo Alt
-                        </Typography>
-                        <Typography
-                            sx={{
-                                color: '#fff',
-                                fontSize: '18px',
-                                fontWeight: 600,
-                            }}
-                        >
-                            {itemsResultsMeta.mageloAlt || 0}
-                        </Typography>
+                        <Typography sx={metaDataLabel}>Magelo Alt</Typography>
+                        <Typography sx={metaDataText}>{itemsResultsMeta.mageloAlt || 0}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <Typography
-                            sx={{
-                                color: '#6b7280',
-                                fontSize: '12px',
-                                marginBottom: '4px',
-                            }}
-                        >
-                            Preferred
-                        </Typography>
-                        <Typography
-                            sx={{
-                                color: '#fff',
-                                fontSize: '18px',
-                                fontWeight: 600,
-                            }}
-                        >
-                            {itemsResultsMeta.preferred || 0}
-                        </Typography>
+                        <Typography sx={metaDataLabel}>Preferred</Typography>
+                        <Typography sx={metaDataText}>{itemsResultsMeta.preferred || 0}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <Typography
-                            sx={{
-                                color: '#6b7280',
-                                fontSize: '12px',
-                                marginBottom: '4px',
-                            }}
-                        >
-                            Main
-                        </Typography>
-                        <Typography
-                            sx={{
-                                color: '#fff',
-                                fontSize: '18px',
-                                fontWeight: 600,
-                            }}
-                        >
-                            {itemsResultsMeta.main || 0}
-                        </Typography>
+                        <Typography sx={metaDataLabel}>Main</Typography>
+                        <Typography sx={metaDataText}>{itemsResultsMeta.main || 0}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <Typography
-                            sx={{
-                                color: '#6b7280',
-                                fontSize: '12px',
-                                marginBottom: '4px',
-                            }}
-                        >
-                            Alt
-                        </Typography>
-                        <Typography
-                            sx={{
-                                color: '#fff',
-                                fontSize: '18px',
-                                fontWeight: 600,
-                            }}
-                        >
-                            {itemsResultsMeta.alt || 0}
-                        </Typography>
+                        <Typography sx={metaDataLabel}>Alt</Typography>
+                        <Typography sx={metaDataText}>{itemsResultsMeta.alt || 0}</Typography>
                     </Box>
                 </Box>
                 {isAuthenticated && isSuperUser && onEditClick && (
-                    <IconButton
+                    <Box
                         onClick={onEditClick}
                         sx={{
                             color: '#9ca3af',
+                            fontSize: '24px',
+                            cursor: 'pointer',
+                            transition: 'color 0.2s',
+                            userSelect: 'none',
                             '&:hover': {
                                 color: '#fff',
-                                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                            },
+                            '&:active': {
+                                color: '#696969',
                             },
                         }}
                     >
                         EDIT
-                    </IconButton>
+                    </Box>
                 )}
             </Box>
         </Box>

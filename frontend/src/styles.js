@@ -134,3 +134,34 @@ export const labelStyles = {
     letterSpacing: '0.5px',
     color: 'white',
 };
+// Used in editable version of meta data component
+export const metaDataLabel = {
+    color: '#6b7280',
+    fontSize: '12px',
+    marginBottom: '4px',
+};
+
+export const metaDataText = {
+    color: '#fff',
+    fontSize: '18px',
+    fontWeight: 600,
+};
+
+export const dataLabel = {
+    color: '#9ca3af',
+    fontSize: '12px',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+    marginBottom: '4px',
+};
+
+export const tableBox = {
+    background: '#1a1a1a',
+    border: '1px solid #2a2a2a',
+    borderRadius: '8px',
+    overflow: 'hidden',
+    marginBottom: '30px',
+    width: 'calc(100% + 80px)',
+    marginLeft: '-20px',
+    marginRight: '-20px',
+};
