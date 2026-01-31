@@ -165,3 +165,22 @@ export const tableBox = {
     marginLeft: '-20px',
     marginRight: '-20px',
 };
+
+export const fieldCardStyles = {
+    background: '#1a1a1a',
+    border: '1px solid #2a2a2a',
+    borderRadius: '8px',
+    padding: '20px',
+    width: 'calc(100% + 80px)',
+    marginLeft: '-20px',
+    marginRight: '-20px',
+    boxSizing: 'border-box',
+};
+
+export const fieldCardTypographyStyles = {
+    color: '#9ca3af',
+    fontSize: '13px',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+    marginBottom: '12px',
+};

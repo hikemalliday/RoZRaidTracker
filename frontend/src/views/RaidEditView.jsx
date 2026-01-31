@@ -1,8 +1,6 @@
 import { useParams } from 'react-router';
 import {
     useItemAwardedCreate,
-    useItemAwardedDelete,
-    useItemAwardedEdit,
     useItemsAwardedList,
     useListDebounced,
     usePlayersList,
@@ -25,24 +23,16 @@ import { _getReducedResults, getPlayersListFinal, renderErrors } from './utils.j
 import React, { useEffect, useRef, useState } from 'react';
 import {
     dataLabel,
+    fieldCardStyles,
+    fieldCardTypographyStyles,
     get21DayStyles,
-    labelStyles,
     listBoxStyles,
     tableBox,
     textFieldStyles,
 } from '../styles.js';
 import { useDebounce } from '../hooks/useDebounce.js';
 import { ItemAwardedListTableEditable } from '../components/ItemAwardedListTableEditable.jsx';
-import {
-    getCell,
-    getCheckboxCell,
-    getItemIconCell,
-    getLinkCell,
-    ItemAwardedNameEditableField,
-    ItemAwardedPlayerEditableField,
-    ItemAwardedTypeEditableField,
-    TableList,
-} from '../components/Tables.jsx';
+import { getCell, TableList } from '../components/Tables.jsx';
 
 function AddItemAwardedField({ raidId, styles = {} }) {
     const [itemValue, setItemValue] = useState('');
@@ -76,30 +66,13 @@ function AddItemAwardedField({ raidId, styles = {} }) {
     return (
         <Box
             sx={{
-                background: '#1a1a1a',
-                border: '1px solid #2a2a2a',
-                borderRadius: '8px',
-                padding: '20px',
-                width: 'calc(100% + 80px)',
-                marginLeft: '-20px',
-                marginRight: '-20px',
-                boxSizing: 'border-box',
+                ...fieldCardStyles,
                 mt: 2,
                 mb: 1,
                 ...styles,
             }}
         >
-            <Typography
-                sx={{
-                    color: '#9ca3af',
-                    fontSize: '13px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
-                    marginBottom: '12px',
-                }}
-            >
-                Add Item
-            </Typography>
+            <Typography sx={fieldCardTypographyStyles}>Add Item</Typography>
             <Box
                 sx={{
                     display: 'flex',
@@ -169,28 +142,11 @@ function AddPlayerField({ raidId, styles = {} }) {
     return (
         <Box
             sx={{
-                background: '#1a1a1a',
-                border: '1px solid #2a2a2a',
-                borderRadius: '8px',
-                padding: '20px',
-                width: 'calc(100% + 80px)',
-                marginLeft: '-20px',
-                marginRight: '-20px',
-                boxSizing: 'border-box',
+                ...fieldCardStyles,
                 ...styles,
             }}
         >
-            <Typography
-                sx={{
-                    color: '#9ca3af',
-                    fontSize: '13px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
-                    marginBottom: '12px',
-                }}
-            >
-                Add Attendee
-            </Typography>
+            <Typography sx={fieldCardTypographyStyles}>Add Attendee</Typography>
             <Box
                 sx={{
                     display: 'flex',
@@ -245,7 +201,7 @@ export function RemoveSelectedPlayersTable({ playersToRender, formObject, onSubm
     };
     if (!playersToRender) return <></>;
     return (
-        <>
+        <Box sx={tableBox}>
             <TableList
                 headerMap={headerMap}
                 headerAlign={headerAlign}
@@ -264,7 +220,7 @@ export function RemoveSelectedPlayersTable({ playersToRender, formObject, onSubm
             >
                 REMOVE SELECTED
             </button>
-        </>
+        </Box>
     );
 }
 
@@ -344,25 +300,18 @@ export function RaidEditView() {
             </Container>
             <AddItemAwardedField raidId={id} />
             {itemAwardedData.results.length > 0 && (
-                <Box sx={tableBox}>
-                    <ItemAwardedListTableEditable
-                        data={itemAwardedData.results}
-                        styledRows={true}
-                    />
-                </Box>
+                <ItemAwardedListTableEditable data={itemAwardedData.results} styledRows={true} />
             )}
             <Box sx={{ mb: 3 }}>
                 <Box sx={dataLabel}>Attendees</Box>
                 <Box sx={{ color: '#fff', fontWeight: 600 }}>{raData.count}</Box>
             </Box>
             <AddPlayerField raidId={id} styles={{ mb: 2 }} />
-            <Box sx={tableBox}>
-                <RemoveSelectedPlayersTable
-                    playersToRender={playersToRender}
-                    formObject={raRowsToDelete}
-                    onSubmit={handleRemovePlayersSubmit}
-                />
-            </Box>
+            <RemoveSelectedPlayersTable
+                playersToRender={playersToRender}
+                formObject={raRowsToDelete}
+                onSubmit={handleRemovePlayersSubmit}
+            />
         </Container>
     );
 }

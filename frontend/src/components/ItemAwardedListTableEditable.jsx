@@ -8,10 +8,10 @@ import {
     ItemAwardedTypeEditableField,
     TableList,
 } from './Tables.jsx';
-import { TableRow } from '@mui/material';
+import { Box, TableRow } from '@mui/material';
 import { useRef } from 'react';
 import { useItemAwardedDelete, useItemAwardedEdit, usePlayersList } from '../hooks/requests.js';
-import { get21DayStyles } from '../styles.js';
+import { get21DayStyles, tableBox } from '../styles.js';
 import { getPlayersListFinal } from '../views/utils.jsx';
 
 export function ItemAwardedListTableEditable({
@@ -98,9 +98,7 @@ export function ItemAwardedListTableEditable({
         return data.map(row => {
             const handleCheckboxClick = e => {
                 formObjectRef.current[row?.id].delete = !!e.target.checked;
-                console.log(formObjectRef);
             };
-            // Instantiate key / val with delete key. Used to determine if we will delete the row.
             formObjectRef.current[row?.id] = { delete: false };
 
             return (
@@ -139,7 +137,7 @@ export function ItemAwardedListTableEditable({
     };
     if (!data) return <></>;
     return (
-        <>
+        <Box sx={tableBox}>
             <TableList
                 headerMap={headerMap}
                 data={data}
@@ -157,6 +155,6 @@ export function ItemAwardedListTableEditable({
             >
                 Submit
             </button>
-        </>
+        </Box>
     );
 }

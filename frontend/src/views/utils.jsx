@@ -6,8 +6,8 @@ import { MetaDetail } from '../components/generic.jsx';
 export const renderErrors = errorsList => {
     return (
         <div id="errors-list">
-            {errorsList.map(err => {
-                return <div>{err.message}</div>;
+            {errorsList.map((err, index) => {
+                return <div key={index}>{err?.message || 'Unknown error'}</div>;
             })}
         </div>
     );
