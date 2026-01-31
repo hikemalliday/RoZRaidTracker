@@ -60,7 +60,11 @@ export const AuthProvider = ({ children }) => {
                         original.headers.Authorization = `Bearer ${data.access}`;
                         return api(original);
                     } catch {
-                        logout();
+                        // Clear tokens without redirecting - let ProtectedRoute handle redirects
+                        localStorage.removeItem('accessToken');
+                        localStorage.removeItem('refreshToken');
+                        setAccessToken(null);
+                        setRefreshToken(null);
                     }
                 }
                 return Promise.reject(err);
