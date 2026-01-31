@@ -207,7 +207,6 @@ export function RemoveSelectedPlayersTable({ playersToRender, formObject, onSubm
                 headerAlign={headerAlign}
                 data={playersToRender}
                 getTableRows={getPlayersToRemoveRows}
-                styledRows={false}
                 {...rest}
             />
             <button

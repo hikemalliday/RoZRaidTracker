@@ -4,22 +4,14 @@ import {
     useRaidAttendanceApprovalDetail,
     useRaidAttendanceApprovalMutation,
 } from '../hooks/requests.js';
-import {
-    Autocomplete,
-    Button,
-    Container,
-    Table,
-    TableBody,
-    TableRow,
-    TextField,
-    Typography,
-} from '@mui/material';
-import { useEffect, useState } from 'react';
-import { buttonStyles, textFieldStyles } from '../styles.js';
-import { getCell } from '../components/Tables.jsx';
+import { Autocomplete, Box, Container, TableCell, TableRow, TextField } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { dataLabel, fieldCardStyles, tableBox, textFieldStyles } from '../styles.js';
+import { getCell, TableList } from '../components/Tables.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
 import { getPlayersListFinal } from './utils.jsx';
 
+// Player dropdown at top + button
 function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
     const { data: playersData, isPending: isPlayersPending } = usePlayersList();
     const [selectedPlayer, setSelectedPlayer] = useState(null);
@@ -33,54 +25,45 @@ function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
     };
 
     return (
-        <Container
+        <Box
             sx={{
+                ...fieldCardStyles,
                 ...styles,
-                display: 'flex',
             }}
         >
-            <Autocomplete
-                renderInput={params => (
-                    <TextField {...params} label="Player" sx={textFieldStyles} size="small" />
-                )}
-                options={!isPlayersPending ? getPlayersListFinal(playersData.results) : []}
-                onChange={(_, option) => {
-                    setSelectedPlayer({ name: option.label, is_selected: true });
+            <Box
+                sx={{
+                    display: 'flex',
+                    gap: 2,
+                    alignItems: 'flex-start',
                 }}
-            />
-            <button onClick={handleSubmit}>ADD PLAYER</button>
-        </Container>
+            >
+                <Autocomplete
+                    sx={{ flex: 1 }}
+                    renderInput={params => (
+                        <TextField {...params} label="Player" sx={textFieldStyles} size="small" />
+                    )}
+                    options={!isPlayersPending ? getPlayersListFinal(playersData.results) : []}
+                    onChange={(_, option) => {
+                        setSelectedPlayer({ name: option.label, is_selected: true });
+                    }}
+                />
+                <button onClick={handleSubmit}>ADD PLAYER</button>
+            </Box>
+        </Box>
     );
 }
 
-export function ApprovalPendingDetailView() {
-    const { id } = useParams();
-    const { isSuperUser } = useAuthContext();
-    const { isPending, data, error } = useRaidAttendanceApprovalDetail(id);
-    const { mutate } = useRaidAttendanceApprovalMutation(id);
-    const [raid, setRaid] = useState('');
-    const [playersToSubmit, setPlayersToSubmit] = useState([]);
-
-    useEffect(() => {
-        setRaid(data?.raid_name);
-        setPlayersToSubmit(
-            data?.players_list.map(player => {
-                return { name: player, is_selected: true };
-            })
-        );
-    }, [data]);
-
-    if (isPending) return <>LOADING...</>;
-    if (error) return <>{error.message}</>;
-    if (!isSuperUser) return <>Unauthorized.</>;
-
+export function PlayersToSubmitTable({ playersToSubmit, setPlayersToSubmit, onSubmit, ...rest }) {
     const getPlayersRows = players => {
         const _getPlayerCheckbox = player => {
             const _handleCheckboxClick = e => {
-                const newPlayersToSubmit = [...playersToSubmit];
-                const playerToMutate = newPlayersToSubmit.find(p => p.name === player.name);
-                playerToMutate.is_selected = !!e.target.checked;
-                return setPlayersToSubmit(newPlayersToSubmit);
+                const checked = e.target.checked;
+                return setPlayersToSubmit(prev => {
+                    return prev.map(p =>
+                        p.name === player.name ? { ...p, is_selected: !!checked } : p
+                    );
+                });
             };
 
             return (
@@ -110,11 +93,54 @@ export function ApprovalPendingDetailView() {
                     key={player.id}
                 >
                     {getCell(player.name)}
-                    {getCell(_getPlayerCheckbox(player))}
+                    <TableCell align="right">{_getPlayerCheckbox(player)}</TableCell>
                 </TableRow>
             );
         });
     };
+
+    // Null vals means col is not sortable (frontend table sorting)
+    const headerMap = {
+        Name: 'player.name',
+        Remove: null,
+    };
+    const headerAlign = {
+        Remove: 'right',
+    };
+
+    return (
+        <Box sx={tableBox}>
+            <TableList
+                headerMap={headerMap}
+                headerAlign={headerAlign}
+                data={playersToSubmit}
+                getTableRows={getPlayersRows}
+                {...rest}
+            />
+        </Box>
+    );
+}
+
+export function ApprovalPendingDetailView() {
+    const { id } = useParams();
+    const { isSuperUser } = useAuthContext();
+    const { isPending, data, error } = useRaidAttendanceApprovalDetail(id);
+    const { mutate } = useRaidAttendanceApprovalMutation(id);
+    const [raid, setRaid] = useState('');
+    const [playersToSubmit, setPlayersToSubmit] = useState([]);
+
+    useEffect(() => {
+        if (data) {
+            setRaid(data?.raid_name);
+            setPlayersToSubmit(
+                data?.players_list.map(player => ({ name: player, is_selected: true }))
+            );
+        }
+    }, [data]);
+
+    if (isPending) return <>LOADING...</>;
+    if (error) return <>{error.message}</>;
+    if (!isSuperUser) return <>Unauthorized.</>;
 
     const handleTextInput = e => {
         if (e.key === 'enter') return e.preventDefault();
@@ -138,79 +164,44 @@ export function ApprovalPendingDetailView() {
 
     return (
         <Container sx={{ marginTop: 5 }}>
-            {/* Can styles be abstracted here?*/}
-            <Container
+            <Box
                 sx={{
-                    marginTop: 5,
                     display: 'flex',
-                    flexDirection: 'column',
-                    gap: 1,
-                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mr: 1,
                 }}
             >
-                {
-                    <AddPlayerField
-                        styles={{ marginLeft: 20 }}
-                        playersToSubmit={playersToSubmit}
-                        setPlayersToSubmit={setPlayersToSubmit}
-                    />
-                }
+                <Box sx={{ margin: 2 }}>
+                    <Box sx={dataLabel}>Created At</Box>
+                    <Box sx={{ color: '#fff', fontWeight: 600 }}>{data.created_at}</Box>
+                </Box>
+                <Box sx={{ margin: 2 }}>
+                    <Box sx={dataLabel}>Attendees</Box>
+                    <Box sx={{ color: '#fff', fontWeight: 600 }}>{playersToSubmit.length}</Box>
+                </Box>
+            </Box>
+            <AddPlayerField
+                playersToSubmit={playersToSubmit}
+                setPlayersToSubmit={setPlayersToSubmit}
+            />
+            <Box sx={{ ...fieldCardStyles, display: 'flex', marginBottom: 1, marginTop: 1 }}>
                 <TextField
                     label="Raid Name"
-                    color="secondary"
-                    sx={{
-                        width: '225px',
-                        marginLeft: 0.5,
-                        '& .MuiInputBase-input': {
-                            color: 'white',
-                        },
-                        '& .MuiInputBase-root': {
-                            backgroundColor: '#333333',
-                            borderRadius: '8px',
-                            height: '40px',
-                        },
-                        '& .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'white',
-                            borderWidth: '2px',
-                        },
-                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'white',
-                        },
-                        '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'white !important',
-                        },
-                        '& .MuiInputLabel-root': {
-                            color: 'white',
-                        },
-                        '& .MuiInputLabel-root.Mui-focused': {
-                            color: 'white',
-                        },
-                    }}
+                    fullWidth
+                    size="small"
+                    sx={{ ...textFieldStyles, flex: 1 }}
                     value={raid}
                     onChange={handleTextInput}
                 />
-                <Button
-                    sx={{ ...buttonStyles, paddingLeft: 1.5, paddingRight: 1.5, width: '225px' }}
-                    onClick={handleSubmit}
-                    disabled={!raid || playersToSubmit.length === 0}
-                >
+                <button onClick={handleSubmit} disabled={!raid || playersToSubmit.length === 0}>
                     APPROVE
-                </Button>
-            </Container>
-            <Typography sx={{ mt: 1 }}>
-                Created at: <span style={{ fontWeight: 'bold' }}>{data.created_at}</span>
-            </Typography>
-            <Typography sx={{ mt: 2 }}>ATTENDEES:</Typography>
-            <Table
-                sx={{
-                    marginBottom: '20px',
-                    marginTop: '20px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                }}
-            >
-                <TableBody>{getPlayersRows(playersToSubmit ?? [])}</TableBody>
-            </Table>
+                </button>
+            </Box>
+
+            <PlayersToSubmitTable
+                playersToSubmit={playersToSubmit}
+                setPlayersToSubmit={setPlayersToSubmit}
+            />
         </Container>
     );
 }

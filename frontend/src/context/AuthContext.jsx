@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
             setIsSuperUser(false);
         }
     }, [accessToken]);
-    // TODO: 1/3/26: New approach that fixes the logout after mutation bug.
+
     useEffect(() => {
         const req = api.interceptors.request.use(config => {
             if (accessToken) {
