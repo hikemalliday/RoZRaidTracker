@@ -184,3 +184,10 @@ export const fieldCardTypographyStyles = {
     letterSpacing: '0.5px',
     marginBottom: '12px',
 };
+
+export const compactTableRowStyles = {
+    '& .MuiTableCell-root': {
+        padding: '4px',
+    },
+    height: '36px',
+};

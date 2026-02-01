@@ -6,10 +6,11 @@ import {
 } from '../hooks/requests.js';
 import { Autocomplete, Box, Container, TableCell, TableRow, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { dataLabel, fieldCardStyles, tableBox, textFieldStyles } from '../styles.js';
+import { fieldCardStyles, tableBox, textFieldStyles } from '../styles.js';
 import { getCell, TableList } from '../components/Tables.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
 import { getPlayersListFinal } from './utils.jsx';
+import { DataField } from '../components/DataField.jsx';
 
 // Player dropdown at top + button
 function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
@@ -165,14 +166,8 @@ export function ApprovalPendingDetailView() {
                     mr: 1,
                 }}
             >
-                <Box sx={{ margin: 2 }}>
-                    <Box sx={dataLabel}>Created At</Box>
-                    <Box sx={{ color: '#fff', fontWeight: 600 }}>{data.created_at}</Box>
-                </Box>
-                <Box sx={{ margin: 2 }}>
-                    <Box sx={dataLabel}>Attendees</Box>
-                    <Box sx={{ color: '#fff', fontWeight: 600 }}>{playersToSubmit.length}</Box>
-                </Box>
+                <DataField label="Created At" value={data.created_at} sx={{ margin: 2 }} />
+                <DataField label="Attendees" value={playersToSubmit.length} sx={{ margin: 2 }} />
             </Box>
             <AddPlayerField
                 playersToSubmit={playersToSubmit}
