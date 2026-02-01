@@ -48,7 +48,9 @@ function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
                         setSelectedPlayer({ name: option.label, is_selected: true });
                     }}
                 />
-                <button onClick={handleSubmit}>ADD PLAYER</button>
+                <button style={{ backgroundColor: '#2a2a2a' }} onClick={handleSubmit}>
+                    ADD PLAYER
+                </button>
             </Box>
         </Box>
     );
@@ -193,11 +195,14 @@ export function ApprovalPendingDetailView() {
                     value={raid}
                     onChange={handleTextInput}
                 />
-                <button onClick={handleSubmit} disabled={!raid || playersToSubmit.length === 0}>
+                <button
+                    style={{ marginLeft: 38, backgroundColor: '#2a2a2a' }}
+                    onClick={handleSubmit}
+                    disabled={!raid || playersToSubmit.length === 0}
+                >
                     APPROVE
                 </button>
             </Box>
-
             <PlayersToSubmitTable
                 playersToSubmit={playersToSubmit}
                 setPlayersToSubmit={setPlayersToSubmit}
