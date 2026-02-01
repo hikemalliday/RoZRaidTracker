@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router';
 import { useAuthContext } from '../context/AuthContext.jsx';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Box, Drawer, IconButton, List, ListItem, ListItemText } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
@@ -8,22 +8,10 @@ export function NavBar() {
     const navigate = useNavigate();
     const location = useLocation();
     const { isAuthenticated, isSuperUser, logout } = useAuthContext();
-    const [approvalOpen, setApprovalOpen] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const dropdownRef = useRef(null);
 
-    useEffect(() => {
-        function handleClickOutside(e) {
-            if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-                setApprovalOpen(false);
-            }
-        }
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
-
     const handleLinkClick = route => {
-        setApprovalOpen(false);
         setMobileMenuOpen(false);
         navigate(route);
     };
@@ -145,15 +133,6 @@ export function NavBar() {
                             }}
                         >
                             <ListItemText primary="APPROVAL - PENDING" />
-                        </ListItem>
-                        <ListItem
-                            onClick={() => handleLinkClick('/ra_approval_history')}
-                            sx={{
-                                cursor: 'pointer',
-                                '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' },
-                            }}
-                        >
-                            <ListItemText primary="APPROVAL - HISTORY" />
                         </ListItem>
                     </>
                 )}
