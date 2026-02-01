@@ -13,7 +13,8 @@ import { useRef } from 'react';
 import { useItemAwardedDelete, useItemAwardedEdit, usePlayersList } from '../hooks/requests.js';
 import { get21DayStyles, tableBox } from '../styles.js';
 import { getPlayersListFinal } from '../views/utils.jsx';
-
+// The most complex files in the app are def. these custom forms
+// God speed when you come back in a couple of years and try to read this code :salute:
 export function ItemAwardedListTableEditable({
     data,
     highlight21Day = false,
