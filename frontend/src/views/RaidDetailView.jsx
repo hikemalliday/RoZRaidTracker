@@ -5,8 +5,9 @@ import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.j
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { getItemAwardedMetaDataEditable, renderErrors } from './utils.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
-import { dataLabel, labelStyles, tableBox } from '../styles.js';
-import React, { useRef } from 'react';
+import { compactTableRowStyles, labelStyles, tableBox } from '../styles.js';
+import React, { useMemo, useRef } from 'react';
+import { DataField } from '../components/DataField.jsx';
 
 export function RaidDetailView() {
     const { id } = useParams();
@@ -26,13 +27,9 @@ export function RaidDetailView() {
         error: itemAwardedError,
     } = useItemsAwardedList({ raid: id });
 
-    const _sortPlayers = data => {
-        return data.sort((a, b) => {
-            const valA = a.player.name;
-            const valB = b.player.name;
-            return valA.localeCompare(valB);
-        });
-    };
+    const sortedPlayers = useMemo(() => {
+        return raData?.results?.sort((a, b) => a.player.name.localeCompare(b.player.name));
+    }, [raData]);
 
     const pendingList = [isPending, isRaPending, isItemAwardedPending];
     const errorList = [error, raError, itemAwardedError];
@@ -53,24 +50,13 @@ export function RaidDetailView() {
                 sx={{
                     textAlign: 'center',
                     marginBottom: '40px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: '40px',
                 }}
             >
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        gap: '40px',
-                    }}
-                >
-                    <Box>
-                        <Box sx={dataLabel}>Raid</Box>
-                        <Box sx={{ color: '#fff', fontWeight: 600 }}>{data?.name}</Box>
-                    </Box>
-                    <Box>
-                        <Box sx={dataLabel}>Date</Box>
-                        <Box sx={{ color: '#fff', fontWeight: 600 }}>{data?.created_at}</Box>
-                    </Box>
-                </Box>
+                <DataField label="Raid" value={data?.name} />
+                <DataField label="Date" value={data?.created_at} />
             </Box>
 
             {getItemAwardedMetaDataEditable(
@@ -86,13 +72,8 @@ export function RaidDetailView() {
             <Container>
                 <Box sx={{ ...tableBox, mt: 4 }}>
                     <RaidAttendanceListTable
-                        data={_sortPlayers(raData.results)}
-                        rowStyles={{
-                            '& .MuiTableCell-root': {
-                                padding: '4px',
-                            },
-                            height: '36px',
-                        }}
+                        data={sortedPlayers}
+                        rowStyles={compactTableRowStyles}
                         sortable
                     />
                 </Box>
