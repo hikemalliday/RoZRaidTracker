@@ -85,15 +85,7 @@ export function PlayersToSubmitTable({ playersToSubmit, setPlayersToSubmit, onSu
 
         return sortedPlayers.map(player => {
             return (
-                <TableRow
-                    sx={{
-                        '& .MuiTableCell-root': {
-                            padding: '4px',
-                        },
-                        height: '36px',
-                    }}
-                    key={player.id}
-                >
+                <TableRow key={player.id}>
                     {getCell(player.name)}
                     <TableCell align="right">{_getPlayerCheckbox(player)}</TableCell>
                 </TableRow>
@@ -104,10 +96,10 @@ export function PlayersToSubmitTable({ playersToSubmit, setPlayersToSubmit, onSu
     // Null vals means col is not sortable (frontend table sorting)
     const headerMap = {
         Name: 'player.name',
-        Remove: null,
+        Include: null,
     };
     const headerAlign = {
-        Remove: 'right',
+        Include: 'right',
     };
 
     return (
@@ -186,7 +178,7 @@ export function ApprovalPendingDetailView() {
                 playersToSubmit={playersToSubmit}
                 setPlayersToSubmit={setPlayersToSubmit}
             />
-            <Box sx={{ ...fieldCardStyles, display: 'flex', marginBottom: 1, marginTop: 1 }}>
+            <Box sx={{ ...fieldCardStyles, display: 'flex', marginBottom: 2, marginTop: 2 }}>
                 <TextField
                     label="Raid Name"
                     fullWidth
