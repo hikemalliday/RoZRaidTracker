@@ -190,6 +190,7 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
             "Jokong": "Jokong/Jessie",
             "Ohhso “Handsome”": "Ohhso",
             "Ajax (Kithicor)": "Ajax",
+            "reef": "Reef",
         }
 
         with transaction.atomic():
