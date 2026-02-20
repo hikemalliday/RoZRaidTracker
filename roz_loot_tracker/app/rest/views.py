@@ -193,6 +193,7 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
             "reef": "Reef",
             "Bannin/Haywire": "Bannin",
             "Namji (Partymike)": "Partymike",
+            "Th3LastWord": "Strikerr",
         }
 
         with transaction.atomic():
