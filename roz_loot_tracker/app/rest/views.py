@@ -194,6 +194,7 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
             "Bannin/Haywire": "Bannin",
             "Namji (Partymike)": "Partymike",
             "Th3LastWord": "Strikerr",
+            "gram": "Gram",
         }
 
         with transaction.atomic():
