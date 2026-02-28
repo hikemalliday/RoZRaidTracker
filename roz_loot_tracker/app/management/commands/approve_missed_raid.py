@@ -9,7 +9,13 @@ class Command(BaseCommand):
     help = "create a raid attendance row"
     with transaction.atomic():
         def handle(self, *args, **options):
-            ra_approval = models.RaidAttendanceApproval.objects.get(id=357)
+            try:
+                ra_approval = models.RaidAttendanceApproval.objects.get(id=357)
+            except models.RaidAttendanceApproval.DoesNotExist:
+                ra_approval = models.RaidAttendanceApproval.objects.create(
+                    name="blue vt 5",
+                    players_list=players_list,
+                )
             raid = models.Raid.objects.create(
                 name="blue vt 5",
             )
