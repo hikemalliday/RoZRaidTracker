@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from app import models
 from app.models import Player, Item, Zone, Character, Raid, ItemAwarded, PreferredPixel, RaidAttendance, RaidAttendanceApproval
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
@@ -135,6 +136,22 @@ class RaidAttendanceApprovalSerializer(serializers.ModelSerializer):
     class Meta:
         model = RaidAttendanceApproval
         fields = '__all__'
+
+    def create(self, validated_data):
+        players_list = validated_data["players_list"]
+        players_list_new = []
+
+        for discord_name, discord_id in players_list:
+            player, created = models.Player.objects.get_or_create(
+                discord_id=discord_id,
+            )
+            if created:
+                player.name = discord_name
+                player.save()
+            players_list_new.append([player.name, discord_id])
+
+        validated_data["players_list"] = players_list_new
+        return RaidAttendanceApproval.objects.create(**validated_data)
 
 
 class TokenObtainPairSerializer(TokenObtainPairSerializer):

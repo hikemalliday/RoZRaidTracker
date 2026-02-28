@@ -34,6 +34,7 @@ class Zone(models.Model):
 
 class Player(models.Model):
     name = models.CharField(max_length=100)
+    discord_id = models.CharField(max_length=100, **NOT_REQUIRED)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -148,50 +149,3 @@ class RaidAttendanceApproval(models.Model):
     # It simply serves as a way to provide more info for the 'approval' row. Because when they start stacking up, you
     # forget which is which.
     raid_name = models.CharField(max_length=100, **NOT_REQUIRED)
-
-
-# class MageloItem(models.Model):
-#
-#     SLOT_CHOICES = [
-#         ("EAR1", "EAR1"),
-#         ("EAR2", "EAR2"),
-#         ("FACE", "FACE"),
-#         ("HEAD", "HEAD"),
-#         ("CHEST", "CHEST"),
-#         ("NECK", "NECK"),
-#         ("ARMS", "ARMS"),
-#         ("BACK", "BACK"),
-#         ("WAIST", "WAIST"),
-#         ("SHOULDERS", "SHOULDERS"),
-#         ("WRIST1", "WRIST1"),
-#         ("WRIST2", "WRIST2"),
-#         ("LEGS", "LEGS"),
-#         ("HANDS", "HANDS"),
-#         ("FEET", "FEET"),
-#         ("FINGERS1", "FINGERS1"),
-#         ("FINGERS2", "FINGERS2"),
-#         ("PRIMARY", "PRIMARY"),
-#         ("SECONDARY", "SECONDARY"),
-#         ("RANGED", "RANGED"),
-#         ("AMMO", "AMMO"),
-#         ("INVENTORY1", "INVENTORY1"),
-#         ("INVENTORY2", "INVENTORY2"),
-#         ("INVENTORY3", "INVENTORY3"),
-#         ("INVENTORY4", "INVENTORY4"),
-#         ("INVENTORY5", "INVENTORY5"),
-#         ("INVENTORY6", "INVENTORY6"),
-#         ("INVENTORY7", "INVENTORY7"),
-#         ("INVENTORY8", "INVENTORY8"),
-#     ]
-#
-#     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-#     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-#     slot = models.CharField(max_length=30, choices=SLOT_CHOICES)
-#     acquired = models.BooleanField(default=False)
-#
-#     class Meta:
-#         constraints = [
-#             models.UniqueConstraint(
-#                 fields=["player", "slot"], name="unique_player_slot"
-#             )
-#         ]

@@ -179,23 +179,23 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
         if not raid_name:
             raise ValidationError({"error": f"Please provide a name for the Raid."})
 
-        # TODO: Hacky work-around to an issue in which a player is not registered to the bot yet, yada yada.
-        player_name_map = {
-            "Goatassin/Oceanman": "Goatassin",
-            "Vanco (edging)": "Vanco",
-            "billieboyo": "Sangre",
-            "Sangre (Boomshaka Laka)": "Sangre",
-            "ivvdovvn": "Iovvdovvn",
-            "Ivvdovvn": "Iovvdovvn",
-            "Jokong": "Jokong/Jessie",
-            "Ohhso “Handsome”": "Ohhso",
-            "Ajax (Kithicor)": "Ajax",
-            "reef": "Reef",
-            "Bannin/Haywire": "Bannin",
-            "Namji (Partymike)": "Partymike",
-            "Th3LastWord": "Strikerr",
-            "gram": "Gram",
-        }
+        # # TODO: Hacky work-around to an issue in which a player is not registered to the bot yet, yada yada.
+        # player_name_map = {
+        #     "Goatassin/Oceanman": "Goatassin",
+        #     "Vanco (edging)": "Vanco",
+        #     "billieboyo": "Sangre",
+        #     "Sangre (Boomshaka Laka)": "Sangre",
+        #     "ivvdovvn": "Iovvdovvn",
+        #     "Ivvdovvn": "Iovvdovvn",
+        #     "Jokong": "Jokong/Jessie",
+        #     "Ohhso “Handsome”": "Ohhso",
+        #     "Ajax (Kithicor)": "Ajax",
+        #     "reef": "Reef",
+        #     "Bannin/Haywire": "Bannin",
+        #     "Namji (Partymike)": "Partymike",
+        #     "Th3LastWord": "Strikerr",
+        #     "gram": "Gram",
+        # }
 
         with transaction.atomic():
             # TODO: Some hacky BS to allow us to pass in a custom time stamp. Def need to change the actual model for Raid
@@ -207,10 +207,10 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
                     name=raid_name,
                     created_at=raid_attendance_approval.created_at,
                 )
-                for player_name in players:
+                for player_name, discord_id in players:
                     try:
-                        player_name = player_name_map.get(player_name, player_name)
-                        player = models.Player.objects.get(name=player_name.title())
+                        # player_name = player_name_map.get(player_name, player_name)
+                        player = models.Player.objects.get(discord_id=discord_id)
                         models.RaidAttendance.objects.create(
                             player=player,
                             raid=raid,

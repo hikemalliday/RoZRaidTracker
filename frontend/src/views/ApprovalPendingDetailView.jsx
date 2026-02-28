@@ -128,7 +128,11 @@ export function ApprovalPendingDetailView() {
         if (data) {
             setRaid(data?.raid_name);
             setPlayersToSubmit(
-                data?.players_list.map(player => ({ name: player, is_selected: true }))
+                data?.players_list.map(player => ({
+                    name: player[0],
+                    discord_id: player[1],
+                    is_selected: true,
+                }))
             );
         }
     }, [data]);
