@@ -13,7 +13,7 @@ class Command(BaseCommand):
                 ra_approval = models.RaidAttendanceApproval.objects.get(id=357)
             except models.RaidAttendanceApproval.DoesNotExist:
                 ra_approval = models.RaidAttendanceApproval.objects.create(
-                    name="blue vt 5",
+                    raid_name="blue vt 5",
                     players_list=players_list,
                 )
             raid = models.Raid.objects.create(
