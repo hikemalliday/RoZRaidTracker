@@ -3,20 +3,23 @@ import { Autocomplete, Box, Checkbox, Container, FormControlLabel, TextField } f
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { useItemsAwardedList, usePlayersList } from '../hooks/requests.js';
 import { MetaDetail } from '../components/generic.jsx';
-import { getItemAwardedMetaData } from './utils.jsx';
-
+import { getItemAwardedMetaData, getPlayersOptions } from './utils.jsx';
+// TODO: This page is a complete dumpster fire. Please for the love of god, come back and tame this mess.
 export function CompareView() {
     const { isPending: isPlayersPending, data: playersData } = usePlayersList();
 
     if (isPlayersPending) return <>LOADING...</>;
 
-    const getPlayersIdMap = data => {
-        const results = {};
-        for (const player of data) {
-            results[player.name] = player.id.toString();
+    const reducedPlayersData = [];
+
+    playersData.results.forEach(player => {
+        const characters = player.characters;
+        if (characters.length === 0) reducedPlayersData.push({ name: player.name, id: player.id });
+
+        for (const char of characters) {
+            reducedPlayersData.push({ name: `${player.name} | ${char.name}`, id: player.id });
         }
-        return results;
-    };
+    });
 
     const getPlayersNameMap = data => {
         const results = {};
@@ -26,9 +29,7 @@ export function CompareView() {
         return results;
     };
 
-    const playersIdMap = getPlayersIdMap(playersData.results);
-    const playersNameMap = getPlayersNameMap(playersData.results);
-    const playersNamesArray = Object.keys(playersIdMap).sort();
+    const playersNameMap = getPlayersNameMap(reducedPlayersData);
 
     const sortItemsById = (results, asc = false) => {
         return results.sort((a, b) => {
@@ -40,15 +41,15 @@ export function CompareView() {
         return (
             <Autocomplete
                 disableClearable
-                options={playersNamesArray}
-                value={playerId ? playersNameMap[playerId] : null}
-                onChange={(e, playerName) => {
-                    if (playerName) return changeHandler(playersIdMap[playerName]);
-                    return changeHandler('');
-                }}
                 sx={{
                     width: '200px',
                     margin: '0 auto',
+                }}
+                options={getPlayersOptions(playersData.results)}
+                filterOptions={x => x}
+                defaultValue={playersNameMap[playerId]}
+                onChange={(_, option) => {
+                    changeHandler(option.id);
                 }}
                 renderInput={params => (
                     <TextField
