@@ -172,6 +172,9 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
             raise ValidationError(f"Raid has already been approved. If you think this is a mistake, contact admin.")
 
         players = request.data.get("players_list")
+        if isinstance(players, str):
+            import json
+            players = json.loads(players)
         if not players:
             raise ValidationError({"error": f"No players assigned to raid."})
 
@@ -207,17 +210,16 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
                     name=raid_name,
                     created_at=raid_attendance_approval.created_at,
                 )
-                for element in players:
-                    for player_name, discord_id in element:
-                        try:
-                            # player_name = player_name_map.get(player_name, player_name)
-                            player = models.Player.objects.get(discord_id=discord_id)
-                            models.RaidAttendance.objects.create(
-                                player=player,
-                                raid=raid,
-                            )
-                        except models.Player.DoesNotExist:
-                            raise ValidationError({"error": f"Player '{player_name}' does not exist. Create player first and try again."})
+                for player_name, discord_id in players:
+                    try:
+                        # player_name = player_name_map.get(player_name, player_name)
+                        player = models.Player.objects.get(discord_id=discord_id)
+                        models.RaidAttendance.objects.create(
+                            player=player,
+                            raid=raid,
+                        )
+                    except models.Player.DoesNotExist:
+                        raise ValidationError({"error": f"Player '{player_name}' does not exist. Create player first and try again."})
             finally:
                 field.auto_now_add = old_auto_now_add
 
