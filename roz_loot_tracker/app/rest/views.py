@@ -183,7 +183,6 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
             raise ValidationError({"error": f"Please provide a name for the Raid."})
 
         with transaction.atomic():
-            # TODO: Some hacky BS to allow us to pass in a custom time stamp. Def need to change the actual model for Raid
             field = models.Raid._meta.get_field('created_at')
             old_auto_now_add = field.auto_now_add
             field.auto_now_add = False
@@ -194,7 +193,6 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
                 )
                 for player_name, discord_id in players:
                     try:
-                        # player_name = player_name_map.get(player_name, player_name)
                         player = models.Player.objects.get(discord_id=discord_id)
                         models.RaidAttendance.objects.create(
                             player=player,
