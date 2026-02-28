@@ -155,7 +155,7 @@ export function ApprovalPendingDetailView() {
 
         const payload = {
             raid_name: raid,
-            players_list: _getTruthyPlayersToSubmit.map(player => player.name),
+            players_list: _getTruthyPlayersToSubmit.map(player => [player.name, player.discord_id]),
         };
 
         mutate({ payload });

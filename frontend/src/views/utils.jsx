@@ -69,8 +69,6 @@ export const getPlayersListFinal = results => {
 export const getPlayersOptions = results => {
     if (!results) return [];
     const reducedList = _getReducedPlayersOptions(results);
-    console.log('getPlayersOptions.reducedList:');
-    console.log(reducedList);
     return _sortReducedList(reducedList);
 };
 
