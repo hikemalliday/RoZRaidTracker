@@ -12,7 +12,7 @@ import { Box, TableRow } from '@mui/material';
 import { useRef } from 'react';
 import { useItemAwardedDelete, useItemAwardedEdit, usePlayersList } from '../hooks/requests.js';
 import { get21DayStyles, tableBox } from '../styles.js';
-import { getPlayersListFinal } from '../views/utils.jsx';
+import { getPlayersOptions } from '../views/utils.jsx';
 // The most complex files in the app are def. these custom forms
 // God speed when you come back in a couple of years and try to read this code :salute:
 export function ItemAwardedListTableEditable({
@@ -112,7 +112,7 @@ export function ItemAwardedListTableEditable({
                     <ItemAwardedPlayerEditableField
                         formObject={formObjectRef}
                         itemAwardedDetail={row}
-                        playersOptions={getPlayersListFinal(playersData?.results) || []}
+                        playersOptions={getPlayersOptions(playersData?.results) || []}
                     />
                     {getLinkCell(row?.raid?.name, `/raid/${row?.raid?.id}`)}
                     {getCell(row?.raid?.created_at)}

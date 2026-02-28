@@ -40,9 +40,37 @@ const _sortReducedList = results => {
     });
 };
 
+const _getReducedPlayersOptions = players => {
+    const options = [];
+    for (const player of players) {
+        if (player.characters.length === 0) {
+            options.push({
+                id: player.id,
+                label: player.name,
+            });
+            continue;
+        }
+        for (const character of player.characters) {
+            options.push({
+                id: player.id,
+                label: `${player.name} | ${character.name}`,
+            });
+        }
+    }
+    return options;
+};
+
 export const getPlayersListFinal = results => {
     if (!results) return [];
     const reducedList = _getReducedResults(results);
+    return _sortReducedList(reducedList);
+};
+
+export const getPlayersOptions = results => {
+    if (!results) return [];
+    const reducedList = _getReducedPlayersOptions(results);
+    console.log('getPlayersOptions.reducedList:');
+    console.log(reducedList);
     return _sortReducedList(reducedList);
 };
 

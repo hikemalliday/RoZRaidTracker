@@ -2,7 +2,7 @@ import { Autocomplete, Box, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { usePlayersList, useRaidAttendanceMutation } from '../hooks/requests.js';
 import { fieldCardStyles, fieldCardTypographyStyles, textFieldStyles } from '../styles.js';
-import { getPlayersListFinal } from '../views/utils.jsx';
+import { getPlayersOptions } from '../views/utils.jsx';
 
 export function AddPlayerField({ raidId, styles = {} }) {
     const { data: playersData, isPending: isPlayersPending } = usePlayersList();
@@ -37,7 +37,7 @@ export function AddPlayerField({ raidId, styles = {} }) {
                     renderInput={params => (
                         <TextField {...params} label="Player" sx={textFieldStyles} size="small" />
                     )}
-                    options={!isPlayersPending ? getPlayersListFinal(playersData.results) : []}
+                    options={!isPlayersPending ? getPlayersOptions(playersData.results) : []}
                     onChange={(_, option) => {
                         setSelectedPlayer(option.id);
                     }}

@@ -8,7 +8,7 @@ import {
     textFieldStyles,
 } from '../styles.js';
 import { useDebounce } from '../hooks/useDebounce.js';
-import { _getReducedResults, getPlayersListFinal } from '../views/utils.jsx';
+import { _getReducedResults, getPlayersOptions } from '../views/utils.jsx';
 
 export function AddItemAwardedField({ raidId, styles = {} }) {
     const [itemValue, setItemValue] = useState('');
@@ -77,7 +77,7 @@ export function AddItemAwardedField({ raidId, styles = {} }) {
                     renderInput={params => (
                         <TextField {...params} label="Player" sx={textFieldStyles} size="small" />
                     )}
-                    options={!isPlayersPending ? getPlayersListFinal(playersData.results) : []}
+                    options={!isPlayersPending ? getPlayersOptions(playersData.results) : []}
                     onChange={(_, option) => {
                         setSelectedPlayer(option.id);
                     }}
