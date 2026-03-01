@@ -46,7 +46,6 @@ export function CompareView() {
                     margin: '0 auto',
                 }}
                 options={getPlayersOptions(playersData.results)}
-                filterOptions={x => x}
                 defaultValue={playersNameMap[playerId]}
                 onChange={(_, option) => {
                     changeHandler(option.id);
