@@ -35,6 +35,7 @@ class Zone(models.Model):
 class Player(models.Model):
     name = models.CharField(max_length=100)
     discord_id = models.CharField(max_length=100, **NOT_REQUIRED)
+    active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
