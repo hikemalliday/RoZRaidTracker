@@ -64,7 +64,7 @@ export default function Home() {
                     justifyContent: 'center',
                 }}
             >
-                {cardsToRender.length === 0 ? <>Please log in.</> : cardsToRender}
+                {!isSuperUser && !isAuthenticated ? <>Please log in.</> : cardsToRender}
             </Box>
         </Box>
     );
