@@ -129,6 +129,21 @@ export function useRaidAttendanceApprovalList(queryParams) {
     return { isPending, error, data };
 }
 
+export function useCharacterList() {
+    const { isPending, error, data } = useQuery({
+        queryKey: ['characters'],
+        queryFn: async () => {
+            const { data } = await api.get(`/characters/`, {
+                params: {
+                    page_size: PAGE_SIZE_NO_PAGINATION,
+                },
+            });
+            return data;
+        },
+    });
+    return { isPending, error, data };
+}
+
 export function useRaidAttendanceApprovalMutation(id) {
     const navigate = useNavigate();
     const queryClient = useQueryClient();

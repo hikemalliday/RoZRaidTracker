@@ -112,6 +112,7 @@ class CharacterViewSet(viewsets.ModelViewSet):
     # permission_classes = (PERMISSION_CLASS_DEBUG,)
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['player']
+    pagination_class = AllowNoPagination
 
 
 class RaidViewSet(viewsets.ModelViewSet):

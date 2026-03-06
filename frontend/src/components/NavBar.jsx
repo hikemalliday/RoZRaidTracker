@@ -27,6 +27,7 @@ export function NavBar() {
         { label: 'RAIDS', path: '/raid' },
         { label: 'ITEMS AWARDED', path: '/item_awarded' },
         { label: 'SCREENSHOTS', path: '/screenshots' },
+        { label: 'ROSTER', path: '/roster' },
     ];
 
     const navBarLinks = () => {
@@ -83,6 +84,13 @@ export function NavBar() {
                     className={isActive('screenshots') ? 'active' : ''}
                 >
                     SCREENSHOTS
+                </a>
+                <a
+                    id="nav-bar-link"
+                    onClick={() => handleLinkClick('roster')}
+                    className={isActive('roster') ? 'active' : ''}
+                >
+                    ROSTER
                 </a>
                 {isAuthenticated ? (
                     <a id="nav-bar-link" onClick={() => logout()}>

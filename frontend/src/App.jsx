@@ -16,6 +16,7 @@ import { RaidEditView } from './views/RaidEditView.jsx';
 import { ApprovalHistoryListView } from './views/ApprovalHistoryListView.jsx';
 import { PlayerEditView } from './views/PlayerEditView.jsx';
 import { Screenshots } from './views/Screenshots.jsx';
+import { RosterView } from './views/RosterView.jsx';
 
 function App() {
     const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ function App() {
                         <Route path="/raid/:id" element={<RaidDetailView />} />
                         <Route path="/compare" element={<CompareView />} />
                         <Route path="/screenshots" element={<Screenshots />} />
+                        <Route path="/roster" element={<RosterView />} />
                     </Route>
 
                     <Route element={<ProtectedRoute needSuper={true} />}>
