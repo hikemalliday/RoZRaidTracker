@@ -302,6 +302,28 @@ export function useItemAwardedEdit() {
     });
 }
 
+export function usePlayerEdit(id) {
+    const queryClient = useQueryClient();
+    const { addMessage } = useMessage();
+
+    return useMutation({
+        mutationFn: async ({ payload }) => {
+            console.log('payload:');
+            console.log(payload);
+            const { data } = await api.patch(`/players/${id}/`, payload);
+            return data;
+        },
+        onSuccess: async () => {
+            addMessage('Successfully edited Player row.');
+            await queryClient.refetchQueries({ queryKey: ['players'] });
+        },
+        onError: error => {
+            const errorMessage = error?.response?.data?.error || 'Unknown error';
+            addMessage(`Failed to edit Player row: ${errorMessage}`, 'error');
+        },
+    });
+}
+
 export function useRaidAttendanceApprovalDelete() {
     const queryClient = useQueryClient();
     const { addMessage } = useMessage();

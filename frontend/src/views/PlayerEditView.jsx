@@ -1,7 +1,13 @@
 import { useParams } from 'react-router';
 import { useAuthContext } from '../context/AuthContext.jsx';
 import { Autocomplete, Box, Container, TableRow, TextField, Typography } from '@mui/material';
-import { useCharacterCreate, useCharacterEdit, useCharactersList } from '../hooks/requests.js';
+import {
+    useCharacterCreate,
+    useCharacterEdit,
+    useCharactersList,
+    usePlayerDetail,
+    usePlayerEdit,
+} from '../hooks/requests.js';
 import { renderErrors } from './utils.jsx';
 import { useEffect, useState } from 'react';
 import { getTextFieldStyles, textFieldStyles } from '../styles.js';
@@ -112,7 +118,7 @@ function AddCharacterField({ playerId }) {
     );
 }
 
-function EditableCharacterListTable({ data }) {
+function EditableCharacterListTable({ charList, playerDetail }) {
     const _getCharStatus = char => {
         if (char.is_main) return 'Main';
         if (char.is_main_alt) return 'Main Alt';
@@ -121,11 +127,13 @@ function EditableCharacterListTable({ data }) {
 
     const [formObject, setFormObject] = useState({});
     const { mutate } = useCharacterEdit();
+    const { mutate: mutatePlayer } = usePlayerEdit(playerDetail.id);
+    const [isActive, setIsActive] = useState(playerDetail.active);
 
     useEffect(() => {
-        if (data) {
+        if (charList) {
             const charsObject = {};
-            for (const char of data) {
+            for (const char of charList) {
                 charsObject[char.id] = {
                     id: char.id,
                     name: char.name,
@@ -135,7 +143,7 @@ function EditableCharacterListTable({ data }) {
             }
             setFormObject(charsObject);
         }
-    }, [data]);
+    }, [charList]);
 
     const getCharacterRows = sorted => {
         return sorted.map((row, i) => {
@@ -189,7 +197,8 @@ function EditableCharacterListTable({ data }) {
         const promises = Object.values(formObject).map(char => {
             return mutate({ payload: char });
         });
-        await Promise.allSettled(promises);
+        const setActive = [mutatePlayer({ payload: { active: isActive } })];
+        await Promise.allSettled([...promises, ...setActive]);
         setFormObject({});
     };
 
@@ -204,7 +213,25 @@ function EditableCharacterListTable({ data }) {
     };
     return (
         <>
-            <TableList data={data} getTableRows={getCharacterRows} headerMap={headerMap} />
+            <TableList data={charList} getTableRows={getCharacterRows} headerMap={headerMap} />
+            <Box
+                style={{
+                    display: 'flex',
+                    marginTop: 10,
+                }}
+            >
+                Active:
+                <input
+                    style={{
+                        marginLeft: 10,
+                    }}
+                    type="checkbox"
+                    checked={!!isActive}
+                    onChange={e => {
+                        setIsActive(!isActive);
+                    }}
+                />
+            </Box>
             <button
                 style={{
                     display: 'flex',
@@ -221,18 +248,29 @@ function EditableCharacterListTable({ data }) {
 export function PlayerEditView() {
     const { id } = useParams();
     const { isSuperUser } = useAuthContext();
-    const { data, isPending, error } = useCharactersList({
+    const {
+        data: charListData,
+        isPending: isCharsPending,
+        error: charListError,
+    } = useCharactersList({
         player: id,
     });
-
+    const {
+        data: playerDetailData,
+        isPending: isPlayerDetailPending,
+        error: playerDetailError,
+    } = usePlayerDetail(id);
     if (!isSuperUser) return <>Unauthorized.</>;
-    if (isPending) return <>LOADING...</>;
-    if (error) renderErrors(error);
+    if (isCharsPending || isPlayerDetailPending) return <>LOADING...</>;
+    if (charListError) renderErrors([charListError, playerDetailError]);
 
     return (
         <Container>
             <AddCharacterField playerId={id} />
-            <EditableCharacterListTable data={data.results} />
+            <EditableCharacterListTable
+                charList={charListData.results}
+                playerDetail={playerDetailData}
+            />
         </Container>
     );
 }
