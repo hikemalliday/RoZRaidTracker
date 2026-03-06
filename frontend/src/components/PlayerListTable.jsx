@@ -13,6 +13,7 @@ export function PlayerListTable({ data, rowStyles = {}, sortable = true }) {
                     {getCell(alt?.name, `/character/${alt?.id}`)}
                     {getCell(`${row?.lifetime_ra}%`)}
                     {getCell(`${row?.ra_21_day}%`)}
+                    {getCell(`${row?.active}`)}
                 </TableRow>
             );
         });
@@ -24,6 +25,7 @@ export function PlayerListTable({ data, rowStyles = {}, sortable = true }) {
         Alt: null,
         'Lifetime RA': 'lifetime_ra',
         '21 Day': 'ra_21_day',
+        Active: 'active',
     };
 
     return (
