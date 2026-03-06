@@ -129,13 +129,14 @@ export function useRaidAttendanceApprovalList(queryParams) {
     return { isPending, error, data };
 }
 
-export function useCharacterList() {
+export function useCharacterList(queryParams = {}) {
     const { isPending, error, data } = useQuery({
         queryKey: ['characters'],
         queryFn: async () => {
             const { data } = await api.get(`/characters/`, {
                 params: {
                     page_size: PAGE_SIZE_NO_PAGINATION,
+                    ...queryParams,
                 },
             });
             return data;

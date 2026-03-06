@@ -3,7 +3,7 @@ import { useCharacterList } from '../hooks/requests.js';
 import { labelStyles } from '../styles.js';
 
 export function RosterView() {
-    const { data: characterList, isPending } = useCharacterList();
+    const { data: characterList, isPending } = useCharacterList({ player__active: true });
     const charClasses = [
         'BRD',
         'BST',

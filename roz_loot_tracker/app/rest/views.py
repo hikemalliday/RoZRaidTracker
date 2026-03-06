@@ -35,7 +35,7 @@ class PlayerFilter(filters.FilterSet):
 
     class Meta:
         model = models.Player
-        fields = ["name"]
+        fields = ["name", "active"]
 
 
 class AllowNoPagination(PageNumberPagination):
@@ -111,7 +111,7 @@ class CharacterViewSet(viewsets.ModelViewSet):
     serializer_class = CharacterSerializer
     # permission_classes = (PERMISSION_CLASS_DEBUG,)
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['player']
+    filterset_fields = ['player', "player__active"]
     pagination_class = AllowNoPagination
 
 
