@@ -9,7 +9,17 @@ export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const [accessToken, setAccessToken] = useState(() => localStorage.getItem('accessToken'));
     const [refreshToken, setRefreshToken] = useState(() => localStorage.getItem('refreshToken'));
-    const [isSuperUser, setIsSuperUser] = useState(false);
+    const [isSuperUser, setIsSuperUser] = useState(() => {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            try {
+                return jwtDecode(token).is_superuser ?? false;
+            } catch {
+                return false;
+            }
+        }
+        return false;
+    });
 
     const isAuthenticated = !!accessToken;
 
