@@ -308,8 +308,6 @@ export function usePlayerEdit(id) {
 
     return useMutation({
         mutationFn: async ({ payload }) => {
-            console.log('payload:');
-            console.log(payload);
             const { data } = await api.patch(`/players/${id}/`, payload);
             return data;
         },
