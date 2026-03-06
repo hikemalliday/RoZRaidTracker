@@ -1,26 +1,8 @@
-import { useState } from 'react';
-import { Container, Table, TableBody, TableCell, TableRow } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import { useCharacterList } from '../hooks/requests.js';
+import { labelStyles } from '../styles.js';
 
 export function RosterView() {
-    const [shownChars, setShownChars] = useState({
-        BRD: true,
-        BST: true,
-        CLR: true,
-        DRU: true,
-        ENC: true,
-        MAG: true,
-        MNK: true,
-        NEC: true,
-        PAL: true,
-        RNG: true,
-        ROG: true,
-        SHD: true,
-        SHM: true,
-        WAR: true,
-        WIZ: true,
-    });
-
     const { data: characterList, isPending } = useCharacterList();
     const charClasses = [
         'BRD',
@@ -43,57 +25,74 @@ export function RosterView() {
     if (isPending) return <>LOADING...</>;
 
     const getCharsByClass = results => {
-        const _filterChars = charClass => {
-            return results.filter(char => char.char_class === charClass);
-        };
-        return {
-            BRD: _filterChars('BRD'),
-            BST: _filterChars('BST'),
-            CLR: _filterChars('CLR'),
-            DRU: _filterChars('DRU'),
-            ENC: _filterChars('ENC'),
-            MAG: _filterChars('MAG'),
-            MNK: _filterChars('MNK'),
-            NEC: _filterChars('NEC'),
-            PAL: _filterChars('PAL'),
-            RNG: _filterChars('RNG'),
-            ROG: _filterChars('ROG'),
-            SHD: _filterChars('SHD'),
-            SHM: _filterChars('SHM'),
-            WAR: _filterChars('WAR'),
-            WIZ: _filterChars('WIZ'),
-        };
+        const _filterChars = charClass => results.filter(char => char.char_class === charClass);
+        return Object.fromEntries(charClasses.map(c => [c, _filterChars(c)]));
     };
 
     const reducedChars = getCharsByClass(characterList.results);
 
-    function ClassCard({ data }) {
+    function ClassCard({ charClass, data }) {
         return (
-            <Table>
-                <TableBody>
-                    {data.map((char, i) => {
-                        return (
-                            <TableRow key={i} sx={{ color: 'white !important' }}>
-                                <TableCell sx={{ color: 'white !important' }}>
-                                    {char.name}
-                                </TableCell>
-                                <TableCell sx={{ color: 'white !important' }}>
-                                    {char.player.name}
-                                </TableCell>
-                            </TableRow>
-                        );
-                    })}
-                </TableBody>
-            </Table>
+            <Box
+                sx={{
+                    flex: '1 1 200px',
+                    maxWidth: 280,
+                    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: 2,
+                    padding: 2,
+                }}
+            >
+                <Typography
+                    sx={{
+                        ...labelStyles,
+                        mt: 0,
+                        mb: 1.5,
+                        pb: 1,
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    {charClass}
+                    <span style={{ color: 'gray', fontWeight: 400 }}>{data.length}</span>
+                </Typography>
+                {data.map((char, i) => (
+                    <Box
+                        key={i}
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'baseline',
+                            py: 0.4,
+                            borderBottom: '1px solid rgba(255,255,255,0.04)',
+                            '&:last-child': { borderBottom: 'none' },
+                        }}
+                    >
+                        <Typography sx={{ color: 'white', fontSize: '0.875rem' }}>
+                            {char.name}
+                        </Typography>
+                        <Typography sx={{ color: 'gray', fontSize: '0.75rem', ml: 1 }}>
+                            {char.player.name}
+                        </Typography>
+                    </Box>
+                ))}
+            </Box>
         );
     }
 
     return (
-        <Container>
-            {Object.entries(reducedChars).map(([charClass, charList]) => {
-                console.log(charList);
-                return <ClassCard data={charList} />;
-            })}
+        <Container sx={{ mt: 2 }}>
+            <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
+                Roster
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                {Object.entries(reducedChars)
+                    .filter(([, charList]) => charList.length > 0)
+                    .map(([charClass, charList]) => (
+                        <ClassCard key={charClass} charClass={charClass} data={charList} />
+                    ))}
+            </Box>
         </Container>
     );
 }
