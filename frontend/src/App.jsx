@@ -26,15 +26,17 @@ function App() {
                 <Routes>
                     <Route path="/login" element={<Login />} />
                     <Route path="/" element={<Home />} />
-                    <Route path="/player" element={<PlayerListView />} />
-                    <Route path="/raid" element={<RaidListView />} />
-                    <Route path="/item_awarded" element={<ItemAwardedListView />} />
-                    <Route path="/player/:id" element={<PlayerDetailView />} />
-                    <Route path="/raid/:id" element={<RaidDetailView />} />
-                    <Route path="/compare" element={<CompareView />} />
-                    <Route path="/screenshots" element={<Screenshots />} />
+                    <Route element={<ProtectedRoute needSuper={false} />}>
+                        <Route path="/player" element={<PlayerListView />} />
+                        <Route path="/raid" element={<RaidListView />} />
+                        <Route path="/item_awarded" element={<ItemAwardedListView />} />
+                        <Route path="/player/:id" element={<PlayerDetailView />} />
+                        <Route path="/raid/:id" element={<RaidDetailView />} />
+                        <Route path="/compare" element={<CompareView />} />
+                        <Route path="/screenshots" element={<Screenshots />} />
+                    </Route>
 
-                    <Route element={<ProtectedRoute />}>
+                    <Route element={<ProtectedRoute needSuper={true} />}>
                         <Route path="/ra_approval_pending" element={<ApprovalPendingListView />} />
                         <Route path="/ra_approval_history" element={<ApprovalHistoryListView />} />
                         <Route

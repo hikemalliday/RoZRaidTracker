@@ -6,13 +6,50 @@ export default function Home() {
     const navigate = useNavigate();
     const { isSuperUser, isAuthenticated } = useAuthContext();
 
-    const cards = [
+    const cardMeta = [
         { label: 'Compare', path: '/compare/', description: 'Compare players side by side' },
         { label: 'Players', path: '/player/', description: 'View all players' },
         { label: 'Raids', path: '/raid/', description: 'Browse raid history' },
         { label: 'Items Awarded', path: '/item_awarded/', description: 'Browse loot drops' },
         { label: 'Approval', path: '/ra_approval_pending/', description: 'Approve raids' },
     ];
+
+    function Card({ path, label, description }) {
+        return (
+            <Box
+                key={path}
+                onClick={() => navigate(path)}
+                sx={{
+                    width: 200,
+                    padding: 3,
+                    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: 2,
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease',
+                    '&:hover': {
+                        backgroundColor: 'rgba(255, 255, 255, 0.06)',
+                        borderColor: 'rgba(255, 255, 255, 0.2)',
+                    },
+                }}
+            >
+                <Typography sx={{ fontWeight: 600, mb: 1 }}>{label}</Typography>
+                <Typography sx={{ fontSize: '0.8rem', color: 'gray' }}>{description}</Typography>
+            </Box>
+        );
+    }
+
+    const getCardComponent = card => {
+        const cardComponent = (
+            <Card path={card.path} label={card.label} desctiption={card.description} />
+        );
+        if (!isAuthenticated) return <></>;
+        if (card.label === 'Approval' && isSuperUser && isAuthenticated) return cardComponent;
+        else if (card.label !== 'Approval' && isAuthenticated) return cardComponent;
+        else return <></>;
+    };
+
+    const cardsToRender = cardMeta.map(getCardComponent);
 
     return (
         <Box sx={{ padding: 4 }}>
@@ -27,33 +64,7 @@ export default function Home() {
                     justifyContent: 'center',
                 }}
             >
-                {cards.map(card => {
-                    if (card.label === 'Approval' && !isSuperUser && !isAuthenticated) return <></>;
-                    return (
-                        <Box
-                            key={card.path}
-                            onClick={() => navigate(card.path)}
-                            sx={{
-                                width: 200,
-                                padding: 3,
-                                backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                                border: '1px solid rgba(255, 255, 255, 0.1)',
-                                borderRadius: 2,
-                                cursor: 'pointer',
-                                transition: 'all 0.15s ease',
-                                '&:hover': {
-                                    backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                                    borderColor: 'rgba(255, 255, 255, 0.2)',
-                                },
-                            }}
-                        >
-                            <Typography sx={{ fontWeight: 600, mb: 1 }}>{card.label}</Typography>
-                            <Typography sx={{ fontSize: '0.8rem', color: 'gray' }}>
-                                {card.description}
-                            </Typography>
-                        </Box>
-                    );
-                })}
+                {cardsToRender.length === 0 ? <>Please log in.</> : cardsToRender}
             </Box>
         </Box>
     );
