@@ -7,7 +7,21 @@ import { getItemAwardedMetaData, getPlayersOptions } from './utils.jsx';
 // TODO: This page is a complete dumpster fire. Please for the love of god, come back and tame this mess.
 export function CompareView() {
     const { isPending: isPlayersPending, data: playersData } = usePlayersList();
-
+    const [filters, setFilters] = useState(new Set(['main', 'alt_loot', 'preferred', 'magelo']));
+    const _handleCheckbox = (e, filter) => {
+        if (e.target.checked)
+            setFilters(prev => {
+                const filters = new Set(prev);
+                filters.add(filter);
+                return filters;
+            });
+        else
+            setFilters(prev => {
+                const filters = new Set(prev);
+                filters.delete(filter);
+                return filters;
+            });
+    };
     if (isPlayersPending) return <>LOADING...</>;
 
     const reducedPlayersData = [];
@@ -105,12 +119,9 @@ export function CompareView() {
         );
     };
 
-    function CompareTable({ playersList, defaultPlayerId = 1 }) {
+    function CompareTable({ playersList, filtersState, defaultPlayerId = 1 }) {
         const [playerId, setPlayerId] = useState(defaultPlayerId);
         const { isPending, data: itemAwardedData } = useItemsAwardedList({ player: playerId });
-        const [filters, setFilters] = useState(
-            new Set(['main', 'alt_loot', 'preferred', 'magelo'])
-        );
 
         const handlePlayerIdChange = playerIdArg => {
             setPlayerId(playerIdArg);
@@ -119,7 +130,7 @@ export function CompareView() {
         function _filterItems(results) {
             if (!results) return [];
 
-            const fieldsToFilterOn = [...filters];
+            const fieldsToFilterOn = [...filtersState];
             const includeMain = fieldsToFilterOn.includes('main');
             const includeAltLoot = fieldsToFilterOn.includes('alt_loot');
             const includeMagelo = fieldsToFilterOn.includes('magelo');
@@ -142,21 +153,6 @@ export function CompareView() {
             });
         }
 
-        const _handleCheckbox = (e, filter) => {
-            if (e.target.checked)
-                setFilters(prev => {
-                    const filters = new Set(prev);
-                    filters.add(filter);
-                    return filters;
-                });
-            else
-                setFilters(prev => {
-                    const filters = new Set(prev);
-                    filters.delete(filter);
-                    return filters;
-                });
-        };
-
         const filteredData = _filterItems(itemAwardedData?.results);
         return (
             <Container disableGutters>
@@ -166,49 +162,6 @@ export function CompareView() {
                     {getItemAwardedMetaData(itemAwardedData?.results, filteredData.length)}
                     {!isPending && playerId && (
                         <>
-                            <Box
-                                sx={{
-                                    mt: 1,
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    gap: 1,
-                                    flexWrap: 'wrap',
-                                }}
-                            >
-                                {[
-                                    { label: 'Main', filter: 'main' },
-                                    { label: 'Alt', filter: 'alt_loot' },
-                                    { label: 'Preferred', filter: 'preferred' },
-                                    { label: 'Magelo', filter: 'magelo' },
-                                ].map(({ label, filter }) => (
-                                    <FormControlLabel
-                                        key={filter}
-                                        control={
-                                            <Checkbox
-                                                defaultChecked
-                                                size="small"
-                                                onChange={e => _handleCheckbox(e, filter)}
-                                                sx={{
-                                                    color: 'rgba(255, 255, 255, 0.3)',
-                                                    '&.Mui-checked': {
-                                                        color: 'rgba(255, 255, 255, 0.5)',
-                                                    },
-                                                    '&:hover': {
-                                                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                                                    },
-                                                }}
-                                            />
-                                        }
-                                        label={label}
-                                        sx={{
-                                            '& .MuiFormControlLabel-label': {
-                                                fontSize: '0.8rem',
-                                                color: 'white',
-                                            },
-                                        }}
-                                    />
-                                ))}
-                            </Box>
                             <ItemAwardedListTable
                                 data={sortItemsById(filteredData)}
                                 highlight21Day
@@ -225,19 +178,82 @@ export function CompareView() {
     }
 
     return (
-        <Container
-            disableGutters
-            maxWidth={false}
-            sx={{
-                marginTop: 2,
-                display: 'flex',
-                height: '100%',
-                width: '100%',
-            }}
-        >
-            {<CompareTable playersList={playersData.results} defaultPlayerId={1} />}
-            {<CompareTable playersList={playersData.results} defaultPlayerId={2} />}
-            {<CompareTable playersList={playersData.results} defaultPlayerId={3} />}
-        </Container>
+        <>
+            <Box
+                sx={{
+                    mt: 1,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: 1,
+                    flexWrap: 'wrap',
+                }}
+            >
+                {[
+                    { label: 'Main', filter: 'main' },
+                    { label: 'Alt', filter: 'alt_loot' },
+                    { label: 'Preferred', filter: 'preferred' },
+                    { label: 'Magelo', filter: 'magelo' },
+                ].map(({ label, filter }) => (
+                    <FormControlLabel
+                        key={filter}
+                        control={
+                            <Checkbox
+                                defaultChecked
+                                size="small"
+                                onChange={e => _handleCheckbox(e, filter)}
+                                sx={{
+                                    color: 'rgba(255, 255, 255, 0.3)',
+                                    '&.Mui-checked': {
+                                        color: 'rgba(255, 255, 255, 0.5)',
+                                    },
+                                    '&:hover': {
+                                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                    },
+                                }}
+                            />
+                        }
+                        label={label}
+                        sx={{
+                            '& .MuiFormControlLabel-label': {
+                                fontSize: '0.8rem',
+                                color: 'white',
+                            },
+                        }}
+                    />
+                ))}
+            </Box>
+            <Container
+                disableGutters
+                maxWidth={false}
+                sx={{
+                    marginTop: 2,
+                    display: 'flex',
+                    height: '100%',
+                    width: '100%',
+                }}
+            >
+                {
+                    <CompareTable
+                        playersList={playersData.results}
+                        defaultPlayerId={1}
+                        filtersState={filters}
+                    />
+                }
+                {
+                    <CompareTable
+                        playersList={playersData.results}
+                        defaultPlayerId={2}
+                        filtersState={filters}
+                    />
+                }
+                {
+                    <CompareTable
+                        playersList={playersData.results}
+                        defaultPlayerId={3}
+                        filtersState={filters}
+                    />
+                }
+            </Container>
+        </>
     );
 }
