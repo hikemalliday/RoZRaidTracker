@@ -292,6 +292,7 @@ export const getItemAwardedMetaData = (itemsResults, filteredDataLen) => {
                     justifyContent: 'center',
                     gap: 3,
                     mt: 2,
+                    mb: 1,
                 }}
             >
                 <Box sx={{ textAlign: 'center' }}>
