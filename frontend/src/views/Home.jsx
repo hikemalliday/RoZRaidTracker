@@ -12,6 +12,7 @@ export default function Home() {
         { label: 'Raids', path: '/raid/', description: 'Browse raid history' },
         { label: 'Items Awarded', path: '/item_awarded/', description: 'Browse loot drops' },
         { label: 'Approval', path: '/ra_approval_pending/', description: 'Approve raids' },
+        { label: 'Roaster', path: '/roster/', description: 'Class roster' },
     ];
 
     function Card({ path, label, description }) {
@@ -41,7 +42,7 @@ export default function Home() {
 
     const getCardComponent = card => {
         const cardComponent = (
-            <Card path={card.path} label={card.label} desctiption={card.description} />
+            <Card path={card.path} label={card.label} description={card.description} />
         );
         if (!isAuthenticated) return <></>;
         if (card.label === 'Approval' && isSuperUser && isAuthenticated) return cardComponent;
