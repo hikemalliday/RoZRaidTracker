@@ -24,7 +24,7 @@ jobs:
       - name: Deploy
         run: |
           ssh ${{ secrets.DROPLET_USER }}@${{ secrets.DROPLET_IP }} << 'EOF'
-            cd /var/ww/myapp
+            cd /home/mike/projects/RoZRaidTracker
             git pull
             ./copy_static.sh
             docker compose exec app python manage.py collectstatic --noinput
