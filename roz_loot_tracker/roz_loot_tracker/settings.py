@@ -1,4 +1,9 @@
 import os
+# TODO: Only needed when we need access to the quarm db. Un comment this anytime you need to pull data from it into our system.
+# import pymysql
+# # Monkey-patch pymysql to masquerade as MySQLdb so Django's mysql backend
+# # (which does `import MySQLdb`) works without needing the mysqlclient C extension.
+# pymysql.install_as_MySQLdb()
 
 """
 Django settings for roz_loot_tracker project.
@@ -92,7 +97,19 @@ DATABASES = {
     'dev-db': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db-dev.sqlite3',
-    }
+    },
+    # TODO: Only needed when we need access to the quarm db. Un comment this anytime you need to pull data from it into our system.
+    # 'quarm_db': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': os.getenv('QUARM_DB_NAME', 'quarm'),
+    #     'USER': os.getenv('QUARM_DB_USER', 'root'),
+    #     'PASSWORD': os.getenv('QUARM_DB_PASSWORD', 'admin123'),
+    #     'HOST': 'host.docker.internal',
+    #     'PORT': '3310',
+    #     'OPTIONS': {
+    #         'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+    #     },
+    # },
 }
 
 DATABASE_NAME = os.getenv('DJANGO_DB', 'default')
