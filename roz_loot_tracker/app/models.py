@@ -14,6 +14,7 @@ class Item(models.Model):
     eq_item_id = models.IntegerField()
     icon_id = models.IntegerField()
     item_score = models.IntegerField(**NOT_REQUIRED)
+    slots = models.IntegerField(**NOT_REQUIRED)
 
     def __str__(self):
         return self.name

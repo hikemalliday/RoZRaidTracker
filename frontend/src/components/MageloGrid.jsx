@@ -1,5 +1,5 @@
 import '../magelo.css';
-import { useItemsAwardedList } from '../hooks/requests.js';
+// import { useItemsAwardedList } from '../hooks/requests.js';
 import ammo from '../../public/magelo_icons/ammo.png';
 import arms from '../../public/magelo_icons/arms.png';
 import back from '../../public/magelo_icons/back.png';
@@ -20,13 +20,7 @@ import waist from '../../public/magelo_icons/waist.png';
 import wrist from '../../public/magelo_icons/wrist.png';
 import { ItemToolTip } from './ItemToolTip.jsx';
 
-export function MageloUI({ main = false }) {
-    // tune: 3
-    // vapo: 62
-    // shakirra: 21
-    // skeeter: 191
-    const { data: itemAwardedData } = useItemsAwardedList({ player: 3 });
-
+export function MageloGrid({ data = {} }) {
     const bitMap = [
         { bits: 2097152, slot: 'Ammo', gridLocations: [32], background: ammo },
         { bits: 1048576, slot: 'Waist', gridLocations: [13], background: waist },
@@ -48,16 +42,6 @@ export function MageloUI({ main = false }) {
         { bits: 4, slot: 'Head', gridLocations: [2], background: head },
         { bits: 1, slot: 'Charm', gridLocations: [], background: null },
     ];
-
-    const _getMainMageloItems = results => {
-        if (!results) return [];
-        return results.filter(item => !item.alt_loot && item.magelo);
-    };
-
-    const _getAltMageloItems = results => {
-        if (!results) return [];
-        return results.filter(item => item.alt_loot && item.magelo);
-    };
 
     const _getBaseBits = mask => {
         return bitMap.filter(s => mask & s.bits).map(s => s.bits);
@@ -176,11 +160,8 @@ export function MageloUI({ main = false }) {
         });
     };
 
-    const getMainOrAlt = main ? _getMainMageloItems : _getAltMageloItems;
-
-    const itemDataCopy = { ...itemAwardedData };
-    const mainMageloItems = getMainOrAlt(itemDataCopy?.results);
-    const filteredMageloItems = _filterItems(mainMageloItems);
+    const itemDataCopy = [...data];
+    const filteredMageloItems = _filterItems(itemDataCopy);
     const mappedItems = _getMappedItems(filteredMageloItems);
     const results = _getFinalResults(mappedItems);
 
