@@ -206,6 +206,7 @@ a:active {
 .tooltip-content {
   position: fixed;
   background-color: #222;
+  text-align: left;
   color: #fff;
   padding: 10px;
   border-radius: 6px;
@@ -218,6 +219,7 @@ a:active {
   display: block;        /* React controls visibility through conditional rendering */
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   pointer-events: none;  /* Allow mouse events to pass through tooltip */
+  font-size: 14px;
   /* top and left will be set via inline styles */
 }
 

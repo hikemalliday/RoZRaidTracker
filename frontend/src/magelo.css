@@ -1,0 +1,21 @@
+.wrapper {
+    display: grid;
+    max-width: 210px;
+    max-height: 420px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.slot {
+    height: 50px;
+    width: 50px;
+    background-color: #3a3a3a;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
