@@ -26,8 +26,7 @@ jobs:
           ssh ${{ secrets.DROPLET_USER }}@${{ secrets.DROPLET_IP }} << 'EOF'
             cd /home/mike/projects/RoZRaidTracker
             git pull
-            ./copy_static.sh
+            ./copy_static.sh >> /var/log/copy_static_script_roz.log 2>&1
             docker compose exec app python manage.py collectstatic --noinput
-            docker compose down && docker compose build && docker compose up -d
+            docker compose down && docker compose build && docker compose up -d >> /var/log/build_compose_roz.log 2>&1
           EOF
-        
