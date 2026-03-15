@@ -6,21 +6,28 @@ import { MageloCompareView } from './MageloCompareView.jsx';
 export function CompareView() {
     const [mageloView, setMageloView] = useState(false);
 
-    const linkStyles = {
-        ':hover': {
-            color: '#93c5fd',
-            cursor: 'pointer',
-            fontWeight: 500,
-            transition: 'color 0.2s',
-        },
-        ':active': {
-            color: '#fff',
-        },
-    };
-
     const _handleClick = tabName => {
         return setMageloView(tabName === 'magelo');
     };
+
+    const tabStyles = isActive => ({
+        paddingLeft: 3,
+        paddingRight: 3,
+        paddingTop: 1.25,
+        paddingBottom: 1.25,
+        fontSize: '0.8125rem',
+        fontWeight: 600,
+        letterSpacing: '0.08em',
+        textTransform: 'uppercase',
+        cursor: 'pointer',
+        userSelect: 'none',
+        color: isActive ? '#32cd32' : '#888888',
+        borderBottom: isActive ? '2px solid #32cd32' : '2px solid transparent',
+        transition: 'color 0.2s, border-color 0.2s',
+        ':hover': {
+            color: isActive ? '#32cd32' : '#cccccc',
+        },
+    });
 
     return (
         <Box>
@@ -28,16 +35,14 @@ export function CompareView() {
                 sx={{
                     display: 'flex',
                     justifyContent: 'center',
-                    gap: 3,
-                    fontWeight: 500,
-                    userSelect: 'none',
+                    marginBottom: 2,
                 }}
             >
-                <Box onClick={_ => _handleClick('items')} sx={linkStyles}>
-                    ITEMS
+                <Box onClick={() => _handleClick('items')} sx={tabStyles(!mageloView)}>
+                    Items
                 </Box>
-                <Box onClick={_ => _handleClick('magelo')} sx={linkStyles}>
-                    MAGELO
+                <Box onClick={() => _handleClick('magelo')} sx={tabStyles(mageloView)}>
+                    Magelo
                 </Box>
             </Box>
             {mageloView ? <MageloCompareView /> : <CompareItemsView />}
