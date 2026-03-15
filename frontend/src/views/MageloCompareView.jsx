@@ -7,7 +7,9 @@ export function MageloCompareView() {
             sx={{
                 display: 'flex',
                 justifyContent: 'center',
-                marginTop: 8,
+                flexWrap: 'wrap',
+                gap: 3,
+                marginTop: 3,
             }}
         >
             <MageloPlayer defaultPlayerId={1} />

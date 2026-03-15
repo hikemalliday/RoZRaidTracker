@@ -12,7 +12,12 @@ export function MageloPlayer({ defaultPlayerId = 1 }) {
         player: playerId,
     });
 
-    if (isPlayersPending || isItemsPending || isPlayerDetailPending) return <>LOADING...</>;
+    if (isPlayersPending || isItemsPending || isPlayerDetailPending)
+        return (
+            <Box sx={{ color: '#888888', fontSize: '0.75rem', letterSpacing: '0.1em', padding: 2 }}>
+                LOADING...
+            </Box>
+        );
 
     const _getMainMageloItems = results => {
         if (!results) return [];
@@ -38,7 +43,21 @@ export function MageloPlayer({ defaultPlayerId = 1 }) {
     const altItems = _getAltMageloItems(itemAwardedData?.results ?? []);
 
     const getPlayerMeta = char => {
-        return <Box>{char?.name ?? 'Un-named Character'}</Box>;
+        return (
+            <Box
+                sx={{
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                    color: '#9ca3af',
+                    paddingLeft: '17px',
+                    marginTop: '5px',
+                }}
+            >
+                {char?.name ?? 'Unnamed'}
+            </Box>
+        );
     };
 
     return (
@@ -46,7 +65,11 @@ export function MageloPlayer({ defaultPlayerId = 1 }) {
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 3,
+                gap: 1.5,
+                backgroundColor: '#1a1a1a',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: '8px',
+                padding: 2,
             }}
         >
             <PlayerAutoComplete
