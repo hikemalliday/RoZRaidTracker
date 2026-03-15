@@ -21,11 +21,11 @@ export function CompareView() {
         textTransform: 'uppercase',
         cursor: 'pointer',
         userSelect: 'none',
-        color: isActive ? '#32cd32' : '#888888',
-        borderBottom: isActive ? '2px solid #32cd32' : '2px solid transparent',
+        color: isActive ? '#ffffff' : '#888888',
+        borderBottom: isActive ? '2px solid #ffffff' : '2px solid transparent',
         transition: 'color 0.2s, border-color 0.2s',
         ':hover': {
-            color: isActive ? '#32cd32' : '#cccccc',
+            color: isActive ? '#ffffff' : '#cccccc',
         },
     });
 
