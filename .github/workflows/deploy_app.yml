@@ -24,9 +24,20 @@ jobs:
       - name: Deploy
         run: |
           ssh ${{ secrets.DROPLET_USER }}@${{ secrets.DROPLET_IP }} << 'EOF'
+            set -e
+            set -x
+            
+            LOG_FILE=/var/log/deploy_roz.log
+            exec > >(tee -a $LOG_FILE) 2>&1
+            
             cd /home/mike/projects/RoZRaidTracker
             git pull
-            ./copy_static.sh >> /var/log/copy_static_script_roz.log 2>&1
+          
+            ./copy_static.sh
+            
             docker compose exec app python manage.py collectstatic --noinput
-            docker compose down && docker compose build && docker compose up -d >> /var/log/build_compose_roz.log 2>&1
+          
+            docker compose down 
+            docker compose build
+            docker compose up -d
           EOF
