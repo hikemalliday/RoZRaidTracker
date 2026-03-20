@@ -1,9 +1,15 @@
-import { Box, Container, Typography } from '@mui/material';
-import { useCharacterList } from '../hooks/requests.js';
+import { Box, Container, Skeleton, TextField, Typography } from '@mui/material';
+import { usePlayersList } from '../hooks/requests.js';
 import { labelStyles } from '../styles.js';
+import { useState } from 'react';
 
 export function RosterView() {
-    const { data: characterList, isPending } = useCharacterList({ player__active: true });
+    const [numOfDays, setNumOfDays] = useState(21);
+    const [raPercentage, setRaPercentage] = useState(50);
+    const { data: playersList, isPending } = usePlayersList({
+        num_of_days: numOfDays,
+        ra_percentage: raPercentage,
+    });
     const charClasses = [
         'BRD',
         'BST',
@@ -22,14 +28,12 @@ export function RosterView() {
         'WIZ',
     ];
 
-    if (isPending) return <>LOADING...</>;
-
     const getCharsByClass = results => {
         const _filterChars = charClass => results.filter(char => char.char_class === charClass);
         return Object.fromEntries(charClasses.map(c => [c, _filterChars(c)]));
     };
-
-    const reducedChars = getCharsByClass(characterList.results);
+    const allChars = isPending ? [] : playersList.results.flatMap(player => player.characters);
+    const reducedChars = getCharsByClass(allChars);
 
     function ClassCard({ charClass, data }) {
         return (
@@ -81,17 +85,57 @@ export function RosterView() {
         );
     }
 
+    const fieldSx = {
+        width: 140,
+        '& .MuiInputBase-input': { color: 'white', fontSize: '0.875rem' },
+        '& .MuiInputLabel-root': { color: 'rgba(255,255,255,0.5)', fontSize: '0.875rem' },
+        '& .MuiInputLabel-root.Mui-focused': { color: 'rgba(255,255,255,0.8)' },
+        '& .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.15)' },
+        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.35)' },
+        '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'rgba(255,255,255,0.6)',
+        },
+    };
+
     return (
         <Container sx={{ mt: 2 }}>
-            <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
+            <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
                 Roster
             </Typography>
+            <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
+                <TextField
+                    label="Days"
+                    type="number"
+                    size="small"
+                    value={numOfDays}
+                    onChange={e => setNumOfDays(Number(e.target.value))}
+                    sx={fieldSx}
+                />
+                <TextField
+                    label="Min RA %"
+                    type="number"
+                    size="small"
+                    value={raPercentage}
+                    onChange={e => setRaPercentage(Number(e.target.value))}
+                    sx={fieldSx}
+                />
+            </Box>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-                {Object.entries(reducedChars)
-                    .filter(([, charList]) => charList.length > 0)
-                    .map(([charClass, charList]) => (
-                        <ClassCard key={charClass} charClass={charClass} data={charList} />
-                    ))}
+                {isPending
+                    ? Array.from({ length: 8 }).map((_, i) => (
+                          <Skeleton
+                              key={i}
+                              variant="rounded"
+                              width={220}
+                              height={160}
+                              sx={{ bgcolor: 'rgba(255,255,255,0.06)', flex: '1 1 200px', maxWidth: 280 }}
+                          />
+                      ))
+                    : Object.entries(reducedChars)
+                          .filter(([, charList]) => charList.length > 0)
+                          .map(([charClass, charList]) => (
+                              <ClassCard key={charClass} charClass={charClass} data={charList} />
+                          ))}
             </Box>
         </Container>
     );
