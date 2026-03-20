@@ -27,7 +27,7 @@ jobs:
             set -e
             set -x
             
-            LOG_FILE=/var/log/deploy_roz.log
+            LOG_FILE=/home/mike/deploy_roz.log
             exec > >(tee -a $LOG_FILE) 2>&1
             
             cd /home/mike/projects/RoZRaidTracker
