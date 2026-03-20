@@ -22,22 +22,42 @@ jobs:
           ssh-keyscan -H ${{ secrets.DROPLET_IP }} >> ~/.ssh/known_hosts
 
       - name: Deploy
+name: deploy-app
+run-name: SSH into server and rebuild app
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DROPLET_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.DROPLET_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy
         run: |
           ssh ${{ secrets.DROPLET_USER }}@${{ secrets.DROPLET_IP }} << 'EOF'
             set -e
             set -x
-            
+          
             LOG_FILE=/home/mike/deploy_roz.log
-            exec > >(tee -a $LOG_FILE) 2>&1
-            
+          
             cd /home/mike/projects/RoZRaidTracker
-            git pull
-          
-            ./copy_static.sh
-            
-            docker compose exec app python manage.py collectstatic --noinput
-          
-            docker compose down 
-            docker compose build
-            docker compose up -d
+            git pull 2>> $LOG_FILE
+            ./copy_static.sh 2>> $LOG_FILE
+            docker compose exec -T app python manage.py collectstatic --noinput 2>> $LOG_FILE
+            docker compose down 2>> $LOG_FILE
+            docker compose build --progress=plain 2>> $LOG_FILE
+            docker compose up -d 2>> $LOG_FILE
           EOF
