@@ -6,24 +6,9 @@ import { MetaDetail } from '../components/generic.jsx';
 import { getItemAwardedMetaData } from './utils.jsx';
 import { PlayerAutoComplete } from '../components/PlayerAutoComplete.jsx';
 
-export function CompareItemsView() {
-    const { isPending: isPlayersPending, data: playersData } = usePlayersList();
-    const [filters, setFilters] = useState(new Set(['main', 'alt_loot', 'preferred', 'magelo']));
-    const _handleCheckbox = (e, filter) => {
-        if (e.target.checked)
-            setFilters(prev => {
-                const filters = new Set(prev);
-                filters.add(filter);
-                return filters;
-            });
-        else
-            setFilters(prev => {
-                const filters = new Set(prev);
-                filters.delete(filter);
-                return filters;
-            });
-    };
-    if (isPlayersPending) return <>LOADING...</>;
+function CompareTable({ playersList, playersData, filtersState, defaultPlayerId = 1 }) {
+    const [playerId, setPlayerId] = useState(defaultPlayerId);
+    const { isPending, data: itemAwardedData } = useItemsAwardedList({ player: playerId });
 
     const sortItemsById = (results, asc = false) => {
         return results.sort((a, b) => {
@@ -55,63 +40,75 @@ export function CompareItemsView() {
         );
     };
 
-    function CompareTable({ playersList, filtersState, defaultPlayerId = 1 }) {
-        const [playerId, setPlayerId] = useState(defaultPlayerId);
-        const { isPending, data: itemAwardedData } = useItemsAwardedList({ player: playerId });
+    function _filterItems(results) {
+        if (!results) return [];
 
-        function _filterItems(results) {
-            if (!results) return [];
+        const fieldsToFilterOn = [...filtersState];
+        const includeMain = fieldsToFilterOn.includes('main');
+        const includeAltLoot = fieldsToFilterOn.includes('alt_loot');
+        const includeMagelo = fieldsToFilterOn.includes('magelo');
+        const includePreferred = fieldsToFilterOn.includes('preferred');
 
-            const fieldsToFilterOn = [...filtersState];
-            const includeMain = fieldsToFilterOn.includes('main');
-            const includeAltLoot = fieldsToFilterOn.includes('alt_loot');
-            const includeMagelo = fieldsToFilterOn.includes('magelo');
-            const includePreferred = fieldsToFilterOn.includes('preferred');
+        return results.filter(item => {
+            const isMainItem =
+                item.alt_loot === false && item.preferred === false && item.magelo === false;
+            const isAltItem = item.alt_loot === true && item.magelo === false;
+            const isMageloMainItem = item.magelo === true && item.alt_loot === false;
+            const isMageloAltItem = item.magelo === true && item.alt_loot === true;
+            const isPreferredItem = item.preferred === true;
 
-            return results.filter(item => {
-                const isMainItem =
-                    item.alt_loot === false && item.preferred === false && item.magelo === false;
-                const isAltItem = item.alt_loot === true && item.magelo === false;
-                const isMageloMainItem = item.magelo === true && item.alt_loot === false;
-                const isMageloAltItem = item.magelo === true && item.alt_loot === true;
-                const isPreferredItem = item.preferred === true;
-
-                if (isPreferredItem && includePreferred) return true;
-                if (isMageloMainItem && includeMagelo && includeMain) return true;
-                if (isMageloAltItem && includeMagelo && includeAltLoot) return true;
-                if (isAltItem && includeAltLoot) return true;
-                if (isMainItem && includeMain) return true;
-                return false;
-            });
-        }
-
-        const filteredData = _filterItems(itemAwardedData?.results);
-        return (
-            <Container disableGutters>
-                <Container>
-                    <PlayerAutoComplete
-                        playerId={playerId}
-                        playerIdSetter={setPlayerId}
-                        playersData={playersData}
-                    />
-                    {getRaInfo(playerId, playersList)}
-                    {getItemAwardedMetaData(itemAwardedData?.results, filteredData.length)}
-                    {!isPending && playerId && (
-                        <>
-                            <ItemAwardedListTable
-                                data={sortItemsById(filteredData)}
-                                highlight21Day
-                                sortable
-                                styledRows
-                                enableToolTip={true}
-                                dataTestId={playerId}
-                            />
-                        </>
-                    )}
-                </Container>
-            </Container>
-        );
+            if (isPreferredItem && includePreferred) return true;
+            if (isMageloMainItem && includeMagelo && includeMain) return true;
+            if (isMageloAltItem && includeMagelo && includeAltLoot) return true;
+            if (isAltItem && includeAltLoot) return true;
+            if (isMainItem && includeMain) return true;
+            return false;
+        });
     }
+
+    const filteredData = _filterItems(itemAwardedData?.results);
+    return (
+        <Container disableGutters>
+            <Container>
+                <PlayerAutoComplete
+                    playerId={playerId}
+                    playerIdSetter={setPlayerId}
+                    playersData={playersData}
+                />
+                {getRaInfo(playerId, playersList)}
+                {getItemAwardedMetaData(itemAwardedData?.results, filteredData.length)}
+                {!isPending && playerId && (
+                    <>
+                        <ItemAwardedListTable
+                            data={sortItemsById(filteredData)}
+                            highlight21Day
+                            sortable
+                            styledRows
+                            enableToolTip={true}
+                            dataTestId={playerId}
+                        />
+                    </>
+                )}
+            </Container>
+        </Container>
+    );
+}
+
+export function CompareItemsView() {
+    const { isPending: isPlayersPending, data: playersData } = usePlayersList();
+    const [filters, setFilters] = useState(new Set(['main', 'alt_loot', 'preferred', 'magelo']));
+    const _handleCheckbox = (e, filter) => {
+        let objMethod = 'delete';
+        if (e.target.checked) {
+            objMethod = 'add';
+        }
+        setFilters(prev => {
+            const filters = new Set(prev);
+            filters[objMethod](filter);
+            return filters;
+        });
+    };
+    if (isPlayersPending) return <>LOADING...</>;
 
     return (
         <>
@@ -171,6 +168,7 @@ export function CompareItemsView() {
                 {
                     <CompareTable
                         playersList={playersData.results}
+                        playersData={playersData}
                         defaultPlayerId={1}
                         filtersState={filters}
                     />
@@ -178,6 +176,7 @@ export function CompareItemsView() {
                 {
                     <CompareTable
                         playersList={playersData.results}
+                        playersData={playersData}
                         defaultPlayerId={2}
                         filtersState={filters}
                     />
@@ -185,6 +184,7 @@ export function CompareItemsView() {
                 {
                     <CompareTable
                         playersList={playersData.results}
+                        playersData={playersData}
                         defaultPlayerId={3}
                         filtersState={filters}
                     />
