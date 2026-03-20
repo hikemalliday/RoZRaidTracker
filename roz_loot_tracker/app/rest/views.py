@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from app import models
+from app.models import RaidAttendance
 from app.serializers.serializers import PlayerSerializer, ItemSerializer, RaidSerializer, \
     ZoneSerializer, CharacterSerializer, ItemAwardedSerializer, PreferredPixelSerializer, RaidAttendanceSerializer, \
     RaidAttendanceApprovalSerializer, TokenObtainPairSerializer
@@ -73,10 +74,13 @@ class PlayerViewSet(viewsets.ModelViewSet):
     filterset_class = PlayerFilter
 
     def get_queryset(self):
+        num_of_days = int(self.request.query_params.get('num_of_days', 21))
+        ra_percentage = self.request.query_params.get('ra_percentage', None)
+
         total_raids = models.Raid.objects.count() or 1
 
-        date_threshold = timezone.now() - timedelta(days=21)
-        total_raids_21_days = models.Raid.objects.filter(
+        date_threshold = timezone.now() - timedelta(days=num_of_days)
+        total_raids_window = models.Raid.objects.filter(
             created_at__gte=date_threshold
         ).count() or 1
 
@@ -94,7 +98,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
                     distinct=True,
                 ),
                 ra_21_day_raw=ExpressionWrapper(
-                    (100.0 * F('total_ra_21_days') / total_raids_21_days),
+                    (100.0 * F('total_ra_21_days') / total_raids_window),
                     output_field=FloatField(),
                 )
             )
@@ -103,8 +107,11 @@ class PlayerViewSet(viewsets.ModelViewSet):
                 ra_21_day=Func(F('ra_21_day_raw'), 2, function='ROUND', output_field=FloatField())
             )
         )
-        return queryset
 
+        if ra_percentage is not None:
+            queryset = queryset.filter(ra_21_day_raw__gte=float(ra_percentage))
+
+        return queryset
 
 class CharacterViewSet(viewsets.ModelViewSet):
     queryset = models.Character.objects.all()
