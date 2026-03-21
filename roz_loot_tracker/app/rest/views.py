@@ -72,7 +72,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
     ordering_fields = ['name', 'lifetime_ra', 'ra_21_day']
     pagination_class = AllowNoPagination
     filterset_class = PlayerFilter
-
+    # TODO: The whole "21 day" thing should probably be named something different in the annotated field, but the frontend is so dependent on it that I don't wanna refactor all that at the moment
     def get_queryset(self):
         num_of_days = int(self.request.query_params.get('num_of_days', 21))
         ra_percentage = self.request.query_params.get('ra_percentage', None)
@@ -86,9 +86,12 @@ class PlayerViewSet(viewsets.ModelViewSet):
 
         queryset = (
             models.Player.objects
+            # TODO: 'annotate()' basically adds a new field to the model instance
             .annotate(
                 total_ra=Count('raidattendance', distinct=True),
+                # TODO: 'ExpressionWrapper' is used to do SQL math operations.
                 lifetime_ra_raw=ExpressionWrapper(
+                    # TODO: F() is used to reference other calculated fields
                     (100.0 * F('total_ra') / total_raids),
                     output_field=FloatField(),
                 ),
