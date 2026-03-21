@@ -58,7 +58,6 @@ export function RaidDetailView() {
                 <DataField label="Raid" value={data?.name} />
                 <DataField label="Date" value={data?.created_at} />
             </Box>
-
             {getItemAwardedMetaDataEditable(
                 itemAwardedData?.results,
                 isAuthenticated,

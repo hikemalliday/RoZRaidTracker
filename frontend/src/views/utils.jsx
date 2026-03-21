@@ -133,6 +133,39 @@ export function fixLinks(htmlString, baseUrl = 'https://www.pqdi.cc/') {
     return doc.body.innerHTML;
 }
 
+const _getItemsResultsMeta = res => {
+    if (!res) return {};
+    const resultsObj = {};
+    res.forEach(item => {
+        const isMainItem =
+            item.alt_loot === false && item.magelo === false && item.preferred === false;
+        const isAltItem =
+            item.alt_loot === true && item.magelo === false && item.preferred === false;
+        const isMageloMainItem =
+            item.alt_loot === false && item.magelo === true && item.preferred === false;
+        const isMageloAltItem =
+            item.alt_loot === true && item.magelo === true && item.preferred === false;
+        const isPreferredMagelo =
+            item.alt_loot === false && item.magelo === true && item.preferred === true;
+        const isPreferredItem =
+            item.alt_loot === false && item.magelo === false && item.preferred === true;
+
+        if (isMainItem) resultsObj.main = resultsObj.main ? (resultsObj.main += 1) : 1;
+        if (isAltItem) resultsObj.alt = resultsObj.alt ? (resultsObj.alt += 1) : 1;
+        if (isMageloMainItem)
+            resultsObj.mageloMain = resultsObj.mageloMain ? (resultsObj.mageloMain += 1) : 1;
+        if (isMageloAltItem)
+            resultsObj.mageloAlt = resultsObj.mageloAlt ? (resultsObj.mageloAlt += 1) : 1;
+        if (isPreferredItem)
+            resultsObj.preferred = resultsObj.preferred ? (resultsObj.preferred += 1) : 1;
+        if (isPreferredMagelo)
+            resultsObj.preferredMagelo = resultsObj.preferredMagelo
+                ? (resultsObj.preferredMagelo += 1)
+                : 1;
+    });
+    return resultsObj;
+};
+
 export const getItemAwardedMetaDataEditable = (
     itemsResults,
     isAuthenticated = false,
@@ -140,29 +173,6 @@ export const getItemAwardedMetaDataEditable = (
     onEditClick = null
 ) => {
     if (!itemsResults) return null;
-
-    const _getItemsResultsMeta = res => {
-        if (!res) return {};
-        const resultsObj = {};
-        res.forEach(item => {
-            const isMainItem =
-                item.alt_loot === false && item.preferred === false && item.magelo === false;
-            const isAltItem = item.alt_loot === true && item.magelo === false;
-            const isMageloMainItem = item.magelo === true && item.alt_loot === false;
-            const isMageloAltItem = item.magelo === true && item.alt_loot === true;
-            const isPreferredItem = item.preferred === true;
-
-            if (isMainItem) resultsObj.main = resultsObj.main ? (resultsObj.main += 1) : 1;
-            if (isAltItem) resultsObj.alt = resultsObj.alt ? (resultsObj.alt += 1) : 1;
-            if (isMageloMainItem)
-                resultsObj.mageloMain = resultsObj.mageloMain ? (resultsObj.mageloMain += 1) : 1;
-            if (isMageloAltItem)
-                resultsObj.mageloAlt = resultsObj.mageloAlt ? (resultsObj.mageloAlt += 1) : 1;
-            if (isPreferredItem)
-                resultsObj.preferred = resultsObj.preferred ? (resultsObj.preferred += 1) : 1;
-        });
-        return resultsObj;
-    };
 
     const itemsResultsMeta = _getItemsResultsMeta(itemsResults);
     return (
@@ -221,6 +231,12 @@ export const getItemAwardedMetaDataEditable = (
                         <Typography sx={metaDataText}>{itemsResultsMeta.preferred || 0}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography sx={metaDataLabel}>Preferred Magelo</Typography>
+                        <Typography sx={metaDataText}>
+                            {itemsResultsMeta.preferredMagelo || 0}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                         <Typography sx={metaDataLabel}>Main</Typography>
                         <Typography sx={metaDataText}>{itemsResultsMeta.main || 0}</Typography>
                     </Box>
@@ -257,29 +273,6 @@ export const getItemAwardedMetaDataEditable = (
 export const getItemAwardedMetaData = (itemsResults, filteredDataLen) => {
     if (!itemsResults) return [];
 
-    const _getItemsResultsMeta = res => {
-        if (!res) return {};
-        const resultsObj = {};
-        res.forEach(item => {
-            const isMainItem =
-                item.alt_loot === false && item.preferred === false && item.magelo === false;
-            const isAltItem = item.alt_loot === true && item.magelo === false;
-            const isMageloMainItem = item.magelo === true && item.alt_loot === false;
-            const isMageloAltItem = item.magelo === true && item.alt_loot === true;
-            const isPreferredItem = item.preferred === true;
-
-            if (isMainItem) resultsObj.main = resultsObj.main ? (resultsObj.main += 1) : 1;
-            if (isAltItem) resultsObj.alt = resultsObj.alt ? (resultsObj.alt += 1) : 1;
-            if (isMageloMainItem)
-                resultsObj.mageloMain = resultsObj.mageloMain ? (resultsObj.mageloMain += 1) : 1;
-            if (isMageloAltItem)
-                resultsObj.mageloAlt = resultsObj.mageloAlt ? (resultsObj.mageloAlt += 1) : 1;
-            if (isPreferredItem)
-                resultsObj.preferred = resultsObj.preferred ? (resultsObj.preferred += 1) : 1;
-        });
-        return resultsObj;
-    };
-
     const itemsResultsMeta = _getItemsResultsMeta(itemsResults);
     return (
         <>
@@ -303,6 +296,12 @@ export const getItemAwardedMetaData = (itemsResults, filteredDataLen) => {
                 </Box>
                 <Box sx={{ textAlign: 'center' }}>
                     <MetaDetail label={'Preferred'} val={itemsResultsMeta.preferred || 0} />
+                </Box>
+                <Box sx={{ textAlign: 'center' }}>
+                    <MetaDetail
+                        label={'Preferred Magelo'}
+                        val={itemsResultsMeta.preferredMagelo || 0}
+                    />
                 </Box>
                 <Box sx={{ textAlign: 'center' }}>
                     <MetaDetail label={'Main'} val={itemsResultsMeta.main || 0} />
