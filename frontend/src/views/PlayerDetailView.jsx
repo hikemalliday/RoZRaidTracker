@@ -6,7 +6,7 @@ import {
     useRaidAttendanceList,
 } from '../hooks/requests.js';
 import { Box, Container, Typography } from '@mui/material';
-import { getItemAwardedMetaData, renderErrors } from './utils.jsx';
+import { getItemAwardedMetaData, renderErrors, sortItemsByRaidDate, sortRaData } from './utils.jsx';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { CharacterListTable } from '../components/CharacterListTable.jsx';
 import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.jsx';
@@ -46,19 +46,6 @@ export function PlayerDetailView() {
     const errorList = [playerError, itemAwardedError, characterError, raidsError];
     if (errorList.some(Boolean)) return renderErrors(errorList);
 
-    const _sortRaData = raData => {
-        return raData.sort((a, b) => {
-            const valA = a.created_at;
-            const valB = b.created_at;
-            return valB.localeCompare(valA);
-        });
-    };
-
-    const sortItemsById = results => {
-        return results.sort((a, b) => {
-            return b.id - a.id;
-        });
-    };
 
     return (
         <Container sx={{ mt: 1 }}>
@@ -95,7 +82,7 @@ export function PlayerDetailView() {
                     )}
                 </Box>
                 <ItemAwardedListTable
-                    data={sortItemsById(itemAwardedData.results)}
+                    data={sortItemsByRaidDate(itemAwardedData.results)}
                     sortable
                     styledRows
                 />
@@ -104,7 +91,7 @@ export function PlayerDetailView() {
                 <Typography sx={{ ...labelStyles, mb: 4 }}>
                     Raids Attended: {raidsData.count}
                 </Typography>
-                <RaidAttendanceListTable data={_sortRaData(raidsData?.results)} sortable />
+                <RaidAttendanceListTable data={sortRaData(raidsData?.results)} sortable />
             </Box>
         </Container>
     );

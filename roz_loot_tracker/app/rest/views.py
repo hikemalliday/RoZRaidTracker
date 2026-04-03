@@ -148,7 +148,7 @@ class ItemAwardedViewSet(viewsets.ModelViewSet):
     # permission_classes = (PERMISSION_CLASS_DEBUG,)
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['player', 'raid', 'item__id']
-    ordering_fields = ['player__name', 'raid__name', 'created_at', 'item__name']
+    ordering_fields = ['player__name', 'raid__name', 'created_at', 'item__name', 'raid__created_at']
     pagination_class = AllowNoPagination
 
 

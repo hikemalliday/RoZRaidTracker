@@ -1,5 +1,4 @@
 import '../magelo.css';
-// import { useItemsAwardedList } from '../hooks/requests.js';
 import ammo from '../../public/magelo_icons/ammo.png';
 import arms from '../../public/magelo_icons/arms.png';
 import back from '../../public/magelo_icons/back.png';

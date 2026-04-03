@@ -8,16 +8,17 @@ export function ItemAwardedListView() {
         <PaginatedListTable
             requestHook={useItemAwardedListPaginated}
             TableComponent={ItemAwardedListTable}
-            sortChoices={['name', 'player', 'raid', 'date']}
+            sortChoices={['name', 'player', 'raid', 'date', 'raid_date']}
             sortMap={{
                 name: 'item__name',
                 player: 'player__name',
                 date: 'created_at',
                 raid: 'raid__name',
+                raid_date: 'raid__created_at',
             }}
             defaultSort={{
                 orderDir: 'desc',
-                ordering: 'date',
+                ordering: 'raid_date',
             }}
             autoCompleteOptions={{
                 searchParam: 'item__id',
