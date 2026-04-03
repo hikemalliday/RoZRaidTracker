@@ -165,7 +165,7 @@ const _getItemsResultsMeta = res => {
     });
     return resultsObj;
 };
-
+// TODO: Does this belong in utils file?
 export const getItemAwardedMetaDataEditable = (
     itemsResults,
     isAuthenticated = false,
@@ -269,7 +269,7 @@ export const getItemAwardedMetaDataEditable = (
         </Box>
     );
 };
-
+// TODO: Does this belong in utils file?
 export const getItemAwardedMetaData = (itemsResults, filteredDataLen) => {
     if (!itemsResults) return [];
 
@@ -313,3 +313,26 @@ export const getItemAwardedMetaData = (itemsResults, filteredDataLen) => {
         </>
     );
 };
+
+export const sortRaData = raData => {
+    return raData.sort((a, b) => {
+        const valA = a.created_at;
+        const valB = b.created_at;
+        return valB.localeCompare(valA);
+    });
+};
+
+export const _parseDate = (str) => {
+    const [month, day, year] = str.split('-');
+    return new Date(`20${year}`, month - 1, day);
+};
+
+export const sortItemsByRaidDate = (results, desc = true) => {
+    return results.sort((a, b) => {
+        const raidA = a.raid ? a.raid.created_at : a.created_at;
+        const raidB = b.raid ? b.raid.created_at : b.created_at;
+        const dateA = _parseDate(raidA);
+        const dateB = _parseDate(raidB);
+        return desc ? dateB - dateA : dateA - dateB;
+    })
+}
