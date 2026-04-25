@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { fieldCardStyles, tableBox, textFieldStyles } from '../styles.js';
 import { getCell, TableList } from '../components/Tables.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
-import { getPlayersOptions } from './utils.jsx';
+import {getPlayersOptionsRaidAttendanceApproval} from './utils.jsx';
 import { DataField } from '../components/DataField.jsx';
 
 // Player dropdown at top + button
@@ -44,9 +44,9 @@ function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
                     renderInput={params => (
                         <TextField {...params} label="Player" sx={textFieldStyles} size="small" />
                     )}
-                    options={!isPlayersPending ? getPlayersOptions(playersData.results) : []}
+                    options={!isPlayersPending ? getPlayersOptionsRaidAttendanceApproval(playersData.results) : []}
                     onChange={(_, option) => {
-                        setSelectedPlayer({ name: option.label, is_selected: true });
+                        setSelectedPlayer({ name: option.name, discord_id: option.discord_id, is_selected: true });
                     }}
                 />
                 <button style={{ backgroundColor: '#2a2a2a' }} onClick={handleSubmit}>

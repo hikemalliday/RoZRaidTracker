@@ -60,6 +60,32 @@ const _getReducedPlayersOptions = players => {
     return options;
 };
 
+const _getReducedPlayersOptionsRaidAttendanceApproval = players => {
+    const options = [];
+    for (const player of players) {
+        if (player.characters.length === 0) {
+            options.push({
+                id: player.id,
+                value: [player.name, player.discord_id],
+                name: player.name,
+                label: player.name,
+                discord_id: player.discord_id,
+            });
+            continue;
+        }
+        for (const character of player.characters) {
+            options.push({
+                id: player.id,
+                value: [player.name, player.discord_id],
+                name: player.name,
+                label: `${player.name} | ${character.name}`,
+                discord_id: player.discord_id,
+            });
+        }
+    }
+    return options;
+};
+
 export const getPlayersListFinal = results => {
     if (!results) return [];
     const reducedList = _getReducedResults(results);
@@ -71,6 +97,12 @@ export const getPlayersOptions = results => {
     const reducedList = _getReducedPlayersOptions(results);
     return _sortReducedList(reducedList);
 };
+
+export const getPlayersOptionsRaidAttendanceApproval = results => {
+    if (!results) return [];
+    const reducedList = _getReducedPlayersOptionsRaidAttendanceApproval(results);
+    return _sortReducedList(reducedList)
+}
 
 export const getItemOptionsListFinal = results => {
     return _getReduceItemAwardedResults(results);
