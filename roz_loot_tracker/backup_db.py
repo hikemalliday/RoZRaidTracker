@@ -15,7 +15,7 @@ def load_env_file():
 
 def backup_db():
     try:
-        with open("db.sqlite3", 'rb') as data:
+        with open("/home/mike/projects/RoZRaidTracker/roz_loot_tracker/db.sqlite3", 'rb') as data:
             s3.Bucket(bucket_name).put_object(Key=s3_key, Body=data)
             print("Successfully backed up the DB to S3!")
     except Exception as e:
