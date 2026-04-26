@@ -3,7 +3,7 @@ from datetime import datetime
 import boto3
 
 def load_env_file():
-    with open(".env", "r") as f:
+    with open("/home/mike/projects/RoZRaidTracker/roz_loot_tracker/.env", "r") as f:
         for line in f:
             line = line.strip()
             # split key=value
