@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Box, TableCell } from '@mui/material';
-import { IMAGE_PATH } from '../config.js';
 import { fixLinks, getItemInfo } from '../views/utils.jsx';
+const IMAGE_PATH = import.meta.env.VITE_IMAGE_PATH;
 
 export const ItemToolTip = ({ item, isCell = true }) => {
     const [itemHtml, setItemHtml] = useState(null);

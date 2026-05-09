@@ -12,11 +12,11 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router';
 import React, { useEffect, useState } from 'react';
-import { IMAGE_PATH } from '../config.js';
 import { useDebounce } from '../hooks/useDebounce.js';
 import { useListDebounced } from '../hooks/requests.js';
 import { listBoxStyles, textFieldStyles } from '../styles.js';
 import { _getReducedResults, getLootType } from '../views/utils.jsx';
+const IMAGE_PATH = import.meta.env.VITE_IMAGE_PATH;
 
 export const getLinkCell = (val, route, extraText) => {
     return (
