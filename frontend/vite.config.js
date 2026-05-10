@@ -1,9 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// TODO: Determine local vs prod via vite `mode`. See: https://vite.dev/guide/env-and-mode
-export default defineConfig(({ mode }) => {
-    const isProd = mode === 'production';
+export default defineConfig(() => {
     return {
         plugins: [react()],
         test: {
@@ -11,6 +9,6 @@ export default defineConfig(({ mode }) => {
             environment: 'jsdom',
             setupFiles: './src/setupTests.js',
         },
-        base: isProd ? '/static/' : '/',
+        base:'/static/'
     }
 });

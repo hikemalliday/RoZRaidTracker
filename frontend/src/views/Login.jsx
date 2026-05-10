@@ -4,7 +4,7 @@ import { useAuthContext } from '../context/AuthContext.jsx';
 import { useNavigate } from 'react-router';
 import { useMessage } from '../context/MessageContext.jsx';
 import { buttonStyles } from '../styles.js';
-const BASE_URL = import.meta.env.BASE_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export default function Login() {
     const [username, setUsername] = useState('');

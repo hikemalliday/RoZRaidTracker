@@ -5,20 +5,35 @@
 - user: member (case sensitive)
 - pass: zeknumberone1234!
 - Discord bot app is used to track raid attendance by making a `POST` request to take raid logs
+- New `Players`are added to the system automatically when the `/take_ra` discord bot slash command is ran, if they do not already exist, with the `discord_id` being the source of truth / unique identifier
 - `Compare`page is used by officers to provide data when awarding raid loot
+- There is also an admin level login that has custom forms and such to assign items to players and raids
 
-# Local setup to emulate prod architecture
-- `local.conf`: Allows a local setup that uses NGINX to serve assets, similar to app architecture in prod. Used in `emulate-prod.yml`
-- The `local.conf` file is a stripped down version with no HTTPS cert handling. This is simply a means to test nginx serving built assets, by accessing the assets in the vite app dir via volume mapping
-- Note that, running the app locally with `emulate-prod.yml`does not enable frontend hot reloading, as this setup is serving built assets with NGINX
-- To develop locally with hot reloading, run launch with `dev.yml` (docker compose) and `./frontend npm run dev`
+# Note about vite and env files
+- Vite will use `.env` files based on what `mode` its built or ran in, see: https://vite.dev/guide/env-and-mode.html
+- As such, you need to be mindful of this when either building for prod, or running locally
 
-# Env vars
+# Building for prod
+- When running `npm run build`, vite will automatically build in `production` mode, and will automatically use env var `.env.production
+
+# How to launch via `emulate-prod.yml`
+- This yml is for testing out the serving assets via NGINX locally
+- You must first build locally with command `./frontend/npx vite build --mode emulate-prod`
+- Building with this `mode`option will tell vite to use env file `.env.emulate-prod`
+- Then, run `docker compose -f emulate-prod.yml build && docker compose -f emulate-prod.yml up -d`
+- Note that hot reloading will not work with this setup, as NGINX will be serving built assets.
+
+# How to develop locally with hot reloading
+- Run `docker compose -f dev.yml build && docker compose -f dev.yml up -d`, then `./frontend npm run dev`
+- The vite dev server does not serve the built assets, so you do not necessarily need to perform a vite rebuild here
+- Also, running `npm run dev` will tell vite to load env file `.env.developement`
+
+# Env var locations
 - App depends on the following env var files, for both local development and prod:
-  - `./frontend/.env.local`
+  - `./frontend/.env.development`
   - `./frontend/.env.production`
-  - `./roz_loot_tracker/.env` (for AWS boto3 cronjob that bucks up database, handled by .py script)
+  - `./frontend/.env.emulate-prod`
+  - `./roz_loot_tracker/.env` (for .py script that uses boto3 to back up database, currently ran once a day on digital ocean vm)
 
 # Misc
-- `./roz_loot_tracker/backup_db.py` is a script that backs up the sqlite db by uploading it to an S3 bucket. This script depends on a `.venv` in the same folder, so that it can use boto3 lib. Currently, this chron is running once a day on the digital ocean VM.
 - (5/9/26): Currently undergoing a refactor to prepare to migrate from digital ocean to AWS. In prod, django is currently serving the built react html file from a view, as well as the rest of the assets via `./staticfiles`. After the refactor, all assets will be served by NGINX
