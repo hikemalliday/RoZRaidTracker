@@ -14,7 +14,7 @@
 - As such, you need to be mindful of this when either building for prod, or running locally
 
 # Building for prod
-- When running `npm run build`, vite will automatically build in `production` mode, and will automatically use env var `.env.production
+- When running `npm run build`, vite will automatically build in `production` mode, and will automatically use env var file `.env.production`
 
 # How to launch via `emulate-prod.yml`
 - This yml is for testing out the serving assets via NGINX locally
