@@ -1,6 +1,9 @@
 services:
   app:
-    build: .
+    build:
+      context: .
+      args:
+        VITE_MODE: production
     container_name: django-app
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
@@ -12,8 +15,12 @@ services:
       - DJANGO_DB=${DJANGO_DB:-default}
 
   nginx:
-    image: nginx:stable
     container_name: nginx-app
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_MODE: production
     ports:
       - "80:80"
       - "443:443"

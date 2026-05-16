@@ -3,7 +3,7 @@ services:
     build:
       context: .
       args:
-        VITE_MODE: production
+        VITE_MODE: emulate-prod
     container_name: django-app
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
