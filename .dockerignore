@@ -1,2 +1,7 @@
-/node_modules
-/dist
+/frontend
+**/.venv
+**/venv
+.env
+.env.*
+**/.env
+**/.env.*

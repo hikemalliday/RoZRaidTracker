@@ -2,15 +2,13 @@ FROM node:20-slim AS build
 
 ARG VITE_MODE
 
-WORKDIR ./frontend
-
-COPY ./frontend/package*.json ./
+COPY package*.json ./
 RUN npm install
-COPY ./frontend ./
+COPY . .
 RUN npx vite build --mode $VITE_MODE
 
 FROM nginx:alpine
-COPY --from=build /frontend/dist ./frontend/dist/
+COPY --from=build /dist ./static/
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

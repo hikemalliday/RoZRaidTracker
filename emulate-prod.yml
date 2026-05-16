@@ -15,8 +15,8 @@ services:
       - DJANGO_DB=${DJANGO_DB:-default}
   nginx:
     build:
-      context: .
-      dockerfile: Dockerfile-Nginx
+      context: ./frontend
+      dockerfile: Dockerfile
       args:
         VITE_MODE: emulate-prod
     container_name: nginx-app
