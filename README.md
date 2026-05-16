@@ -18,9 +18,8 @@
 
 # How to launch via `emulate-prod.yml`
 - This yml is for testing out the serving assets via NGINX locally
-- You must first build locally with command `./frontend/npx vite build --mode emulate-prod`
-- Building with this `mode`option will tell vite to use env file `.env.emulate-prod`
-- Then, run `docker compose -f emulate-prod.yml build && docker compose -f emulate-prod.yml up -d`
+- We have refactored so that `Dockerfile-Nginx` builds the react assets and copies them into the container, therefore we no longer have to manually run `npx vite build...` on the host.
+- Run `docker compose -f emulate-prod.yml build && docker compose -f emulate-prod.yml up -d`
 - Note that hot reloading will not work with this setup, as NGINX will be serving built assets.
 
 # How to develop locally with hot reloading
