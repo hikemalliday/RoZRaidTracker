@@ -12,7 +12,7 @@ export default function Home() {
         { label: 'Raids', path: '/raid/', description: 'Browse raid history' },
         { label: 'Items Awarded', path: '/item_awarded/', description: 'Browse loot drops' },
         { label: 'Approval', path: '/ra_approval_pending/', description: 'Approve raids' },
-        { label: 'Roaster', path: '/roster/', description: 'Class roster' },
+        { label: 'Roster', path: '/roster/', description: 'Class roster' },
     ];
 
     function Card({ path, label, description }) {
