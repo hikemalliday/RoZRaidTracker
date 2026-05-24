@@ -24,7 +24,7 @@ services:
       - "443:443"
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf
-      - /etc/letsencrypt/live/roz.yeetorskeet.com:/etc/letsencrypt/live/roz.yeetorskeet.com
+      - /etc/letsencrypt/live/zekraidtools.com:/etc/letsencrypt/live/zekraidtools.com
       - /etc/letsencrypt/archive:/etc/letsencrypt/archive
     depends_on:
       - app

@@ -33,6 +33,6 @@
   - `./frontend/.env.production`
   - `./frontend/.env.emulate-prod`
   - `./roz_loot_tracker/.env` (for .py script that uses boto3 to back up database, currently ran once a day on digital ocean vm)
-
+  - `./env` (unsure if this one is still needed, 5/23/26)
 # Misc
 - (5/9/26): Currently undergoing a refactor to prepare to migrate from digital ocean to AWS. In prod, django is currently serving the built react html file from a view, as well as the rest of the assets via `./staticfiles`. After the refactor, all assets will be served by NGINX
