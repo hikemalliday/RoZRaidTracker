@@ -1,7 +1,8 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, process.cwd(), '');
     return {
         plugins: [react()],
         test: {
@@ -9,6 +10,10 @@ export default defineConfig(() => {
             environment: 'jsdom',
             setupFiles: './src/setupTests.js',
         },
-        base:'/static/'
+        base:'/static/',
+        build: {
+            sourcemap: env.VITE_SOURCEMAP,
+            minify: 'esbuild',
+        }
     }
 });
