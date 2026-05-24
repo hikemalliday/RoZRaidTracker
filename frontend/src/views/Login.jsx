@@ -20,7 +20,7 @@ export default function Login() {
         e.preventDefault();
         try {
             const resp = await axios.post(`${BASE_URL}/token/`, {
-                username,
+                username: username.toLowerCase().trim(),
                 password,
             });
             if (resp.status === 200) {
