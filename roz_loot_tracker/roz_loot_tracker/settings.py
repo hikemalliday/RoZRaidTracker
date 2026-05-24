@@ -34,7 +34,7 @@ SECRET_KEY = 'django-insecure-@)umsv@bgc)x=nls84^=d32vcxnnobtbzz(sy=b#5xoc)m&=ap
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["45.55.129.24", "127.0.0.1", "localhost", "zekraidtools.com"]
+ALLOWED_HOSTS = ["45.55.129.24", "127.0.0.1", "localhost", "zekraidtools.com", "44.196.203.151"]
 
 
 # Application definition
