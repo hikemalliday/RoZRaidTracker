@@ -11,7 +11,8 @@ services:
       - "8000:8000"
     environment:
       - DJANGO_DB=${DJANGO_DB:-default}
-
+    volumes:
+      - ./roz_loot_tracker/db.sqlite3:/roz_loot_tracker/db.sqlite3
   nginx:
     container_name: nginx-app
     build:
