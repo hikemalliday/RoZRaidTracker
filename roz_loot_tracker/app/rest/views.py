@@ -1,7 +1,6 @@
 from datetime import timedelta
-
+import sqlite3
 from app import models
-from app.models import RaidAttendance
 from app.serializers.serializers import PlayerSerializer, ItemSerializer, RaidSerializer, \
     ZoneSerializer, CharacterSerializer, ItemAwardedSerializer, PreferredPixelSerializer, RaidAttendanceSerializer, \
     RaidAttendanceApprovalSerializer, TokenObtainPairSerializer
@@ -9,7 +8,7 @@ from django.db import transaction
 from django.db.models import Count, F, FloatField, ExpressionWrapper, Func, Q
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.filters import OrderingFilter
@@ -19,6 +18,8 @@ from rest_framework.response import Response
 from django_filters import rest_framework as filters
 from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.conf import settings
+from pathlib import Path
 
 
 PERMISSION_CLASS_DEBUG = IsAuthenticated
@@ -219,6 +220,41 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
             raid_attendance_approval.save()
 
         return Response({"message": f"Success: added raid '{raid_name} + attendees.'"}, status=200)
+
+
+class SQLQueryViewSet(viewsets.GenericViewSet):
+    DB_PATH = Path(settings.BASE_DIR) / "db.sqlite3"
+
+    @action(detail=False, methods=["post"])
+    def query(self, request):
+        sql = request.data.get("query", "").strip()
+        if not sql:
+            return Response(
+                {"error": "Query is required."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        try:
+            # SQLite read-only connection
+            conn = sqlite3.connect(
+                f"file:{self.DB_PATH}?mode=ro",
+                uri=True,
+            )
+            conn.row_factory = sqlite3.Row
+
+            with conn:
+                cursor = conn.execute(sql)
+                columns = [col[0] for col in cursor.description]
+                rows = [
+                    dict(zip(columns, row))
+                    for row in cursor.fetchall()
+                ]
+            return Response({"results": rows})
+
+        except sqlite3.Error as exc:
+            return Response(
+                {"error": str(exc)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
