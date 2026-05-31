@@ -9,11 +9,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Debug secrets
-        run: |
-          echo "IP length: ${#EC2_IP}"
-        env:
-          EC2_IP: ${{ secrets.EC2_IP }}
       - name: Checkout
         uses: actions/checkout@v4
 
