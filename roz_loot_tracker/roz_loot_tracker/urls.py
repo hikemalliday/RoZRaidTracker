@@ -19,7 +19,8 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from rest_framework import routers
 from app.rest.views import ItemViewSet, ZoneViewSet, PlayerViewSet, CharacterViewSet, RaidViewSet, ItemAwardedViewSet, \
-    PreferredPixelViewSet, RaidAttendanceViewSet, RaidAttendanceApprovalViewSet, CustomTokenObtainPairView
+    PreferredPixelViewSet, RaidAttendanceViewSet, RaidAttendanceApprovalViewSet, CustomTokenObtainPairView, \
+    SQLQueryViewSet
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -36,6 +37,7 @@ router.register(r'items_awarded', ItemAwardedViewSet)
 router.register(r'preferred_pixels', PreferredPixelViewSet)
 router.register(r'raid_attendance', RaidAttendanceViewSet)
 router.register(r'raid_attendance_approval', RaidAttendanceApprovalViewSet)
+router.register(r'sql', SQLQueryViewSet, basename='sql')
 
 urlpatterns = [
     path("api/", include(router.urls)),

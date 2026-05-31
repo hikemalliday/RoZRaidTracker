@@ -17,6 +17,7 @@ import { PlayerEditView } from './views/PlayerEditView.jsx';
 import { Screenshots } from './views/Screenshots.jsx';
 import { RosterView } from './views/RosterView.jsx';
 import { CompareView } from './views/CompareView.jsx';
+import { SQLQueryView } from "./views/SQLQueryView.jsx";
 
 function App() {
     const queryClient = new QueryClient();
@@ -47,6 +48,7 @@ function App() {
                         />
                         <Route path="/raid/:id/edit" element={<RaidEditView />} />
                         <Route path="/player/:id/edit" element={<PlayerEditView />} />
+                        <Route path="/sql" element={<SQLQueryView />} />
                     </Route>
 
                     <Route path="*" element={<NotFound />} />

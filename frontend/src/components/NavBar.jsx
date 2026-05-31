@@ -28,6 +28,7 @@ export function NavBar() {
         { label: 'ITEMS AWARDED', path: '/item_awarded' },
         { label: 'SCREENSHOTS', path: '/screenshots' },
         { label: 'ROSTER', path: '/roster' },
+        { label: 'SQL', path: '/sql' },
     ];
 
     const navBarLinks = () => {
@@ -49,13 +50,22 @@ export function NavBar() {
                     COMPARE
                 </a>
                 {isAuthenticated && isSuperUser && (
-                    <a
-                        id="nav-bar-link"
-                        onClick={() => handleLinkClick('ra_approval_pending')}
-                        className={isActive('ra_approval_pending') ? 'active' : ''}
-                    >
-                        APPROVAL
-                    </a>
+                    <>
+                        <a
+                            id="nav-bar-link"
+                            onClick={() => handleLinkClick('ra_approval_pending')}
+                            className={isActive('ra_approval_pending') ? 'active' : ''}
+                        >
+                            APPROVAL
+                        </a>
+                        <a
+                            id="nav-bar-link"
+                            onClick={() => handleLinkClick('sql')}
+                            className={isActive('sql') ? 'active' : ''}
+                        >
+                        SQL
+                        </a>
+                    </>
                 )}
                 <a
                     id="nav-bar-link"
@@ -92,6 +102,7 @@ export function NavBar() {
                 >
                     ROSTER
                 </a>
+
                 {isAuthenticated ? (
                     <a id="nav-bar-link" onClick={() => logout()}>
                         LOG OUT
