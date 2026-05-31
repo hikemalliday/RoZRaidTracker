@@ -1,0 +1,9 @@
+**/frontend
+**/.venv
+**/venv
+.env
+.env.*
+**/.env
+**/.env.*
+**/.github
+**/.idea

@@ -4,7 +4,7 @@ import { useAuthContext } from '../context/AuthContext.jsx';
 import { useNavigate } from 'react-router';
 import { useMessage } from '../context/MessageContext.jsx';
 import { buttonStyles } from '../styles.js';
-import { BASE_URL } from '../config.js';
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -20,7 +20,7 @@ export default function Login() {
         e.preventDefault();
         try {
             const resp = await axios.post(`${BASE_URL}/token/`, {
-                username,
+                username: username.toLowerCase().trim(),
                 password,
             });
             if (resp.status === 200) {

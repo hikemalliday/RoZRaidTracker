@@ -3,7 +3,7 @@ services:
     build:
       context: .
       args:
-        VITE_MODE: production
+        VITE_MODE: emulate-prod
     container_name: django-app
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
@@ -14,18 +14,16 @@ services:
     volumes:
       - ./roz_loot_tracker/db.sqlite3:/roz_loot_tracker/db.sqlite3
   nginx:
-    container_name: nginx-app
     build:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        VITE_MODE: production
+        VITE_MODE: emulate-prod
+    container_name: nginx-app
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./default.conf:/etc/nginx/conf.d/default.conf
-      - /etc/letsencrypt/live/zekraidtools.com:/etc/letsencrypt/live/zekraidtools.com
-      - /etc/letsencrypt/archive:/etc/letsencrypt/archive
+      - ./local.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - app

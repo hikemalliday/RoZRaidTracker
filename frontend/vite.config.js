@@ -1,15 +1,19 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
-import { ENVIRONMENT } from './src/config.js';
-// https://vite.dev/config/
 
-let config = {
-    plugins: [react()],
-    test: {
-        globals: true,
-        environment: 'jsdom',
-        setupFiles: './src/setupTests.js',
-    },
-};
-if (ENVIRONMENT === 'prod') config.base = '/static/';
-export default defineConfig(config);
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, process.cwd(), '');
+    return {
+        plugins: [react()],
+        test: {
+            globals: true,
+            environment: 'jsdom',
+            setupFiles: './src/setupTests.js',
+        },
+        base:'/static/',
+        build: {
+            sourcemap: env.VITE_SOURCEMAP,
+            minify: 'esbuild',
+        }
+    }
+});
