@@ -2,7 +2,7 @@
 - Website with active user base to track guild raid and item data 
 - Lovingly built (mostly) by hand. AI assisted with CSS.
 - https://www.zekraidtools.com/
-- user: member (case sensitive)
+- user: member
 - pass: zeknumberone1234!
 - Discord bot app is used to track raid attendance by making a `POST` request to take raid logs
 - New `Players`are added to the system automatically when the `/take_ra` discord bot slash command is ran, if they do not already exist, with the `discord_id` being the source of truth / unique identifier
