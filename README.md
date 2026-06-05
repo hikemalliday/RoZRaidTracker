@@ -1,7 +1,7 @@
 # RoZ Loot Tracker
 - Website with active user base to track guild raid and item data 
 - Lovingly built (mostly) by hand. AI assisted with CSS.
-- https://roz.yeetorskeet.com/
+- https://www.zekraidtools.com/
 - user: member (case sensitive)
 - pass: zeknumberone1234!
 - Discord bot app is used to track raid attendance by making a `POST` request to take raid logs
