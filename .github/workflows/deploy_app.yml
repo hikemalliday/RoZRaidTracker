@@ -25,8 +25,7 @@ jobs:
             set -e
             set -x
             cd /home/mike/projects/RoZRaidTracker
-            git checkout origin/main
-            git pull
+            git pull origin main
             docker compose down
             docker compose build
             docker compose up -d
