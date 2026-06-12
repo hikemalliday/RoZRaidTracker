@@ -23,10 +23,6 @@ from app.rest.views import ItemViewSet, ZoneViewSet, PlayerViewSet, CharacterVie
     SQLQueryViewSet
 from django.views.decorators.csrf import csrf_exempt
 
-
-# def index_view(request):
-#     return render(request, "index.html")
-
 router = routers.DefaultRouter()
 router.register(r'items', ItemViewSet)
 router.register(r'zones', ZoneViewSet)
@@ -45,5 +41,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/token/', csrf_exempt(CustomTokenObtainPairView.as_view()), name='token_obtain_pair'),
     path('api/token/refresh/', csrf_exempt(CustomTokenObtainPairView.as_view()), name='token_refresh'),
-    # re_path(r'^(?!admin/|api/).*$', index_view),
 ]
