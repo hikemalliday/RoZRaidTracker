@@ -37,7 +37,6 @@ router.register(r'sql', SQLQueryViewSet, basename='sql')
 
 urlpatterns = [
     path("api/", include(router.urls)),
-    path("admin", admin.site.urls),
     path('admin/', admin.site.urls),
     path('api/token/', csrf_exempt(CustomTokenObtainPairView.as_view()), name='token_obtain_pair'),
     path('api/token/refresh/', csrf_exempt(CustomTokenObtainPairView.as_view()), name='token_refresh'),
