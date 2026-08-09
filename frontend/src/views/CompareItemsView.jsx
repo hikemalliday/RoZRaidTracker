@@ -3,18 +3,12 @@ import { Box, Checkbox, Container, FormControlLabel } from '@mui/material';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { useItemsAwardedList, usePlayersList } from '../hooks/requests.js';
 import { MetaDetail } from '../components/generic.jsx';
-import {getItemAwardedMetaData, sortItemsByRaidDate} from './utils.jsx';
+import { getItemAwardedMetaData, sortItemsByRaidDate } from './utils.jsx';
 import { PlayerAutoComplete } from '../components/PlayerAutoComplete.jsx';
 
 function CompareTable({ playersList, playersData, filtersState, defaultPlayerId = 1 }) {
     const [playerId, setPlayerId] = useState(defaultPlayerId);
     const { isPending, data: itemAwardedData } = useItemsAwardedList({ player: playerId });
-
-    const sortItemsById = (results, asc = false) => {
-        return results.sort((a, b) => {
-            return asc ? a.id - b.id : b.id - a.id;
-        });
-    };
 
     const getRaInfo = (playerId, playersList) => {
         if (!playerId) return null;
@@ -90,7 +84,6 @@ function CompareTable({ playersList, playersData, filtersState, defaultPlayerId 
                     <>
                         <ItemAwardedListTable
                             data={sortItemsByRaidDate(filteredData)}
-                            highlight21Day
                             sortable
                             styledRows
                             enableToolTip={true}

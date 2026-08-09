@@ -8,4 +8,4 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DJANGO_DB=${DJANGO_DB:-default}
+      - DJANGO_DB=${DJANGO_DB:-dev-db}

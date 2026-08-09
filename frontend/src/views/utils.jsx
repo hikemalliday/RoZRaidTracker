@@ -133,8 +133,7 @@ export function getLootType(itemObj) {
 export async function getItemInfo(itemId) {
     try {
         const res = await fetch(`https://www.pqdi.cc/get-item-tooltip/${itemId}`);
-        const html = await res.text();
-        return html;
+        return await res.text();
     } catch (err) {
         console.error(err);
     }

@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { fieldCardStyles, tableBox, textFieldStyles } from '../styles.js';
 import { getCell, TableList } from '../components/Tables.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
-import {getPlayersOptionsRaidAttendanceApproval} from './utils.jsx';
+import { getPlayersOptionsRaidAttendanceApproval } from './utils.jsx';
 import { DataField } from '../components/DataField.jsx';
 
 // Player dropdown at top + button
@@ -57,7 +57,7 @@ function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
     );
 }
 
-export function PlayersToSubmitTable({ playersToSubmit, setPlayersToSubmit, onSubmit, ...rest }) {
+export function PlayersToSubmitTable({ playersToSubmit, setPlayersToSubmit, ...rest }) {
     const getPlayersRows = players => {
         const _getPlayerCheckbox = player => {
             const _handleCheckboxClick = e => {

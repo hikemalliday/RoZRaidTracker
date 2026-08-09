@@ -6,7 +6,6 @@ import { ItemToolTip } from './ItemToolTip.jsx';
 
 export function ItemAwardedListTable({
     data,
-    highlight21Day = false,
     styledRows = false,
     dataTestId = null,
     ...rest

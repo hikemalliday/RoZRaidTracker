@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
             environment: 'jsdom',
             setupFiles: './src/setupTests.js',
         },
-        base:'/static/',
+        base: env.VITE_CONFIG_BASE || '/static/',
         build: {
             sourcemap: env.VITE_SOURCEMAP,
             minify: 'esbuild',
