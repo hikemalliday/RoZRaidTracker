@@ -29,6 +29,7 @@ export function ItemAwardedListTableEditable({
     if (isPlayersPending) return <>Loading...</>;
 
     // Pass in payload obj and add key / vals
+    // TODO: We will eventually switch data model to `CHOICES` but for now this is fine
     const _addLootTypeFields = (lootType, payload) => {
         if (lootType === 'Preferred') {
             payload.alt_loot = false;
