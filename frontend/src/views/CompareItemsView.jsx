@@ -36,35 +36,15 @@ function CompareTable({ playersList, playersData, filtersState, defaultPlayerId 
 
     function _filterItems(results) {
         if (!results) return [];
-
         const fieldsToFilterOn = [...filtersState];
-        const includeMain = fieldsToFilterOn.includes('main');
-        const includeAltLoot = fieldsToFilterOn.includes('alt_loot');
-        const includeMageloMain = fieldsToFilterOn.includes('magelo_main');
-        const includePreferred = fieldsToFilterOn.includes('preferred');
-        const includePreferredMagelo = fieldsToFilterOn.includes('magelo_preferred');
-        const includeMageloAlt = fieldsToFilterOn.includes('magelo_alt');
 
         return results.filter(item => {
-            const isMainItem =
-                item.alt_loot === false && item.magelo === false && item.preferred === false;
-            const isAltItem =
-                item.alt_loot === true && item.magelo === false && item.preferred === false;
-            const isMageloMainItem =
-                item.alt_loot === false && item.magelo === true && item.preferred === false;
-            const isMageloAltItem =
-                item.alt_loot === true && item.magelo === true && item.preferred === false;
-            const isPreferredMagelo =
-                item.alt_loot === false && item.magelo === true && item.preferred === true;
-            const isPreferredItem =
-                item.alt_loot === false && item.magelo === false && item.preferred === true;
-
-            if (isMainItem && includeMain) return true;
-            if (isAltItem && includeAltLoot) return true;
-            if (isPreferredMagelo && includePreferredMagelo) return true;
-            if (isPreferredItem && includePreferred) return true;
-            if (isMageloMainItem && includeMageloMain) return true;
-            if (isMageloAltItem && includeMageloAlt) return true;
+            if (item.type === 'main' && fieldsToFilterOn.includes('main')) return true;
+            if (item.type === 'alt' && fieldsToFilterOn.includes('alt')) return true;
+            if (item.type === 'preferred_magelo' && fieldsToFilterOn.includes('preferred_magelo')) return true;
+            if (item.type === 'preferred' && fieldsToFilterOn.includes('preferred')) return true;
+            if (item.type === 'main_magelo' && fieldsToFilterOn.includes('main_magelo')) return true;
+            if (item.type === 'alt_magelo' && fieldsToFilterOn.includes('alt_magelo')) return true;
             return false;
         });
     }
@@ -99,7 +79,7 @@ function CompareTable({ playersList, playersData, filtersState, defaultPlayerId 
 export function CompareItemsView() {
     const { isPending: isPlayersPending, data: playersData } = usePlayersList();
     const [filters, setFilters] = useState(
-        new Set(['main', 'alt_loot', 'preferred', 'magelo_main', 'magelo_alt', 'magelo_preferred'])
+        new Set(['main', 'alt', 'preferred', 'main_magelo', 'alt_magelo', 'preferred_magelo'])
     );
     const _handleCheckbox = (e, filter) => {
         let objMethod = 'delete';
@@ -127,11 +107,11 @@ export function CompareItemsView() {
             >
                 {[
                     { label: 'Main', filter: 'main' },
-                    { label: 'Alt', filter: 'alt_loot' },
+                    { label: 'Alt', filter: 'alt' },
                     { label: 'Preferred', filter: 'preferred' },
-                    { label: 'Magelo Main', filter: 'magelo_main' },
-                    { label: 'Magelo Alt', filter: 'magelo_alt' },
-                    { label: 'Magelo Preferred', filter: 'magelo_preferred' },
+                    { label: 'Magelo Main', filter: 'main_magelo' },
+                    { label: 'Magelo Alt', filter: 'alt_magelo' },
+                    { label: 'Magelo Preferred', filter: 'preferred_magelo' },
                 ].map(({ label, filter }) => (
                     <FormControlLabel
                         key={filter}

@@ -70,6 +70,7 @@ const schema = [
             "alt_loot (boolean)",
             "preferred (boolean)",
             "magelo (boolean)",
+            "type (string): main, alt, preferred, preferred_magelo, main_magelo, alt_magelo",
             "created_at",
             "updated_at",
         ],

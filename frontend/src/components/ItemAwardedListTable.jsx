@@ -1,7 +1,6 @@
 import { getLinkCell, getLootTypeBadgeCell, TableList } from './Tables.jsx';
 import { TableRow, TableCell, Box } from '@mui/material';
 import { get21DayStyles } from '../styles.js';
-import { getLootType } from '../views/utils.jsx';
 import { ItemToolTip } from './ItemToolTip.jsx';
 
 export function ItemAwardedListTable({
@@ -23,7 +22,7 @@ export function ItemAwardedListTable({
                     >
                         {row?.raid?.created_at}
                     </TableCell>
-                    {getLootTypeBadgeCell(getLootType(row))}
+                    {getLootTypeBadgeCell(row.type)}
                 </TableRow>
             );
         });

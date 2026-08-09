@@ -25,42 +25,13 @@ export function AddItemAwardedField({ raidId, styles = {} }) {
     const { mutate } = useItemAwardedCreate();
     const [lootType, setLootType] = useState("Main");
 
-    const lootTypeOptions = [
-        'Preferred',
-        'Preferred, Magelo',
-        'Main, Magelo',
-        'Main',
-        'Alt, Magelo',
-        'Alt',
-    ];
-
-
-    const _addLootTypeFields = (lootType, payload) => {
-        if (lootType === 'Preferred') {
-            payload.alt_loot = false;
-            payload.preferred = true;
-            payload.magelo = false;
-        } else if (lootType === 'Preferred, Magelo') {
-            payload.alt_loot = false;
-            payload.preferred = true;
-            payload.magelo = true;
-        } else if (lootType === 'Main, Magelo') {
-            payload.alt_loot = false;
-            payload.preferred = false;
-            payload.magelo = true;
-        } else if (lootType === 'Main') {
-            payload.alt_loot = false;
-            payload.preferred = false;
-            payload.magelo = false;
-        } else if (lootType === 'Alt, Magelo') {
-            payload.alt_loot = true;
-            payload.preferred = false;
-            payload.magelo = true;
-        } else if (lootType === 'Alt') {
-            payload.alt_loot = true;
-            payload.preferred = false;
-            payload.magelo = false;
-        }
+    const lootTypeMap = {
+        'Preferred': "preferred",
+        'Preferred, Magelo': "preferred_magelo",
+        'Main, Magelo': "main_magelo",
+        'Main': "main",
+        'Alt, Magelo': "alt_magelo",
+        'Alt': "alt",
     };
 
     const handleSubmit = () => {
@@ -68,8 +39,8 @@ export function AddItemAwardedField({ raidId, styles = {} }) {
             raid_id: raidId,
             player_id: selectedPlayer,
             item_id: selectedItem,
+            type: lootTypeMap[lootType],
         };
-        _addLootTypeFields(lootType, payload)
         mutate({ payload });
     };
 
@@ -144,7 +115,7 @@ export function AddItemAwardedField({ raidId, styles = {} }) {
                         },
                     }}
                 >
-                    {lootTypeOptions.map(option => (
+                    {Object.keys(lootTypeMap).map(option => (
                         <MenuItem key={option} value={option}>
                             {option}
                         </MenuItem>

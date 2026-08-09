@@ -28,35 +28,15 @@ export function ItemAwardedListTableEditable({
 
     if (isPlayersPending) return <>Loading...</>;
 
-    // Pass in payload obj and add key / vals
-    // TODO: We will eventually switch data model to `CHOICES` but for now this is fine
-    const _addLootTypeFields = (lootType, payload) => {
-        if (lootType === 'Preferred') {
-            payload.alt_loot = false;
-            payload.preferred = true;
-            payload.magelo = false;
-        } else if (lootType === 'Preferred, Magelo') {
-            payload.alt_loot = false;
-            payload.preferred = true;
-            payload.magelo = true;
-        } else if (lootType === 'Main, Magelo') {
-            payload.alt_loot = false;
-            payload.preferred = false;
-            payload.magelo = true;
-        } else if (lootType === 'Main') {
-            payload.alt_loot = false;
-            payload.preferred = false;
-            payload.magelo = false;
-        } else if (lootType === 'Alt, Magelo') {
-            payload.alt_loot = true;
-            payload.preferred = false;
-            payload.magelo = true;
-        } else if (lootType === 'Alt') {
-            payload.alt_loot = true;
-            payload.preferred = false;
-            payload.magelo = false;
-        }
+    const lootTypeMap = {
+        'Preferred': "preferred",
+        'Preferred, Magelo': "preferred_magelo",
+        'Main, Magelo': "main_magelo",
+        'Main': "main",
+        'Alt, Magelo': "alt_magelo",
+        'Alt': "alt",
     };
+
     // TODO: Does the function passed to <button>.onClick expect a dummy arg? Would `()` not work here?
     const handleSubmitEditItems = _ => {
         // TODO: Currently, we are simply calling the mutation promises in line, and not really using these arrays.
@@ -82,7 +62,7 @@ export function ItemAwardedListTableEditable({
             Object.entries(form).forEach(([field, val]) => {
                 if (field === 'delete' || field === 'dirty') return;
                 if (field === 'lootType') {
-                    _addLootTypeFields(val, payload);
+                    payload.type = lootTypeMap[val];
                 } else if (field === 'player' || field === 'item' || field === 'raid') {
                     // Backend expects player_id, item_id, raid_id
                     payload[`${field}_id`] = val;
@@ -90,7 +70,6 @@ export function ItemAwardedListTableEditable({
                     payload[field] = val;
                 }
             });
-
             patchPayloads.push(editItemAwarded({ payload }));
         });
     };

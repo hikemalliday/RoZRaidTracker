@@ -57,61 +57,39 @@ export const getCheckboxCellControlled = (changeHandler, state) => {
 };
 
 export const getLootTypeBadgeCell = lootType => {
-    const getBadgeStyle = type => {
-        if (!type) return null;
-        const typeUpper = type.toUpperCase();
-        // Preferred -> yellow
-        if (typeUpper.includes('PREFERRED')) {
-            return {
-                background: 'rgba(234, 179, 8, 0.15)',
-                color: '#facc15',
-                border: '1px solid rgba(234, 179, 8, 0.3)',
-            };
+    const styles_map = {
+        "preferred": {
+            background: 'rgba(234, 179, 8, 0.15)',
+            color: '#facc15',
+            border: '1px solid rgba(234, 179, 8, 0.3)',
+        },
+        "preferred_magelo": {
+            background: 'rgba(245, 158, 11, 0.15)',
+            color: '#fbbf24',
+            border: '1px solid rgba(245, 158, 11, 0.3)',
+        },
+        "main_magelo": {
+            background: 'rgba(239, 68, 68, 0.15)',
+            color: '#f87171',
+            border: '1px solid rgba(239, 68, 68, 0.3)',
+        },
+        "alt_magelo": {
+            background: 'rgba(249, 115, 22, 0.15)',
+            color: '#fb923c',
+            border: '1px solid rgba(249, 115, 22, 0.3)',
+        },
+        "alt": {
+            background: 'rgba(139, 92, 246, 0.15)',
+            color: '#a78bfa',
+            border: '1px solid rgba(139, 92, 246, 0.3)',
+        },
+        "main": {
+            background: 'rgba(107, 114, 128, 0.15)',
+            color: '#9ca3af',
+            border: '1px solid rgba(107, 114, 128, 0.3)',
         }
-        // Preferred + Magelo -> gold
-        if (typeUpper.includes('PREFERRED') && typeUpper.includes('MAGELO')) {
-            return {
-                background: 'rgba(245, 158, 11, 0.15)',
-                color: '#fbbf24',
-                border: '1px solid rgba(245, 158, 11, 0.3)',
-            };
-        }
-        // Main, Magelo -> red
-        if (typeUpper.includes('MAIN') && typeUpper.includes('MAGELO')) {
-            return {
-                background: 'rgba(239, 68, 68, 0.15)',
-                color: '#f87171',
-                border: '1px solid rgba(239, 68, 68, 0.3)',
-            };
-        }
-        // Alt, Magelo -> orange
-        if (typeUpper.includes('ALT') && typeUpper.includes('MAGELO')) {
-            return {
-                background: 'rgba(249, 115, 22, 0.15)',
-                color: '#fb923c',
-                border: '1px solid rgba(249, 115, 22, 0.3)',
-            };
-        }
-        // Alt -> purple
-        if (typeUpper.includes('ALT')) {
-            return {
-                background: 'rgba(139, 92, 246, 0.15)',
-                color: '#a78bfa',
-                border: '1px solid rgba(139, 92, 246, 0.3)',
-            };
-        }
-        // Main (without Magelo) -> gray
-        if (typeUpper.includes('MAIN')) {
-            return {
-                background: 'rgba(107, 114, 128, 0.15)',
-                color: '#9ca3af',
-                border: '1px solid rgba(107, 114, 128, 0.3)',
-            };
-        }
-        return null;
-    };
-
-    const badgeStyle = getBadgeStyle(lootType);
+    }
+    const badgeStyle = styles_map[lootType];
 
     if (!badgeStyle) {
         return <TableCell id="non-clickable-cell">{lootType}</TableCell>;
