@@ -18,6 +18,7 @@ import { listBoxStyles, textFieldStyles } from '../styles.js';
 import { _getReducedResults, getLootType } from '../views/utils.jsx';
 const IMAGE_PATH = import.meta.env.VITE_IMAGE_PATH;
 
+// TODO: Refactor to these to components (something about 'fast refresh', check IDE linter warning)
 export const getLinkCell = (val, route, extraText) => {
     return (
         <TableCell id="clickable-cell">

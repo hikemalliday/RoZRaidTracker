@@ -5,7 +5,6 @@ import { getCell, TableList } from './Tables.jsx';
 
 export function RemoveSelectedPlayersTable({
     playersToRender,
-    selectedRows,
     setSelectedRows,
     onSubmit,
     ...rest
