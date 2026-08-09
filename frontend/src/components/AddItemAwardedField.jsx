@@ -1,4 +1,4 @@
-import { Autocomplete, Box, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, MenuItem, Select, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useItemAwardedCreate, useListDebounced, usePlayersList } from '../hooks/requests.js';
 import {
@@ -15,9 +15,6 @@ export function AddItemAwardedField({ raidId, styles = {} }) {
     const debounced = useDebounce(itemValue || '', 300);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
     const [selectedItem, setSelectedItem] = useState(null);
-    const [altLoot, setAltLoot] = useState(false);
-    const [preferred, setPreffered] = useState(false);
-    const [magelo, setMagelo] = useState(false);
     const { data: playersData, isPending: isPlayersPending } = usePlayersList();
     const { data: itemsData, isPending: isItemsPending } = useListDebounced(
         'items',
@@ -26,17 +23,59 @@ export function AddItemAwardedField({ raidId, styles = {} }) {
         debounced
     );
     const { mutate } = useItemAwardedCreate();
+    const [lootType, setLootType] = useState("Main");
+
+    const lootTypeOptions = [
+        'Preferred',
+        'Preferred, Magelo',
+        'Main, Magelo',
+        'Main',
+        'Alt, Magelo',
+        'Alt',
+    ];
+
+
+    const _addLootTypeFields = (lootType, payload) => {
+        if (lootType === 'Preferred') {
+            payload.alt_loot = false;
+            payload.preferred = true;
+            payload.magelo = false;
+        } else if (lootType === 'Preferred, Magelo') {
+            payload.alt_loot = false;
+            payload.preferred = true;
+            payload.magelo = true;
+        } else if (lootType === 'Main, Magelo') {
+            payload.alt_loot = false;
+            payload.preferred = false;
+            payload.magelo = true;
+        } else if (lootType === 'Main') {
+            payload.alt_loot = false;
+            payload.preferred = false;
+            payload.magelo = false;
+        } else if (lootType === 'Alt, Magelo') {
+            payload.alt_loot = true;
+            payload.preferred = false;
+            payload.magelo = true;
+        } else if (lootType === 'Alt') {
+            payload.alt_loot = true;
+            payload.preferred = false;
+            payload.preferred = false;
+        }
+    };
 
     const handleSubmit = () => {
         const payload = {
             raid_id: raidId,
             player_id: selectedPlayer,
             item_id: selectedItem,
-            alt_loot: altLoot,
-            preferred: preferred,
-            magelo: magelo,
         };
+        _addLootTypeFields(lootType, payload)
         mutate({ payload });
+    };
+
+    const handleChange = event => {
+        const value = event.target.value;
+        setLootType(value);
     };
 
     return (
@@ -82,18 +121,35 @@ export function AddItemAwardedField({ raidId, styles = {} }) {
                         setSelectedPlayer(option.id);
                     }}
                 />
-                <Box>
-                    <Typography>Alt</Typography>
-                    <input type="checkbox" onChange={e => setAltLoot(!!e.target.checked)} />
-                </Box>
-                <Box>
-                    <Typography>Preferred</Typography>
-                    <input type="checkbox" onChange={e => setPreffered(!!e.target.checked)} />
-                </Box>
-                <Box>
-                    <Typography>Magelo</Typography>
-                    <input type="checkbox" onChange={e => setMagelo(!!e.target.checked)} />
-                </Box>
+                <Select
+                    size="small"
+                    fullWidth
+                    value={lootType}
+                    onChange={handleChange}
+                    variant="outlined"
+                    sx={{
+                        width: '150px',
+                        color: 'white', // text color
+                        '.MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white',
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white',
+                        },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white',
+                        },
+                        '.MuiSvgIcon-root': {
+                            color: 'white', // dropdown arrow
+                        },
+                    }}
+                >
+                    {lootTypeOptions.map(option => (
+                        <MenuItem key={option} value={option}>
+                            {option}
+                        </MenuItem>
+                    ))}
+                </Select>
                 <button style={{ whiteSpace: 'nowrap' }} onClick={handleSubmit}>
                     ADD ITEM
                 </button>

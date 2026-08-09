@@ -19,7 +19,7 @@ function ImageItem({ src }) {
     return <div ref={ref}>{visible && <img src={src} />}</div>;
 }
 
-export function Screenshots({}) {
+export function Screenshots() {
     const images = import.meta.glob('../screenshots/*.{jpg,jpeg,png,webp}', { eager: true });
     const imageList = Object.values(images).map(m => m.default);
     const loadMoreRef = useRef(null);
