@@ -59,7 +59,7 @@ export function AddItemAwardedField({ raidId, styles = {} }) {
         } else if (lootType === 'Alt') {
             payload.alt_loot = true;
             payload.preferred = false;
-            payload.preferred = false;
+            payload.magelo = false;
         }
     };
 

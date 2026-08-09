@@ -120,12 +120,25 @@ class RaidAttendance(models.Model):
 
 
 class ItemAwarded(models.Model):
+    class Type(models.TextChoices):
+        MAIN = ("main", "Main")
+        ALT = ("alt", "Alt")
+        PREFERRED = ("preferred", "Preferred")
+        MAIN_MAGELO = ("main_magelo", "Main Magelo")
+        PREFERRED_MAGELO = ("preferred_magelo", "Preferred Magelo")
+        ALT_MAGELO = ("alt_magelo", "Alt Magelo")
+
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     raid = models.ForeignKey(Raid, on_delete=models.CASCADE, **NOT_REQUIRED)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     alt_loot = models.BooleanField(default=False)
     preferred = models.BooleanField(default=False)
     magelo = models.BooleanField(default=False)
+    type = models.CharField(
+        max_length=30,
+        choices=Type.choices,
+        default=Type.MAIN,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

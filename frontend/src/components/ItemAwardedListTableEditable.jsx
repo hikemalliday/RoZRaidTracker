@@ -54,7 +54,7 @@ export function ItemAwardedListTableEditable({
         } else if (lootType === 'Alt') {
             payload.alt_loot = true;
             payload.preferred = false;
-            payload.preferred = false;
+            payload.magelo = false;
         }
     };
     // TODO: Does the function passed to <button>.onClick expect a dummy arg? Would `()` not work here?
