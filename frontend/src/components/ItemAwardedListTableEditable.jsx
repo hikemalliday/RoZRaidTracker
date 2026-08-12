@@ -35,6 +35,7 @@ export function ItemAwardedListTableEditable({
         'Main': "main",
         'Alt, Magelo': "alt_magelo",
         'Alt': "alt",
+        "Main Alt": "main_alt",
     };
 
     // TODO: Does the function passed to <button>.onClick expect a dummy arg? Would `()` not work here?

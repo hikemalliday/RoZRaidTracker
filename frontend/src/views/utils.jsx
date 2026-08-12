@@ -111,8 +111,7 @@ export const getItemOptionsListFinal = results => {
 export function joinAndTruncate(array, truncateLength = 50) {
     return array.join(', ').slice(0, truncateLength) + '...';
 }
-// TODO: How useful is this? Its just a mapping to make things a little more readable.
-// TODO: However, the underscore syntax might be 'good enough'.
+
 export function getLootType(itemObj) {
     const typeMap = {
         "preferred": "Preferred",
@@ -121,6 +120,7 @@ export function getLootType(itemObj) {
         "alt_magelo": "Alt, Magelo",
         "alt": "Alt",
         "main": "Main",
+        "main_alt": "Main Alt"
     }
     return typeMap[itemObj.type];
 }
@@ -175,6 +175,8 @@ const _getItemsResultsMeta = res => {
             resultsObj.preferredMagelo = resultsObj.preferredMagelo
                 ? (resultsObj.preferredMagelo += 1)
                 : 1;
+        if (item.type === 'main_alt')
+            resultsObj.mainAlt = resultsObj.mainAlt ? (resultsObj.mainAlt += 1) : 1;
     });
     return resultsObj;
 };
@@ -258,6 +260,10 @@ export const getItemAwardedMetaDataEditable = (
                         <Typography sx={metaDataLabel}>Alt</Typography>
                         <Typography sx={metaDataText}>{itemsResultsMeta.alt || 0}</Typography>
                     </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography sx={metaDataLabel}>Main Alt</Typography>
+                        <Typography sx={metaDataText}>{itemsResultsMeta.mainAlt || 0}</Typography>
+                    </Box>
                 </Box>
                 {isAuthenticated && isSuperUser && onEditClick && (
                     <Box
@@ -322,6 +328,9 @@ export const getItemAwardedMetaData = (itemsResults, filteredDataLen) => {
                 </Box>
                 <Box sx={{ textAlign: 'center' }}>
                     <MetaDetail label={'Alt'} val={itemsResultsMeta.alt || 0} />
+                </Box>
+                <Box sx={{ textAlign: 'center' }}>
+                    <MetaDetail label={'Main Alt'} val={itemsResultsMeta.mainAlt || 0} />
                 </Box>
             </Box>
         </>

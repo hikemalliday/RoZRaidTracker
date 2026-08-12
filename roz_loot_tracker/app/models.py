@@ -127,6 +127,7 @@ class ItemAwarded(models.Model):
         MAIN_MAGELO = ("main_magelo", "Main Magelo")
         PREFERRED_MAGELO = ("preferred_magelo", "Preferred Magelo")
         ALT_MAGELO = ("alt_magelo", "Alt Magelo")
+        MAIN_ALT = ("main_alt", "Main Alt")
 
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     raid = models.ForeignKey(Raid, on_delete=models.CASCADE, **NOT_REQUIRED)

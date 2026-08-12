@@ -32,6 +32,7 @@ export function AddItemAwardedField({ raidId, styles = {} }) {
         'Main': "main",
         'Alt, Magelo': "alt_magelo",
         'Alt': "alt",
+        "Main Alt": "main_alt",
     };
 
     const handleSubmit = () => {

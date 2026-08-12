@@ -45,6 +45,7 @@ function CompareTable({ playersList, playersData, filtersState, defaultPlayerId 
             if (item.type === 'preferred' && fieldsToFilterOn.includes('preferred')) return true;
             if (item.type === 'main_magelo' && fieldsToFilterOn.includes('main_magelo')) return true;
             if (item.type === 'alt_magelo' && fieldsToFilterOn.includes('alt_magelo')) return true;
+            if (item.type === 'main_alt' && fieldsToFilterOn.includes('main_alt')) return true;
             return false;
         });
     }
@@ -78,8 +79,9 @@ function CompareTable({ playersList, playersData, filtersState, defaultPlayerId 
 
 export function CompareItemsView() {
     const { isPending: isPlayersPending, data: playersData } = usePlayersList();
+    // TODO: Would be cool if we could somehow abstract all of the places that use ItemAwarded type's into config or something
     const [filters, setFilters] = useState(
-        new Set(['main', 'alt', 'preferred', 'main_magelo', 'alt_magelo', 'preferred_magelo'])
+        new Set(['main', 'alt', 'preferred', 'main_magelo', 'alt_magelo', 'preferred_magelo', 'main_alt'])
     );
     const _handleCheckbox = (e, filter) => {
         let objMethod = 'delete';
@@ -112,6 +114,7 @@ export function CompareItemsView() {
                     { label: 'Magelo Main', filter: 'main_magelo' },
                     { label: 'Magelo Alt', filter: 'alt_magelo' },
                     { label: 'Magelo Preferred', filter: 'preferred_magelo' },
+                    { label: 'Main Alt', filter: 'main_alt' },
                 ].map(({ label, filter }) => (
                     <FormControlLabel
                         key={filter}
