@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from app import models
-
+# TODO: This is a one-off migration script to translate the defunct bool field approach to classifying ItemAwarded rows. The modern approach is a single field "ItemAwarded.type"
 
 def _get_type(item_awarded):
     if not item_awarded.alt_loot and item_awarded.preferred and not item_awarded.magelo:

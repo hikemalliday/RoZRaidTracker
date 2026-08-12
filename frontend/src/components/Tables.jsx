@@ -87,6 +87,11 @@ export const getLootTypeBadgeCell = lootType => {
             background: 'rgba(107, 114, 128, 0.15)',
             color: '#9ca3af',
             border: '1px solid rgba(107, 114, 128, 0.3)',
+        },
+        "main_alt": {
+            background: 'rgba(139, 92, 246, 0.15)',
+            color: '#a78bfa',
+            border: '1px solid rgba(139, 92, 246, 0.3)',
         }
     }
     const badgeStyle = styles_map[lootType];
