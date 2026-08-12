@@ -111,23 +111,18 @@ export const getItemOptionsListFinal = results => {
 export function joinAndTruncate(array, truncateLength = 50) {
     return array.join(', ').slice(0, truncateLength) + '...';
 }
-
+// TODO: How useful is this? Its just a mapping to make things a little more readable.
+// TODO: However, the underscore syntax might be 'good enough'.
 export function getLootType(itemObj) {
-    let lootType = '';
-    // Preferred
-    if (itemObj.preferred && !itemObj.alt_loot && !itemObj.magelo) lootType = 'Preferred';
-    // Preferred + Magelo
-    else if (itemObj.preferred && !itemObj.alt_loot && itemObj.magelo)
-        lootType = 'Preferred, Magelo';
-    // Magelo and main
-    else if (itemObj.magelo && !itemObj.alt_loot) lootType = 'Main, Magelo';
-    // Main
-    else if (!itemObj.alt_loot && !itemObj.magelo) lootType = 'Main';
-    // Alt + Magelo
-    else if (itemObj.alt_loot && itemObj.magelo) lootType = 'Alt, Magelo';
-    // Alt
-    else if (itemObj.alt_loot && !itemObj.magelo) lootType = 'Alt';
-    return lootType;
+    const typeMap = {
+        "preferred": "Preferred",
+        "preferred_magelo": "Preferred, Magelo",
+        "main_magelo": "Main, Magelo",
+        "alt_magelo": "Alt, Magelo",
+        "alt": "Alt",
+        "main": "Main",
+    }
+    return typeMap[itemObj.type];
 }
 
 export async function getItemInfo(itemId) {
@@ -168,28 +163,15 @@ const _getItemsResultsMeta = res => {
     if (!res) return {};
     const resultsObj = {};
     res.forEach(item => {
-        const isMainItem =
-            item.alt_loot === false && item.magelo === false && item.preferred === false;
-        const isAltItem =
-            item.alt_loot === true && item.magelo === false && item.preferred === false;
-        const isMageloMainItem =
-            item.alt_loot === false && item.magelo === true && item.preferred === false;
-        const isMageloAltItem =
-            item.alt_loot === true && item.magelo === true && item.preferred === false;
-        const isPreferredMagelo =
-            item.alt_loot === false && item.magelo === true && item.preferred === true;
-        const isPreferredItem =
-            item.alt_loot === false && item.magelo === false && item.preferred === true;
-
-        if (isMainItem) resultsObj.main = resultsObj.main ? (resultsObj.main += 1) : 1;
-        if (isAltItem) resultsObj.alt = resultsObj.alt ? (resultsObj.alt += 1) : 1;
-        if (isMageloMainItem)
+        if (item.type === 'main') resultsObj.main = resultsObj.main ? (resultsObj.main += 1) : 1;
+        if (item.type === 'alt') resultsObj.alt = resultsObj.alt ? (resultsObj.alt += 1) : 1;
+        if (item.type === 'main_magelo')
             resultsObj.mageloMain = resultsObj.mageloMain ? (resultsObj.mageloMain += 1) : 1;
-        if (isMageloAltItem)
+        if (item.type === 'alt_magelo')
             resultsObj.mageloAlt = resultsObj.mageloAlt ? (resultsObj.mageloAlt += 1) : 1;
-        if (isPreferredItem)
+        if (item.type === 'preferred')
             resultsObj.preferred = resultsObj.preferred ? (resultsObj.preferred += 1) : 1;
-        if (isPreferredMagelo)
+        if (item.type === 'preferred_magelo')
             resultsObj.preferredMagelo = resultsObj.preferredMagelo
                 ? (resultsObj.preferredMagelo += 1)
                 : 1;
@@ -197,6 +179,7 @@ const _getItemsResultsMeta = res => {
     return resultsObj;
 };
 // TODO: Does this belong in utils file?
+// TODO: Why do we have an editable and regular version of this? What is the diff? Can these be consolidated?
 export const getItemAwardedMetaDataEditable = (
     itemsResults,
     isAuthenticated = false,

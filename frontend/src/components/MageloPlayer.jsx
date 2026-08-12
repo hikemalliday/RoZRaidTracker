@@ -21,12 +21,12 @@ export function MageloPlayer({ defaultPlayerId = 1 }) {
 
     const _getMainMageloItems = results => {
         if (!results) return [];
-        return results.filter(item => !item.alt_loot && item.magelo);
+        return results.filter(item => item.type === 'main_magelo');
     };
 
     const _getAltMageloItems = results => {
         if (!results) return [];
-        return results.filter(item => item.alt_loot && item.magelo);
+        return results.filter(item => item.type === 'alt_magelo');
     };
 
     const _getMainChar = results => {
