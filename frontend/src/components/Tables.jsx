@@ -324,6 +324,7 @@ export function ItemAwardedTypeEditableField({ formObject, itemAwardedDetail }) 
         'Main',
         'Alt, Magelo',
         'Alt',
+        'Main Alt',
     ];
 
     const handleChange = event => {
