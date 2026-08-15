@@ -69,12 +69,18 @@ class Character(models.Model):
         ("WAR", "Warrior"),
         ("WIZ", "Wizard"),
     )
+    TYPES = (
+        ("MAIN", "Main"),
+        ("MAIN_ALT", "Main Alt"),
+        ("ALT", "Alt"),
+    )
 
     name = models.CharField(max_length=100, unique=True)
     player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="characters")
     is_main = models.BooleanField(default=False)
     is_main_alt = models.BooleanField(default=False)
     char_class = models.CharField(max_length=3, choices=CLASS_CHOICES)
+    type = models.CharField(max_length=30, choices=TYPES, default="ALT")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -82,13 +88,8 @@ class Character(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['player'],
-                condition=Q(is_main=True),
+                condition=Q(type="MAIN"),
                 name='unique_main_per_player'
-            ),
-            models.UniqueConstraint(
-                fields=['player'],
-                condition=Q(is_main_alt=True),
-                name='unique_main_alt_per_player'
             ),
         ]
 
