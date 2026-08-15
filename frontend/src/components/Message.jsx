@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useMessage } from "../context/MessageContext.jsx";
-import { Alert, Snackbar } from "@mui/material";
+import { Alert } from "@mui/material";
 
 
 export function Message({ id, message, type, duration }) {
@@ -15,8 +15,6 @@ export function Message({ id, message, type, duration }) {
     }, [id, duration, removeMessage]);
 
     return (
-        <Snackbar open={true} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
-            <Alert severity={type} sx={{ width: '100%' }} onClose={() => removeMessage(id)}>{message}</Alert>
-        </Snackbar>
+        <Alert severity={type} sx={{ width: '100%' }} onClose={() => removeMessage(id)}>{message}</Alert>
     );
 }
