@@ -8,6 +8,17 @@ import { api } from '../api.js';
 // Keeps data shape consistent on list responses
 const PAGE_SIZE_NO_PAGINATION = 9999;
 
+const _getErrStr = (error) => {
+    if (!error?.response?.data) return 'Unknown Error.';
+    let errStr = 'Errors: ';
+    Object.entries(error?.response?.data).forEach(([key, val]) => {
+         errStr += ' ';
+         errStr += `${key}: `;
+         errStr += `${val}`;
+    });
+    return errStr;
+}
+
 export const _useList = (queryKey, route, queryParams = {}) => {
     const { isPending, error, data } = useQuery({
         queryKey: [queryKey, queryParams],
@@ -129,22 +140,6 @@ export function useRaidAttendanceApprovalList(queryParams) {
     return { isPending, error, data };
 }
 
-export function useCharacterList(queryParams = {}) {
-    const { isPending, error, data } = useQuery({
-        queryKey: ['characters'],
-        queryFn: async () => {
-            const { data } = await api.get(`/characters/`, {
-                params: {
-                    page_size: PAGE_SIZE_NO_PAGINATION,
-                    ...queryParams,
-                },
-            });
-            return data;
-        },
-    });
-    return { isPending, error, data };
-}
-
 export function useRaidAttendanceApprovalMutation(id) {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -154,14 +149,13 @@ export function useRaidAttendanceApprovalMutation(id) {
             const { data } = await api.post(`/raid_attendance_approval/${id}/approve/`, payload);
             return data;
         },
-        onSuccess: async _ => {
+        onSuccess: async () => {
             addMessage('Successfully approved raid.');
             await queryClient.refetchQueries(['raid_attendance_approval']);
             navigate('/ra_approval_pending/');
         },
         onError: error => {
-            const errorMessage = error?.response?.data?.error || 'Unknown error';
-            addMessage(`Failed to approve raid: ${errorMessage}`, 'error');
+            addMessage(`Failed to approve raid: ${_getErrStr(error)}`, 'error');
         },
     });
 }
@@ -174,13 +168,12 @@ export function useRaidAttendanceMutation() {
             const { data } = await api.post(`/raid_attendance/`, payload);
             return data;
         },
-        onSuccess: async _ => {
+        onSuccess: async () => {
             addMessage('Successfully added Raid Attendance row.');
             await queryClient.refetchQueries(['raid_attendance']);
         },
         onError: error => {
-            const errorMessage = error?.response?.data?.error || 'Unknown error';
-            addMessage(`Failed to add Raid Attendance row: ${errorMessage}`, 'error');
+            addMessage(`Failed to add Raid Attendance row: ${_getErrStr(error)}`, 'error');
         },
     });
 }
@@ -193,7 +186,7 @@ export function useRaidAttendanceDelete() {
             const { data } = await api.delete(`/raid_attendance/${id}/`);
             return data;
         },
-        onSuccess: async _ => {
+        onSuccess: async () => {
             addMessage('Successfully removed Raid Attendance row.');
             await queryClient.refetchQueries(['raid_attendance']);
         },
@@ -212,13 +205,12 @@ export function useItemAwardedCreate() {
             const { data } = await api.post(`/items_awarded/`, payload);
             return data;
         },
-        onSuccess: async _ => {
-            addMessage('Successfully created Item Awarded row.');
+        onSuccess: async (data) => {
+            addMessage(`Successfully created Item Awarded row. player: ${data?.player?.name}, name: ${data?.item?.name}`);
             await queryClient.refetchQueries(['item_awarded']);
         },
         onError: error => {
-            const errorMessage = error?.response?.data?.error || 'Unknown error';
-            addMessage(`Failed to create Item Awarded row: ${errorMessage}`, 'error');
+            addMessage(`Failed to create Item Awarded row: ${_getErrStr(error)}`, 'error');
         },
     });
 }
@@ -232,13 +224,12 @@ export function useItemAwardedDelete() {
             const { data } = await api.delete(`/items_awarded/${id}/`);
             return data;
         },
-        onSuccess: async _ => {
+        onSuccess: async () => {
             addMessage('Successfully removed Item Awarded row.');
             await queryClient.refetchQueries(['items_awarded']);
         },
         onError: error => {
-            const errorMessage = error?.response?.data?.error || 'Unknown error';
-            addMessage(`Failed to remove Item Awarded row: ${errorMessage}`, 'error');
+            addMessage(`Failed to remove Item Awarded row: ${_getErrStr(error)}`, 'error');
         },
     });
 }
@@ -251,13 +242,12 @@ export function useCharacterCreate() {
             const { data } = await api.post(`/characters/`, payload);
             return data;
         },
-        onSuccess: async _ => {
-            addMessage('Successfully created Character row.');
+        onSuccess: async (data) => {
+            addMessage(`Successfully created Character row. name: ${data?.name}, class: ${data?.char_class}`);
             await queryClient.refetchQueries(['characters']);
         },
         onError: error => {
-            const errorMessage = error?.response?.data?.error || 'Unknown error';
-            addMessage(`Failed to create Character row: ${errorMessage}`, 'error');
+            addMessage(`Failed to create Character row: ${_getErrStr(error)}`, 'error');
         },
     });
 }
@@ -276,8 +266,7 @@ export function useCharacterEdit() {
             await queryClient.refetchQueries({ queryKey: ['characters'] });
         },
         onError: error => {
-            const errorMessage = error?.response?.data?.error || 'Unknown error';
-            addMessage(`Failed to edit Character row: ${errorMessage}`, 'error');
+            addMessage(`Failed to edit Character row: ${_getErrStr(error)}`, 'error');
         },
     });
 }
@@ -291,13 +280,12 @@ export function useItemAwardedEdit() {
             const { data } = await api.patch(`/items_awarded/${payload.id}/`, payload);
             return data;
         },
-        onSuccess: async () => {
-            addMessage('Successfully edited Item Awarded row.');
+        onSuccess: async (data) => {
+            addMessage(`Successfully edited Item Awarded row. player: ${data?.player?.name}, name: ${data?.item?.name}`);
             await queryClient.refetchQueries({ queryKey: ['items_awarded'] });
         },
         onError: error => {
-            const errorMessage = error?.response?.data?.error || 'Unknown error';
-            addMessage(`Failed to edit Item Awarded row: ${errorMessage}`, 'error');
+            addMessage(`Failed to edit Item Awarded row: ${_getErrStr(error)}`, 'error');
         },
     });
 }
@@ -316,8 +304,7 @@ export function usePlayerEdit(id) {
             await queryClient.refetchQueries({ queryKey: ['players'] });
         },
         onError: error => {
-            const errorMessage = error?.response?.data?.error || 'Unknown error';
-            addMessage(`Failed to edit Player row: ${errorMessage}`, 'error');
+            addMessage(`Failed to edit Player row: ${_getErrStr(error)}`, 'error');
         },
     });
 }
@@ -330,7 +317,7 @@ export function useRaidAttendanceApprovalDelete() {
             const { data } = await api.delete(`/raid_attendance_approval/${id}/`);
             return data;
         },
-        onSuccess: async _ => {
+        onSuccess: async () => {
             addMessage('Successfully removed Raid Attendance Approval row.');
             await queryClient.refetchQueries(['raid_attendance_approval']);
         },
