@@ -28,7 +28,6 @@ export function NavBar() {
         { label: 'ITEMS AWARDED', path: '/item_awarded' },
         { label: 'SCREENSHOTS', path: '/screenshots' },
         { label: 'ROSTER', path: '/roster' },
-        { label: 'SQL', path: '/sql' },
     ];
 
     const navBarLinks = () => {
