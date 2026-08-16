@@ -3,7 +3,7 @@ import { MageloGrid } from './MageloGrid.jsx';
 import { useItemsAwardedList, usePlayerDetail, usePlayersList } from '../hooks/requests.js';
 import React, { useState } from 'react';
 import { PlayerAutoComplete } from './PlayerAutoComplete.jsx';
-
+// TODO: Page still relies on the deprecated bool fields for 'Character' model. Modern approach is 'type' field.
 export function MageloPlayer({ defaultPlayerId = 1 }) {
     const { isPending: isPlayersPending, data: playersData } = usePlayersList();
     const [playerId, setPlayerId] = useState(defaultPlayerId);

@@ -271,6 +271,25 @@ export function useCharacterEdit() {
     });
 }
 
+export function useCharacterBatchEdit() {
+    const queryClient = useQueryClient();
+    const { addMessage } = useMessage();
+
+    return useMutation({
+        mutationFn: async ({ payload }) => {
+            const { data } = await api.patch(`/characters/batch/`, payload);
+            return data;
+        },
+        onSuccess: async () => {
+            addMessage('Successfully edited Character rows (Batch Edit).');
+            await queryClient.refetchQueries({ queryKey: ['characters'] });
+        },
+        onError: error => {
+            addMessage(`Failed to edit Character row: ${_getErrStr(error)}`, 'error');
+        },
+    });
+}
+
 export function useItemAwardedEdit() {
     const queryClient = useQueryClient();
     const { addMessage } = useMessage();

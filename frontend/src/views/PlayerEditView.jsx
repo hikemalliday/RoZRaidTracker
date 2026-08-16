@@ -1,28 +1,34 @@
 import { useParams } from 'react-router';
 import { useAuthContext } from '../context/AuthContext.jsx';
-import { Autocomplete, Box, Container, TableRow, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Container, MenuItem, Select, TableRow, TextField } from '@mui/material';
 import {
+    useCharacterBatchEdit,
     useCharacterCreate,
-    useCharacterEdit,
     useCharactersList,
-    usePlayerDetail,
-    usePlayerEdit,
 } from '../hooks/requests.js';
 import { renderErrors } from './utils.jsx';
 import { useEffect, useState } from 'react';
 import { getTextFieldStyles, textFieldStyles } from '../styles.js';
 import {
     getCell,
-    getCheckboxCellControlled,
     getLinkCell,
     TableList,
 } from '../components/Tables.jsx';
 
+const CHARACTER_TYPE_OPTIONS = [
+    { value: 'MAIN', label: 'Main' },
+    { value: 'MAIN_ALT', label: 'Main Alt' },
+    { value: 'ALT', label: 'Alt' },
+];
+
+const CHARACTER_TYPE_LABELS = Object.fromEntries(
+    CHARACTER_TYPE_OPTIONS.map(({ value, label }) => [value, label])
+);
+
 function AddCharacterField({ playerId }) {
     const [charName, setCharName] = useState('');
     const [charClass, setCharClass] = useState('');
-    const [isMainChecked, setIsMainChecked] = useState(false);
-    const [isMainAltChecked, setIsMainAltChecked] = useState(false);
+    const [charType, setCharType] = useState('ALT');
     const { mutate } = useCharacterCreate();
 
     const charOptions = [
@@ -43,23 +49,12 @@ function AddCharacterField({ playerId }) {
         { id: 'WIZ', label: 'Wizard' },
     ];
 
-    const handleCheckboxClick = (e, charStatus) => {
-        if (charStatus === 'main') {
-            setIsMainChecked(!isMainChecked);
-            setIsMainAltChecked(false);
-        } else {
-            setIsMainAltChecked(!isMainAltChecked);
-            setIsMainChecked(false);
-        }
-    };
-
     const handleSubmit = () => {
         const payload = {
             name: charName,
             char_class: charClass,
             player_id: playerId,
-            is_main: isMainChecked,
-            is_main_alt: isMainAltChecked,
+            type: charType,
         };
         mutate({ payload });
     };
@@ -92,25 +87,24 @@ function AddCharacterField({ playerId }) {
                 )}
                 options={charOptions}
                 onChange={(_, option) => {
-                    setCharClass(option.id);
+                    setCharClass(option?.id ?? '');
                 }}
             />
-            <Box>
-                <Typography>Main</Typography>
-                <input
-                    type="checkbox"
-                    checked={isMainChecked}
-                    onChange={e => handleCheckboxClick(e, 'main')}
-                />
-            </Box>
-            <Box>
-                <Typography>Main Alt</Typography>
-                <input
-                    type="checkbox"
-                    checked={isMainAltChecked}
-                    onChange={e => handleCheckboxClick(e, 'main alt')}
-                />
-            </Box>
+            <Autocomplete
+                renderInput={params => (
+                    <TextField
+                        {...params}
+                        label="Type"
+                        sx={getTextFieldStyles(200)}
+                        size="small"
+                    />
+                )}
+                options={CHARACTER_TYPE_OPTIONS}
+                value={CHARACTER_TYPE_OPTIONS.find(option => option.value === charType) ?? null}
+                onChange={(_, option) => {
+                    setCharType(option?.value ?? 'ALT');
+                }}
+            />
             <button style={{ whiteSpace: 'nowrap' }} onClick={handleSubmit}>
                 ADD CHARACTER
             </button>
@@ -118,89 +112,68 @@ function AddCharacterField({ playerId }) {
     );
 }
 
-function EditableCharacterListTable({ charList, playerDetail }) {
-    const _getCharStatus = char => {
-        if (char.is_main) return 'Main';
-        if (char.is_main_alt) return 'Main Alt';
-        return 'Alt';
-    };
-
-    const [formObject, setFormObject] = useState({});
-    const { mutate } = useCharacterEdit();
-    const { mutate: mutatePlayer } = usePlayerEdit(playerDetail.id);
-    const [isActive, setIsActive] = useState(playerDetail.active);
+function EditableCharacterListTable({ charList }) {
+    const [typeByCharacterId, setTypeByCharacterId] = useState({});
+    const { mutate } = useCharacterBatchEdit();
 
     useEffect(() => {
-        if (charList) {
-            const charsObject = {};
-            for (const char of charList) {
-                charsObject[char.id] = {
-                    id: char.id,
-                    name: char.name,
-                    is_main: char.is_main,
-                    is_main_alt: char.is_main_alt,
-                };
-            }
-            setFormObject(charsObject);
-        }
+        setTypeByCharacterId(
+            Object.fromEntries(charList.map(char => [char.id, char.type]))
+        );
     }, [charList]);
 
     const getCharacterRows = sorted => {
         return sorted.map((row, i) => {
-            // Pass down the main and main alt state from the form object, for the controlled checkbox inputs
-            const mainState = formObject[row.id]?.is_main;
-            const mainAltState = formObject[row.id]?.is_main_alt;
-
-            const handleMainCheckboxClick = (e, charStatus) => {
-                const _handleSetOtherFields = (id, bool, newFormObj) => {
-                    // Helper to ensure that only one main or main alt can be selected at a time in the edit form
-                    Object.entries(newFormObj).forEach(([charId, charData]) => {
-                        const isSameChar = Number(charId) === Number(id);
-                        if (bool === true && !isSameChar) {
-                            charData[charStatus] = false;
-                        } else {
-                            const otherFieldToAlter =
-                                charStatus === 'is_main' ? 'is_main_alt' : 'is_main';
-                            charData[otherFieldToAlter] = false;
-                        }
-                    });
-                };
-
-                const checkboxBool = e.target.checked;
-                const newFormObject = { ...formObject };
-                newFormObject[row?.id][charStatus] = checkboxBool;
-                _handleSetOtherFields(row?.id, checkboxBool, newFormObject);
-                setFormObject(newFormObject);
-            };
+            const characterType = typeByCharacterId[row.id] ?? row.type;
 
             return (
                 <TableRow key={i}>
                     {getCell(row?.name)}
                     {getCell(row?.char_class)}
-                    {getCell(_getCharStatus(row))}
+                    {getCell(CHARACTER_TYPE_LABELS[row.type] ?? row.type)}
                     {getLinkCell(row?.player.name, `/player/${row?.player?.id}`)}
-                    {getCheckboxCellControlled(
-                        e => handleMainCheckboxClick(e, 'is_main'),
-                        mainState
-                    )}
-                    {getCheckboxCellControlled(
-                        e => handleMainCheckboxClick(e, 'is_main_alt'),
-                        mainAltState
-                    )}
+                    {getCell(<Select
+                        size="small"
+                        fullWidth
+                        value={characterType}
+                        onChange={event => {
+                            setTypeByCharacterId(current => ({
+                                ...current,
+                                [row.id]: event.target.value,
+                            }));
+                        }}
+                        variant="outlined"
+                        sx={{
+                            width: '150px',
+                            color: 'white',
+                            '.MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'white',
+                            },
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'white',
+                            },
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'white',
+                            },
+                            '.MuiSvgIcon-root': {
+                                color: 'white', // dropdown arrow
+                            },
+                        }}
+                    >
+                        {CHARACTER_TYPE_OPTIONS.map(({ value, label }) => (
+                            <MenuItem key={value} value={value}>
+                                {label}
+                            </MenuItem>
+                        ))}
+                    </Select>)}
                 </TableRow>
             );
         });
     };
 
-    const handleEditCharactersSubmit = async _ => {
-        if (formObject.length === 0) return;
-        const promises = Object.values(formObject).map(char => {
-            return mutate({ payload: char });
-        });
-        const setActive = [mutatePlayer({ payload: { active: isActive } })];
-        await Promise.allSettled([...promises, ...setActive]);
-        setFormObject({});
-    };
+    const handleEditCharactersBatchSubmit = () => {
+        mutate({ payload: typeByCharacterId });
+    }
 
     // Null vals here means cols are not sortable
     const headerMap = {
@@ -208,36 +181,17 @@ function EditableCharacterListTable({ charList, playerDetail }) {
         Class: null,
         Status: null,
         Player: null,
-        Main: null,
-        'Main Alt': null,
+        Type: null,
     };
     return (
         <>
             <TableList data={charList} getTableRows={getCharacterRows} headerMap={headerMap} />
-            <Box
-                style={{
-                    display: 'flex',
-                    marginTop: 10,
-                }}
-            >
-                Active:
-                <input
-                    style={{
-                        marginLeft: 10,
-                    }}
-                    type="checkbox"
-                    checked={!!isActive}
-                    onChange={e => {
-                        setIsActive(!isActive);
-                    }}
-                />
-            </Box>
             <button
                 style={{
                     display: 'flex',
                     marginTop: 10,
                 }}
-                onClick={handleEditCharactersSubmit}
+                onClick={handleEditCharactersBatchSubmit}
             >
                 SAVE
             </button>
@@ -255,21 +209,15 @@ export function PlayerEditView() {
     } = useCharactersList({
         player: id,
     });
-    const {
-        data: playerDetailData,
-        isPending: isPlayerDetailPending,
-        error: playerDetailError,
-    } = usePlayerDetail(id);
     if (!isSuperUser) return <>Unauthorized.</>;
-    if (isCharsPending || isPlayerDetailPending) return <>LOADING...</>;
-    if (charListError) renderErrors([charListError, playerDetailError]);
+    if (isCharsPending) return <>LOADING...</>;
+    if (charListError) renderErrors([charListError]);
 
     return (
         <Container>
             <AddCharacterField playerId={id} />
             <EditableCharacterListTable
                 charList={charListData.results}
-                playerDetail={playerDetailData}
             />
         </Container>
     );

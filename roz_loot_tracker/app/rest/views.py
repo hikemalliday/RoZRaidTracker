@@ -4,7 +4,7 @@ from app import models
 from app.serializers.serializers import PlayerSerializer, ItemSerializer, RaidSerializer, \
     ZoneSerializer, CharacterSerializer, ItemAwardedSerializer, PreferredPixelSerializer, RaidAttendanceSerializer, \
     RaidAttendanceApprovalSerializer, TokenObtainPairSerializer
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from django.db.models import Count, F, FloatField, ExpressionWrapper, Func, Q
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
@@ -23,6 +23,10 @@ from pathlib import Path
 
 
 PERMISSION_CLASS_DEBUG = IsAuthenticated
+
+
+class InvalidCharEdit(ValidationError):
+    """Exception for when a batch Character edit violates type rules."""
 
 
 class ItemFilter(filters.FilterSet):
@@ -117,6 +121,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
 
         return queryset
 
+
 class CharacterViewSet(viewsets.ModelViewSet):
     queryset = models.Character.objects.all()
     serializer_class = CharacterSerializer
@@ -124,6 +129,70 @@ class CharacterViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['player', "player__active"]
     pagination_class = AllowNoPagination
+    # Used by PlayerEditView. We will ALWAYS batch edit ALL characters for a given Player.
+    # _validate_batch helper ensures this. If frontend payload / approach ever changes, it will be gated here.
+    @action(detail=False, methods=['patch'])
+    def batch(self, request):
+        def _validate_batch(payload):
+            submitted_ids = {int(char_id) for char_id in payload}
+            submitted_characters = self.get_queryset().filter(id__in=submitted_ids)
+            if submitted_characters.count() != len(submitted_ids):
+                raise InvalidCharEdit({"error": "One or more characters do not exist."})
+            player_ids = set(submitted_characters.values_list("player_id", flat=True))
+            if len(player_ids) != 1:
+                raise InvalidCharEdit({
+                    "error": "All batch-edited characters must belong to one player."
+                })
+            player_id = player_ids.pop()
+            all_player_ids = set(
+                models.Character.objects
+                .filter(player_id=player_id)
+                .values_list("id", flat=True)
+            )
+            if submitted_ids != all_player_ids:
+                raise InvalidCharEdit({
+                    "error": "The batch must include every character for this player."
+                })
+            # Validate the types are valid
+            num_main = 0
+            num_main_alt = 0
+            for char_type in payload.values():
+                if char_type not in ("MAIN", "MAIN_ALT", "ALT"):
+                    raise InvalidCharEdit({
+                        "error": "Must provide a valid character type."
+                    })
+                if char_type == "MAIN":
+                    num_main += 1
+                elif char_type == "MAIN_ALT":
+                    num_main_alt += 1
+            if num_main > 1:
+                raise InvalidCharEdit({
+                    "error": "Player cannot have more than 1 main."
+                })
+            if num_main_alt > 2:
+                raise InvalidCharEdit({
+                    "error": "Player cannot have more than 2 main alts."
+                })
+        # Safeguard to avoid database level 'Can only have one MAIN' constraint. Set all chars to ALT first.
+        def _set_alt_all(payload):
+            for char_id in payload.keys():
+                char = self.queryset.get(id=char_id)
+                char.type = "ALT"
+                char.save()
+
+        with transaction.atomic():
+            try:
+                _validate_batch(request.data)
+                _set_alt_all(request.data)
+                for char_id, char_type in request.data.items():
+                    char = self.queryset.get(id=char_id)
+                    char.type = char_type
+                    char.save()
+                return Response({"message": "Success: updated characters batch."}, status=200)
+            except models.Character.DoesNotExist:
+                raise ValidationError({"error": f"Character ID'{char_id}' does not exist."})
+            except IntegrityError as integrity_exc:
+                raise ValidationError({"error": integrity_exc})
 
 
 class RaidViewSet(viewsets.ModelViewSet):
@@ -140,7 +209,6 @@ class RaidViewSet(viewsets.ModelViewSet):
             limit = int(limit)
             qs = qs[:limit]
         return qs
-
 
 
 class ItemAwardedViewSet(viewsets.ModelViewSet):
