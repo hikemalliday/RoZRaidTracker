@@ -2,11 +2,6 @@ import { getCell, getLinkCell, TableList } from './Tables.jsx';
 import { TableRow } from '@mui/material';
 
 export function CharacterListTable({ data }) {
-    const _getCharStatus = char => {
-        if (char.is_main) return 'Main';
-        if (char.is_main_alt) return 'Main Alt';
-        return 'Alt';
-    };
 
     const getCharacterRows = sorted => {
         return sorted.map((row, i) => {
@@ -14,7 +9,7 @@ export function CharacterListTable({ data }) {
                 <TableRow key={i}>
                     {getCell(row?.name)}
                     {getCell(row?.char_class)}
-                    {getCell(_getCharStatus(row))}
+                    {getCell(row?.type)}
                     {getLinkCell(row?.player.name, `/player/${row?.player?.id}`)}
                 </TableRow>
             );

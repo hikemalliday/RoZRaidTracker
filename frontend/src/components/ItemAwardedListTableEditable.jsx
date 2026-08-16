@@ -39,7 +39,7 @@ export function ItemAwardedListTableEditable({
     };
 
     // TODO: Does the function passed to <button>.onClick expect a dummy arg? Would `()` not work here?
-    const handleSubmitEditItems = _ => {
+    const handleSubmitEditItems = () => {
         // TODO: Currently, we are simply calling the mutation promises in line, and not really using these arrays.
         // TODO: Unsure if we want to actually resolve the promises or not.
         const deleteIds = [];
