@@ -11,9 +11,9 @@ export function PlayerListTable({ data, rowStyles = {}, sortable = true }) {
             return (
                 <TableRow key={i} sx={rowStyles}>
                     {getLinkCell(row?.name, `/player/${row?.id}`)}
-                    {getCell(main?.name, `/character/${main?.id}`)}
-                    {getCell(mainAlt1?.name, `/character/${mainAlt1?.id}`)}
-                    {getCell(mainAlt2?.name, `/character/${mainAlt2?.id}`)}
+                    {getCell(main?.name)}
+                    {getCell(mainAlt1?.name)}
+                    {getCell(mainAlt2?.name)}
                     {getCell(`${row?.lifetime_ra}%`)}
                     {getCell(`${row?.ra_21_day}%`)}
                     {getCell(`${row?.active}`)}
