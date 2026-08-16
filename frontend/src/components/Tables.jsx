@@ -48,14 +48,6 @@ export const getCheckboxCell = changeHandler => {
     );
 };
 
-export const getCheckboxCellControlled = (changeHandler, state) => {
-    return (
-        <TableCell>
-            <input type="checkbox" checked={state} onChange={e => changeHandler(e)} />
-        </TableCell>
-    );
-};
-
 export const getLootTypeBadgeCell = lootType => {
     const styles_map = {
         "preferred": {
