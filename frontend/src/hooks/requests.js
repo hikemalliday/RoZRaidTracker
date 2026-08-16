@@ -102,6 +102,10 @@ export const _useDetail = (queryKey, route, id) => {
     return { isPending, error, data };
 };
 
+export const useRaidAttendanceListPaginated = (queryParams = {}) => {
+    return _useListPaginated('raid_attendance', '/raid_attendance/', queryParams);
+};
+
 export const useRaidAttendanceApprovalDetail = id => {
     return _useDetail('raid_attendance_approval', '/raid_attendance_approval/', id);
 };

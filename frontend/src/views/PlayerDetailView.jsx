@@ -4,15 +4,18 @@ import {
     useItemsAwardedList,
     usePlayerDetail,
     useRaidAttendanceList,
+    useRaidAttendanceListPaginated,
 } from '../hooks/requests.js';
 import { Box, Container, Typography } from '@mui/material';
-import { getItemAwardedMetaData, renderErrors, sortItemsByRaidDate, sortRaData } from './utils.jsx';
+import { getItemAwardedMetaData, renderErrors, sortItemsByRaidDate } from './utils.jsx';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { CharacterListTable } from '../components/CharacterListTable.jsx';
 import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
 import { labelStyles } from '../styles.js';
 import { MetaDetail } from '../components/generic.jsx';
+import { PaginatedListTable } from "../components/PaginatedListTable.jsx";
+import React from "react";
 
 export function PlayerDetailView() {
     const { id } = useParams();
@@ -91,7 +94,13 @@ export function PlayerDetailView() {
                 <Typography sx={{ ...labelStyles, mb: 4 }}>
                     Raids Attended: {raidsData.count}
                 </Typography>
-                <RaidAttendanceListTable data={sortRaData(raidsData?.results)} sortable />
+                <PaginatedListTable
+                    requestHook={useRaidAttendanceListPaginated}
+                    TableComponent={RaidAttendanceListTable}
+                    extraParams={{
+                        player: id,
+                    }}
+                />
             </Box>
         </Container>
     );

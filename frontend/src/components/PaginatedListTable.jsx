@@ -36,6 +36,7 @@ export function PaginatedListTable({
         reduceOptions: () => [],
         useOptionLabel: true,
     },
+    extraParams = {},
 }) {
     const { searchParam, optionsLabel, useOptions, reduceOptions, useOptionLabel } =
         autoCompleteOptions;
@@ -48,7 +49,8 @@ export function PaginatedListTable({
     const [orderDir, setOrderDir] = useState(defaultSort?.orderDir || 'asc');
     const [ordering, setOrdering] = useState(defaultSort?.ordering || 'name');
     const [searchVal, setSearchVal] = useState('');
-    const qParam = searchParam ? { [searchParam]: searchVal } : {};
+    let qParam = searchParam ? { [searchParam]: searchVal } : {};
+    qParam = { ...qParam, ...extraParams };
     const { data, isPending, error } = requestHook({
         page,
         ordering: _getOrdering(ordering),
@@ -160,6 +162,7 @@ export function PaginatedListTable({
                         sx={{ borderColor: 'rgba(255,255,255,0.12)' }}
                     />
                 )}
+                { sortChoices.length > 0 && (
                 <Stack direction="row" spacing={2} alignItems="center">
                     <FormControl size="small" sx={selectStyles}>
                         <InputLabel sx={labelStyles}>
@@ -199,6 +202,7 @@ export function PaginatedListTable({
                         </Select>
                     </FormControl>
                 </Stack>
+                )}
             </Stack>
             {isPending ? (
                 <>LOADING...</>
