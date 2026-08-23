@@ -10,6 +10,7 @@ const schema = [
             "icon_id (int)",
             "item_score (int, nullable)",
             "slots (int, nullable)",
+            "tier (varchar 30), choices: 'QUARM', 'TIME', 'ELEMENTAL', 'PRE-ELEMENTAL'"
         ],
     },
     {
