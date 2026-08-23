@@ -1,12 +1,14 @@
-import { LinkCell, LootTypeBadgeCell, TableList } from './Tables.jsx';
+import { getTierBadgeCell, LinkCell, LootTypeBadgeCell, TableList } from './Tables.jsx';
 import { TableRow, TableCell, Box } from '@mui/material';
 import { get21DayStyles } from '../styles.js';
 import { ItemToolTip } from './ItemToolTip.jsx';
 
+// excludePlayer param is used in CompareView when we want to gain more screen 'real-estate' in terms of columns.
 export function ItemAwardedListTable({
     data,
     styledRows = false,
     dataTestId = null,
+    excludePlayer = false,
     ...rest
 }) {
     const getItemAwardedRows = data => {
@@ -14,7 +16,7 @@ export function ItemAwardedListTable({
             return (
                 <TableRow key={i} sx={get21DayStyles(row)}>
                     <ItemToolTip item={row?.item} />
-                    <LinkCell val={row?.player?.name} route={`/player/${row?.player?.id}`}/>
+                    {!excludePlayer && <LinkCell val={row?.player?.name} route={`/player/${row?.player?.id}`}/>}
                     <LinkCell val={row?.raid?.name} route={`/raid/${row?.raid?.id}`}/>
                     <TableCell
                         id="non-clickable-cell"
@@ -23,19 +25,29 @@ export function ItemAwardedListTable({
                         {row?.raid?.created_at}
                     </TableCell>
                     <LootTypeBadgeCell lootType={row.type}/>
+                    {getTierBadgeCell(row.item.tier)}
                 </TableRow>
             );
         });
     };
 
     // Null vals means col is not sortable (frontend table sorting)
-    const headerMap = {
+    // Gotta juggle stuff around here to get the optional 'player' col is the correct spot
+    let headerMap = excludePlayer ? { Name: 'item.name' } : {
         Name: 'item.name',
-        Player: 'player.name',
+        Player: 'player.name'
+    };
+    headerMap = {
+        ...headerMap,
         Raid: 'raid.name',
         Date: 'raid.created_at',
         Type: null,
-    };
+        Tier: null,
+    }
+
+    const playerCol = excludePlayer ? {} : { Player: 'player.name' };
+
+    headerMap = { ...headerMap, ...playerCol };
 
     if (data.length === 0) return <>No items found.</>;
 
