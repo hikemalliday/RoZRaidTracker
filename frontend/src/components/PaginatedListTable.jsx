@@ -106,39 +106,41 @@ export function PaginatedListTable({
             <Stack
                 direction="row"
                 spacing={3}
-                justifyContent="center"
-                alignItems="center"
-                flexWrap="wrap"
                 useFlexGap
-                sx={{ marginTop: 4, marginBottom: 2 }}
+                sx={{
+                    width: '100%',
+                    marginTop: 4,
+                    marginBottom: 2,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                }}
             >
                 {searchParam && (
                     <Autocomplete
+                        sx={{ width: 350 }}
                         renderInput={params => (
                             <TextField
                                 {...params}
                                 label={optionsLabel}
                                 placeholder={`Search ${optionsLabel}...`}
-                                sx={{
-                                    ...textFieldStyles,
-                                    '& .MuiOutlinedInput-root': {
-                                        ...textFieldStyles['& .MuiOutlinedInput-root'],
-                                        width: 350,
-                                    },
-                                }}
+                                sx={textFieldStyles}
                                 size="small"
-                                InputProps={{
-                                    ...params.InputProps,
-                                    startAdornment: (
-                                        <>
-                                            <InputAdornment position="start">
-                                                <SearchIcon
-                                                    sx={{ color: 'rgba(255,255,255,0.5)' }}
-                                                />
-                                            </InputAdornment>
-                                            {params.InputProps.startAdornment}
-                                        </>
-                                    ),
+                                slotProps={{
+                                    ...params.slotProps,
+                                    input: {
+                                        ...params.slotProps.input,
+                                        startAdornment: (
+                                            <>
+                                                <InputAdornment position="start">
+                                                    <SearchIcon
+                                                        sx={{ color: 'rgba(255,255,255,0.5)' }}
+                                                    />
+                                                </InputAdornment>
+                                                {params.slotProps.input.startAdornment}
+                                            </>
+                                        ),
+                                    },
                                 }}
                             />
                         )}
@@ -210,9 +212,12 @@ export function PaginatedListTable({
                 <>
                     <Stack
                         direction="row"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        sx={{ marginTop: 3 }}
+                        sx={{
+                            width: '100%',
+                            marginTop: 3,
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                        }}
                     >
                         <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.6)' }}>
                             {data.count} results
