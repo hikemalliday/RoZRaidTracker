@@ -2,7 +2,7 @@ import { describe, test, expect } from 'vitest';
 import { renderRouteWithContext } from '../../testUtils.jsx';
 import { screen, waitFor } from '@testing-library/react';
 import { RaidDetailView } from '../RaidDetailView.jsx';
-import { RAID_1_ID, ITEM_AWARDED_LIST, RAID_ATTENDANCE_LIST } from '../../mocks/mockData.js';
+import { RAID_1_ID, ITEM_AWARDED_LIST, RAID_ATTENDANCE_LIST } from '../../tests/mocks/mockData.js';
 
 describe('RaidDetailView', () => {
     test('renders loading state initially', () => {
@@ -26,8 +26,8 @@ describe('RaidDetailView', () => {
             expect(screen.queryByText('LOADING...')).not.toBeInTheDocument();
         });
 
-        expect(screen.getAllByText('Test Raid 1').length).toBeGreaterThan(0); // Could assert actual len's here
-        expect(screen.getAllByText('2025-01-15').length).toBeGreaterThan(0);
+        expect(screen.getAllByText('Temple of Veeshan').length).toBeGreaterThan(0);
+        expect(screen.getAllByText('01-15-25').length).toBeGreaterThan(0);
     });
 
     test('renders items awarded for the raid', async () => {

@@ -8,6 +8,9 @@ export default defineConfig(({ mode }) => {
         test: {
             globals: true,
             environment: 'jsdom',
+            environmentOptions: {
+                jsdom: { url: 'http://localhost/' },
+            },
             setupFiles: './src/setupTests.js',
         },
         base: env.VITE_CONFIG_BASE || '/static/',
