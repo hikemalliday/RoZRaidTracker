@@ -3,32 +3,32 @@ import { getLootType, joinAndTruncate, handleAscDesc } from '../utils.jsx';
 
 describe('getLootType', () => {
     test('returns "Preferred" for preferred items', () => {
-        const itemObj = { preferred: true, alt_loot: false, magelo: false };
+        const itemObj = { type: 'preferred' };
         expect(getLootType(itemObj)).toBe('Preferred');
     });
 
     test('returns "Preferred, Magelo" for preferred magelo items', () => {
-        const itemObj = { preferred: true, alt_loot: false, magelo: true };
+        const itemObj = { type: 'preferred_magelo' };
         expect(getLootType(itemObj)).toBe('Preferred, Magelo');
     });
 
     test('returns "Main, Magelo" for main magelo items', () => {
-        const itemObj = { preferred: false, alt_loot: false, magelo: true };
+        const itemObj = { type: 'main_magelo' };
         expect(getLootType(itemObj)).toBe('Main, Magelo');
     });
 
     test('returns "Main" for main items', () => {
-        const itemObj = { preferred: false, alt_loot: false, magelo: false };
+        const itemObj = { type: 'main' };
         expect(getLootType(itemObj)).toBe('Main');
     });
 
     test('returns "Alt, Magelo" for alt magelo items', () => {
-        const itemObj = { preferred: false, alt_loot: true, magelo: true };
+        const itemObj = { type: 'alt_magelo' };
         expect(getLootType(itemObj)).toBe('Alt, Magelo');
     });
 
     test('returns "Alt" for alt items', () => {
-        const itemObj = { preferred: false, alt_loot: true, magelo: false };
+        const itemObj = { type: 'alt' };
         expect(getLootType(itemObj)).toBe('Alt');
     });
 });
