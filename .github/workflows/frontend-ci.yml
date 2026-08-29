@@ -1,4 +1,4 @@
-name: frontend-ci.yml
+name: frontend-ci
 on:
   pull_request:
     branches:
