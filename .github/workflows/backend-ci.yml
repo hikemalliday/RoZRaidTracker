@@ -1,0 +1,28 @@
+name: backend-ci
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "roz_loot_tracker/**"
+      - ".github/workflows/backend-ci.yml"
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: roz_loot_tracker
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: |
+            roz_loot_tracker/requirements.txt
+            roz_loot_tracker/requirements-dev.txt
+      - run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+          pytest

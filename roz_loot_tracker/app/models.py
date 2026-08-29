@@ -155,7 +155,7 @@ class PreferredPixel(models.Model):
     def __str__(self):
         return f"PreferredPixel - Player: {self.player}, Item: {self.item}"
 
-
+# TODO: Interesting that we never linked this to a "Raid" instance but I guess whats done is done
 class RaidAttendanceApproval(models.Model):
     players_list = models.JSONField(default=list)
     is_approved = models.BooleanField(default=False)

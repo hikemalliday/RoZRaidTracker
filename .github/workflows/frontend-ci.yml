@@ -1,8 +1,11 @@
-name: frontend-ci.yml
+name: frontend-ci
 on:
   pull_request:
     branches:
       - main
+    path:
+      - "frontend/**"
+      - ".github/workflows/frontend-ci.yml"
 
 jobs:
   frontend-tests:

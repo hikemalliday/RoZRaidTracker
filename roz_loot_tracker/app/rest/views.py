@@ -249,7 +249,7 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
     def approve(self, request, pk=None):
         raid_attendance_approval = self.get_object()
         if raid_attendance_approval.is_approved == True:
-            raise ValidationError(f"Raid has already been approved. If you think this is a mistake, contact admin.")
+            raise ValidationError({"error": f"Raid has already been approved. If you think this is a mistake, contact Grixus."})
 
         players = request.data.get("players_list")
         if isinstance(players, str):
