@@ -3,6 +3,21 @@ from app.models import Player, Raid, RaidAttendance, RaidAttendanceApproval
 
 
 @pytest.fixture
+def player_grixus(create_player):
+    yield create_player("Grixus", "grixus.")
+
+
+@pytest.fixture
+def player_tune(create_player):
+    yield create_player("Tune", "tune.")
+
+
+@pytest.fixture
+def player_noidz(create_player):
+    yield create_player("Noidz", "noidz.")
+
+
+@pytest.fixture
 def players_list(
         player_grixus,
         player_tune,
@@ -68,6 +83,9 @@ def test_raid_already_approved(
     )
     assert response.status_code == 400
     assert response.json()["error"] == "Raid has already been approved. If you think this is a mistake, contact Grixus."
+    # Assert that transaction rollback succeeded
+    raid_attendance = RaidAttendance.objects.all()
+    assert raid_attendance.count() == 0
 
 
 @pytest.mark.django_db
@@ -88,6 +106,11 @@ def test_no_raid_name(
     )
     assert response.status_code == 400
     assert response.json()["error"] == "Please provide a name for the Raid."
+    # Assert that transaction rollback succeeded
+    approval_instance.refresh_from_db()
+    assert approval_instance.is_approved == False
+    raid_attendance = RaidAttendance.objects.all()
+    assert raid_attendance.count() == 0
 
 
 @pytest.mark.django_db
@@ -108,6 +131,11 @@ def test_player_does_not_exist(
     )
     assert response.status_code == 400
     assert response.json()["error"] == f"Player '{extra_player[0]}' does not exist. Create player first and try again."
+    # Assert that transaction rollback succeeded
+    approval_instance.refresh_from_db()
+    assert approval_instance.is_approved == False
+    raid_attendance = RaidAttendance.objects.all()
+    assert raid_attendance.count() == 0
 
 
 @pytest.mark.django_db
@@ -121,6 +149,11 @@ def test_no_players_in_payload(api_client):
     )
     assert response.status_code == 400
     assert response.json()["error"] == "No players assigned to raid."
+    # Assert that transaction rollback succeeded
+    approval_instance.refresh_from_db()
+    assert approval_instance.is_approved == False
+    raid_attendance = RaidAttendance.objects.all()
+    assert raid_attendance.count() == 0
 
 # REGULAR VIEWSET METHOD TESTS
 @pytest.mark.django_db
@@ -128,6 +161,7 @@ def test_serializer_creates_new_player(
         payload,
         api_client,
 ):
+    # When a player in the payload does not exist as a Player row yet, assert that we create that Player
     new_player = ["Warmbody", ".warmbody"]
     payload["players_list"].append(new_player)
     response = api_client.post(
