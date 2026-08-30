@@ -10,11 +10,19 @@ NOT_REQUIRED = {
 
 
 class Item(models.Model):
+    TIER_CHOICES = (
+        ("QUARM", "Quarm"),
+        ("TIME", "Time"),
+        ("ELEMENTAL", "Elemental"),
+        ("PRE-ELEMENTAL", "Pre-Elemental"),
+    )
+
     name = models.CharField(max_length=100)
     eq_item_id = models.IntegerField()
     icon_id = models.IntegerField()
     item_score = models.IntegerField(**NOT_REQUIRED)
     slots = models.IntegerField(**NOT_REQUIRED)
+    tier = models.CharField(max_length=20, choices=TIER_CHOICES, **NOT_REQUIRED)
 
     def __str__(self):
         return self.name

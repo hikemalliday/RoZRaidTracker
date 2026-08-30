@@ -114,6 +114,57 @@ export const getLootTypeBadgeCell = lootType => {
     );
 };
 
+export const getTierBadgeCell = tier => {
+    const styles_map = {
+        "QUARM": {
+            background: 'rgba(234, 179, 8, 0.15)',
+            color: '#facc15',
+            border: '1px solid rgba(234, 179, 8, 0.3)',
+        },
+        "TIME": {
+            background: 'rgba(245, 158, 11, 0.15)',
+            color: '#fbbf24',
+            border: '1px solid rgba(245, 158, 11, 0.3)',
+        },
+        "ELEMENTAL": {
+            background: 'rgba(239, 68, 68, 0.15)',
+            color: '#f87171',
+            border: '1px solid rgba(239, 68, 68, 0.3)',
+        },
+        "PRE-ELEMENTAL": {
+            background: 'rgba(249, 115, 22, 0.15)',
+            color: '#fb923c',
+            border: '1px solid rgba(249, 115, 22, 0.3)',
+        },
+    }
+    const badgeStyle = styles_map[tier];
+
+    if (!badgeStyle) {
+        return <TableCell id="non-clickable-cell">{tier}</TableCell>;
+    }
+
+    return (
+        <TableCell id="non-clickable-cell">
+            <Box
+                sx={{
+                    display: 'inline-block',
+                    padding: '4px 10px',
+                    borderRadius: '4px',
+                    border: badgeStyle.border,
+                    background: badgeStyle.background,
+                    color: badgeStyle.color,
+                    fontSize: '12px',
+                    textTransform: 'uppercase',
+                    fontWeight: 500,
+                    letterSpacing: '0.3px',
+                }}
+            >
+                {tier}
+            </Box>
+        </TableCell>
+    );
+};
+
 // Order of keys in 'headerMap' matters, as the keys are used for rendering cols / headers
 export function TableList({
     data,

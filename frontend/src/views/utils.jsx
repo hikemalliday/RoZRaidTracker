@@ -163,20 +163,28 @@ const _getItemsResultsMeta = res => {
     if (!res) return {};
     const resultsObj = {};
     res.forEach(item => {
-        if (item.type === 'main') resultsObj.main = resultsObj.main ? (resultsObj.main += 1) : 1;
-        if (item.type === 'alt') resultsObj.alt = resultsObj.alt ? (resultsObj.alt += 1) : 1;
+        if (item.type === 'main') resultsObj["Main"] = resultsObj["Main"] ? (resultsObj["Main"] += 1) : 1;
+        if (item.type === 'alt') resultsObj["Alt"] = resultsObj["Alt"] ? (resultsObj["Alt"] += 1) : 1;
         if (item.type === 'main_magelo')
-            resultsObj.mageloMain = resultsObj.mageloMain ? (resultsObj.mageloMain += 1) : 1;
+            resultsObj["Main Magelo"] = resultsObj["Main Magelo"] ? (resultsObj["Main Magelo"] += 1) : 1;
         if (item.type === 'alt_magelo')
-            resultsObj.mageloAlt = resultsObj.mageloAlt ? (resultsObj.mageloAlt += 1) : 1;
+            resultsObj["Alt Magelo"] = resultsObj["Alt Magelo"] ? (resultsObj["Alt Magelo"] += 1) : 1;
         if (item.type === 'preferred')
-            resultsObj.preferred = resultsObj.preferred ? (resultsObj.preferred += 1) : 1;
+            resultsObj["Preferred"] = resultsObj["Preferred"] ? (resultsObj["Preferred"] += 1) : 1;
         if (item.type === 'preferred_magelo')
-            resultsObj.preferredMagelo = resultsObj.preferredMagelo
-                ? (resultsObj.preferredMagelo += 1)
+            resultsObj["Preferred Magelo"] = resultsObj["Preferred Magelo"]
+                ? (resultsObj["Preferred Magelo"] += 1)
                 : 1;
         if (item.type === 'main_alt')
-            resultsObj.mainAlt = resultsObj.mainAlt ? (resultsObj.mainAlt += 1) : 1;
+            resultsObj["Main Alt"] = resultsObj["Main Alt"] ? (resultsObj["Main Alt"] += 1) : 1;
+        if (item.item.tier === 'QUARM')
+            resultsObj["Quarm"] = resultsObj["Quarm"] ? (resultsObj["Quarm"] += 1) : 1;
+        if (item.item.tier === 'TIME')
+            resultsObj["Time"] = resultsObj["Time"] ? (resultsObj["Time"] += 1) : 1;
+        if (item.item.tier === 'ELEMENTAL')
+            resultsObj["Elemental"] = resultsObj["Elemental"] ? (resultsObj["Elemental"] += 1) : 1;
+        if (item.item.tier === 'PRE-ELEMENTAL')
+            resultsObj["Pre-Elemental"] = resultsObj["Pre-Elemental"] ? (resultsObj["Pre-Elemental"] += 1) : 1;
     });
     return resultsObj;
 };
@@ -189,6 +197,19 @@ export const getItemAwardedMetaDataEditable = (
     onEditClick = null
 ) => {
     if (!itemsResults) return null;
+
+    const getMetaElements = (meta) => {
+        return Object.entries(meta).map(([key, val], i) => {
+              return (
+                  <Box key={i} sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <Typography sx={metaDataLabel}>{key}</Typography>
+                      <Typography sx={metaDataText}>
+                          {val}
+                      </Typography>
+                  </Box>
+              )
+          })
+    };
 
     const itemsResultsMeta = _getItemsResultsMeta(itemsResults);
     return (
@@ -232,38 +253,7 @@ export const getItemAwardedMetaDataEditable = (
                     >
                         Total Items Shown: {itemsResults.length}
                     </Typography>
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <Typography sx={metaDataLabel}>Magelo Main</Typography>
-                        <Typography sx={metaDataText}>
-                            {itemsResultsMeta.mageloMain || 0}
-                        </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <Typography sx={metaDataLabel}>Magelo Alt</Typography>
-                        <Typography sx={metaDataText}>{itemsResultsMeta.mageloAlt || 0}</Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <Typography sx={metaDataLabel}>Preferred</Typography>
-                        <Typography sx={metaDataText}>{itemsResultsMeta.preferred || 0}</Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <Typography sx={metaDataLabel}>Preferred Magelo</Typography>
-                        <Typography sx={metaDataText}>
-                            {itemsResultsMeta.preferredMagelo || 0}
-                        </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <Typography sx={metaDataLabel}>Main</Typography>
-                        <Typography sx={metaDataText}>{itemsResultsMeta.main || 0}</Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <Typography sx={metaDataLabel}>Alt</Typography>
-                        <Typography sx={metaDataText}>{itemsResultsMeta.alt || 0}</Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <Typography sx={metaDataLabel}>Main Alt</Typography>
-                        <Typography sx={metaDataText}>{itemsResultsMeta.mainAlt || 0}</Typography>
-                    </Box>
+                    {getMetaElements(itemsResultsMeta)}
                 </Box>
                 {isAuthenticated && isSuperUser && onEditClick && (
                     <Box
@@ -294,6 +284,17 @@ export const getItemAwardedMetaData = (itemsResults, filteredDataLen) => {
     if (!itemsResults) return [];
 
     const itemsResultsMeta = _getItemsResultsMeta(itemsResults);
+
+    const getMetaElements = results => {
+        return Object.entries(results).map(([key, val], i) => {
+             return (
+                 <Box key={i} sx={{ textAlign: 'center' }}>
+                     <MetaDetail label={key} val={val} />
+                 </Box>
+             )
+        });
+    }
+
     return (
         <>
             <Typography sx={{ ...labelStyles, fontSize: '0.8rem', mt: 2 }}>
@@ -308,44 +309,13 @@ export const getItemAwardedMetaData = (itemsResults, filteredDataLen) => {
                     mb: 1,
                 }}
             >
-                <Box sx={{ textAlign: 'center' }}>
-                    <MetaDetail label={'Magelo Main'} val={itemsResultsMeta.mageloMain || 0} />
-                </Box>
-                <Box sx={{ textAlign: 'center' }}>
-                    <MetaDetail label={'Magelo Alt'} val={itemsResultsMeta.mageloAlt || 0} />
-                </Box>
-                <Box sx={{ textAlign: 'center' }}>
-                    <MetaDetail label={'Preferred'} val={itemsResultsMeta.preferred || 0} />
-                </Box>
-                <Box sx={{ textAlign: 'center' }}>
-                    <MetaDetail
-                        label={'Preferred Magelo'}
-                        val={itemsResultsMeta.preferredMagelo || 0}
-                    />
-                </Box>
-                <Box sx={{ textAlign: 'center' }}>
-                    <MetaDetail label={'Main'} val={itemsResultsMeta.main || 0} />
-                </Box>
-                <Box sx={{ textAlign: 'center' }}>
-                    <MetaDetail label={'Alt'} val={itemsResultsMeta.alt || 0} />
-                </Box>
-                <Box sx={{ textAlign: 'center' }}>
-                    <MetaDetail label={'Main Alt'} val={itemsResultsMeta.mainAlt || 0} />
-                </Box>
+                {getMetaElements(itemsResultsMeta)}
             </Box>
         </>
     );
 };
 
-export const sortRaData = raData => {
-    return raData.sort((a, b) => {
-        const valA = a.created_at;
-        const valB = b.created_at;
-        return valB.localeCompare(valA);
-    });
-};
-
-export const _parseDate = (str) => {
+const _parseDate = (str) => {
     const [month, day, year] = str.split('-');
     return new Date(`20${year}`, month - 1, day);
 };
