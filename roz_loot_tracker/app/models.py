@@ -2,11 +2,7 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.functions import Lower
 
-
-NOT_REQUIRED = {
-    "null": True,
-    "blank": True
-}
+NOT_REQUIRED = {"null": True, "blank": True}
 
 
 class Item(models.Model):
@@ -18,6 +14,7 @@ class Item(models.Model):
 
     def __str__(self):
         return self.name
+
 
 # Not currently used
 class Npc(models.Model):
@@ -43,12 +40,7 @@ class Player(models.Model):
     def __str__(self):
         return self.name
 
-    constraints = [
-        models.UniqueConstraint(
-            Lower('name'),
-            name='unique_lower_name'
-        )
-    ]
+    constraints = [models.UniqueConstraint(Lower("name"), name="unique_lower_name")]
 
 
 class Character(models.Model):
@@ -87,9 +79,7 @@ class Character(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['player'],
-                condition=Q(type="MAIN"),
-                name='unique_main_per_player'
+                fields=["player"], condition=Q(type="MAIN"), name="unique_main_per_player"
             ),
         ]
 
@@ -154,6 +144,7 @@ class PreferredPixel(models.Model):
 
     def __str__(self):
         return f"PreferredPixel - Player: {self.player}, Item: {self.item}"
+
 
 # TODO: Interesting that we never linked this to a "Raid" instance but I guess whats done is done
 class RaidAttendanceApproval(models.Model):

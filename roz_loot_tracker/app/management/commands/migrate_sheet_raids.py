@@ -1,12 +1,14 @@
 # Admin purposes, used to migrate raid info from sheet
 import csv
 from datetime import datetime
-from app.models import Raid, RaidAttendance, Player
+
 from django.db import transaction
+
+from app.models import Player, Raid, RaidAttendance
 
 # TODO: NOTE:
 # Requires 2 files. One for raid meta and one for raid players. Create CSVs by copy pasting from titty's sheet
-with open('raid_players_11_14.csv', newline='') as csvfile:
+with open("raid_players_11_14.csv", newline="") as csvfile:
     reader = list(csv.reader(csvfile))
 
 transposed = list(zip(*reader))
@@ -15,7 +17,7 @@ for col in transposed:
     players = [p.strip() for p in col if p and p.strip()]
     player_cols.append(players)
 
-with open('raid_meta_11_14.csv', newline='') as csvfile:
+with open("raid_meta_11_14.csv", newline="") as csvfile:
     reader = list(csv.reader(csvfile))
 
 transposed = list(zip(*reader))
@@ -32,8 +34,8 @@ player_in_question = player_cols[0]
 raid_in_question = raid_meta_cols[0]
 
 with transaction.atomic():
-    Raid._meta.get_field('created_at').auto_now_add = False
-    RaidAttendance._meta.get_field('created_at').auto_now_add = False
+    Raid._meta.get_field("created_at").auto_now_add = False
+    RaidAttendance._meta.get_field("created_at").auto_now_add = False
     for players, raid_meta in zip(player_cols, raid_meta_cols):
         if not players:
             print("no players in list, checking raid list...")
@@ -74,9 +76,3 @@ with transaction.atomic():
                 raid=raid,
                 created_at=dt_naive,
             )
-
-
-
-
-
-

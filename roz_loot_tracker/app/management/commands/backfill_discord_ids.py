@@ -147,10 +147,10 @@ DISCORD_ID_MAP = {
 }
 
 
-
 class Command(BaseCommand):
     help = "create a raid attendance row"
     with transaction.atomic():
+
         def handle(self, *args, **options):
             for discord_id, player_name in DISCORD_ID_MAP.items():
                 try:
@@ -159,5 +159,9 @@ class Command(BaseCommand):
                     player.discord_id = discord_id
                     player.save()
                 except models.Player.DoesNotExist:
-                    return self.stdout.write(self.style.ERROR(f"Player with name {player_name} does not exist."))
-            return self.stdout.write(self.style.SUCCESS(f"Successfully backfilled discord ids for Player's"))
+                    return self.stdout.write(
+                        self.style.ERROR(f"Player with name {player_name} does not exist.")
+                    )
+            return self.stdout.write(
+                self.style.SUCCESS("Successfully backfilled discord ids for Player's")
+            )

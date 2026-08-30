@@ -1,6 +1,7 @@
 import pytest
 from rest_framework.test import APIClient
 from rest_framework_api_key.models import APIKey
+
 from app.models import Character, Player
 
 
@@ -37,6 +38,7 @@ def superuser_client(admin_user):
 def create_player():
     def _create_player(name, discord_id):
         return Player.objects.create(name=name, discord_id=discord_id)
+
     yield _create_player
 
 
@@ -46,4 +48,5 @@ def create_characters():
         """Param 'characters' expects a list of dicts, with keys: name, player (Player instance), char_class, type"""
         for char in characters:
             yield Character.objects.create(**char)
+
     yield _create_characters

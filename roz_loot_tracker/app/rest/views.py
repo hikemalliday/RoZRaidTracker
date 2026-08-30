@@ -1,25 +1,36 @@
-from datetime import timedelta
 import sqlite3
-from app import models
-from app.serializers.serializers import PlayerSerializer, ItemSerializer, RaidSerializer, \
-    ZoneSerializer, CharacterSerializer, ItemAwardedSerializer, PreferredPixelSerializer, RaidAttendanceSerializer, \
-    RaidAttendanceApprovalSerializer, TokenObtainPairSerializer
-from django.db import transaction, IntegrityError
-from django.db.models import Count, F, FloatField, ExpressionWrapper, Func, Q
+from datetime import timedelta
+from pathlib import Path
+
+from django.conf import settings
+from django.db import IntegrityError, transaction
+from django.db.models import Count, ExpressionWrapper, F, FloatField, Func, Q
 from django.utils import timezone
+from django_filters import rest_framework as filters
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, status
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.response import Response
-from django_filters import rest_framework as filters
 from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework_simplejwt.views import TokenObtainPairView
-from django.conf import settings
-from pathlib import Path
+
+from app import models
+from app.serializers.serializers import (
+    CharacterSerializer,
+    ItemAwardedSerializer,
+    ItemSerializer,
+    PlayerSerializer,
+    PreferredPixelSerializer,
+    RaidAttendanceApprovalSerializer,
+    RaidAttendanceSerializer,
+    RaidSerializer,
+    TokenObtainPairSerializer,
+    ZoneSerializer,
+)
 
 
 class InvalidCharEdit(ValidationError):
@@ -32,6 +43,7 @@ class ItemFilter(filters.FilterSet):
     class Meta:
         model = models.Item
         fields = ["name"]
+
 
 class PlayerFilter(filters.FilterSet):
     name = filters.CharFilter(field_name="name", lookup_expr="icontains")
@@ -53,9 +65,9 @@ class ItemViewSet(viewsets.ModelViewSet):
     pagination_class = AllowNoPagination
     filterset_class = ItemFilter
 
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=["get"])
     def get_options(self, request, pk=None):
-        qs = models.Item.objects.filter(itemawarded__isnull=False).distinct().order_by('name')
+        qs = models.Item.objects.filter(itemawarded__isnull=False).distinct().order_by("name")
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
 
@@ -71,45 +83,45 @@ class PlayerViewSet(viewsets.ModelViewSet):
     serializer_class = PlayerSerializer
     permission_classes = (DjangoModelPermissions,)
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-    ordering_fields = ['name', 'lifetime_ra', 'ra_21_day']
+    ordering_fields = ["name", "lifetime_ra", "ra_21_day"]
     pagination_class = AllowNoPagination
     filterset_class = PlayerFilter
+
     # TODO: The whole "21 day" thing should probably be named something different in the annotated field, but the frontend is so dependent on it that I don't wanna refactor all that at the moment
     def get_queryset(self):
-        num_of_days = int(self.request.query_params.get('num_of_days', 21))
-        ra_percentage = self.request.query_params.get('ra_percentage', None)
+        num_of_days = int(self.request.query_params.get("num_of_days", 21))
+        ra_percentage = self.request.query_params.get("ra_percentage", None)
 
         total_raids = models.Raid.objects.count() or 1
 
         date_threshold = timezone.now() - timedelta(days=num_of_days)
-        total_raids_window = models.Raid.objects.filter(
-            created_at__gte=date_threshold
-        ).count() or 1
+        total_raids_window = models.Raid.objects.filter(created_at__gte=date_threshold).count() or 1
 
         queryset = (
             models.Player.objects
             # 'annotate()' basically adds a new field to the model instance
             .annotate(
-                total_ra=Count('raidattendance', distinct=True),
+                total_ra=Count("raidattendance", distinct=True),
                 # 'ExpressionWrapper' is used to do SQL math operations.
                 lifetime_ra_raw=ExpressionWrapper(
                     # F() is used to reference other calculated fields
-                    (100.0 * F('total_ra') / total_raids),
+                    (100.0 * F("total_ra") / total_raids),
                     output_field=FloatField(),
                 ),
                 total_ra_21_days=Count(
-                    'raidattendance',
+                    "raidattendance",
                     filter=Q(raidattendance__raid__created_at__gte=date_threshold),
                     distinct=True,
                 ),
                 ra_21_day_raw=ExpressionWrapper(
-                    (100.0 * F('total_ra_21_days') / total_raids_window),
+                    (100.0 * F("total_ra_21_days") / total_raids_window),
                     output_field=FloatField(),
-                )
-            )
-            .annotate(
-                lifetime_ra=Func(F('lifetime_ra_raw'), 2, function='ROUND', output_field=FloatField()),
-                ra_21_day=Func(F('ra_21_day_raw'), 2, function='ROUND', output_field=FloatField())
+                ),
+            ).annotate(
+                lifetime_ra=Func(
+                    F("lifetime_ra_raw"), 2, function="ROUND", output_field=FloatField()
+                ),
+                ra_21_day=Func(F("ra_21_day_raw"), 2, function="ROUND", output_field=FloatField()),
             )
         )
 
@@ -124,11 +136,12 @@ class CharacterViewSet(viewsets.ModelViewSet):
     serializer_class = CharacterSerializer
     permission_classes = (DjangoModelPermissions,)
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['player', "player__active"]
+    filterset_fields = ["player", "player__active"]
     pagination_class = AllowNoPagination
+
     # Used by PlayerEditView. We will ALWAYS batch edit ALL characters for a given Player.
     # _validate_batch helper ensures this. If frontend payload / approach ever changes, it will be gated here.
-    @action(detail=False, methods=['patch'])
+    @action(detail=False, methods=["patch"])
     def batch(self, request):
         def _validate_batch(payload):
             submitted_ids = {int(char_id) for char_id in payload}
@@ -137,39 +150,32 @@ class CharacterViewSet(viewsets.ModelViewSet):
                 raise InvalidCharEdit({"error": "One or more characters do not exist."})
             player_ids = set(submitted_characters.values_list("player_id", flat=True))
             if len(player_ids) != 1:
-                raise InvalidCharEdit({
-                    "error": "All batch-edited characters must belong to one player."
-                })
+                raise InvalidCharEdit(
+                    {"error": "All batch-edited characters must belong to one player."}
+                )
             player_id = player_ids.pop()
             all_player_ids = set(
-                models.Character.objects
-                .filter(player_id=player_id)
-                .values_list("id", flat=True)
+                models.Character.objects.filter(player_id=player_id).values_list("id", flat=True)
             )
             if submitted_ids != all_player_ids:
-                raise InvalidCharEdit({
-                    "error": "The batch must include every character for this player."
-                })
+                raise InvalidCharEdit(
+                    {"error": "The batch must include every character for this player."}
+                )
             # Validate the types are valid
             num_main = 0
             num_main_alt = 0
             for char_type in payload.values():
                 if char_type not in ("MAIN", "MAIN_ALT", "ALT"):
-                    raise InvalidCharEdit({
-                        "error": "Must provide a valid character type."
-                    })
+                    raise InvalidCharEdit({"error": "Must provide a valid character type."})
                 if char_type == "MAIN":
                     num_main += 1
                 elif char_type == "MAIN_ALT":
                     num_main_alt += 1
             if num_main > 1:
-                raise InvalidCharEdit({
-                    "error": "Player cannot have more than 1 main."
-                })
+                raise InvalidCharEdit({"error": "Player cannot have more than 1 main."})
             if num_main_alt > 2:
-                raise InvalidCharEdit({
-                    "error": "Player cannot have more than 2 main alts."
-                })
+                raise InvalidCharEdit({"error": "Player cannot have more than 2 main alts."})
+
         # Safeguard to avoid database level 'Can only have one MAIN' constraint. Set all chars to ALT first.
         def _set_alt_all(payload):
             for char_id in payload.keys():
@@ -197,10 +203,10 @@ class RaidViewSet(viewsets.ModelViewSet):
     serializer_class = RaidSerializer
     permission_classes = (DjangoModelPermissions,)
     filter_backends = (OrderingFilter,)
-    ordering_fields = ['name', 'zone', 'created_at']
+    ordering_fields = ["name", "zone", "created_at"]
 
     def get_queryset(self):
-        qs = models.Raid.objects.all().order_by('-id')
+        qs = models.Raid.objects.all().order_by("-id")
         limit = self.request.query_params.get("limit", None)
         if limit:
             limit = int(limit)
@@ -213,8 +219,8 @@ class ItemAwardedViewSet(viewsets.ModelViewSet):
     serializer_class = ItemAwardedSerializer
     permission_classes = (DjangoModelPermissions,)
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ['player', 'raid', 'item__id']
-    ordering_fields = ['player__name', 'raid__name', 'created_at', 'item__name', 'raid__created_at']
+    filterset_fields = ["player", "raid", "item__id"]
+    ordering_fields = ["player__name", "raid__name", "created_at", "item__name", "raid__created_at"]
     pagination_class = AllowNoPagination
 
 
@@ -229,7 +235,7 @@ class RaidAttendanceViewSet(viewsets.ModelViewSet):
     serializer_class = RaidAttendanceSerializer
     permission_classes = (DjangoModelPermissions,)
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['player', 'raid']
+    filterset_fields = ["player", "raid"]
     pagination_class = AllowNoPagination
 
 
@@ -237,7 +243,7 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
     queryset = models.RaidAttendanceApproval.objects.all()
     serializer_class = RaidAttendanceApprovalSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['is_approved']
+    filterset_fields = ["is_approved"]
     pagination_class = AllowNoPagination
 
     def get_permissions(self):
@@ -246,25 +252,30 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
             return [HasAPIKey()]
         return [DjangoModelPermissions()]
 
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=["post"])
     def approve(self, request, pk=None):
         raid_attendance_approval = self.get_object()
         if raid_attendance_approval.is_approved == True:
-            raise ValidationError({"error": f"Raid has already been approved. If you think this is a mistake, contact Grixus."})
+            raise ValidationError(
+                {
+                    "error": "Raid has already been approved. If you think this is a mistake, contact Grixus."
+                }
+            )
 
         players = request.data.get("players_list")
         if isinstance(players, str):
             import json
+
             players = json.loads(players)
         if not players:
-            raise ValidationError({"error": f"No players assigned to raid."})
+            raise ValidationError({"error": "No players assigned to raid."})
 
         raid_name = request.data.get("raid_name")
         if not raid_name:
-            raise ValidationError({"error": f"Please provide a name for the Raid."})
+            raise ValidationError({"error": "Please provide a name for the Raid."})
 
         with transaction.atomic():
-            field = models.Raid._meta.get_field('created_at')
+            field = models.Raid._meta.get_field("created_at")
             old_auto_now_add = field.auto_now_add
             field.auto_now_add = False
             try:
@@ -280,15 +291,19 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
                             raid=raid,
                         )
                     except models.Player.DoesNotExist:
-                        raise ValidationError({"error": f"Player '{player_name}' does not exist. Create player first and try again."})
+                        raise ValidationError(
+                            {
+                                "error": f"Player '{player_name}' does not exist. Create player first and try again."
+                            }
+                        )
             finally:
                 field.auto_now_add = old_auto_now_add
-
 
             raid_attendance_approval.is_approved = True
             raid_attendance_approval.save()
 
         return Response({"message": f"Success: added raid '{raid_name} + attendees.'"}, status=200)
+
 
 # Don't really care to add perms here, its read only by default
 class SQLQueryViewSet(viewsets.GenericViewSet):
@@ -313,10 +328,7 @@ class SQLQueryViewSet(viewsets.GenericViewSet):
             with conn:
                 cursor = conn.execute(sql)
                 columns = [col[0] for col in cursor.description]
-                rows = [
-                    dict(zip(columns, row))
-                    for row in cursor.fetchall()
-                ]
+                rows = [dict(zip(columns, row)) for row in cursor.fetchall()]
             return Response({"results": rows})
 
         except sqlite3.Error as exc:
