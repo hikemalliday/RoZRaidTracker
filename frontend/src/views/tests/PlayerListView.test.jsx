@@ -2,7 +2,7 @@ import { describe, test, expect } from 'vitest';
 import { renderComponentWithContext } from '../../testUtils.jsx';
 import { screen, waitFor } from '@testing-library/react';
 import { PlayerListView } from '../PlayerListView.jsx';
-import { PLAYER_LIST } from '../../mocks/mockData.js';
+import { PLAYER_LIST } from '../../tests/mocks/mockData.js';
 
 describe('PlayerListView', () => {
     test('renders loading state initially', () => {
@@ -18,7 +18,7 @@ describe('PlayerListView', () => {
         });
 
         PLAYER_LIST.forEach(player => {
-            expect(screen.getByText(player.name)).toBeInTheDocument();
+            expect(screen.getByRole('link', { name: player.name })).toBeInTheDocument();
         });
     });
 
@@ -29,7 +29,7 @@ describe('PlayerListView', () => {
             expect(screen.queryByText('LOADING...')).not.toBeInTheDocument();
         });
 
-        const playerNames = PLAYER_LIST.map(p => screen.getByText(p.name));
+        const playerNames = PLAYER_LIST.map(p => screen.getByRole('link', { name: p.name }));
         expect(playerNames).toHaveLength(PLAYER_LIST.length);
     });
 });

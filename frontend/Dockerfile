@@ -3,7 +3,7 @@ FROM node:20-slim AS build
 ARG VITE_MODE
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 COPY . .
 RUN npx vite build --mode $VITE_MODE
 
