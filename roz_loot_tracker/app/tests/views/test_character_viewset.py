@@ -67,9 +67,9 @@ def characters_two_players(player_grixus, player_tune):
 
 # CUSTOM ENDPOINT TESTS
 @pytest.mark.django_db
-def test_batch_updates_every_character_for_a_player(api_client, characters):
+def test_batch_updates_every_character_for_a_player(superuser_client, characters):
     main, main_alt, alt = characters
-    response = api_client.patch(
+    response = superuser_client.patch(
         "/api/characters/batch/",
         {
             str(main.id): "MAIN_ALT",
@@ -86,9 +86,9 @@ def test_batch_updates_every_character_for_a_player(api_client, characters):
 
 
 @pytest.mark.django_db
-def test_batch_update_omit_character_fails(api_client, characters):
+def test_batch_update_omit_character_fails(superuser_client, characters):
     main, main_alt, alt = characters
-    response = api_client.patch(
+    response = superuser_client.patch(
         "/api/characters/batch/",
         {
             str(main.id): "MAIN_ALT",
@@ -101,9 +101,9 @@ def test_batch_update_omit_character_fails(api_client, characters):
 
 
 @pytest.mark.django_db
-def test_batch_update_cannot_set_two_mains(api_client, characters):
+def test_batch_update_cannot_set_two_mains(superuser_client, characters):
     main, main_alt, alt = characters
-    response = api_client.patch(
+    response = superuser_client.patch(
         "/api/characters/batch/",
         {
             str(main.id): "MAIN_ALT",
@@ -117,9 +117,9 @@ def test_batch_update_cannot_set_two_mains(api_client, characters):
 
 
 @pytest.mark.django_db
-def test_batch_update_cannot_set_more_than_two_main_alts(api_client, characters):
+def test_batch_update_cannot_set_more_than_two_main_alts(superuser_client, characters):
     main, main_alt, alt = characters
-    response = api_client.patch(
+    response = superuser_client.patch(
         "/api/characters/batch/",
         {
             str(main.id): "MAIN_ALT",
@@ -133,9 +133,9 @@ def test_batch_update_cannot_set_more_than_two_main_alts(api_client, characters)
 
 
 @pytest.mark.django_db
-def test_batch_update_cannot_have_multiple_players(api_client, characters_two_players):
+def test_batch_update_cannot_have_multiple_players(superuser_client, characters_two_players):
     main, main_alt, alt, alt_2 = characters_two_players
-    response = api_client.patch(
+    response = superuser_client.patch(
         "/api/characters/batch/",
         {
             str(main.id): "MAIN_ALT",
@@ -150,9 +150,9 @@ def test_batch_update_cannot_have_multiple_players(api_client, characters_two_pl
 
 
 @pytest.mark.django_db
-def test_must_provide_valid_character_type(api_client, characters):
+def test_must_provide_valid_character_type(superuser_client, characters):
     main, main_alt, alt = characters
-    response = api_client.patch(
+    response = superuser_client.patch(
         "/api/characters/batch/",
         {
             str(main.id): "MAIN_ALT",

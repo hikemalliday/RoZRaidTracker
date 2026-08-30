@@ -13,16 +13,13 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.response import Response
 from django_filters import rest_framework as filters
 from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.conf import settings
 from pathlib import Path
-
-
-PERMISSION_CLASS_DEBUG = IsAuthenticated
 
 
 class InvalidCharEdit(ValidationError):
@@ -52,7 +49,7 @@ class AllowNoPagination(PageNumberPagination):
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = models.Item.objects.all()
     serializer_class = ItemSerializer
-    # permission_classes = (PERMISSION_CLASS_DEBUG,)
+    permission_classes = (DjangoModelPermissions,)
     pagination_class = AllowNoPagination
     filterset_class = ItemFilter
 
@@ -66,13 +63,13 @@ class ItemViewSet(viewsets.ModelViewSet):
 class ZoneViewSet(viewsets.ModelViewSet):
     queryset = models.Zone.objects.all()
     serializer_class = ZoneSerializer
-    permission_classes = (PERMISSION_CLASS_DEBUG,)
+    permission_classes = (DjangoModelPermissions,)
 
 
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = models.Player.objects.all()
     serializer_class = PlayerSerializer
-    # permission_classes = (PERMISSION_CLASS_DEBUG,)
+    permission_classes = (DjangoModelPermissions,)
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     ordering_fields = ['name', 'lifetime_ra', 'ra_21_day']
     pagination_class = AllowNoPagination
@@ -91,12 +88,12 @@ class PlayerViewSet(viewsets.ModelViewSet):
 
         queryset = (
             models.Player.objects
-            # TODO: 'annotate()' basically adds a new field to the model instance
+            # 'annotate()' basically adds a new field to the model instance
             .annotate(
                 total_ra=Count('raidattendance', distinct=True),
-                # TODO: 'ExpressionWrapper' is used to do SQL math operations.
+                # 'ExpressionWrapper' is used to do SQL math operations.
                 lifetime_ra_raw=ExpressionWrapper(
-                    # TODO: F() is used to reference other calculated fields
+                    # F() is used to reference other calculated fields
                     (100.0 * F('total_ra') / total_raids),
                     output_field=FloatField(),
                 ),
@@ -125,7 +122,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
 class CharacterViewSet(viewsets.ModelViewSet):
     queryset = models.Character.objects.all()
     serializer_class = CharacterSerializer
-    # permission_classes = (PERMISSION_CLASS_DEBUG,)
+    permission_classes = (DjangoModelPermissions,)
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['player', "player__active"]
     pagination_class = AllowNoPagination
@@ -198,7 +195,7 @@ class CharacterViewSet(viewsets.ModelViewSet):
 class RaidViewSet(viewsets.ModelViewSet):
     queryset = models.Raid.objects.all()
     serializer_class = RaidSerializer
-    # permission_classes = (PERMISSION_CLASS_DEBUG,)
+    permission_classes = (DjangoModelPermissions,)
     filter_backends = (OrderingFilter,)
     ordering_fields = ['name', 'zone', 'created_at']
 
@@ -214,7 +211,7 @@ class RaidViewSet(viewsets.ModelViewSet):
 class ItemAwardedViewSet(viewsets.ModelViewSet):
     queryset = models.ItemAwarded.objects.all()
     serializer_class = ItemAwardedSerializer
-    # permission_classes = (PERMISSION_CLASS_DEBUG,)
+    permission_classes = (DjangoModelPermissions,)
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['player', 'raid', 'item__id']
     ordering_fields = ['player__name', 'raid__name', 'created_at', 'item__name', 'raid__created_at']
@@ -224,26 +221,30 @@ class ItemAwardedViewSet(viewsets.ModelViewSet):
 class PreferredPixelViewSet(viewsets.ModelViewSet):
     queryset = models.PreferredPixel.objects.all()
     serializer_class = PreferredPixelSerializer
-    permission_classes = (PERMISSION_CLASS_DEBUG,)
+    permission_classes = (DjangoModelPermissions,)
 
 
 class RaidAttendanceViewSet(viewsets.ModelViewSet):
     queryset = models.RaidAttendance.objects.all()
     serializer_class = RaidAttendanceSerializer
-    # permission_classes = (PERMISSION_CLASS_DEBUG,)
+    permission_classes = (DjangoModelPermissions,)
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['player', 'raid']
     pagination_class = AllowNoPagination
 
-# TODO: 12/7: Undergoing a refactor to how raids + item approval are handled. Commented out related code in custom endpoint
-# TODO: Leave the commented out code in "just in case"
+
 class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
     queryset = models.RaidAttendanceApproval.objects.all()
     serializer_class = RaidAttendanceApprovalSerializer
-    permission_classes = [PERMISSION_CLASS_DEBUG | HasAPIKey]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['is_approved']
     pagination_class = AllowNoPagination
+
+    def get_permissions(self):
+        if self.action == "create":
+            # Discord bot: POST
+            return [HasAPIKey()]
+        return [DjangoModelPermissions()]
 
     @action(detail=True, methods=['post'])
     def approve(self, request, pk=None):
@@ -289,7 +290,7 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
 
         return Response({"message": f"Success: added raid '{raid_name} + attendees.'"}, status=200)
 
-
+# Don't really care to add perms here, its read only by default
 class SQLQueryViewSet(viewsets.GenericViewSet):
     DB_PATH = Path(settings.BASE_DIR) / "db.sqlite3"
 
