@@ -42,7 +42,7 @@ def payload(players_list):
 def test_raid_attendance_approval_happy_path(
         players_list,
         payload,
-        api_client,
+        superuser_client,
 ):
     approval_instance = RaidAttendanceApproval.objects.create(
         players_list=players_list,
@@ -51,7 +51,7 @@ def test_raid_attendance_approval_happy_path(
     assert RaidAttendance.objects.all().count() == 0
     assert approval_instance.is_approved == False
 
-    response = api_client.post(
+    response = superuser_client.post(
         f"/api/raid_attendance_approval/{approval_instance.id}/approve/",
         payload,
         format="json",
@@ -70,13 +70,13 @@ def test_raid_attendance_approval_happy_path(
 def test_raid_already_approved(
         players_list,
         payload,
-        api_client,
+        superuser_client,
 ):
     approval_instance = RaidAttendanceApproval.objects.create(
         players_list=players_list,
         is_approved=True,
     )
-    response = api_client.post(
+    response = superuser_client.post(
         f"/api/raid_attendance_approval/{approval_instance.id}/approve/",
         payload,
         format="json",
@@ -91,7 +91,7 @@ def test_raid_already_approved(
 @pytest.mark.django_db
 def test_no_raid_name(
         players_list,
-        api_client,
+        superuser_client,
 ):
     payload_no_name = {
         "players_list": players_list,
@@ -99,7 +99,7 @@ def test_no_raid_name(
     approval_instance = RaidAttendanceApproval.objects.create(
         players_list=players_list,
     )
-    response = api_client.post(
+    response = superuser_client.post(
         f"/api/raid_attendance_approval/{approval_instance.id}/approve/",
         payload_no_name,
         format="json",
@@ -117,14 +117,14 @@ def test_no_raid_name(
 def test_player_does_not_exist(
         players_list,
         payload,
-        api_client,
+        superuser_client,
 ):
     extra_player = ["Warmbody", ".warmbody"]
     payload["players_list"].append(extra_player)
     approval_instance = RaidAttendanceApproval.objects.create(
         players_list=[*players_list, extra_player],
     )
-    response = api_client.post(
+    response = superuser_client.post(
         f"/api/raid_attendance_approval/{approval_instance.id}/approve/",
         payload,
         format="json",
@@ -139,10 +139,10 @@ def test_player_does_not_exist(
 
 
 @pytest.mark.django_db
-def test_no_players_in_payload(api_client):
+def test_no_players_in_payload(superuser_client):
     payload = { "raid_name": "VT" }
     approval_instance = RaidAttendanceApproval.objects.create()
-    response = api_client.post(
+    response = superuser_client.post(
         f"/api/raid_attendance_approval/{approval_instance.id}/approve/",
         payload,
         format="json",
@@ -159,12 +159,12 @@ def test_no_players_in_payload(api_client):
 @pytest.mark.django_db
 def test_serializer_creates_new_player(
         payload,
-        api_client,
+        api_key_client,
 ):
     # When a player in the payload does not exist as a Player row yet, assert that we create that Player
     new_player = ["Warmbody", ".warmbody"]
     payload["players_list"].append(new_player)
-    response = api_client.post(
+    response = api_key_client.post(
         f"/api/raid_attendance_approval/",
         payload,
         format="json",

@@ -11,9 +11,25 @@ def api_key():
 
 
 @pytest.fixture
-def api_client(api_key):
+def admin_user(django_user_model):
+    return django_user_model.objects.create_superuser(
+        username="test-admin",
+        email="admin@example.com",
+        password="test-password",
+    )
+
+
+@pytest.fixture
+def api_key_client(api_key):
     client = APIClient()
     client.credentials(HTTP_AUTHORIZATION=f"Api-Key {api_key}")
+    yield client
+
+
+@pytest.fixture
+def superuser_client(admin_user):
+    client = APIClient()
+    client.force_authenticate(user=admin_user)
     yield client
 
 
