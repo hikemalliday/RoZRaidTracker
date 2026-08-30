@@ -1,3 +1,4 @@
 pytest
 pytest-django
 factory-boy
+ruff==0.16.5
