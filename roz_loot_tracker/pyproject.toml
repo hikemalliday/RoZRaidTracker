@@ -1,8 +1,9 @@
 [tool.ruff]
 target-version = "py311"
-line-length = 100
+line-length = 120
 extend-exclude = [
     "app/migrations",
+    "app/management",
 ]
 # Lint rules:
 # E, F: Basic style and likely bugs

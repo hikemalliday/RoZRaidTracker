@@ -28,9 +28,7 @@ class ZoneSerializer(serializers.ModelSerializer):
 
 
 class CharacterSerializer(serializers.ModelSerializer):
-    player_id = serializers.PrimaryKeyRelatedField(
-        queryset=Player.objects.all(), source="player", write_only=True
-    )
+    player_id = serializers.PrimaryKeyRelatedField(queryset=Player.objects.all(), source="player", write_only=True)
 
     class Meta:
         model = Character
@@ -49,9 +47,7 @@ class CharacterSerializer(serializers.ModelSerializer):
                 type="MAIN",
             ).exists()
         ):
-            raise serializers.ValidationError(
-                {"error": "This player already has a main character."}
-            )
+            raise serializers.ValidationError({"error": "This player already has a main character."})
 
         if (
             char_type == "MAIN_ALT"
@@ -61,9 +57,7 @@ class CharacterSerializer(serializers.ModelSerializer):
             ).count()
             >= 2
         ):
-            raise serializers.ValidationError(
-                {"error": "This player already has 2 main alt characters."}
-            )
+            raise serializers.ValidationError({"error": "This player already has 2 main alt characters."})
 
         return attrs
 
@@ -95,15 +89,9 @@ class ItemAwardedSerializer(serializers.ModelSerializer):
     raid = RaidSerializer(read_only=True)
     player = PlayerSerializer(read_only=True)
 
-    player_id = serializers.PrimaryKeyRelatedField(
-        queryset=Player.objects.all(), source="player", write_only=True
-    )
-    raid_id = serializers.PrimaryKeyRelatedField(
-        queryset=Raid.objects.all(), source="raid", write_only=True
-    )
-    item_id = serializers.PrimaryKeyRelatedField(
-        queryset=Item.objects.all(), source="item", write_only=True
-    )
+    player_id = serializers.PrimaryKeyRelatedField(queryset=Player.objects.all(), source="player", write_only=True)
+    raid_id = serializers.PrimaryKeyRelatedField(queryset=Raid.objects.all(), source="raid", write_only=True)
+    item_id = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all(), source="item", write_only=True)
 
     class Meta:
         model = ItemAwarded
@@ -123,12 +111,8 @@ class RaidAttendanceSerializer(serializers.ModelSerializer):
     raid = RaidSerializer(read_only=True)
 
     # Simple IDs for writing (WRITE-ONLY)
-    player_id = serializers.PrimaryKeyRelatedField(
-        queryset=Player.objects.all(), source="player", write_only=True
-    )
-    raid_id = serializers.PrimaryKeyRelatedField(
-        queryset=Raid.objects.all(), source="raid", write_only=True
-    )
+    player_id = serializers.PrimaryKeyRelatedField(queryset=Player.objects.all(), source="player", write_only=True)
+    raid_id = serializers.PrimaryKeyRelatedField(queryset=Raid.objects.all(), source="raid", write_only=True)
 
     class Meta:
         model = RaidAttendance

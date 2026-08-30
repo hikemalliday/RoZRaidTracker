@@ -3,9 +3,9 @@ from django.db import transaction
 
 from app import models
 
-# TODO: This is a one-off migration script to translate the defunct bool field approach to classifying ItemAwarded rows. The modern approach is a single field "ItemAwarded.type"
 
-
+# This is a one-off migration script to translate the defunct bool field approach to classifying ItemAwarded rows.
+# The modern approach is a single field "ItemAwarded.type"
 def _get_type(item_awarded):
     if not item_awarded.alt_loot and item_awarded.preferred and not item_awarded.magelo:
         return "preferred"
@@ -42,9 +42,7 @@ class Command(BaseCommand):
 
             self.stdout.write(f"Rows updated: {counter}")
             if len(could_not_update) == 0:
-                return self.stdout.write(
-                    self.style.SUCCESS("Successfully added type field to ItemAwarded ALL Rows.")
-                )
+                return self.stdout.write(self.style.SUCCESS("Successfully added type field to ItemAwarded ALL Rows."))
             else:
                 self.stdout.write(
                     self.styles.ERROR(
@@ -53,9 +51,6 @@ class Command(BaseCommand):
                 )
                 for item in could_not_update:
                     self.stdout.write(
-                        f"pk: {item.pk}, "
-                        f"alt_loot: {item.alt_loot}, "
-                        f"preferred: {item.preferred}, "
-                        f"magelo: {item.magelo}"
+                        f"pk: {item.pk}, alt_loot: {item.alt_loot}, preferred: {item.preferred}, magelo: {item.magelo}"
                     )
                 return None

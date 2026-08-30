@@ -78,9 +78,7 @@ class Character(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(
-                fields=["player"], condition=Q(type="MAIN"), name="unique_main_per_player"
-            ),
+            models.UniqueConstraint(fields=["player"], condition=Q(type="MAIN"), name="unique_main_per_player"),
         ]
 
     def __str__(self):

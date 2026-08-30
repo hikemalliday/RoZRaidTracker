@@ -40,8 +40,7 @@ class Command(BaseCommand):
                         break
 
                     items_to_insert = [
-                        models.Item(eq_item_id=row[0], name=row[1], icon_id=row[2], item_score=0)
-                        for row in rows
+                        models.Item(eq_item_id=row[0], name=row[1], icon_id=row[2], item_score=0) for row in rows
                     ]
                     models.Item.objects.bulk_create(items_to_insert)
                     self.stdout.write(self.style.SUCCESS(f"Successfully inserted {len(rows)} rows"))

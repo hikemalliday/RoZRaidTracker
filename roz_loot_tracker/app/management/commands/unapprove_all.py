@@ -11,6 +11,4 @@ class Command(BaseCommand):
         for row in ra_app_qs:
             row.is_approved = False
             row.save()
-        self.stdout.write(
-            self.style.SUCCESS("Successfully unapproved all RaidAttendanceApproval entries.")
-        )
+        self.stdout.write(self.style.SUCCESS("Successfully unapproved all RaidAttendanceApproval entries."))

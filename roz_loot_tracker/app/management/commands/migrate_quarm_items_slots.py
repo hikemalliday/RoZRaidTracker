@@ -42,9 +42,7 @@ class Command(BaseCommand):
                         item_to_edit.slots = row[1]
                         item_to_edit.save()
 
-                    self.stdout.write(
-                        self.style.SUCCESS(f"Successfully updated {len(rows)} Item rows.")
-                    )
+                    self.stdout.write(self.style.SUCCESS(f"Successfully updated {len(rows)} Item rows."))
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"Error during migration: {str(e)}"))
             raise

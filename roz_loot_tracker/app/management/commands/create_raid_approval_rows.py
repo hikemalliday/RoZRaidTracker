@@ -267,7 +267,5 @@ class Command(BaseCommand):
                     created_at=dt_naive,
                 )
         self.stdout.write(
-            self.style.SUCCESS(
-                f"Successfully added {len(players_lists)} RaidAttendanceApproval entries."
-            )
+            self.style.SUCCESS(f"Successfully added {len(players_lists)} RaidAttendanceApproval entries.")
         )

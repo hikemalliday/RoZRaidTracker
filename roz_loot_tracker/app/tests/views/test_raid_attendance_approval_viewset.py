@@ -48,7 +48,7 @@ def test_raid_attendance_approval_happy_path(
     )
     assert Raid.objects.all().count() == 0
     assert RaidAttendance.objects.all().count() == 0
-    assert approval_instance.is_approved == False
+    assert not approval_instance.is_approved
 
     response = superuser_client.post(
         f"/api/raid_attendance_approval/{approval_instance.id}/approve/",
@@ -59,12 +59,11 @@ def test_raid_attendance_approval_happy_path(
     assert response.status_code == 200
     assert RaidAttendance.objects.all().count() == len(payload["players_list"])
     assert Raid.objects.all().first().name == "VT"
-    # Reload is needed because instance saved in endpoint is a different object in memory than fixture, even though they both represent the same database row
+    # Reload is needed because instance saved in endpoint is a different object in memory than fixture,
+    # even though they both represent the same database row
     approval_instance.refresh_from_db()
-    assert approval_instance.is_approved == True
-    assert (
-        response.json()["message"] == f"Success: added raid '{payload['raid_name']} + attendees.'"
-    )
+    assert approval_instance.is_approved
+    assert response.json()["message"] == f"Success: added raid '{payload['raid_name']} + attendees.'"
 
 
 @pytest.mark.django_db
@@ -83,10 +82,7 @@ def test_raid_already_approved(
         format="json",
     )
     assert response.status_code == 400
-    assert (
-        response.json()["error"]
-        == "Raid has already been approved. If you think this is a mistake, contact Grixus."
-    )
+    assert response.json()["error"] == "Raid has already been approved. If you think this is a mistake, contact Grixus."
     # Assert that transaction rollback succeeded
     raid_attendance = RaidAttendance.objects.all()
     assert raid_attendance.count() == 0
@@ -112,7 +108,7 @@ def test_no_raid_name(
     assert response.json()["error"] == "Please provide a name for the Raid."
     # Assert that transaction rollback succeeded
     approval_instance.refresh_from_db()
-    assert approval_instance.is_approved == False
+    assert not approval_instance.is_approved
     raid_attendance = RaidAttendance.objects.all()
     assert raid_attendance.count() == 0
 
@@ -134,13 +130,10 @@ def test_player_does_not_exist(
         format="json",
     )
     assert response.status_code == 400
-    assert (
-        response.json()["error"]
-        == f"Player '{extra_player[0]}' does not exist. Create player first and try again."
-    )
+    assert response.json()["error"] == f"Player '{extra_player[0]}' does not exist. Create player first and try again."
     # Assert that transaction rollback succeeded
     approval_instance.refresh_from_db()
-    assert approval_instance.is_approved == False
+    assert not approval_instance.is_approved
     raid_attendance = RaidAttendance.objects.all()
     assert raid_attendance.count() == 0
 
@@ -158,7 +151,7 @@ def test_no_players_in_payload(superuser_client):
     assert response.json()["error"] == "No players assigned to raid."
     # Assert that transaction rollback succeeded
     approval_instance.refresh_from_db()
-    assert approval_instance.is_approved == False
+    assert not approval_instance.is_approved
     raid_attendance = RaidAttendance.objects.all()
     assert raid_attendance.count() == 0
 

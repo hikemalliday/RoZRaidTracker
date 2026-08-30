@@ -1,6 +1,7 @@
 import os
 
-# TODO: Only needed when we need access to the quarm db. Un comment this anytime you need to pull data from it into our system.
+# TODO: Only needed when we need access to the quarm db.
+# TODO: Un comment this anytime you need to pull data from it into our system.
 # import pymysql
 # # Monkey-patch pymysql to masquerade as MySQLdb so Django's mysql backend
 # # (which does `import MySQLdb`) works without needing the mysqlclient C extension.
@@ -18,10 +19,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from datetime import timedelta
-from pathlib import Path
+from datetime import timedelta  # noqa: E402
+from pathlib import Path  # noqa: E402
 
-from dotenv import load_dotenv
+from dotenv import load_dotenv  # noqa: E402
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -100,7 +101,8 @@ DATABASES = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db-dev.sqlite3",
     },
-    # TODO: Only needed when we need access to the quarm db. Un comment this anytime you need to pull data from it into our system.
+    # TODO: Only needed when we need access to the quarm db.
+    # TODO: Un comment this anytime you need to pull data from it into our system.
     # 'quarm_db': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': os.getenv('QUARM_DB_NAME', 'quarm'),
@@ -169,9 +171,7 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PERMISSION_CLASSES': (
     #     'rest_framework.permissions.IsAuthenticated',
     # ),
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
+    "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",),
     "EXCEPTION_HANDLER": "rest_framework.views.exception_handler",
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",

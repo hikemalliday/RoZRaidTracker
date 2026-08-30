@@ -66,9 +66,7 @@ class Command(BaseCommand):
                         raid=raid,
                     )
                 except models.Player.DoesNotExist:
-                    return self.stdout.write(
-                        self.style.ERROR(f"Player with name {player_name} does not exist.")
-                    )
+                    return self.stdout.write(self.style.ERROR(f"Player with name {player_name} does not exist."))
             ra_approval.is_approved = True
             ra_approval.save()
             return self.stdout.write(self.style.SUCCESS("Successfully added missed raid"))

@@ -53,9 +53,7 @@ class Command(BaseCommand):
                     counter += 1
             if invalid_rows:
                 self.stdout.write(
-                    self.style.WARNING(
-                        "Some rows have been found to contain both 'main' and 'main_alt' as true. IDs:"
-                    )
+                    self.style.WARNING("Some rows have been found to contain both 'main' and 'main_alt' as true. IDs:")
                 )
                 for row_id in invalid_rows:
                     self.stdout.write(str(row_id))

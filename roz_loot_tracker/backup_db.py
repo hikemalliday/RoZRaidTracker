@@ -4,6 +4,7 @@ from datetime import datetime
 import boto3
 
 
+# Script for uploading db to S3. Ran by cron on ec2 host
 def load_env_file():
     with open("/home/mike/projects/RoZRaidTracker/roz_loot_tracker/.env") as f:
         for line in f:

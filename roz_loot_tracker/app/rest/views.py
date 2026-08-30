@@ -87,7 +87,8 @@ class PlayerViewSet(viewsets.ModelViewSet):
     pagination_class = AllowNoPagination
     filterset_class = PlayerFilter
 
-    # TODO: The whole "21 day" thing should probably be named something different in the annotated field, but the frontend is so dependent on it that I don't wanna refactor all that at the moment
+    # TODO: The whole "21 day" thing should probably be named something different in the annotated field,
+    # TODO: but the frontend is so dependent on it that I don't wanna refactor all that at the moment
     def get_queryset(self):
         num_of_days = int(self.request.query_params.get("num_of_days", 21))
         ra_percentage = self.request.query_params.get("ra_percentage", None)
@@ -118,9 +119,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
                     output_field=FloatField(),
                 ),
             ).annotate(
-                lifetime_ra=Func(
-                    F("lifetime_ra_raw"), 2, function="ROUND", output_field=FloatField()
-                ),
+                lifetime_ra=Func(F("lifetime_ra_raw"), 2, function="ROUND", output_field=FloatField()),
                 ra_21_day=Func(F("ra_21_day_raw"), 2, function="ROUND", output_field=FloatField()),
             )
         )
@@ -150,17 +149,11 @@ class CharacterViewSet(viewsets.ModelViewSet):
                 raise InvalidCharEdit({"error": "One or more characters do not exist."})
             player_ids = set(submitted_characters.values_list("player_id", flat=True))
             if len(player_ids) != 1:
-                raise InvalidCharEdit(
-                    {"error": "All batch-edited characters must belong to one player."}
-                )
+                raise InvalidCharEdit({"error": "All batch-edited characters must belong to one player."})
             player_id = player_ids.pop()
-            all_player_ids = set(
-                models.Character.objects.filter(player_id=player_id).values_list("id", flat=True)
-            )
+            all_player_ids = set(models.Character.objects.filter(player_id=player_id).values_list("id", flat=True))
             if submitted_ids != all_player_ids:
-                raise InvalidCharEdit(
-                    {"error": "The batch must include every character for this player."}
-                )
+                raise InvalidCharEdit({"error": "The batch must include every character for this player."})
             # Validate the types are valid
             num_main = 0
             num_main_alt = 0
@@ -192,10 +185,10 @@ class CharacterViewSet(viewsets.ModelViewSet):
                     char.type = char_type
                     char.save()
                 return Response({"message": "Success: updated characters batch."}, status=200)
-            except models.Character.DoesNotExist:
-                raise ValidationError({"error": f"Character ID'{char_id}' does not exist."})
+            except models.Character.DoesNotExist as exc:
+                raise ValidationError({"error": f"Character ID'{char_id}' does not exist."}) from exc
             except IntegrityError as integrity_exc:
-                raise ValidationError({"error": integrity_exc})
+                raise ValidationError({"error": integrity_exc}) from integrity_exc
 
 
 class RaidViewSet(viewsets.ModelViewSet):
@@ -255,11 +248,9 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"])
     def approve(self, request, pk=None):
         raid_attendance_approval = self.get_object()
-        if raid_attendance_approval.is_approved == True:
+        if raid_attendance_approval.is_approved:
             raise ValidationError(
-                {
-                    "error": "Raid has already been approved. If you think this is a mistake, contact Grixus."
-                }
+                {"error": "Raid has already been approved. If you think this is a mistake, contact Grixus."}
             )
 
         players = request.data.get("players_list")
@@ -290,12 +281,10 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
                             player=player,
                             raid=raid,
                         )
-                    except models.Player.DoesNotExist:
+                    except models.Player.DoesNotExist as exc:
                         raise ValidationError(
-                            {
-                                "error": f"Player '{player_name}' does not exist. Create player first and try again."
-                            }
-                        )
+                            {"error": f"Player '{player_name}' does not exist. Create player first and try again."}
+                        ) from exc
             finally:
                 field.auto_now_add = old_auto_now_add
 
@@ -328,7 +317,7 @@ class SQLQueryViewSet(viewsets.GenericViewSet):
             with conn:
                 cursor = conn.execute(sql)
                 columns = [col[0] for col in cursor.description]
-                rows = [dict(zip(columns, row)) for row in cursor.fetchall()]
+                rows = [dict(zip(columns, row)) for row in cursor.fetchall()]  # noqa: B905
             return Response({"results": rows})
 
         except sqlite3.Error as exc:

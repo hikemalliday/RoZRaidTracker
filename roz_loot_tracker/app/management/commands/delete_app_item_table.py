@@ -26,6 +26,4 @@ class Command(BaseCommand):
             with transaction.atomic(using="default"):
                 source_cursor.execute("DELETE FROM app_item;")
                 row_count = source_cursor.rowcount
-                self.stdout.write(
-                    self.style.SUCCESS(f"Successfully deleted {row_count} rows from app_item")
-                )
+                self.stdout.write(self.style.SUCCESS(f"Successfully deleted {row_count} rows from app_item"))
