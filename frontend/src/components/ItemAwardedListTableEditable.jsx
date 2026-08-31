@@ -1,8 +1,8 @@
 import {
-    getCell,
-    getCheckboxCell,
-    getItemIconCell,
-    getLinkCell,
+    CellNonClickable,
+    CheckboxCell,
+    ItemIconCell,
+    LinkCell,
     ItemAwardedNameEditableField,
     ItemAwardedPlayerEditableField,
     ItemAwardedTypeEditableField,
@@ -84,7 +84,7 @@ export function ItemAwardedListTableEditable({
 
             return (
                 <TableRow key={row?.id} sx={get21DayStyles(row)}>
-                    {getItemIconCell(row?.item?.icon_id)}
+                    <ItemIconCell iconId={row?.item?.icon_id} />
                     <ItemAwardedNameEditableField
                         formObject={formObjectRef}
                         itemAwardedDetail={row}
@@ -94,13 +94,13 @@ export function ItemAwardedListTableEditable({
                         itemAwardedDetail={row}
                         playersOptions={getPlayersOptions(playersData?.results) || []}
                     />
-                    {getLinkCell(row?.raid?.name, `/raid/${row?.raid?.id}`)}
-                    {getCell(row?.raid?.created_at)}
+                    <LinkCell val={row?.raid?.name} route={`/raid/${row?.raid?.id}`} />
+                    <CellNonClickable val={row?.raid?.created_at} />
                     <ItemAwardedTypeEditableField
                         formObject={formObjectRef}
                         itemAwardedDetail={row}
                     />
-                    {getCheckboxCell(handleCheckboxClick)}
+                    <CheckboxCell changeHandler={handleCheckboxClick} />
                 </TableRow>
             );
         });

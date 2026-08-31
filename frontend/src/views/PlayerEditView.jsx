@@ -10,8 +10,8 @@ import { renderErrors } from './utils.jsx';
 import { useEffect, useState } from 'react';
 import { getTextFieldStyles, textFieldStyles } from '../styles.js';
 import {
-    getCell,
-    getLinkCell,
+    CellNonClickable,
+    LinkCell,
     TableList,
 } from '../components/Tables.jsx';
 
@@ -128,11 +128,11 @@ function EditableCharacterListTable({ charList }) {
 
             return (
                 <TableRow key={i}>
-                    {getCell(row?.name)}
-                    {getCell(row?.char_class)}
-                    {getCell(CHARACTER_TYPE_LABELS[row.type] ?? row.type)}
-                    {getLinkCell(row?.player.name, `/player/${row?.player?.id}`)}
-                    {getCell(<Select
+                    <CellNonClickable val={row?.name} />
+                    <CellNonClickable val={row?.char_class} />
+                    <CellNonClickable val={CHARACTER_TYPE_LABELS[row.type] ?? row.type} />
+                    <LinkCell val={row?.player.name} route={`/player/${row?.player?.id}`} />
+                    <CellNonClickable val={<Select
                         size="small"
                         fullWidth
                         value={characterType}
@@ -165,7 +165,7 @@ function EditableCharacterListTable({ charList }) {
                                 {label}
                             </MenuItem>
                         ))}
-                    </Select>)}
+                    </Select>} />
                 </TableRow>
             );
         });

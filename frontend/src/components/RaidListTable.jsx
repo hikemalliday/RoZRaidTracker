@@ -1,4 +1,4 @@
-import { getCell, getLinkCell, TableList } from './Tables.jsx';
+import { CellNonClickable, LinkCell, TableList } from './Tables.jsx';
 import React from 'react';
 import { TableRow } from '@mui/material';
 
@@ -7,8 +7,8 @@ export function RaidListTable({ data, rowStyles = {} }) {
         return data.map((row, i) => {
             return (
                 <TableRow key={i} sx={rowStyles}>
-                    {getLinkCell(row?.name, `/raid/${row?.id}`)}
-                    {getCell(row?.created_at)}
+                    <LinkCell val={row?.name} route={`/raid/${row?.id}`} />
+                    <CellNonClickable val={row?.created_at} />
                 </TableRow>
             );
         });

@@ -1,5 +1,5 @@
 import { TableRow } from '@mui/material';
-import { getCheckboxCell, getLinkCell, TableList } from './Tables.jsx';
+import { CheckboxCell, LinkCell, TableList } from './Tables.jsx';
 import { joinAndTruncate } from '../views/utils.jsx';
 import { useState } from 'react';
 import { useRaidAttendanceApprovalDelete } from '../hooks/requests.js';
@@ -31,11 +31,11 @@ export function ApprovalPendingListTable({ data }) {
             const detailRoute = `/ra_approval_pending/${row?.id}`;
             return (
                 <TableRow key={i}>
-                    {getLinkCell(row?.id, detailRoute)}
-                    {getLinkCell(row?.raid_name, detailRoute)}
-                    {getLinkCell(joinAndTruncate(row?.players_list, 100), detailRoute)}
-                    {getLinkCell(row?.created_at, detailRoute)}
-                    {getCheckboxCell(e => handleCheckboxClick(e, row?.id))}
+                    <LinkCell val={row?.id} route={detailRoute} />
+                    <LinkCell val={row?.raid_name} route={detailRoute} />
+                    <LinkCell val={joinAndTruncate(row?.players_list, 100)} route={detailRoute} />
+                    <LinkCell val={row?.created_at} route={detailRoute} />
+                    <CheckboxCell changeHandler={e => handleCheckboxClick(e, row?.id)} />
                 </TableRow>
             );
         });
