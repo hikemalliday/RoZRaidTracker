@@ -11,18 +11,21 @@ import { CellNonClickable, TableList } from '../components/Tables.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
 import { getPlayersOptionsRaidAttendanceApproval } from './utils.jsx';
 import { DataField } from '../components/DataField.jsx';
+import { useMessage } from '../context/MessageContext.jsx';
 
 // Player dropdown at top + button
 function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
     const { data: playersData, isPending: isPlayersPending } = usePlayersList();
     const [selectedPlayer, setSelectedPlayer] = useState(null);
+    const { addMessage } = useMessage();
 
     const handleSubmit = () => {
         if (!selectedPlayer) return;
         if (playersToSubmit.some(p => p.name === selectedPlayer.name)) return;
         const newPlayersToSubmit = [...playersToSubmit];
         newPlayersToSubmit.unshift(selectedPlayer);
-        return setPlayersToSubmit(newPlayersToSubmit);
+        setPlayersToSubmit(newPlayersToSubmit);
+        addMessage(`Player ${selectedPlayer.name} added to form.`);
     };
 
     return (
