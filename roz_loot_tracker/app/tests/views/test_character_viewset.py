@@ -1,5 +1,6 @@
 import pytest
-from app.models import Character, Player
+
+from app.models import Character
 
 
 @pytest.fixture
@@ -65,6 +66,7 @@ def characters_two_players(player_grixus, player_tune):
         ),
     ]
 
+
 # CUSTOM ENDPOINT TESTS
 @pytest.mark.django_db
 def test_batch_updates_every_character_for_a_player(superuser_client, characters):
@@ -97,7 +99,7 @@ def test_batch_update_omit_character_fails(superuser_client, characters):
         format="json",
     )
     assert response.status_code == 400
-    assert response.json()["error"] == 'The batch must include every character for this player.'
+    assert response.json()["error"] == "The batch must include every character for this player."
 
 
 @pytest.mark.django_db
@@ -113,7 +115,7 @@ def test_batch_update_cannot_set_two_mains(superuser_client, characters):
         format="json",
     )
     assert response.status_code == 400
-    assert response.json()["error"] == 'Player cannot have more than 1 main.'
+    assert response.json()["error"] == "Player cannot have more than 1 main."
 
 
 @pytest.mark.django_db
@@ -129,7 +131,7 @@ def test_batch_update_cannot_set_more_than_two_main_alts(superuser_client, chara
         format="json",
     )
     assert response.status_code == 400
-    assert response.json()["error"] == 'Player cannot have more than 2 main alts.'
+    assert response.json()["error"] == "Player cannot have more than 2 main alts."
 
 
 @pytest.mark.django_db

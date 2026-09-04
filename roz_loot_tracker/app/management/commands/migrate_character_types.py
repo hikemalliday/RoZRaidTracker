@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.db import transaction
+
 from app import models
 
 # TODO: This is a one-off migration script to translate the defunct bool field approach to classifying Character rows. The modern approach is a single field "Character.type"
@@ -51,7 +52,9 @@ class Command(BaseCommand):
                     character.save()
                     counter += 1
             if invalid_rows:
-                self.stdout.write(self.style.WARNING(f"Some rows have been found to contain both 'main' and 'main_alt' as true. IDs:"))
+                self.stdout.write(
+                    self.style.WARNING("Some rows have been found to contain both 'main' and 'main_alt' as true. IDs:")
+                )
                 for row_id in invalid_rows:
                     self.stdout.write(str(row_id))
         return self.stdout.write(f"Character rows updated: {str(counter)}")
