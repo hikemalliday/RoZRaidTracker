@@ -3,11 +3,48 @@ from django.db import transaction
 
 from app import models
 
-players_list = ["Strikerr", "Taeter", "Reef", "Vaporise", "Skeeter", "Big G", "Vanco", "Jokong/Jessie", "Tune", "Nerfed", "Dustmop", "Gream", "Rickjames", "Bannin", "Acarer", "Mandelgar", "Birdop", "Azzar", "Roger", "Ranjore", "jAH", "Cybercop", "Kilbur", "QuiexVZ", "Lesly", "Amberr", "Sharknado", "Mortii", "Titanuk", "Greyn", "Herban", "Ohhso", "Kajoo", "Partymike"]
+players_list = [
+    "Strikerr",
+    "Taeter",
+    "Reef",
+    "Vaporise",
+    "Skeeter",
+    "Big G",
+    "Vanco",
+    "Jokong/Jessie",
+    "Tune",
+    "Nerfed",
+    "Dustmop",
+    "Gream",
+    "Rickjames",
+    "Bannin",
+    "Acarer",
+    "Mandelgar",
+    "Birdop",
+    "Azzar",
+    "Roger",
+    "Ranjore",
+    "jAH",
+    "Cybercop",
+    "Kilbur",
+    "QuiexVZ",
+    "Lesly",
+    "Amberr",
+    "Sharknado",
+    "Mortii",
+    "Titanuk",
+    "Greyn",
+    "Herban",
+    "Ohhso",
+    "Kajoo",
+    "Partymike",
+]
+
 
 class Command(BaseCommand):
     help = "create a raid attendance row"
     with transaction.atomic():
+
         def handle(self, *args, **options):
             try:
                 ra_approval = models.RaidAttendanceApproval.objects.get(id=357)
@@ -32,4 +69,4 @@ class Command(BaseCommand):
                     return self.stdout.write(self.style.ERROR(f"Player with name {player_name} does not exist."))
             ra_approval.is_approved = True
             ra_approval.save()
-            return self.stdout.write(self.style.SUCCESS(f"Successfully added missed raid"))
+            return self.stdout.write(self.style.SUCCESS("Successfully added missed raid"))

@@ -1,0 +1,14 @@
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+extend-exclude = [
+    "app/migrations",
+    "app/management",
+]
+# Lint rules:
+# E, F: Basic style and likely bugs
+# I: Import sorting
+# B: Common bug patterns
+# UP: Modern Python syntax suggestions
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
