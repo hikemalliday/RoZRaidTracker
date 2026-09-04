@@ -5,12 +5,19 @@ import { MemoryRouter, Route, Routes } from 'react-router';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { MessageProvider } from './context/MessageContext.jsx';
 
-const createTestQueryClient = () => new QueryClient({
-    defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
-});
+const createTestQueryClient = () =>
+    new QueryClient({
+        defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+    });
 
 const Providers = ({ children, queryClient = createTestQueryClient() }) => (
-    <MemoryRouter><AuthProvider><MessageProvider><QueryClientProvider client={queryClient}>{children}</QueryClientProvider></MessageProvider></AuthProvider></MemoryRouter>
+    <MemoryRouter>
+        <AuthProvider>
+            <MessageProvider>
+                <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+            </MessageProvider>
+        </AuthProvider>
+    </MemoryRouter>
 );
 
 export const renderComponentWithContext = (ui, options = {}) =>
@@ -22,6 +29,16 @@ export const renderRouteWithContext = (authenticated, { route, path, element }, 
     }
     const queryClient = options.queryClient || createTestQueryClient();
     return render(
-        <MemoryRouter initialEntries={route}><AuthProvider><MessageProvider><QueryClientProvider client={queryClient}><Routes><Route path={path} element={element} /></Routes></QueryClientProvider></MessageProvider></AuthProvider></MemoryRouter>
+        <MemoryRouter initialEntries={route}>
+            <AuthProvider>
+                <MessageProvider>
+                    <QueryClientProvider client={queryClient}>
+                        <Routes>
+                            <Route path={path} element={element} />
+                        </Routes>
+                    </QueryClientProvider>
+                </MessageProvider>
+            </AuthProvider>
+        </MemoryRouter>,
     );
 };

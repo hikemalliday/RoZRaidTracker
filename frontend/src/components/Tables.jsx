@@ -196,13 +196,13 @@ export function TableList({
         >
             <TableHead>
                 <TableRow>
-                    {Object.entries(headerMap).map(([header, _], i) => {
+                    {Object.keys(headerMap).map((header, i) => {
                         return (
                             <TableCell
                                 key={i}
                                 id={_getHeaderId(header)}
                                 align={headerAlign[header] || 'left'}
-                                onClick={_ => (sortable ? _sortByCol(header) : null)}
+                                onClick={() => (sortable ? _sortByCol(header) : null)}
                             >
                                 {header}
                             </TableCell>

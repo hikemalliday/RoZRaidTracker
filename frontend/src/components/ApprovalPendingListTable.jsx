@@ -16,7 +16,7 @@ export function ApprovalPendingListTable({ data }) {
         setRaidsToDelete(raidsSet);
     };
 
-    const handleDeleteSelectedRaidsToApprove = async _ => {
+    const handleDeleteSelectedRaidsToApprove = async () => {
         if (raidsToDelete.size === 0) return;
         const raidIdsArray = [...raidsToDelete];
         const promises = raidIdsArray.map(p => {

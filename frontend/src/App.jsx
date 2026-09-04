@@ -17,7 +17,7 @@ import { PlayerEditView } from './views/PlayerEditView.jsx';
 import { Screenshots } from './views/Screenshots.jsx';
 import { RosterView } from './views/RosterView.jsx';
 import { CompareView } from './views/CompareView.jsx';
-import { SQLQueryView } from "./views/SQLQueryView.jsx";
+import { SQLQueryView } from './views/SQLQueryView.jsx';
 
 function App() {
     const queryClient = new QueryClient();
@@ -42,10 +42,7 @@ function App() {
                     <Route element={<ProtectedRoute needSuper={true} />}>
                         <Route path="/ra_approval_pending" element={<ApprovalPendingListView />} />
                         <Route path="/ra_approval_history" element={<ApprovalHistoryListView />} />
-                        <Route
-                            path="/ra_approval_pending/:id"
-                            element={<ApprovalPendingDetailView />}
-                        />
+                        <Route path="/ra_approval_pending/:id" element={<ApprovalPendingDetailView />} />
                         <Route path="/raid/:id/edit" element={<RaidEditView />} />
                         <Route path="/player/:id/edit" element={<PlayerEditView />} />
                         <Route path="/sql" element={<SQLQueryView />} />

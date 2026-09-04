@@ -146,7 +146,7 @@ export function ApprovalPendingDetailView() {
         setRaid(e.target.value);
     };
 
-    const handleSubmit = _ => {
+    const handleSubmit = () => {
         if (!raid) return;
         if (playersToSubmit.length === 0) return;
 
