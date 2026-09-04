@@ -18,8 +18,8 @@ import { listBoxStyles, textFieldStyles } from '../styles.js';
 import { _getReducedResults, getLootType } from '../views/utils.jsx';
 const IMAGE_PATH = import.meta.env.VITE_IMAGE_PATH;
 
-// TODO: Refactor to these to components (something about 'fast refresh', check IDE linter warning)
-export const getLinkCell = (val, route, extraText) => {
+
+export const LinkCell = ({ val, route, extraText }) => {
     return (
         <TableCell id="clickable-cell">
             <Link to={route}>{val}</Link>
@@ -28,11 +28,11 @@ export const getLinkCell = (val, route, extraText) => {
     );
 };
 
-export const getCell = val => {
+export const CellNonClickable = ({ val }) => {
     return <TableCell id="non-clickable-cell">{val}</TableCell>;
 };
 
-export const getItemIconCell = iconId => {
+export const ItemIconCell = ({ iconId }) => {
     return (
         <TableCell id="non-clickable-cell">
             <img id="item-icon" src={`${IMAGE_PATH}/item_${iconId}.png`} alt={'null'} />
@@ -40,7 +40,7 @@ export const getItemIconCell = iconId => {
     );
 };
 
-export const getCheckboxCell = changeHandler => {
+export const CheckboxCell = ({ changeHandler }) => {
     return (
         <TableCell>
             <input type="checkbox" onChange={e => changeHandler(e)} />
@@ -48,7 +48,7 @@ export const getCheckboxCell = changeHandler => {
     );
 };
 
-export const getLootTypeBadgeCell = lootType => {
+export const LootTypeBadgeCell = ({ lootType }) => {
     const styles_map = {
         "preferred": {
             background: 'rgba(234, 179, 8, 0.15)',
@@ -196,13 +196,13 @@ export function TableList({
         >
             <TableHead>
                 <TableRow>
-                    {Object.entries(headerMap).map(([header, _], i) => {
+                    {Object.keys(headerMap).map((header, i) => {
                         return (
                             <TableCell
                                 key={i}
                                 id={_getHeaderId(header)}
                                 align={headerAlign[header] || 'left'}
-                                onClick={_ => (sortable ? _sortByCol(header) : null)}
+                                onClick={() => (sortable ? _sortByCol(header) : null)}
                             >
                                 {header}
                             </TableCell>

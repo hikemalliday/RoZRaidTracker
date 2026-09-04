@@ -56,7 +56,7 @@ export function PlayerDetailView() {
                 <>
                     <button
                         style={{ marginTop: 5, marginBottom: 20 }}
-                        onClick={_ => navigate('edit')}
+                        onClick={() => navigate('edit')}
                     >
                         EDIT PLAYER
                     </button>

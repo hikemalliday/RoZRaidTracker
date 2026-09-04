@@ -1,4 +1,4 @@
-import { getCell, getLinkCell, TableList } from './Tables.jsx';
+import { CellNonClickable, LinkCell, TableList } from './Tables.jsx';
 import { TableRow } from '@mui/material';
 
 export function CharacterListTable({ data }) {
@@ -7,10 +7,10 @@ export function CharacterListTable({ data }) {
         return sorted.map((row, i) => {
             return (
                 <TableRow key={i}>
-                    {getCell(row?.name)}
-                    {getCell(row?.char_class)}
-                    {getCell(row?.type)}
-                    {getLinkCell(row?.player.name, `/player/${row?.player?.id}`)}
+                    <CellNonClickable val={row?.name} />
+                    <CellNonClickable val={row?.char_class} />
+                    <CellNonClickable val={row?.type} />
+                    <LinkCell val={row?.player.name} route={`/player/${row?.player?.id}`} />
                 </TableRow>
             );
         });

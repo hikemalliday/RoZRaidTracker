@@ -7,7 +7,7 @@ import {
 import { Autocomplete, Box, Container, TableCell, TableRow, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { fieldCardStyles, tableBox, textFieldStyles } from '../styles.js';
-import { getCell, TableList } from '../components/Tables.jsx';
+import { CellNonClickable, TableList } from '../components/Tables.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
 import { getPlayersOptionsRaidAttendanceApproval } from './utils.jsx';
 import { DataField } from '../components/DataField.jsx';
@@ -87,7 +87,7 @@ export function PlayersToSubmitTable({ playersToSubmit, setPlayersToSubmit, ...r
         return sortedPlayers.map(player => {
             return (
                 <TableRow key={player.id}>
-                    {getCell(player.name)}
+                    <CellNonClickable val={player.name} />
                     <TableCell align="right">{_getPlayerCheckbox(player)}</TableCell>
                 </TableRow>
             );
@@ -146,7 +146,7 @@ export function ApprovalPendingDetailView() {
         setRaid(e.target.value);
     };
 
-    const handleSubmit = _ => {
+    const handleSubmit = () => {
         if (!raid) return;
         if (playersToSubmit.length === 0) return;
 

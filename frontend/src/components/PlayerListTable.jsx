@@ -1,4 +1,4 @@
-import { getCell, getLinkCell, TableList } from './Tables.jsx';
+import { CellNonClickable, LinkCell, TableList } from './Tables.jsx';
 import { TableRow } from '@mui/material';
 
 export function PlayerListTable({ data, rowStyles = {}, sortable = true }) {
@@ -10,13 +10,13 @@ export function PlayerListTable({ data, rowStyles = {}, sortable = true }) {
             const mainAlt2 = mainAlts.length > 1 ? mainAlts[1] : undefined;
             return (
                 <TableRow key={i} sx={rowStyles}>
-                    {getLinkCell(row?.name, `/player/${row?.id}`)}
-                    {getCell(main?.name)}
-                    {getCell(mainAlt1?.name)}
-                    {getCell(mainAlt2?.name)}
-                    {getCell(`${row?.lifetime_ra}%`)}
-                    {getCell(`${row?.ra_21_day}%`)}
-                    {getCell(`${row?.active}`)}
+                    <LinkCell val={row?.name} route={`/player/${row?.id}`}/>
+                    <CellNonClickable val={main?.name}/>
+                    <CellNonClickable val={mainAlt1?.name}/>
+                    <CellNonClickable val={mainAlt2?.name}/>
+                    <CellNonClickable val={`${row?.lifetime_ra}%`}/>
+                    <CellNonClickable val={`${row?.ra_21_day}%`}/>
+                    <CellNonClickable val={`${row?.active}`}/>
                 </TableRow>
             );
         });

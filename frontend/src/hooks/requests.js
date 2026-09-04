@@ -19,7 +19,7 @@ const _getErrStr = (error) => {
     return errStr;
 }
 
-export const _useList = (queryKey, route, queryParams = {}) => {
+export const useList = (queryKey, route, queryParams = {}) => {
     const { isPending, error, data } = useQuery({
         queryKey: [queryKey, queryParams],
         queryFn: async () => {
@@ -36,23 +36,23 @@ export const _useList = (queryKey, route, queryParams = {}) => {
 };
 
 export const useItemOptionsList = (queryParams = {}) => {
-    return _useList('items', '/items/get_options/', queryParams);
+    return useList('items', '/items/get_options/', queryParams);
 };
 
 export const usePlayersList = (queryParams = {}) => {
-    return _useList('players', '/players/', queryParams);
+    return useList('players', '/players/', queryParams);
 };
 
 export const useItemsAwardedList = (queryParams = {}) => {
-    return _useList('items_awarded', '/items_awarded/', queryParams);
+    return useList('items_awarded', '/items_awarded/', queryParams);
 };
 
 export const useCharactersList = (queryParams = {}) => {
-    return _useList('characters', '/characters/', queryParams);
+    return useList('characters', '/characters/', queryParams);
 };
 
 export const useRaidAttendanceList = (queryParams = {}) => {
-    return _useList('raid_attendance', '/raid_attendance/', queryParams);
+    return useList('raid_attendance', '/raid_attendance/', queryParams);
 };
 
 export const useListDebounced = (queryKey, route, filterField, filterVal) => {
@@ -73,7 +73,7 @@ export const useListDebounced = (queryKey, route, filterField, filterVal) => {
     return { isPending, error, data };
 };
 
-export const _useListPaginated = (queryKey, route, queryParams) => {
+export const useListPaginated = (queryKey, route, queryParams) => {
     const { ordering, orderDir, page, ...rest } = queryParams;
     const { isPending, error, data } = useQuery({
         queryKey: [queryKey, queryParams],
@@ -91,7 +91,7 @@ export const _useListPaginated = (queryKey, route, queryParams) => {
     return { isPending, error, data };
 };
 
-export const _useDetail = (queryKey, route, id) => {
+export const useDetail = (queryKey, route, id) => {
     const { isPending, error, data } = useQuery({
         queryKey: [queryKey, id],
         queryFn: async () => {
@@ -103,31 +103,31 @@ export const _useDetail = (queryKey, route, id) => {
 };
 
 export const useRaidAttendanceListPaginated = (queryParams = {}) => {
-    return _useListPaginated('raid_attendance', '/raid_attendance/', queryParams);
+    return useListPaginated('raid_attendance', '/raid_attendance/', queryParams);
 };
 
 export const useRaidAttendanceApprovalDetail = id => {
-    return _useDetail('raid_attendance_approval', '/raid_attendance_approval/', id);
+    return useDetail('raid_attendance_approval', '/raid_attendance_approval/', id);
 };
 
 export const usePlayerDetail = id => {
-    return _useDetail('players', '/players/', id);
+    return useDetail('players', '/players/', id);
 };
 
 export const useRaidDetail = id => {
-    return _useDetail('raids', '/raids/', id);
+    return useDetail('raids', '/raids/', id);
 };
 
 export function usePlayerListPaginated(queryParams) {
-    return _useListPaginated('players', '/players/', queryParams);
+    return useListPaginated('players', '/players/', queryParams);
 }
 
 export function useRaidListPaginated(queryParams) {
-    return _useListPaginated('raids', '/raids/', queryParams);
+    return useListPaginated('raids', '/raids/', queryParams);
 }
 
 export function useItemAwardedListPaginated(queryParams) {
-    return _useListPaginated('items_awarded', '/items_awarded/', queryParams);
+    return useListPaginated('items_awarded', '/items_awarded/', queryParams);
 }
 
 // TODO: Use helper instead

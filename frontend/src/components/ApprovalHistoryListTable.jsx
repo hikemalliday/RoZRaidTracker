@@ -1,5 +1,5 @@
 import { TableRow } from '@mui/material';
-import { getCell, TableList } from './Tables.jsx';
+import { CellNonClickable, TableList } from './Tables.jsx';
 import { joinAndTruncate } from '../views/utils.jsx';
 
 export function ApprovalHistoryListTable({ data }) {
@@ -7,10 +7,10 @@ export function ApprovalHistoryListTable({ data }) {
         return sorted.map((row, i) => {
             return (
                 <TableRow key={i}>
-                    {getCell(row?.id)}
-                    {getCell(row?.raid_name)}
-                    {getCell(joinAndTruncate(row?.players_list, 100))}
-                    {getCell(row?.created_at)}
+                    <CellNonClickable val={row?.id} />
+                    <CellNonClickable val={row?.raid_name} />
+                    <CellNonClickable val={joinAndTruncate(row?.players_list, 100)} />
+                    <CellNonClickable val={row?.created_at} />
                 </TableRow>
             );
         });

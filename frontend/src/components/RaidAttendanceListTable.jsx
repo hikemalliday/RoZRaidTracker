@@ -1,4 +1,4 @@
-import { getCell, getLinkCell, TableList } from './Tables.jsx';
+import { CellNonClickable, LinkCell, TableList } from './Tables.jsx';
 import { TableRow } from '@mui/material';
 
 export function RaidAttendanceListTable({ data, rowStyles = {}, ...rest }) {
@@ -6,9 +6,9 @@ export function RaidAttendanceListTable({ data, rowStyles = {}, ...rest }) {
         return data.map((row, i) => {
             return (
                 <TableRow key={i} sx={rowStyles}>
-                    {getLinkCell(row?.player?.name, `/player/${row?.player?.id}`)}
-                    {getLinkCell(row?.raid?.name, `/raid/${row?.raid?.id}`)}
-                    {getCell(row?.created_at)}
+                    <LinkCell val={row?.player?.name} route={`/player/${row?.player?.id}`}/>
+                    <LinkCell val={row?.raid?.name} route={`/raid/${row?.raid?.id}`}/>
+                    <CellNonClickable val={row?.created_at}/>
                 </TableRow>
             );
         });

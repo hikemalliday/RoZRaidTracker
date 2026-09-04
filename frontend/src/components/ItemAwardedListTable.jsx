@@ -1,4 +1,4 @@
-import { getLinkCell, getLootTypeBadgeCell, TableList } from './Tables.jsx';
+import { LinkCell, LootTypeBadgeCell, TableList } from './Tables.jsx';
 import { TableRow, TableCell, Box } from '@mui/material';
 import { get21DayStyles } from '../styles.js';
 import { ItemToolTip } from './ItemToolTip.jsx';
@@ -14,15 +14,15 @@ export function ItemAwardedListTable({
             return (
                 <TableRow key={i} sx={get21DayStyles(row)}>
                     <ItemToolTip item={row?.item} />
-                    {getLinkCell(row?.player?.name, `/player/${row?.player?.id}`)}
-                    {getLinkCell(row?.raid?.name, `/raid/${row?.raid?.id}`)}
+                    <LinkCell val={row?.player?.name} route={`/player/${row?.player?.id}`}/>
+                    <LinkCell val={row?.raid?.name} route={`/raid/${row?.raid?.id}`}/>
                     <TableCell
                         id="non-clickable-cell"
                         sx={{ color: '#9ca3af', whiteSpace: 'nowrap' }}
                     >
                         {row?.raid?.created_at}
                     </TableCell>
-                    {getLootTypeBadgeCell(row.type)}
+                    <LootTypeBadgeCell lootType={row.type}/>
                 </TableRow>
             );
         });

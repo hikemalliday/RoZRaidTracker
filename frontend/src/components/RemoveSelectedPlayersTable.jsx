@@ -1,7 +1,7 @@
 import { Box, TableCell, TableRow } from '@mui/material';
 import React from 'react';
 import { get21DayStyles, tableBox } from '../styles.js';
-import { getCell, TableList } from './Tables.jsx';
+import { CellNonClickable, TableList } from './Tables.jsx';
 
 export function RemoveSelectedPlayersTable({
     playersToRender,
@@ -21,7 +21,7 @@ export function RemoveSelectedPlayersTable({
         return data.map(row => {
             return (
                 <TableRow key={row?.id} sx={get21DayStyles(row)}>
-                    {getCell(row?.name)}
+                    <CellNonClickable val={row?.name} />
                     <TableCell align="right">
                         <input type="checkbox" onChange={e => _handleCheckbox(e, row?.id)} />
                     </TableCell>
