@@ -37,7 +37,7 @@ export function AddPlayerField({ raidId, styles = {} }) {
                     renderInput={params => (
                         <TextField {...params} label="Player" sx={textFieldStyles} size="small" />
                     )}
-                    options={!isPlayersPending ? getPlayersOptions(playersData.results) : []}
+                    options={!isPlayersPending ? getPlayersOptions(playersData) : []}
                     onChange={(_, option) => {
                         setSelectedPlayer(option.id);
                     }}

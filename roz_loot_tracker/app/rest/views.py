@@ -53,16 +53,20 @@ class PlayerFilter(filters.FilterSet):
         fields = ["name", "active"]
 
 
-class AllowNoPagination(PageNumberPagination):
-    page_size_query_param = "page_size"
-    max_page_size = 9999
+class OptionalPagination(PageNumberPagination):
+    """Use the standard page response unless a caller explicitly requests all rows."""
+
+    def paginate_queryset(self, queryset, request, view=None):
+        if request.query_params.get("pagination") == "none":
+            return None
+        return super().paginate_queryset(queryset, request, view)
 
 
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = models.Item.objects.all()
     serializer_class = ItemSerializer
     permission_classes = (DjangoModelPermissions,)
-    pagination_class = AllowNoPagination
+    pagination_class = OptionalPagination
     filterset_class = ItemFilter
 
     @action(detail=False, methods=["get"])
@@ -84,7 +88,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
     permission_classes = (DjangoModelPermissions,)
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     ordering_fields = ["name", "lifetime_ra", "ra_21_day"]
-    pagination_class = AllowNoPagination
+    pagination_class = OptionalPagination
     filterset_class = PlayerFilter
 
     # TODO: The whole "21 day" thing should probably be named something different in the annotated field,
@@ -136,7 +140,7 @@ class CharacterViewSet(viewsets.ModelViewSet):
     permission_classes = (DjangoModelPermissions,)
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["player", "player__active"]
-    pagination_class = AllowNoPagination
+    pagination_class = OptionalPagination
 
     # Used by PlayerEditView. We will ALWAYS batch edit ALL characters for a given Player.
     # _validate_batch helper ensures this. If frontend payload / approach ever changes, it will be gated here.
@@ -214,7 +218,7 @@ class ItemAwardedViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ["player", "raid", "item__id"]
     ordering_fields = ["player__name", "raid__name", "created_at", "item__name", "raid__created_at"]
-    pagination_class = AllowNoPagination
+    pagination_class = OptionalPagination
 
 
 class PreferredPixelViewSet(viewsets.ModelViewSet):
@@ -229,7 +233,7 @@ class RaidAttendanceViewSet(viewsets.ModelViewSet):
     permission_classes = (DjangoModelPermissions,)
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["player", "raid"]
-    pagination_class = AllowNoPagination
+    pagination_class = OptionalPagination
 
 
 class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
@@ -237,7 +241,7 @@ class RaidAttendanceApprovalViewSet(viewsets.ModelViewSet):
     serializer_class = RaidAttendanceApprovalSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["is_approved"]
-    pagination_class = AllowNoPagination
+    pagination_class = OptionalPagination
 
     def get_permissions(self):
         if self.action == "create":

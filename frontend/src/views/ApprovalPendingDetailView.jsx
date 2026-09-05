@@ -47,7 +47,7 @@ function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
                     renderInput={params => (
                         <TextField {...params} label="Player" sx={textFieldStyles} size="small" />
                     )}
-                    options={!isPlayersPending ? getPlayersOptionsRaidAttendanceApproval(playersData.results) : []}
+                    options={!isPlayersPending ? getPlayersOptionsRaidAttendanceApproval(playersData) : []}
                     onChange={(_, option) => {
                         setSelectedPlayer({ name: option.name, discord_id: option.discord_id, is_selected: true });
                     }}

@@ -2,7 +2,7 @@ import { getPlayersOptions } from '../views/utils.jsx';
 import { Autocomplete, TextField } from '@mui/material';
 
 export function PlayerAutoComplete({ playersData, playerId, playerIdSetter }) {
-    const optionsList = getPlayersOptions(playersData.results);
+    const optionsList = getPlayersOptions(playersData);
 
     const _getOptionsValue = (options, playerId) => {
         return options.find(option => option.id === playerId);

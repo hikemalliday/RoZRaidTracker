@@ -71,7 +71,7 @@ export function PlayerDetailView() {
             </Box>
             <Container sx={{ mt: 5, mb: 5 }}>
                 <Typography sx={labelStyles}>Characters</Typography>
-                <CharacterListTable data={characterData.results} />
+                <CharacterListTable data={characterData} />
             </Container>
             <Container>
                 <Box
@@ -80,19 +80,19 @@ export function PlayerDetailView() {
                     }}
                 >
                     {getItemAwardedMetaData(
-                        itemAwardedData.results,
-                        itemAwardedData.results.length
+                        itemAwardedData,
+                        itemAwardedData.length
                     )}
                 </Box>
                 <ItemAwardedListTable
-                    data={sortItemsByRaidDate(itemAwardedData.results)}
+                    data={sortItemsByRaidDate(itemAwardedData)}
                     sortable
                     styledRows
                 />
             </Container>
             <Box>
                 <Typography sx={{ ...labelStyles, mb: 4 }}>
-                    Raids Attended: {raidsData.count}
+                    Raids Attended: {raidsData.length}
                 </Typography>
                 <PaginatedListTable
                     requestHook={useRaidAttendanceListPaginated}

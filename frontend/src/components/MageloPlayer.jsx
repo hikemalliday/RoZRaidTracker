@@ -39,8 +39,8 @@ export function MageloPlayer({ defaultPlayerId = 1 }) {
         return results.find(char => char.is_main_alt === true);
     };
 
-    const mainItems = _getMainMageloItems(itemAwardedData?.results ?? []);
-    const altItems = _getAltMageloItems(itemAwardedData?.results ?? []);
+    const mainItems = _getMainMageloItems(itemAwardedData ?? []);
+    const altItems = _getAltMageloItems(itemAwardedData ?? []);
 
     const getPlayerMeta = char => {
         return (

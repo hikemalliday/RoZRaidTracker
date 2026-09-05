@@ -28,7 +28,7 @@ export function RaidDetailView() {
     } = useItemsAwardedList({ raid: id });
 
     const sortedPlayers = useMemo(() => {
-        return raData?.results?.sort((a, b) => a.player.name.localeCompare(b.player.name));
+        return raData?.sort((a, b) => a.player.name.localeCompare(b.player.name));
     }, [raData]);
 
     const pendingList = [isPending, isRaPending, isItemAwardedPending];
@@ -59,15 +59,15 @@ export function RaidDetailView() {
                 <DataField label="Date" value={data?.created_at} />
             </Box>
             {getItemAwardedMetaDataEditable(
-                itemAwardedData?.results,
+                itemAwardedData,
                 isAuthenticated,
                 isSuperUser,
                 () => navigate('edit')
             )}
             <Box ref={tableBoxRef} sx={tableBox}>
-                <ItemAwardedListTable data={itemAwardedData.results} styledRows={false} />
+                <ItemAwardedListTable data={itemAwardedData} styledRows={false} />
             </Box>
-            <Typography sx={labelStyles}>Attendees - Total: {raData.count}</Typography>
+            <Typography sx={labelStyles}>Attendees - Total: {raData.length}</Typography>
             <Container>
                 <Box sx={{ ...tableBox, mt: 4 }}>
                     <RaidAttendanceListTable

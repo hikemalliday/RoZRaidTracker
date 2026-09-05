@@ -4,10 +4,6 @@ import { useNavigate } from 'react-router';
 import { handleAscDesc } from '../views/utils.jsx';
 import { api } from '../api.js';
 
-// Means to emulate 'no pagination' for hooks that don't want it.
-// Keeps data shape consistent on list responses
-const PAGE_SIZE_NO_PAGINATION = 9999;
-
 const _getErrStr = (error) => {
     if (!error?.response?.data) return 'Unknown Error.';
     let errStr = 'Errors: ';
@@ -26,7 +22,7 @@ export const useList = (queryKey, route, queryParams = {}) => {
             const { data } = await api.get(route, {
                 params: {
                     ...queryParams,
-                    page_size: PAGE_SIZE_NO_PAGINATION,
+                    pagination: 'none',
                 },
             });
             return data;
@@ -63,7 +59,7 @@ export const useListDebounced = (queryKey, route, filterField, filterVal) => {
             const { data } = await api.get(route, {
                 params: {
                     ...queryParams,
-                    page_size: PAGE_SIZE_NO_PAGINATION,
+                    pagination: 'none',
                 },
             });
             return data;
@@ -130,18 +126,8 @@ export function useItemAwardedListPaginated(queryParams) {
     return useListPaginated('items_awarded', '/items_awarded/', queryParams);
 }
 
-// TODO: Use helper instead
 export function useRaidAttendanceApprovalList(queryParams) {
-    const { isPending, error, data } = useQuery({
-        queryKey: ['raid_attendance_approval', queryParams],
-        queryFn: async () => {
-            const { data } = await api.get(`/raid_attendance_approval/`, {
-                params: { ...queryParams, page_size: PAGE_SIZE_NO_PAGINATION },
-            });
-            return data;
-        },
-    });
-    return { isPending, error, data };
+    return useList('raid_attendance_approval', '/raid_attendance_approval/', queryParams);
 }
 
 export function useRaidAttendanceApprovalMutation(id) {
