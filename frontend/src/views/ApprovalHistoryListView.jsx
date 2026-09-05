@@ -11,7 +11,7 @@ export function ApprovalHistoryListView() {
 
     if (isPending) return <>LOADING...</>;
     if (error) return <>{error.message}</>;
-    if (data.results.length === 0) return <>No raids to approve.</>;
+    if (data.length === 0) return <>No raids to approve.</>;
     if (!isSuperUser) return <>Unauthorized.</>;
 
     const sortDataById = results => {
@@ -22,5 +22,5 @@ export function ApprovalHistoryListView() {
         });
     };
 
-    return <ApprovalHistoryListTable data={sortDataById(data.results)} />;
+    return <ApprovalHistoryListTable data={sortDataById(data)} />;
 }

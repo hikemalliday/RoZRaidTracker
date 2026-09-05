@@ -32,7 +32,7 @@ export function RosterView() {
         const _filterChars = charClass => results.filter(char => char.char_class === charClass);
         return Object.fromEntries(charClasses.map(c => [c, _filterChars(c)]));
     };
-    const allChars = isPending ? [] : playersList.results.flatMap(player => player.characters);
+    const allChars = isPending ? [] : playersList.flatMap(player => player.characters);
     const reducedChars = getCharsByClass(allChars);
 
     function ClassCard({ charClass, data }) {

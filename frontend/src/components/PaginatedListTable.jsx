@@ -146,7 +146,7 @@ export function PaginatedListTable({
                         )}
                         options={
                             !isOptionsPending
-                                ? reduceOptions(optionsData.results || optionsData)
+                                ? reduceOptions(optionsData)
                                 : []
                         }
                         getOptionLabel={option => option.label || ''}

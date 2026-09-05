@@ -248,7 +248,7 @@ export function ItemAwardedNameEditableField({ formObject, itemAwardedDetail }) 
                         size="small"
                     />
                 )}
-                options={!isItemsPending ? _getReducedResults(itemsData.results) : []}
+                options={!isItemsPending ? _getReducedResults(itemsData) : []}
                 getOptionLabel={option => option?.label || ''} // Tells the component to get the label from the 'label' key.
                 filterOptions={x => x} // Not sure why we do this
                 onInputChange={(event, newInputValue) => {

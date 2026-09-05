@@ -72,7 +72,7 @@ export function AddItemAwardedField({ raidId, styles = {} }) {
                     renderInput={params => (
                         <TextField {...params} label="Item" sx={textFieldStyles} size="small" />
                     )}
-                    options={!isItemsPending ? _getReducedResults(itemsData.results) : []}
+                    options={!isItemsPending ? _getReducedResults(itemsData) : []}
                     filterOptions={x => x}
                     onInputChange={(event, newInputValue) => {
                         setItemValue(newInputValue);
@@ -88,7 +88,7 @@ export function AddItemAwardedField({ raidId, styles = {} }) {
                     renderInput={params => (
                         <TextField {...params} label="Player" sx={textFieldStyles} size="small" />
                     )}
-                    options={!isPlayersPending ? getPlayersOptions(playersData.results) : []}
+                    options={!isPlayersPending ? getPlayersOptions(playersData) : []}
                     onChange={(_, option) => {
                         setSelectedPlayer(option.id);
                     }}

@@ -92,7 +92,7 @@ export function ItemAwardedListTableEditable({
                     <ItemAwardedPlayerEditableField
                         formObject={formObjectRef}
                         itemAwardedDetail={row}
-                        playersOptions={getPlayersOptions(playersData?.results) || []}
+                        playersOptions={getPlayersOptions(playersData) || []}
                     />
                     <LinkCell val={row?.raid?.name} route={`/raid/${row?.raid?.id}`} />
                     <CellNonClickable val={row?.raid?.created_at} />

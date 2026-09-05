@@ -7,7 +7,10 @@ import {
 // This handles an absolute VITE_BASE_URL, '/api', and Vitest's undefined base URL.
 const apiRoute = path => `*${path}`;
 const MOCK_ACCESS_TOKEN = 'eyJhbGciOiJub25lIn0.eyJpc19zdXBlcnVzZXIiOmZhbHNlfQ.';
-const paginated = results => ({ count: results.length, next: null, previous: null, results });
+const collectionResponse = (results, request) => {
+    if (new URL(request.url).searchParams.get('pagination') === 'none') return results;
+    return { count: results.length, next: null, previous: null, results };
+};
 const byId = (collection, id) => collection.find(record => record.id === Number(id));
 const filtered = (collection, request, fields = {}) => {
     const url = new URL(request.url);
@@ -39,27 +42,27 @@ const remove = ({ params }, collection) => {
 };
 
 export const handlers = [
-    http.get(apiRoute('/players/'), ({ request }) => HttpResponse.json(paginated(filtered(PLAYER_LIST, request, { name: player => player.name, active: player => player.active })))),
+    http.get(apiRoute('/players/'), ({ request }) => HttpResponse.json(collectionResponse(filtered(PLAYER_LIST, request, { name: player => player.name, active: player => player.active }), request))),
     http.get(apiRoute('/players/:id/'), detailHandler(PLAYER_LIST)),
     http.patch(apiRoute('/players/:id/'), request => update(request, PLAYER_LIST)),
-    http.get(apiRoute('/characters/'), ({ request }) => HttpResponse.json(paginated(filtered(CHARACTER_LIST, request, { player: character => character.player.id, 'player__active': character => character.player.active })))),
+    http.get(apiRoute('/characters/'), ({ request }) => HttpResponse.json(collectionResponse(filtered(CHARACTER_LIST, request, { player: character => character.player.id, 'player__active': character => character.player.active }), request))),
     http.post(apiRoute('/characters/'), request => created(request, CHARACTER_LIST)),
     http.patch(apiRoute('/characters/batch/'), async ({ request }) => HttpResponse.json({ message: 'Success: updated characters batch.', updated: await request.json() })),
     http.patch(apiRoute('/characters/:id/'), request => update(request, CHARACTER_LIST)),
     http.get(apiRoute('/items/get_options/'), () => HttpResponse.json(ITEM_LIST)),
-    http.get(apiRoute('/items/'), ({ request }) => HttpResponse.json(paginated(filtered(ITEM_LIST, request, { name: item => item.name })))),
+    http.get(apiRoute('/items/'), ({ request }) => HttpResponse.json(collectionResponse(filtered(ITEM_LIST, request, { name: item => item.name }), request))),
     http.get(apiRoute('/items/:id/'), detailHandler(ITEM_LIST)),
     http.get(apiRoute('/zones/'), () => HttpResponse.json(paginated(ZONE_LIST))),
     http.get(apiRoute('/raids/'), () => HttpResponse.json(paginated(RAID_LIST))),
     http.get(apiRoute('/raids/:id/'), detailHandler(RAID_LIST)),
-    http.get(apiRoute('/items_awarded/'), ({ request }) => HttpResponse.json(paginated(filtered(ITEM_AWARDED_LIST, request, { player: award => award.player.id, raid: award => award.raid.id, 'item__id': award => award.item.id })))),
+    http.get(apiRoute('/items_awarded/'), ({ request }) => HttpResponse.json(collectionResponse(filtered(ITEM_AWARDED_LIST, request, { player: award => award.player.id, raid: award => award.raid.id, 'item__id': award => award.item.id }), request))),
     http.post(apiRoute('/items_awarded/'), request => created(request, ITEM_AWARDED_LIST)),
     http.patch(apiRoute('/items_awarded/:id/'), request => update(request, ITEM_AWARDED_LIST)),
     http.delete(apiRoute('/items_awarded/:id/'), request => remove(request, ITEM_AWARDED_LIST)),
-    http.get(apiRoute('/raid_attendance/'), ({ request }) => HttpResponse.json(paginated(filtered(RAID_ATTENDANCE_LIST, request, { player: attendance => attendance.player.id, raid: attendance => attendance.raid.id })))),
+    http.get(apiRoute('/raid_attendance/'), ({ request }) => HttpResponse.json(collectionResponse(filtered(RAID_ATTENDANCE_LIST, request, { player: attendance => attendance.player.id, raid: attendance => attendance.raid.id }), request))),
     http.post(apiRoute('/raid_attendance/'), request => created(request, RAID_ATTENDANCE_LIST)),
     http.delete(apiRoute('/raid_attendance/:id/'), request => remove(request, RAID_ATTENDANCE_LIST)),
-    http.get(apiRoute('/raid_attendance_approval/'), ({ request }) => HttpResponse.json(paginated(filtered(RAID_ATTENDANCE_APPROVAL_LIST, request, { is_approved: approval => approval.is_approved })))),
+    http.get(apiRoute('/raid_attendance_approval/'), ({ request }) => HttpResponse.json(collectionResponse(filtered(RAID_ATTENDANCE_APPROVAL_LIST, request, { is_approved: approval => approval.is_approved }), request))),
     http.get(apiRoute('/raid_attendance_approval/:id/'), detailHandler(RAID_ATTENDANCE_APPROVAL_LIST)),
     http.post(apiRoute('/raid_attendance_approval/:id/approve/'), () => HttpResponse.json({ message: 'Success: added raid and attendees.' })),
     http.delete(apiRoute('/raid_attendance_approval/:id/'), request => remove(request, RAID_ATTENDANCE_APPROVAL_LIST)),

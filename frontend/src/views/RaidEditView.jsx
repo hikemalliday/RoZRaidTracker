@@ -36,7 +36,7 @@ export function RaidEditView() {
     const errorList = [error, raError, itemAwardedError];
 
     const playersToRender = useMemo(() => {
-        return raData?.results
+        return raData
             ?.map(ra => ({ name: ra.player.name, id: ra.id }))
             .sort((a, b) => a.name.localeCompare(b.name));
     }, [raData]);
@@ -68,10 +68,10 @@ export function RaidEditView() {
                 <DataField label="Date" value={data?.created_at} />
             </Box>
             <AddItemAwardedField raidId={id} />
-            {itemAwardedData.results.length > 0 && (
-                <ItemAwardedListTableEditable data={itemAwardedData.results} styledRows={true} />
+            {itemAwardedData.length > 0 && (
+                <ItemAwardedListTableEditable data={itemAwardedData} styledRows={true} />
             )}
-            <DataField label="Attendees" value={raData.count} sx={{ mb: 3 }} />
+            <DataField label="Attendees" value={raData.length} sx={{ mb: 3 }} />
             <AddPlayerField raidId={id} styles={{ mb: 2 }} />
             <RemoveSelectedPlayersTable
                 playersToRender={playersToRender}

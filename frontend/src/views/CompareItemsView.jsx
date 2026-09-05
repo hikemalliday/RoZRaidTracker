@@ -50,7 +50,7 @@ function CompareTable({ playersList, playersData, filtersState, defaultPlayerId 
         });
     }
 
-    const filteredData = _filterItems(itemAwardedData?.results);
+    const filteredData = _filterItems(itemAwardedData);
     return (
         <Container disableGutters>
             <Container>
@@ -60,7 +60,7 @@ function CompareTable({ playersList, playersData, filtersState, defaultPlayerId 
                     playersData={playersData}
                 />
                 {getRaInfo(playerId, playersList)}
-                {getItemAwardedMetaData(itemAwardedData?.results, filteredData.length)}
+                {getItemAwardedMetaData(itemAwardedData, filteredData.length)}
                 {!isPending && playerId && (
                     <>
                         <ItemAwardedListTable
@@ -156,7 +156,7 @@ export function CompareItemsView() {
             >
                 {
                     <CompareTable
-                        playersList={playersData.results}
+                        playersList={playersData}
                         playersData={playersData}
                         defaultPlayerId={1}
                         filtersState={filters}
@@ -164,7 +164,7 @@ export function CompareItemsView() {
                 }
                 {
                     <CompareTable
-                        playersList={playersData.results}
+                        playersList={playersData}
                         playersData={playersData}
                         defaultPlayerId={2}
                         filtersState={filters}
@@ -172,7 +172,7 @@ export function CompareItemsView() {
                 }
                 {
                     <CompareTable
-                        playersList={playersData.results}
+                        playersList={playersData}
                         playersData={playersData}
                         defaultPlayerId={3}
                         filtersState={filters}

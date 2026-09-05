@@ -217,7 +217,7 @@ export function PlayerEditView() {
         <Container>
             <AddCharacterField playerId={id} />
             <EditableCharacterListTable
-                charList={charListData.results}
+                charList={charListData}
             />
         </Container>
     );
