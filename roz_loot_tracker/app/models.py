@@ -143,7 +143,6 @@ class PreferredPixel(models.Model):
     def __str__(self):
         return f"PreferredPixel - Player: {self.player}, Item: {self.item}"
 
-
 # TODO: Interesting that we never linked this to a "Raid" instance but I guess whats done is done
 class RaidAttendanceApproval(models.Model):
     players_list = models.JSONField(default=list)
@@ -155,3 +154,15 @@ class RaidAttendanceApproval(models.Model):
     # It simply serves as a way to provide more info for the 'approval' row. Because when they start stacking up, you
     # forget which is which.
     raid_name = models.CharField(max_length=100, **NOT_REQUIRED)
+
+
+class Screenshot(models.Model):
+    object_key = models.CharField(max_length=512, unique=True)
+    original_filename = models.CharField(max_length=255)
+    content_type = models.CharField(max_length=100)
+    file_size_bytes = models.PositiveBigIntegerField()
+    caption = models.TextField(blank=True)
+    submitted_by_discord_id = models.CharField(max_length=32)
+    discord_message_id = models.CharField(max_length=32, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
