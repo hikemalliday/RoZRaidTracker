@@ -1,3 +1,4 @@
+import logging
 import sqlite3
 from datetime import timedelta
 from pathlib import Path
@@ -33,6 +34,8 @@ from app.serializers.serializers import (
     TokenObtainPairSerializer,
     ZoneSerializer,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class InvalidCharEdit(ValidationError):
@@ -372,7 +375,14 @@ class ScreenshotViewSet(viewsets.ModelViewSet):
                 ).data,
                 status=status.HTTP_201_CREATED,
             )
-        except ValueError:
+        except ValueError as exc:
+            logger.exception(
+                "Rejected screenshot upload: name=%r type=%r size=%r reason=%s",
+                getattr(image_file, "name", None),
+                getattr(image_file, "content_type", None),
+                getattr(image_file, "size", None),
+                exc,
+            )
             return Response(
                 {"error": "The uploaded file is not a valid image."},
                 status=status.HTTP_400_BAD_REQUEST,
