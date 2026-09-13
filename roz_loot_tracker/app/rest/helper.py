@@ -1,13 +1,11 @@
 import os
-
-from botocore.exceptions import BotoCoreError, ClientError
-from django.utils import timezone
 from io import BytesIO
 from uuid import uuid4
 
 import boto3
+from botocore.exceptions import BotoCoreError, ClientError
+from django.utils import timezone
 from PIL import Image, ImageOps, UnidentifiedImageError
-
 
 SCREENSHOT_MAX_PIXELS = 40_000_000
 SCREENSHOT_MAX_WIDTH = 800
@@ -46,9 +44,9 @@ def _format_image(image) -> BytesIO:
             output = BytesIO()
             formatted_image.save(output, format="WEBP", quality=WEBP_QUALITY, method=6)
     except (
-            UnidentifiedImageError,
-            OSError,
-            Image.DecompressionBombError,
+        UnidentifiedImageError,
+        OSError,
+        Image.DecompressionBombError,
     ) as exc:
         raise ValueError("_format_image: invalid image data") from exc
 

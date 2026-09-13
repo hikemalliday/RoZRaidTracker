@@ -30,9 +30,9 @@ from app.rest.views import (
     RaidAttendanceApprovalViewSet,
     RaidAttendanceViewSet,
     RaidViewSet,
+    ScreenshotViewSet,
     SQLQueryViewSet,
     ZoneViewSet,
-    ScreenshotViewSet,
 )
 
 router = routers.DefaultRouter()

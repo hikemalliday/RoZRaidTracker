@@ -19,7 +19,7 @@ from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from app import models
-from app.rest.helper import upload_image_to_s3, S3UploadError
+from app.rest.helper import S3UploadError, upload_image_to_s3
 from app.serializers.serializers import (
     CharacterSerializer,
     ItemAwardedSerializer,
@@ -29,9 +29,9 @@ from app.serializers.serializers import (
     RaidAttendanceApprovalSerializer,
     RaidAttendanceSerializer,
     RaidSerializer,
+    ScreenshotSerializer,
     TokenObtainPairSerializer,
     ZoneSerializer,
-    ScreenshotSerializer,
 )
 
 
@@ -358,7 +358,7 @@ class ScreenshotViewSet(viewsets.ModelViewSet):
             caption = request.data.get("caption", "")
             submitted_by_discord_id = request.data.get("submitted_by_discord_id")
             discord_message_id = request.data.get("discord_message_id")
-            screenshot = models.Screenshot.objects.create(
+            models.Screenshot.objects.create(
                 object_key=object_key,
                 content_type=content_type,
                 file_size_bytes=file_size_bytes,
