@@ -51,6 +51,10 @@ export const useRaidAttendanceList = (queryParams = {}) => {
     return useList('raid_attendance', '/raid_attendance/', queryParams);
 };
 
+export const useScreenshotsList = (queryParams = {}) => {
+    return useList('screenshots', '/screenshots/', queryParams);
+}
+
 export const useListDebounced = (queryKey, route, filterField, filterVal) => {
     const queryParams = { [filterField]: filterVal };
     const { isPending, error, data } = useQuery({
