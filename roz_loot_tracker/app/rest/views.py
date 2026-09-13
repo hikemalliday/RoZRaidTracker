@@ -35,7 +35,6 @@ from app.serializers.serializers import (
     ZoneSerializer,
 )
 
-
 logger = logging.getLogger(__name__)
 
 
