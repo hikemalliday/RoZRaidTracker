@@ -20,7 +20,7 @@ from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from app import models
-from app.rest.helper import S3UploadError, upload_image_to_s3
+from app.rest.helper import InvalidImageError, S3UploadError, upload_image_to_s3
 from app.serializers.serializers import (
     CharacterSerializer,
     ItemAwardedSerializer,
@@ -375,7 +375,7 @@ class ScreenshotViewSet(viewsets.ModelViewSet):
                 ).data,
                 status=status.HTTP_201_CREATED,
             )
-        except ValueError as exc:
+        except InvalidImageError as exc:
             logger.exception(
                 "Rejected screenshot upload: name=%r type=%r size=%r reason=%s",
                 getattr(image_file, "name", None),
@@ -387,9 +387,10 @@ class ScreenshotViewSet(viewsets.ModelViewSet):
                 {"error": "The uploaded file is not a valid image."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        except S3UploadError:
+        except S3UploadError as exc:
+            logger.exception("Screenshot storage failure: %s", exc)
             return Response(
-                {"error": "S3 bucket is temporarily unavailable. Please retry."},
+                {"error": "Screenshot storage is unavailable. Please retry later."},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE,
             )
 
