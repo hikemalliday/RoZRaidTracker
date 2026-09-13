@@ -16,6 +16,10 @@ class S3UploadError(Exception):
     """Raised when a screenshot cannot be uploaded to S3."""
 
 
+class InvalidImageError(ValueError):
+    """Raised when an uploaded file cannot be converted into a screenshot."""
+
+
 def _format_image(image) -> BytesIO:
     """Convert an uploaded image to a WebP screenshot no wider than 800 pixels.
 
@@ -27,7 +31,7 @@ def _format_image(image) -> BytesIO:
     try:
         with Image.open(source) as opened_image:
             if opened_image.width * opened_image.height > SCREENSHOT_MAX_PIXELS:
-                raise ValueError("_format_image: image dimensions are too large")
+                raise InvalidImageError("_format_image: image dimensions are too large")
             opened_image.load()
             formatted_image = ImageOps.exif_transpose(opened_image)
 
@@ -48,7 +52,7 @@ def _format_image(image) -> BytesIO:
         OSError,
         Image.DecompressionBombError,
     ) as exc:
-        raise ValueError("_format_image: invalid image data") from exc
+        raise InvalidImageError("_format_image: invalid image data") from exc
 
     output.seek(0)
     return output
@@ -61,9 +65,11 @@ def _create_s3_key() -> str:
 
 def upload_image_to_s3(image_data) -> dict:
     if not image_data:
-        raise ValueError("upload_image_to_s3: invalid 'image_data'")
+        raise InvalidImageError("upload_image_to_s3: invalid 'image_data'")
     formatted_image = _format_image(image_data)
     bucket_name = os.getenv("S3_ASSETS_BUCKET_NAME")
+    if not bucket_name:
+        raise S3UploadError("S3_ASSETS_BUCKET_NAME is not configured")
     s3 = boto3.resource("s3")
     s3_key = _create_s3_key()
     try:
