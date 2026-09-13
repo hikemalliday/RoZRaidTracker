@@ -32,6 +32,7 @@ from app.rest.views import (
     RaidViewSet,
     SQLQueryViewSet,
     ZoneViewSet,
+    ScreenshotViewSet,
 )
 
 router = routers.DefaultRouter()
@@ -45,6 +46,7 @@ router.register(r"preferred_pixels", PreferredPixelViewSet)
 router.register(r"raid_attendance", RaidAttendanceViewSet)
 router.register(r"raid_attendance_approval", RaidAttendanceApprovalViewSet)
 router.register(r"sql", SQLQueryViewSet, basename="sql")
+router.register(r"screenshots", ScreenshotViewSet)
 
 urlpatterns = [
     path("api/", include(router.urls)),
