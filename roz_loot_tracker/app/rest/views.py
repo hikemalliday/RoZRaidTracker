@@ -13,12 +13,13 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import DjangoModelPermissions
+from rest_framework.permissions import AllowAny, DjangoModelPermissions
 from rest_framework.response import Response
 from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from app import models
+from app.rest.helper import S3UploadError, upload_image_to_s3
 from app.serializers.serializers import (
     CharacterSerializer,
     ItemAwardedSerializer,
@@ -28,6 +29,7 @@ from app.serializers.serializers import (
     RaidAttendanceApprovalSerializer,
     RaidAttendanceSerializer,
     RaidSerializer,
+    ScreenshotSerializer,
     TokenObtainPairSerializer,
     ZoneSerializer,
 )
@@ -328,6 +330,57 @@ class SQLQueryViewSet(viewsets.GenericViewSet):
             return Response(
                 {"error": str(exc)},
                 status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+class ScreenshotViewSet(viewsets.ModelViewSet):
+    queryset = models.Screenshot.objects.order_by("-created_at")
+    serializer_class = ScreenshotSerializer
+    pagination_class = OptionalPagination
+    http_method_names = ["get", "post", "head", "options"]
+
+    def get_permissions(self):
+        if self.action in ("list", "retrieve"):
+            # Public gallery reads.
+            return [AllowAny()]
+        if self.action == "create":
+            # Discord bot: POST
+            return [HasAPIKey()]
+        return [DjangoModelPermissions()]
+
+    def create(self, request, *args, **kwargs):
+        try:
+            image_file = request.FILES["image"]
+            resp = upload_image_to_s3(image_file)
+            file_size_bytes = resp["file_size_bytes"]
+            object_key = resp["object_key"]
+            content_type = resp["content_type"]
+            caption = request.data.get("caption", "")
+            submitted_by_discord_id = request.data.get("submitted_by_discord_id")
+            discord_message_id = request.data.get("discord_message_id")
+            models.Screenshot.objects.create(
+                object_key=object_key,
+                content_type=content_type,
+                file_size_bytes=file_size_bytes,
+                caption=caption,
+                submitted_by_discord_id=submitted_by_discord_id,
+                discord_message_id=discord_message_id,
+            )
+            return Response(
+                self.get_serializer(
+                    {"message": "Success: Image uploaded to S3 and screenshot row created."},
+                ).data,
+                status=status.HTTP_201_CREATED,
+            )
+        except ValueError:
+            return Response(
+                {"error": "The uploaded file is not a valid image."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        except S3UploadError:
+            return Response(
+                {"error": "S3 bucket is temporarily unavailable. Please retry."},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
             )
 
 

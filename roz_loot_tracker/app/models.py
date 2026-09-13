@@ -155,3 +155,14 @@ class RaidAttendanceApproval(models.Model):
     # It simply serves as a way to provide more info for the 'approval' row. Because when they start stacking up, you
     # forget which is which.
     raid_name = models.CharField(max_length=100, **NOT_REQUIRED)
+
+
+class Screenshot(models.Model):
+    object_key = models.CharField(max_length=512, unique=True)
+    content_type = models.CharField(max_length=100)
+    file_size_bytes = models.PositiveBigIntegerField()
+    caption = models.TextField(blank=True)
+    submitted_by_discord_id = models.CharField(max_length=32)
+    discord_message_id = models.CharField(max_length=32, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
