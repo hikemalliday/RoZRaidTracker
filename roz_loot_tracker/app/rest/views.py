@@ -361,7 +361,7 @@ class ScreenshotViewSet(viewsets.ModelViewSet):
             caption = request.data.get("caption", "")
             submitted_by_discord_id = request.data.get("submitted_by_discord_id")
             discord_message_id = request.data.get("discord_message_id")
-            models.Screenshot.objects.create(
+            screenshot = models.Screenshot.objects.create(
                 object_key=object_key,
                 content_type=content_type,
                 file_size_bytes=file_size_bytes,
@@ -370,9 +370,7 @@ class ScreenshotViewSet(viewsets.ModelViewSet):
                 discord_message_id=discord_message_id,
             )
             return Response(
-                self.get_serializer(
-                    {"message": "Success: Image uploaded to S3 and screenshot row created."},
-                ).data,
+                self.get_serializer(screenshot).data,
                 status=status.HTTP_201_CREATED,
             )
         except InvalidImageError as exc:
