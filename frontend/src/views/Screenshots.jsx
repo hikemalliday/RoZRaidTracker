@@ -1,4 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useScreenshotsList } from '../hooks/requests.js';
+import { Typography } from '@mui/material';
+
 
 function ImageItem({ src }) {
     const [visible, setVisible] = useState(false);
@@ -20,31 +23,20 @@ function ImageItem({ src }) {
 }
 
 export function Screenshots() {
-    const images = import.meta.glob('../screenshots/*.{jpg,jpeg,png,webp}', { eager: true });
-    const imageList = Object.values(images).map(m => m.default);
+    const { data: screenshotsList, isPending, error } = useScreenshotsList();
     const loadMoreRef = useRef(null);
-    const PAGE_SIZE = 5;
 
-    const [imageListState, setImageListState] = useState(imageList);
+    const PAGE_SIZE = 5;
+    const S3_ASSETS_URL = import.meta.env.VITE_S3_ASSETS_URL;
+    const s3ImageUrls = (screenshotsList ?? []).map((screenshot) => {
+       return `${S3_ASSETS_URL}/${screenshot.object_key}`;
+    });
+
     const [page, setPage] = useState(1);
 
-    useEffect(() => {
-        // Randomize images list (Fisher-Yates shuffle)
-        // Note that Math.random() always returns a num from 0 to 1, exclusive. Its going to be either a zero or a decimal val, but NEVER 1.
-        // We loop backwards down the array, in order to not swap elements twice. I think this has to do with the fact that
-        // Math.floor() is always 0 - 1, but im not 100% sure.
-        setImageListState(prev => {
-            for (let i = prev.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [prev[i], prev[j]] = [prev[j], prev[i]];
-            }
-            return prev;
-        });
-    }, []);
-
     const visibleImages = useMemo(
-        () => imageListState.slice(0, page * PAGE_SIZE),
-        [page, imageListState]
+        () => s3ImageUrls.slice(0, page * PAGE_SIZE),
+        [page, s3ImageUrls]
     );
 
     useEffect(() => {
@@ -64,12 +56,14 @@ export function Screenshots() {
         return () => observer.disconnect();
     }, []);
 
+    if (isPending) return <Typography>Loading screenshots...</Typography>;
+    if (error) return <Typography>Could not load screenshots.</Typography>;
+    if (s3ImageUrls.length === 0) return <Typography>No screenshots have been uploaded yet.</Typography>;
     return (
         <>
             {visibleImages.map(src => (
                 <ImageItem key={src} src={src} />
             ))}
-
             <div ref={loadMoreRef} />
         </>
     );
