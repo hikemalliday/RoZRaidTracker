@@ -12,6 +12,7 @@ from app.models import (
     RaidAttendance,
     RaidAttendanceApproval,
     Zone,
+    Screenshot,
 )
 
 
@@ -151,3 +152,9 @@ class TokenObtainPairSerializer(TokenObtainPairSerializer):
         token["roles"] = [group.name for group in user.groups.all()]
         token["is_superuser"] = user.is_superuser
         return token
+
+
+class ScreenshotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Screenshot
+        fields = "__all__"

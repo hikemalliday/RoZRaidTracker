@@ -158,7 +158,6 @@ class RaidAttendanceApproval(models.Model):
 
 class Screenshot(models.Model):
     object_key = models.CharField(max_length=512, unique=True)
-    original_filename = models.CharField(max_length=255)
     content_type = models.CharField(max_length=100)
     file_size_bytes = models.PositiveBigIntegerField()
     caption = models.TextField(blank=True)
