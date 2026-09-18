@@ -39,10 +39,12 @@ export function Screenshots() {
         [page, s3ImageUrls]
     );
 
+    const imageCount = screenshotsList?.length ?? 0;
+
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (entry.isIntersecting) {
+                if (entry.isIntersecting && visibleImages.length < imageCount) {
                     setPage(p => p + 1);
                 }
             },
@@ -54,7 +56,7 @@ export function Screenshots() {
         if (loadMoreRef.current) observer.observe(loadMoreRef.current);
 
         return () => observer.disconnect();
-    }, []);
+    }, [isPending, visibleImages.length, imageCount]);
 
     if (isPending) return <Typography>Loading screenshots...</Typography>;
     if (error) return <Typography>Could not load screenshots.</Typography>;
