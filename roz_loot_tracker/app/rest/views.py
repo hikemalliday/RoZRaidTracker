@@ -1,3 +1,4 @@
+import hashlib
 import logging
 import sqlite3
 from datetime import timedelta
@@ -20,7 +21,7 @@ from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from app import models
-from app.rest.helper import InvalidImageError, S3UploadError, upload_image_to_s3
+from app.rest.helper import InvalidImageError, S3UploadError, checksum_exists, format_image, upload_image_to_s3
 from app.serializers.serializers import (
     CharacterSerializer,
     ItemAwardedSerializer,
@@ -354,7 +355,14 @@ class ScreenshotViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         try:
             image_file = request.FILES["image"]
-            resp = upload_image_to_s3(image_file)
+            formatted_image = format_image(image_file)
+            checksum = hashlib.sha256(formatted_image.getvalue()).hexdigest()
+            if checksum_exists(checksum):
+                return Response(
+                    {"error": "Image's checksum already exists in 'screenshot' table (already uploaded)."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            resp = upload_image_to_s3(formatted_image)
             file_size_bytes = resp["file_size_bytes"]
             object_key = resp["object_key"]
             content_type = resp["content_type"]
@@ -368,6 +376,7 @@ class ScreenshotViewSet(viewsets.ModelViewSet):
                 caption=caption,
                 submitted_by_discord_id=submitted_by_discord_id,
                 discord_message_id=discord_message_id,
+                checksum=checksum,
             )
             return Response(
                 self.get_serializer(screenshot).data,

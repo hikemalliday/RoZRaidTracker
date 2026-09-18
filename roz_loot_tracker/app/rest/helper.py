@@ -7,6 +7,8 @@ from botocore.exceptions import BotoCoreError, ClientError
 from django.utils import timezone
 from PIL import Image, ImageOps, UnidentifiedImageError
 
+from app.models import Screenshot
+
 SCREENSHOT_MAX_PIXELS = 40_000_000
 SCREENSHOT_MAX_WIDTH = 800
 WEBP_QUALITY = 80
@@ -20,7 +22,7 @@ class InvalidImageError(ValueError):
     """Raised when an uploaded file cannot be converted into a screenshot."""
 
 
-def _format_image(image) -> BytesIO:
+def format_image(image) -> BytesIO:
     """Convert an uploaded image to a WebP screenshot no wider than 800 pixels.
 
     ``image`` may be raw bytes or a binary file-like object, including Django's
@@ -63,10 +65,18 @@ def _create_s3_key() -> str:
     return f"screenshots/{uploaded_at:%Y/%m}/{uuid4()}.webp"
 
 
-def upload_image_to_s3(image_data) -> dict:
-    if not image_data:
+def checksum_exists(checksum) -> bool:
+    try:
+        Screenshot.objects.get(checksum=checksum)
+    except Screenshot.DoesNotExist:
+        return False
+    return True
+
+
+def upload_image_to_s3(formatted_image) -> dict:
+    if not formatted_image:
         raise InvalidImageError("upload_image_to_s3: invalid 'image_data'")
-    formatted_image = _format_image(image_data)
+
     bucket_name = os.getenv("S3_ASSETS_BUCKET_NAME")
     if not bucket_name:
         raise S3UploadError("S3_ASSETS_BUCKET_NAME is not configured")

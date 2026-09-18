@@ -144,7 +144,6 @@ class PreferredPixel(models.Model):
         return f"PreferredPixel - Player: {self.player}, Item: {self.item}"
 
 
-# TODO: Interesting that we never linked this to a "Raid" instance but I guess whats done is done
 class RaidAttendanceApproval(models.Model):
     players_list = models.JSONField(default=list)
     is_approved = models.BooleanField(default=False)
@@ -164,5 +163,6 @@ class Screenshot(models.Model):
     caption = models.TextField(blank=True)
     submitted_by_discord_id = models.CharField(max_length=32)
     discord_message_id = models.CharField(max_length=32, unique=True)
+    checksum = models.CharField(max_length=64, unique=True, **NOT_REQUIRED)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
