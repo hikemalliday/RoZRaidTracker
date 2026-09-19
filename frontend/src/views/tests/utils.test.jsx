@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { getLootType, joinAndTruncate, handleAscDesc } from '../utils.jsx';
+import { fixLinks, getLootType, joinAndTruncate, handleAscDesc } from '../utils.jsx';
 
 describe('getLootType', () => {
     test('returns "Preferred" for preferred items', () => {
@@ -66,5 +66,26 @@ describe('handleAscDesc', () => {
     test('handles different sortBy values', () => {
         expect(handleAscDesc('desc', 'created_at')).toBe('-created_at');
         expect(handleAscDesc('asc', 'updated_at')).toBe('updated_at');
+    });
+});
+
+describe('fixLinks', () => {
+    test('uses the configured image host for PQDI item icons', () => {
+        const html = '<img src="/static/icons/item_646.png"><img src="/static/icons/item_644.png?v=1">';
+
+        const result = fixLinks(html, 'https://www.pqdi.cc/', 'https://assets.example.com/icons/');
+
+        expect(result).toContain('src="https://assets.example.com/icons/item_646.png"');
+        expect(result).toContain('src="https://assets.example.com/icons/item_644.png?v=1"');
+    });
+
+    test('does not rewrite non-item images', () => {
+        const result = fixLinks(
+            '<img src="/static/images/logo.png">',
+            'https://www.pqdi.cc/',
+            'https://assets.example.com/icons',
+        );
+
+        expect(result).toContain('src="/static/images/logo.png"');
     });
 });

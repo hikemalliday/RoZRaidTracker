@@ -134,7 +134,11 @@ export async function getItemInfo(itemId) {
     }
 }
 
-export function fixLinks(htmlString, baseUrl = 'https://www.pqdi.cc/') {
+export function fixLinks(
+    htmlString,
+    baseUrl = 'https://www.pqdi.cc/',
+    imageBaseUrl = import.meta.env.VITE_IMAGE_PATH,
+) {
     // Parse the HTML
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlString, 'text/html');
@@ -155,6 +159,22 @@ export function fixLinks(htmlString, baseUrl = 'https://www.pqdi.cc/') {
         link.setAttribute('target', '_blank');
         link.setAttribute('rel', 'noopener noreferrer');
     });
+
+    // PQDI's tooltip markup includes root-relative item icon paths such as
+    // `/static/icons/item_646.png`. Without rewriting them, the browser treats
+    // them as paths on this site. Item icons live in S3.
+    const imageBase = imageBaseUrl?.replace(/\/+$/, '');
+    if (imageBase) {
+        const images = doc.querySelectorAll('img[src]');
+        images.forEach(image => {
+            const src = image.getAttribute('src');
+            const itemIconMatch = src?.match(/^\/?static\/icons\/(item_\d+\.png)([?#].*)?$/);
+
+            if (itemIconMatch) {
+                image.setAttribute('src', `${imageBase}/${itemIconMatch[1]}${itemIconMatch[2] || ''}`);
+            }
+        });
+    }
 
     return doc.body.innerHTML;
 }
