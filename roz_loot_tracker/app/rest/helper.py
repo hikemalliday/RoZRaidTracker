@@ -60,11 +60,6 @@ def format_image(image) -> BytesIO:
     return output
 
 
-def _create_s3_key() -> str:
-    uploaded_at = timezone.now()
-    return f"screenshots/{uploaded_at:%Y/%m}/{uuid4()}.webp"
-
-
 def checksum_exists(checksum) -> bool:
     try:
         Screenshot.objects.get(checksum=checksum)
@@ -73,25 +68,36 @@ def checksum_exists(checksum) -> bool:
     return True
 
 
-def upload_image_to_s3(formatted_image) -> dict:
+# TODO: Weird code smell, but refactored to handle both screenshots and item icons.
+def upload_image_to_s3(
+    formatted_image,
+    file_name="",
+    parent_dir="screenshots",
+    file_type="webp",
+) -> dict:
     if not formatted_image:
         raise InvalidImageError("upload_image_to_s3: invalid 'image_data'")
 
     bucket_name = os.getenv("S3_ASSETS_BUCKET_NAME")
     if not bucket_name:
         raise S3UploadError("S3_ASSETS_BUCKET_NAME is not configured")
+
     s3 = boto3.resource("s3")
-    s3_key = _create_s3_key()
+    uploaded_at = timezone.now()
+    top_level_key = uuid4() if parent_dir == "screenshots" else file_name
+    timestamp = f"{uploaded_at:%Y/%m}/" if parent_dir == "screenshots" else ""
+    s3_key = f"{parent_dir}/{timestamp}{top_level_key}.{file_type}"
+
     try:
         s3.Bucket(bucket_name).put_object(
             Key=s3_key,
             Body=formatted_image,
-            ContentType="image/webp",
+            ContentType=f"image/{file_type}",
             CacheControl="public, max-age=31536000, immutable",
         )
         return {
             "object_key": s3_key,
-            "content_type": "image/webp",
+            "content_type": f"image/{file_type}",
             "file_size_bytes": len(formatted_image.getvalue()),
         }
     except (ClientError, BotoCoreError) as exc:
