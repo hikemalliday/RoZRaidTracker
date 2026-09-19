@@ -11,7 +11,20 @@ export const ItemToolTip = ({ item, isCell = true }) => {
     const wrapperRef = useRef(null);
     const tooltipRef = useRef(null);
 
-    const handleMouseEnter = async () => {
+    const handleMouseEnter = async event => {
+        // The loading tooltip is rendered before its dimensions are available
+        // for the positioning effect. Seed its position from the pointer so it
+        // never briefly appears at the default viewport origin (0, 0).
+        const margin = 10;
+        const pointerOffset = 12;
+        const loadingTooltipWidth = 150;
+        setTooltipStyle({
+            top: Math.min(event.clientY + pointerOffset, window.innerHeight - margin),
+            left: Math.max(
+                margin,
+                Math.min(event.clientX + pointerOffset, window.innerWidth - loadingTooltipWidth - margin),
+            ),
+        });
         setHovered(true);
         if (!itemHtml && !isLoading && item?.eq_item_id) {
             setIsLoading(true);
