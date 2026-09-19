@@ -174,6 +174,23 @@ export function fixLinks(
                 image.setAttribute('src', `${imageBase}/${itemIconMatch[1]}${itemIconMatch[2] || ''}`);
             }
         });
+
+        // The primary icon is supplied by PQDI as a CSS sprite. The title holds
+        // the icon id, so replace the sprite with the matching S3-hosted PNG.
+        const spriteIcons = doc.querySelectorAll('span.item-icon[title]');
+        spriteIcons.forEach(spriteIcon => {
+            const iconIdMatch = spriteIcon.getAttribute('title')?.match(/^Icon (\d+)$/);
+            if (!iconIdMatch) return;
+
+            const image = doc.createElement('img');
+            image.setAttribute('class', spriteIcon.getAttribute('class'));
+            image.setAttribute('src', `${imageBase}/item_${iconIdMatch[1]}.png`);
+            image.setAttribute('width', '40');
+            image.setAttribute('height', '40');
+            image.setAttribute('alt', '');
+            image.setAttribute('title', spriteIcon.getAttribute('title'));
+            spriteIcon.replaceWith(image);
+        });
     }
 
     return doc.body.innerHTML;

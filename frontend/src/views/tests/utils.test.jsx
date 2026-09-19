@@ -88,4 +88,18 @@ describe('fixLinks', () => {
 
         expect(result).toContain('src="/static/images/logo.png"');
     });
+
+    test('replaces a PQDI item sprite with the configured item icon', () => {
+        const result = fixLinks(
+            '<span class="item-icon" style="background-image:url(/static/iconss/dragitem01.png)" title="Icon 646"></span>',
+            'https://www.pqdi.cc/',
+            'https://assets.example.com/icons',
+        );
+
+        expect(result).toContain('class="item-icon"');
+        expect(result).toContain('src="https://assets.example.com/icons/item_646.png"');
+        expect(result).toContain('width="40"');
+        expect(result).toContain('height="40"');
+        expect(result).not.toContain('dragitem01.png');
+    });
 });
