@@ -67,12 +67,13 @@ def checksum_exists(checksum) -> bool:
         return False
     return True
 
+
 # TODO: Weird code smell, but refactored to handle both screenshots and item icons.
 def upload_image_to_s3(
-        formatted_image,
-        file_name = "",
-        parent_dir = "screenshots",
-        file_type = "webp",
+    formatted_image,
+    file_name="",
+    parent_dir="screenshots",
+    file_type="webp",
 ) -> dict:
     if not formatted_image:
         raise InvalidImageError("upload_image_to_s3: invalid 'image_data'")
