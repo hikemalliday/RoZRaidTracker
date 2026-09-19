@@ -1,3 +1,4 @@
+# TODO: 9/19/26 -- Script has been ran on prod and legacy images in `/screenshots` have been deleted. This script is no longer needed.
 """
   **Since we run in docker-compose on prod, we need to first copy
   the legacy screenshots into the app service/container.
