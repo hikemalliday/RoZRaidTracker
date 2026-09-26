@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0012_remove_character_unique_main_per_player_and_more'),
+        ('app', '0014_screenshot_checksum'),
     ]
 
     operations = [
