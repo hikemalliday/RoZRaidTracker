@@ -114,7 +114,7 @@ export const LootTypeBadgeCell = ({ lootType }) => {
     );
 };
 
-export const getTierBadgeCell = tier => {
+export const TierBadgeCell = ({ tier }) => {
     const styles_map = {
         "QUARM": {
             background: 'rgba(234, 179, 8, 0.15)',

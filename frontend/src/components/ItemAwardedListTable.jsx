@@ -1,4 +1,4 @@
-import { getTierBadgeCell, LinkCell, LootTypeBadgeCell, TableList } from './Tables.jsx';
+import { TierBadgeCell, LinkCell, LootTypeBadgeCell, TableList } from './Tables.jsx';
 import { TableRow, TableCell, Box } from '@mui/material';
 import { get21DayStyles } from '../styles.js';
 import { ItemToolTip } from './ItemToolTip.jsx';
@@ -25,7 +25,7 @@ export function ItemAwardedListTable({
                         {row?.raid?.created_at}
                     </TableCell>
                     <LootTypeBadgeCell lootType={row.type}/>
-                    {getTierBadgeCell(row.item.tier)}
+                    <TierBadgeCell tier={row.item.tier}/>
                 </TableRow>
             );
         });
