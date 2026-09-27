@@ -77,7 +77,7 @@ export default function Login() {
                         required
                     />
                 </Box>
-                <Button style={buttonStyles}>SUBMIT</Button>
+                <Button type="submit" style={buttonStyles}>SUBMIT</Button>
             </form>
             {loginSuccess && <LoginSuccessMessage />}
         </Box>
