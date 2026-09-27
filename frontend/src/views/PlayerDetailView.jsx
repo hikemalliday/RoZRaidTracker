@@ -6,7 +6,7 @@ import {
     useRaidAttendanceList,
     useRaidAttendanceListPaginated,
 } from '../hooks/requests.js';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Container, Typography, Button } from '@mui/material';
 import { getItemAwardedMetaData, renderErrors, sortItemsByRaidDate } from './utils.jsx';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { CharacterListTable } from '../components/CharacterListTable.jsx';
@@ -54,12 +54,12 @@ export function PlayerDetailView() {
         <Container sx={{ mt: 1 }}>
             {isAuthenticated && isSuperUser === true ? (
                 <>
-                    <button
-                        style={{ marginTop: 5, marginBottom: 20 }}
+                    <Button
+                        sx={{ color: 'white' }}
                         onClick={() => navigate('edit')}
                     >
                         EDIT PLAYER
-                    </button>
+                    </Button>
                 </>
             ) : (
                 <></>

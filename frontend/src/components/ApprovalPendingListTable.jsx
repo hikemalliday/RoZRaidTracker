@@ -1,4 +1,4 @@
-import { TableRow } from '@mui/material';
+import { TableRow, Button } from '@mui/material';
 import { CheckboxCell, LinkCell, TableList } from './Tables.jsx';
 import { joinAndTruncate } from '../views/utils.jsx';
 import { useState } from 'react';
@@ -52,16 +52,12 @@ export function ApprovalPendingListTable({ data }) {
     return (
         <>
             <TableList data={data} getTableRows={getApprovalRows} headerMap={headerMap} />
-            <button
-                style={{
-                    display: 'flex',
-                    alignItems: 'left',
-                    marginTop: 5,
-                }}
+            <Button
+                sx={{ whiteSpace: 'nowrap', color: 'white' }}
                 onClick={handleDeleteSelectedRaidsToApprove}
             >
                 Remove Selected Raids
-            </button>
+            </Button>
         </>
     );
 }

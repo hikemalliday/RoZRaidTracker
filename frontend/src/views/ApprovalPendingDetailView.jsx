@@ -4,7 +4,7 @@ import {
     useRaidAttendanceApprovalDetail,
     useRaidAttendanceApprovalMutation,
 } from '../hooks/requests.js';
-import { Autocomplete, Box, Container, TableCell, TableRow, TextField } from '@mui/material';
+import { Autocomplete, Box, Container, TableCell, TableRow, TextField, Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { fieldCardStyles, tableBox, textFieldStyles } from '../styles.js';
 import { CellNonClickable, TableList } from '../components/Tables.jsx';
@@ -52,9 +52,9 @@ function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
                         setSelectedPlayer({ name: option.name, discord_id: option.discord_id, is_selected: true });
                     }}
                 />
-                <button style={{ backgroundColor: '#2a2a2a' }} onClick={handleSubmit}>
+                <Button sx={{ backgroundColor: '#2a2a2a', color: 'white' }} onClick={handleSubmit}>
                     ADD PLAYER
-                </button>
+                </Button>
             </Box>
         </Box>
     );
@@ -171,6 +171,7 @@ export function ApprovalPendingDetailView() {
                     display: 'flex',
                     justifyContent: 'center',
                     mr: 1,
+                    color: 'white',
                 }}
             >
                 <DataField label="Created At" value={data.created_at} sx={{ margin: 2 }} />
@@ -189,13 +190,13 @@ export function ApprovalPendingDetailView() {
                     value={raid}
                     onChange={handleTextInput}
                 />
-                <button
-                    style={{ marginLeft: 38, backgroundColor: '#2a2a2a' }}
+                <Button
+                    sx={{ marginLeft: 38, backgroundColor: '#2a2a2a', color: 'white' }}
                     onClick={handleSubmit}
                     disabled={!raid || playersToSubmit.length === 0}
                 >
                     APPROVE
-                </button>
+                </Button>
             </Box>
             <PlayersToSubmitTable
                 playersToSubmit={playersToSubmit}

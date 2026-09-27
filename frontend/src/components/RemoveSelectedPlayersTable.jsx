@@ -1,4 +1,4 @@
-import { Box, TableCell, TableRow } from '@mui/material';
+import { Box, TableCell, TableRow, Button } from '@mui/material';
 import React from 'react';
 import { get21DayStyles, tableBox } from '../styles.js';
 import { CellNonClickable, TableList } from './Tables.jsx';
@@ -48,16 +48,16 @@ export function RemoveSelectedPlayersTable({
                 getTableRows={getPlayersToRemoveRows}
                 {...rest}
             />
-            <button
+            <Button
                 style={{
                     display: 'flex',
                     alignItems: 'left',
-                    marginTop: 5,
+                    color: 'white',
                 }}
                 onClick={onSubmit}
             >
                 REMOVE SELECTED
-            </button>
+            </Button>
         </Box>
     );
 }

@@ -1,6 +1,6 @@
 import { useParams } from 'react-router';
 import { useAuthContext } from '../context/AuthContext.jsx';
-import { Autocomplete, Box, Container, MenuItem, Select, TableRow, TextField } from '@mui/material';
+import { Autocomplete, Box, Container, MenuItem, Select, TableRow, TextField, Button } from '@mui/material';
 import {
     useCharacterBatchEdit,
     useCharacterCreate,
@@ -105,9 +105,9 @@ function AddCharacterField({ playerId }) {
                     setCharType(option?.value ?? 'ALT');
                 }}
             />
-            <button style={{ whiteSpace: 'nowrap' }} onClick={handleSubmit}>
+            <Button style={{ whiteSpace: 'nowrap', color: 'white' }} onClick={handleSubmit}>
                 ADD CHARACTER
-            </button>
+            </Button>
         </Box>
     );
 }
@@ -186,15 +186,15 @@ function EditableCharacterListTable({ charList }) {
     return (
         <>
             <TableList data={charList} getTableRows={getCharacterRows} headerMap={headerMap} />
-            <button
+            <Button
                 style={{
                     display: 'flex',
-                    marginTop: 10,
+                    color: 'white',
                 }}
                 onClick={handleEditCharactersBatchSubmit}
             >
                 SAVE
-            </button>
+            </Button>
         </>
     );
 }
