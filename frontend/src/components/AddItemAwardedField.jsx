@@ -1,4 +1,4 @@
-import { Autocomplete, Box, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, MenuItem, Select, TextField, Typography, Button } from '@mui/material';
 import React, { useState } from 'react';
 import { useItemAwardedCreate, useListDebounced, usePlayersList } from '../hooks/requests.js';
 import {
@@ -122,9 +122,9 @@ export function AddItemAwardedField({ raidId, styles = {} }) {
                         </MenuItem>
                     ))}
                 </Select>
-                <button style={{ whiteSpace: 'nowrap' }} onClick={handleSubmit}>
+                <Button sx={{ whiteSpace: 'nowrap', color: 'white' }} onClick={handleSubmit}>
                     ADD ITEM
-                </button>
+                </Button>
             </Box>
         </Box>
     );

@@ -8,7 +8,7 @@ import {
     ItemAwardedTypeEditableField,
     TableList,
 } from './Tables.jsx';
-import { Box, TableRow } from '@mui/material';
+import { Box, TableRow, Button } from '@mui/material';
 import { useRef } from 'react';
 import { useItemAwardedDelete, useItemAwardedEdit, usePlayersList } from '../hooks/requests.js';
 import { get21DayStyles, tableBox } from '../styles.js';
@@ -126,16 +126,16 @@ export function ItemAwardedListTableEditable({
                 styledRows={styledRows}
                 {...rest}
             />
-            <button
-                style={{
+            <Button
+                sx={{
                     display: 'flex',
                     alignItems: 'left',
-                    marginTop: 5,
+                    color: 'white',
                 }}
                 onClick={handleSubmitEditItems}
             >
                 Submit
-            </button>
+            </Button>
         </Box>
     );
 }

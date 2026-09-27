@@ -1,4 +1,4 @@
-import { Autocomplete, Box, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, TextField, Typography, Button } from '@mui/material';
 import React, { useState } from 'react';
 import { usePlayersList, useRaidAttendanceMutation } from '../hooks/requests.js';
 import { fieldCardStyles, fieldCardTypographyStyles, textFieldStyles } from '../styles.js';
@@ -42,7 +42,7 @@ export function AddPlayerField({ raidId, styles = {} }) {
                         setSelectedPlayer(option.id);
                     }}
                 />
-                <button onClick={handleSubmit}>ADD PLAYER</button>
+                <Button sx={{ whiteSpace: 'nowrap', color: 'white' }} onClick={handleSubmit}>ADD PLAYER</Button>
             </Box>
         </Box>
     );

@@ -4,6 +4,8 @@ import { useAuthContext } from '../context/AuthContext.jsx';
 import { useNavigate } from 'react-router';
 import { useMessage } from '../context/MessageContext.jsx';
 import { buttonStyles } from '../styles.js';
+import { Box, Button } from '@mui/material';
+
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export default function Login() {
@@ -53,11 +55,11 @@ export default function Login() {
     };
 
     return (
-        <div>
+        <Box>
             <h3>LOG IN</h3>
             {error && <p>{error}</p>}
             <form onSubmit={e => getTokenPair(e)}>
-                <div>
+                <Box>
                     <input
                         type="text"
                         placeholder="Username"
@@ -65,8 +67,8 @@ export default function Login() {
                         onChange={e => setUsername(e.target.value)}
                         required
                     />
-                </div>
-                <div>
+                </Box>
+                <Box>
                     <input
                         type="password"
                         placeholder="Password"
@@ -74,10 +76,10 @@ export default function Login() {
                         onChange={e => setPassword(e.target.value)}
                         required
                     />
-                </div>
-                <button style={buttonStyles}>SUBMIT</button>
+                </Box>
+                <Button type="submit" style={buttonStyles}>SUBMIT</Button>
             </form>
             {loginSuccess && <LoginSuccessMessage />}
-        </div>
+        </Box>
     );
 }
