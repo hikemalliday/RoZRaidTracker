@@ -1,7 +1,7 @@
 import { Autocomplete, Box, TextField, Typography, Button } from '@mui/material';
 import React, { useState } from 'react';
 import { usePlayersList, useRaidAttendanceMutation } from '../hooks/requests.js';
-import { fieldCardStyles, fieldCardTypographyStyles, textFieldStyles } from '../styles.js';
+import { boxEffectStyles, buttonStyles, fieldCardStyles, fieldCardTypographyStyles, textFieldStyles } from '../styles.js';
 import { getPlayersOptions } from '../views/utils.jsx';
 
 export function AddPlayerField({ raidId, styles = {} }) {
@@ -26,11 +26,7 @@ export function AddPlayerField({ raidId, styles = {} }) {
         >
             <Typography sx={fieldCardTypographyStyles}>Add Attendee</Typography>
             <Box
-                sx={{
-                    display: 'flex',
-                    gap: 2,
-                    alignItems: 'flex-start',
-                }}
+                sx={boxEffectStyles}
             >
                 <Autocomplete
                     sx={{ flex: 1 }}
@@ -42,7 +38,7 @@ export function AddPlayerField({ raidId, styles = {} }) {
                         setSelectedPlayer(option.id);
                     }}
                 />
-                <Button sx={{ whiteSpace: 'nowrap', color: 'white' }} onClick={handleSubmit}>ADD PLAYER</Button>
+                <Button sx={buttonStyles} onClick={handleSubmit}>ADD PLAYER</Button>
             </Box>
         </Box>
     );

@@ -2,6 +2,7 @@ import { Box, TableCell, TableRow, Button } from '@mui/material';
 import React from 'react';
 import { get21DayStyles, tableBox } from '../styles.js';
 import { CellNonClickable, TableList } from './Tables.jsx';
+import { buttonStyles } from '../styles.js';
 
 export function RemoveSelectedPlayersTable({
     playersToRender,
@@ -49,11 +50,7 @@ export function RemoveSelectedPlayersTable({
                 {...rest}
             />
             <Button
-                style={{
-                    display: 'flex',
-                    alignItems: 'left',
-                    color: 'white',
-                }}
+                sx={buttonStyles}
                 onClick={onSubmit}
             >
                 REMOVE SELECTED
