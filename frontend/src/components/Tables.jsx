@@ -59,7 +59,7 @@ export const LootTypeBadgeCell = ({ lootType }) => {
     return (
         <TableCell id="non-clickable-cell">
             <Box
-                sx={nonClickableCellStyles}
+                sx={nonClickableCellStyles(badgeStyle)}
             >
                 {lootType}
             </Box>

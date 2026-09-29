@@ -268,8 +268,9 @@ export const styles_map = {
                     },
                 }
 
-    export const nonClickableCellStyles = {
-                    display: 'inline-block',
+    export const nonClickableCellStyles = (badgeStyle) => ({
+
+        display: 'inline-block',
                     padding: '4px 10px',
                     borderRadius: '4px',
                     border: badgeStyle.border,
@@ -279,7 +280,10 @@ export const styles_map = {
                     textTransform: 'uppercase',
                     fontWeight: 500,
                     letterSpacing: '0.3px',
-                }
+
+    }) 
+                    
+                
 
     export const lootSelectStyles = {
                         width: '150px',
