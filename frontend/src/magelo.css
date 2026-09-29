@@ -4,9 +4,7 @@
     max-height: 420px;
     grid-template-columns: repeat(4, 1fr);
     gap: 2px;
-    margin-top: 1px;
-    margin-left: 15px;
-    margin-right: 15px;
+    margin: 1px 15px 0;
 }
 .slot {
     height: 50px;

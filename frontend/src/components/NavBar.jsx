@@ -1,8 +1,9 @@
 import { useNavigate, useLocation } from 'react-router';
 import { useAuthContext } from '../context/AuthContext.jsx';
 import { useRef, useState } from 'react';
-import { Box, Drawer, IconButton, List, ListItem, ListItemText } from '@mui/material';
+import { Box, Drawer, IconButton, List, ListItem, ListItemText, Link } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { listItemStyles } from '../styles.js';
 
 export function NavBar() {
     const navigate = useNavigate();
@@ -41,75 +42,75 @@ export function NavBar() {
 
         return (
             <>
-                <a
+                <Link
                     id="nav-bar-link"
                     onClick={() => handleLinkClick('/compare')}
                     className={isActive('/compare') ? 'active' : ''}
                 >
                     COMPARE
-                </a>
+                </Link>
                 {isAuthenticated && isSuperUser && (
                     <>
-                        <a
+                        <Link
                             id="nav-bar-link"
                             onClick={() => handleLinkClick('ra_approval_pending')}
                             className={isActive('ra_approval_pending') ? 'active' : ''}
                         >
                             APPROVAL
-                        </a>
-                        <a
+                        </Link>
+                        <Link
                             id="nav-bar-link"
                             onClick={() => handleLinkClick('sql')}
                             className={isActive('sql') ? 'active' : ''}
                         >
                         SQL
-                        </a>
+                        </Link>
                     </>
                 )}
-                <a
+                <Link
                     id="nav-bar-link"
                     onClick={() => handleLinkClick('/player')}
                     className={isActive('/player') ? 'active' : ''}
                 >
                     PLAYERS
-                </a>
-                <a
+                </Link>
+                <Link
                     id="nav-bar-link"
                     onClick={() => handleLinkClick('/raid')}
                     className={isActive('/raid') ? 'active' : ''}
                 >
                     RAIDS
-                </a>
-                <a
+                </Link>
+                <Link
                     id="nav-bar-link"
                     onClick={() => handleLinkClick('item_awarded')}
                     className={isActive('item_awarded') ? 'active' : ''}
                 >
                     ITEMS AWARDED
-                </a>
-                <a
+                </Link>
+                <Link
                     id="nav-bar-link"
                     onClick={() => handleLinkClick('screenshots')}
                     className={isActive('screenshots') ? 'active' : ''}
                 >
                     SCREENSHOTS
-                </a>
-                <a
+                </Link>
+                <Link
                     id="nav-bar-link"
                     onClick={() => handleLinkClick('roster')}
                     className={isActive('roster') ? 'active' : ''}
                 >
                     ROSTER
-                </a>
+                </Link>
 
                 {isAuthenticated ? (
-                    <a id="nav-bar-link" onClick={() => logout()}>
+                    <Link id="nav-bar-link" onClick={() => logout()}>
                         LOG OUT
-                    </a>
+                    </Link>
                 ) : (
-                    <a id="nav-bar-link" onClick={() => handleLinkClick('/login')}>
+                    <Link id="nav-bar-link" onClick={() => handleLinkClick('/login')}>
                         LOG IN
-                    </a>
+                    </Link>
                 )}
             </>
         );
@@ -133,10 +134,7 @@ export function NavBar() {
                     <ListItem
                         key={link.path}
                         onClick={() => handleLinkClick(link.path)}
-                        sx={{
-                            cursor: 'pointer',
-                            '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' },
-                        }}
+                        sx={listItemStyles}
                     >
                         <ListItemText primary={link.label} />
                     </ListItem>
@@ -145,10 +143,7 @@ export function NavBar() {
                     <>
                         <ListItem
                             onClick={() => handleLinkClick('/ra_approval_pending')}
-                            sx={{
-                                cursor: 'pointer',
-                                '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' },
-                            }}
+                            sx={listItemStyles}
                         >
                             <ListItemText primary="APPROVAL - PENDING" />
                         </ListItem>
@@ -156,10 +151,7 @@ export function NavBar() {
                 )}
                 <ListItem
                     onClick={isAuthenticated ? handleLogout : () => handleLinkClick('/login')}
-                    sx={{
-                        cursor: 'pointer',
-                        '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' },
-                    }}
+                    sx={listItemStyles}
                 >
                     <ListItemText primary={isAuthenticated ? 'LOG OUT' : 'LOG IN'} />
                 </ListItem>
@@ -169,11 +161,11 @@ export function NavBar() {
 
     return (
         <Box sx={{ maxWidth: '1400px', margin: '0 auto', padding: '0 20px' }} data-navbar-box>
-            <div id="nav-bar-main">
-                <div id="nav-bar-logo" onClick={() => navigate('/')}>
+            <Box id="nav-bar-main">
+                <Box id="nav-bar-logo" onClick={() => navigate('/')}>
                     <span style={{ fontSize: '24px' }}>ZEK</span>
                     <span style={{ fontSize: '12px', marginLeft: '8px' }}>Raid Tools</span>
-                </div>
+                </Box>
                 <Box
                     sx={{ display: { xs: 'none', md: 'flex' } }}
                     id="nav-bar-links"
@@ -187,7 +179,7 @@ export function NavBar() {
                     </IconButton>
                 </Box>
                 {mobileDrawer()}
-            </div>
+            </Box>
         </Box>
     );
 }
