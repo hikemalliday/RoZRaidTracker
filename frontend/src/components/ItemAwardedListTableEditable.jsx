@@ -11,7 +11,7 @@ import {
 import { Box, TableRow, Button } from '@mui/material';
 import { useRef } from 'react';
 import { useItemAwardedDelete, useItemAwardedEdit, usePlayersList } from '../hooks/requests.js';
-import { get21DayStyles, tableBox } from '../styles.js';
+import { buttonStyles, get21DayStyles, tableBox } from '../styles.js';
 import { getPlayersOptions } from '../views/utils.jsx';
 // The most complex files in the app are def. these custom forms
 // God speed when you come back in a couple of years and try to read this code :salute:
@@ -127,11 +127,7 @@ export function ItemAwardedListTableEditable({
                 {...rest}
             />
             <Button
-                sx={{
-                    display: 'flex',
-                    alignItems: 'left',
-                    color: 'white',
-                }}
+                sx={buttonStyles}
                 onClick={handleSubmitEditItems}
             >
                 Submit

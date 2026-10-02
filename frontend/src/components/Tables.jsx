@@ -14,7 +14,7 @@ import { Link } from 'react-router';
 import React, { useEffect, useState } from 'react';
 import { useDebounce } from '../hooks/useDebounce.js';
 import { useListDebounced } from '../hooks/requests.js';
-import { listBoxStyles, textFieldStyles } from '../styles.js';
+import { listBoxStyles, textFieldStyles, styles_map, tableStylesSmall, nonClickableCellStyles } from '../styles.js';
 import { _getReducedResults, getLootType } from '../views/utils.jsx';
 const IMAGE_PATH = import.meta.env.VITE_IMAGE_PATH;
 
@@ -49,43 +49,7 @@ export const CheckboxCell = ({ changeHandler }) => {
 };
 
 export const LootTypeBadgeCell = ({ lootType }) => {
-    const styles_map = {
-        "preferred": {
-            background: 'rgba(234, 179, 8, 0.15)',
-            color: '#facc15',
-            border: '1px solid rgba(234, 179, 8, 0.3)',
-        },
-        "preferred_magelo": {
-            background: 'rgba(245, 158, 11, 0.15)',
-            color: '#fbbf24',
-            border: '1px solid rgba(245, 158, 11, 0.3)',
-        },
-        "main_magelo": {
-            background: 'rgba(239, 68, 68, 0.15)',
-            color: '#f87171',
-            border: '1px solid rgba(239, 68, 68, 0.3)',
-        },
-        "alt_magelo": {
-            background: 'rgba(249, 115, 22, 0.15)',
-            color: '#fb923c',
-            border: '1px solid rgba(249, 115, 22, 0.3)',
-        },
-        "alt": {
-            background: 'rgba(139, 92, 246, 0.15)',
-            color: '#a78bfa',
-            border: '1px solid rgba(139, 92, 246, 0.3)',
-        },
-        "main": {
-            background: 'rgba(107, 114, 128, 0.15)',
-            color: '#9ca3af',
-            border: '1px solid rgba(107, 114, 128, 0.3)',
-        },
-        "main_alt": {
-            background: 'rgba(139, 92, 246, 0.15)',
-            color: '#a78bfa',
-            border: '1px solid rgba(139, 92, 246, 0.3)',
-        }
-    }
+    
     const badgeStyle = styles_map[lootType];
 
     if (!badgeStyle) {
@@ -95,18 +59,7 @@ export const LootTypeBadgeCell = ({ lootType }) => {
     return (
         <TableCell id="non-clickable-cell">
             <Box
-                sx={{
-                    display: 'inline-block',
-                    padding: '4px 10px',
-                    borderRadius: '4px',
-                    border: badgeStyle.border,
-                    background: badgeStyle.background,
-                    color: badgeStyle.color,
-                    fontSize: '12px',
-                    textTransform: 'uppercase',
-                    fontWeight: 500,
-                    letterSpacing: '0.3px',
-                }}
+                sx={nonClickableCellStyles(badgeStyle)}
             >
                 {lootType}
             </Box>
@@ -385,21 +338,7 @@ export function ItemAwardedTypeEditableField({ formObject, itemAwardedDetail }) 
                 value={lootType}
                 onChange={handleChange}
                 variant="outlined"
-                sx={{
-                    color: 'white', // text color
-                    '.MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'white',
-                    },
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'white',
-                    },
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'white',
-                    },
-                    '.MuiSvgIcon-root': {
-                        color: 'white', // dropdown arrow
-                    },
-                }}
+                sx={tableStylesSmall}
             >
                 {lootTypeOptions.map(option => (
                     <MenuItem key={option} value={option}>

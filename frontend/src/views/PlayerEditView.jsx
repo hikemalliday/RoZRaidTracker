@@ -8,7 +8,7 @@ import {
 } from '../hooks/requests.js';
 import { renderErrors } from './utils.jsx';
 import { useEffect, useState } from 'react';
-import { getTextFieldStyles, textFieldStyles } from '../styles.js';
+import { buttonStyles, getTextFieldStyles, textFieldStyles } from '../styles.js';
 import {
     CellNonClickable,
     LinkCell,
@@ -105,7 +105,7 @@ function AddCharacterField({ playerId }) {
                     setCharType(option?.value ?? 'ALT');
                 }}
             />
-            <Button style={{ whiteSpace: 'nowrap', color: 'white' }} onClick={handleSubmit}>
+            <Button style={buttonStyles} onClick={handleSubmit}>
                 ADD CHARACTER
             </Button>
         </Box>
