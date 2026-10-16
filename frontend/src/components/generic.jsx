@@ -1,4 +1,15 @@
-import { Box, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
+
+export function LoadingIndicator({ label = 'Loading' }) {
+    return (
+        <Box sx={{
+                paddingTop: "100px",
+                color: "white",
+        }}>
+            <CircularProgress aria-label={label} color="inherit" />
+        </Box>
+    );
+}
 
 export function MetaDetail({ label, val }) {
     return (

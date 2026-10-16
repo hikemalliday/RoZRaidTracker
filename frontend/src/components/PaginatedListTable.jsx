@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
     Autocomplete,
     Container,
@@ -18,6 +18,7 @@ import SortIcon from '@mui/icons-material/Sort';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
 import { textFieldStyles } from '../styles.js';
 import { PaginationController } from './PaginationController.jsx';
+import { LoadingIndicator } from './generic.jsx';
 // In order to dynamically pass in different search bars to query on, we use 'autoCompleteOptions' prop object.
 // Since the auto complete depends on state that exists inside PaginatedListTable (setSearchVal), I cannot pass in an autocomplete component,
 // have to instead pass in the options object.
@@ -207,7 +208,7 @@ export function PaginatedListTable({
                 )}
             </Stack>
             {isPending ? (
-                <>LOADING...</>
+                <LoadingIndicator />
             ) : (
                 <>
                     <Stack

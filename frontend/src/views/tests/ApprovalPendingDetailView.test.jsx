@@ -16,13 +16,13 @@ describe('ApprovalPendingDetailView', () => {
     test('renders a loading state while approval data is requested', () => {
         renderApprovalDetail();
 
-        expect(screen.getByText('LOADING...')).toBeInTheDocument();
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument();
     });
 
     test('renders pending raid details and selected attendees', async () => {
         renderApprovalDetail();
 
-        await waitFor(() => expect(screen.queryByText('LOADING...')).not.toBeInTheDocument());
+        await waitFor(() => expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument());
         await waitFor(() => expect(screen.getByLabelText('Raid Name')).toHaveValue(approval.raid_name));
 
         expect(screen.getByText('Created At').parentElement).toHaveTextContent(approval.created_at);

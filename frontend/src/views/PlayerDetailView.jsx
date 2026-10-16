@@ -13,7 +13,7 @@ import { CharacterListTable } from '../components/CharacterListTable.jsx';
 import { RaidAttendanceListTable } from '../components/RaidAttendanceListTable.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
 import { labelStyles } from '../styles.js';
-import { MetaDetail } from '../components/generic.jsx';
+import { LoadingIndicator, MetaDetail } from '../components/generic.jsx';
 import { PaginatedListTable } from "../components/PaginatedListTable.jsx";
 import React from "react";
 
@@ -44,7 +44,7 @@ export function PlayerDetailView() {
     } = useRaidAttendanceList({ player: id });
 
     if (isPlayerPending || isItemAwardedPending || isCharacterPending || isRaidsPending)
-        return <>LOADING...</>;
+        return <LoadingIndicator />;
 
     const errorList = [playerError, itemAwardedError, characterError, raidsError];
     if (errorList.some(Boolean)) return renderErrors(errorList);

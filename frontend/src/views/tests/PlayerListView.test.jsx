@@ -7,14 +7,14 @@ import { PLAYER_LIST } from '../../tests/mocks/mockData.js';
 describe('PlayerListView', () => {
     test('renders loading state initially', () => {
         renderComponentWithContext(<PlayerListView />);
-        expect(screen.getByText('LOADING...')).toBeInTheDocument();
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument();
     });
 
     test('renders player list after loading', async () => {
         renderComponentWithContext(<PlayerListView />);
 
         await waitFor(() => {
-            expect(screen.queryByText('LOADING...')).not.toBeInTheDocument();
+            expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument();
         });
 
         PLAYER_LIST.forEach(player => {
@@ -26,7 +26,7 @@ describe('PlayerListView', () => {
         renderComponentWithContext(<PlayerListView />);
 
         await waitFor(() => {
-            expect(screen.queryByText('LOADING...')).not.toBeInTheDocument();
+            expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument();
         });
 
         const playerNames = PLAYER_LIST.map(p => screen.getByRole('link', { name: p.name }));

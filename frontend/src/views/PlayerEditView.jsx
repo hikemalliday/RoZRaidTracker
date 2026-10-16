@@ -1,19 +1,29 @@
 import { useParams } from 'react-router';
 import { useAuthContext } from '../context/AuthContext.jsx';
-import { Autocomplete, Box, Container, MenuItem, Select, TableRow, TextField, Button } from '@mui/material';
+import {
+    Autocomplete,
+    Box,
+    Container,
+    MenuItem,
+    Select,
+    TableRow,
+    TextField,
+    Button,
+} from '@mui/material';
 import {
     useCharacterBatchEdit,
     useCharacterCreate,
     useCharactersList,
 } from '../hooks/requests.js';
 import { renderErrors } from './utils.jsx';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getTextFieldStyles, textFieldStyles } from '../styles.js';
 import {
     CellNonClickable,
     LinkCell,
     TableList,
 } from '../components/Tables.jsx';
+import { LoadingIndicator } from '../components/generic.jsx';
 
 const CHARACTER_TYPE_OPTIONS = [
     { value: 'MAIN', label: 'Main' },
@@ -210,7 +220,7 @@ export function PlayerEditView() {
         player: id,
     });
     if (!isSuperUser) return <>Unauthorized.</>;
-    if (isCharsPending) return <>LOADING...</>;
+    if (isCharsPending) return <LoadingIndicator />;
     if (charListError) renderErrors([charListError]);
 
     return (

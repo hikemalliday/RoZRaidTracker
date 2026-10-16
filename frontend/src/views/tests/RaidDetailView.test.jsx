@@ -12,7 +12,7 @@ describe('RaidDetailView', () => {
             element: <RaidDetailView />,
         });
 
-        expect(screen.getByText('LOADING...')).toBeInTheDocument();
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument();
     });
 
     test('renders raid details after loading', async () => {
@@ -23,7 +23,7 @@ describe('RaidDetailView', () => {
         });
 
         await waitFor(() => {
-            expect(screen.queryByText('LOADING...')).not.toBeInTheDocument();
+            expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument();
         });
 
         expect(screen.getAllByText('Temple of Veeshan').length).toBeGreaterThan(0);
@@ -38,7 +38,7 @@ describe('RaidDetailView', () => {
         });
 
         await waitFor(() => {
-            expect(screen.queryByText('LOADING...')).not.toBeInTheDocument();
+            expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument();
         });
 
         const raid1Items = ITEM_AWARDED_LIST.filter(item => item.raid.id === RAID_1_ID);
@@ -56,7 +56,7 @@ describe('RaidDetailView', () => {
         });
 
         await waitFor(() => {
-            expect(screen.queryByText('LOADING...')).not.toBeInTheDocument();
+            expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument();
         });
 
         const raid1Attendees = RAID_ATTENDANCE_LIST.filter(ra => ra.raid.id === RAID_1_ID);

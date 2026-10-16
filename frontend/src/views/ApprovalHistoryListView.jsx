@@ -1,6 +1,8 @@
+import React from "react";
 import { useRaidAttendanceApprovalList } from '../hooks/requests.js';
 import { ApprovalHistoryListTable } from '../components/ApprovalHistoryListTable.jsx';
 import { useAuthContext } from '../context/AuthContext.jsx';
+import { LoadingIndicator } from '../components/generic.jsx';
 
 // TODO: Shows list view of approved raids. Since the table RaidAttendanceApproval is not related to Raid, the best
 // TODO: we could really do here is show a detail view on these links for this row, which would not show items and such
@@ -9,7 +11,7 @@ export function ApprovalHistoryListView() {
     const { isSuperUser } = useAuthContext();
     const { isPending, data, error } = useRaidAttendanceApprovalList({ is_approved: true });
 
-    if (isPending) return <>LOADING...</>;
+    if (isPending) return <LoadingIndicator />;
     if (error) return <>{error.message}</>;
     if (data.length === 0) return <>No raids to approve.</>;
     if (!isSuperUser) return <>Unauthorized.</>;

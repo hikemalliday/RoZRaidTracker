@@ -20,13 +20,13 @@ describe('PlayerDetailView', () => {
     test('renders a loading state while player data is requested', () => {
         renderPlayerDetail();
 
-        expect(screen.getByText('LOADING...')).toBeInTheDocument();
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument();
     });
 
     test('renders player details and their characters', async () => {
         renderPlayerDetail();
 
-        await waitFor(() => expect(screen.queryByText('LOADING...')).not.toBeInTheDocument());
+        await waitFor(() => expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument());
 
         const player = PLAYER_LIST.find(record => record.id === PLAYER_1_ID);
         expect(screen.getByText('Player', { selector: 'p' }).parentElement).toHaveTextContent(player.name);
@@ -45,7 +45,7 @@ describe('PlayerDetailView', () => {
     test('renders only items awarded to the player', async () => {
         renderPlayerDetail();
 
-        await waitFor(() => expect(screen.queryByText('LOADING...')).not.toBeInTheDocument());
+        await waitFor(() => expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument());
 
         const playerItems = ITEM_AWARDED_LIST.filter(award => award.player.id === PLAYER_1_ID);
         expect(screen.getByText(`Total Items Shown: ${playerItems.length}`)).toBeInTheDocument();
@@ -55,7 +55,7 @@ describe('PlayerDetailView', () => {
     test('renders the player raid-attendance total', async () => {
         renderPlayerDetail();
 
-        await waitFor(() => expect(screen.queryByText('LOADING...')).not.toBeInTheDocument());
+        await waitFor(() => expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument());
 
         const attendance = RAID_ATTENDANCE_LIST.filter(record => record.player.id === PLAYER_1_ID);
         expect(screen.getByText(`Raids Attended: ${attendance.length}`)).toBeInTheDocument();
