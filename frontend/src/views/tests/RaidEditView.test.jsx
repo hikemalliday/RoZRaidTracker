@@ -19,17 +19,17 @@ describe('RaidEditView', () => {
     test('renders a loading state while raid edit data is requested', () => {
         renderRaidEdit();
 
-        expect(screen.getByText('LOADING...')).toBeInTheDocument();
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument();
     });
 
     test('renders the selected raid and its awarded items', async () => {
         renderRaidEdit();
 
-        await waitFor(() => expect(screen.queryByText('LOADING...')).not.toBeInTheDocument());
+        await waitFor(() => expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument());
 
         const raid = RAID_LIST.find(record => record.id === RAID_1_ID);
-        expect(screen.getByText('Raid').parentElement).toHaveTextContent(raid.name);
-        expect(screen.getByText('Date').parentElement).toHaveTextContent(raid.created_at);
+        expect(screen.getAllByText('Raid')[0].parentElement).toHaveTextContent(raid.name);
+        expect(screen.getAllByText('Date')[0].parentElement).toHaveTextContent(raid.created_at);
 
         for (const award of ITEM_AWARDED_LIST.filter(award => award.raid.id === RAID_1_ID)) {
             expect(await screen.findByDisplayValue(award.item.name)).toBeInTheDocument();
@@ -39,7 +39,7 @@ describe('RaidEditView', () => {
     test('renders item and attendee management controls for superusers', async () => {
         renderRaidEdit();
 
-        await waitFor(() => expect(screen.queryByText('LOADING...')).not.toBeInTheDocument());
+        await waitFor(() => expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument());
 
         const attendance = RAID_ATTENDANCE_LIST.filter(record => record.raid.id === RAID_1_ID);
         expect(screen.getByText('Attendees').parentElement).toHaveTextContent(String(attendance.length));

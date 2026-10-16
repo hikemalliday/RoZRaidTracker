@@ -3,6 +3,7 @@ import { MageloGrid } from './MageloGrid.jsx';
 import { useItemsAwardedList, usePlayerDetail, usePlayersList } from '../hooks/requests.js';
 import React, { useState } from 'react';
 import { PlayerAutoComplete } from './PlayerAutoComplete.jsx';
+import { LoadingIndicator } from './generic.jsx';
 // TODO: Page still relies on the deprecated bool fields for 'Character' model. Modern approach is 'type' field.
 export function MageloPlayer({ defaultPlayerId = 1 }) {
     const { isPending: isPlayersPending, data: playersData } = usePlayersList();
@@ -13,11 +14,7 @@ export function MageloPlayer({ defaultPlayerId = 1 }) {
     });
 
     if (isPlayersPending || isItemsPending || isPlayerDetailPending)
-        return (
-            <Box sx={{ color: '#888888', fontSize: '0.75rem', letterSpacing: '0.1em', padding: 2 }}>
-                LOADING...
-            </Box>
-        );
+        return <LoadingIndicator />;
 
     const _getMainMageloItems = results => {
         if (!results) return [];

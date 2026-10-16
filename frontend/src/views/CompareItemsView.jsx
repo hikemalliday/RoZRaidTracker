@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Checkbox, Container, FormControlLabel } from '@mui/material';
 import { ItemAwardedListTable } from '../components/ItemAwardedListTable.jsx';
 import { useItemsAwardedList, usePlayersList } from '../hooks/requests.js';
-import { MetaDetail } from '../components/generic.jsx';
+import { LoadingIndicator, MetaDetail } from '../components/generic.jsx';
 import { getItemAwardedMetaData, sortItemsByRaidDate } from './utils.jsx';
 import { PlayerAutoComplete } from '../components/PlayerAutoComplete.jsx';
 
@@ -58,6 +58,7 @@ function CompareTable({ playersList, playersData, filtersState, defaultPlayerId 
                 <PlayerAutoComplete playerId={playerId} playerIdSetter={setPlayerId} playersData={playersData} />
                 {getRaInfo(playerId, playersList)}
                 {getItemAwardedMetaData(itemAwardedData, filteredData.length)}
+                {isPending && <LoadingIndicator />}
                 {!isPending && playerId && (
                     <>
                         <ItemAwardedListTable
@@ -100,7 +101,7 @@ export function CompareItemsView() {
             return filters;
         });
     };
-    if (isPlayersPending) return <>LOADING...</>;
+    if (isPlayersPending) return <LoadingIndicator />;
     // TODO: This is so that we can display 'rows' of the filters on top of each-other
     // Im sure there is a better way to handle this
     const filters1 = [

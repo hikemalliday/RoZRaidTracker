@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useScreenshotsList } from '../hooks/requests.js';
 import { Typography } from '@mui/material';
+import { LoadingIndicator } from '../components/generic.jsx';
 
 
 function ImageItem({ src }) {
@@ -58,7 +59,7 @@ export function Screenshots() {
         return () => observer.disconnect();
     }, [isPending, visibleImages.length, imageCount]);
 
-    if (isPending) return <Typography>Loading screenshots...</Typography>;
+    if (isPending) return <LoadingIndicator />;
     if (error) return <Typography>Could not load screenshots.</Typography>;
     if (s3ImageUrls.length === 0) return <Typography>No screenshots have been uploaded yet.</Typography>;
     return (

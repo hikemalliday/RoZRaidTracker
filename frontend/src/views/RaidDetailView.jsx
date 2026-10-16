@@ -8,6 +8,7 @@ import { useAuthContext } from '../context/AuthContext.jsx';
 import { compactTableRowStyles, labelStyles, tableBox } from '../styles.js';
 import React, { useMemo, useRef } from 'react';
 import { DataField } from '../components/DataField.jsx';
+import { LoadingIndicator } from '../components/generic.jsx';
 
 export function RaidDetailView() {
     const { id } = useParams();
@@ -34,7 +35,7 @@ export function RaidDetailView() {
     const pendingList = [isPending, isRaPending, isItemAwardedPending];
     const errorList = [error, raError, itemAwardedError];
 
-    if (pendingList.some(Boolean)) return <>LOADING...</>;
+    if (pendingList.some(Boolean)) return <LoadingIndicator />;
     if (errorList.some(Boolean)) return <>{renderErrors(errorList)}</>;
 
     return (

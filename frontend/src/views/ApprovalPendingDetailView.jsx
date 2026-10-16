@@ -12,6 +12,7 @@ import { useAuthContext } from '../context/AuthContext.jsx';
 import { getPlayersOptionsRaidAttendanceApproval } from './utils.jsx';
 import { DataField } from '../components/DataField.jsx';
 import { useMessage } from '../context/MessageContext.jsx';
+import { LoadingIndicator } from '../components/generic.jsx';
 
 // Player dropdown at top + button
 function AddPlayerField({ playersToSubmit, setPlayersToSubmit, styles = {} }) {
@@ -140,7 +141,7 @@ export function ApprovalPendingDetailView() {
         }
     }, [data]);
 
-    if (isPending) return <>LOADING...</>;
+    if (isPending) return <LoadingIndicator />;
     if (error) return <>{error.message}</>;
     if (!isSuperUser) return <>Unauthorized.</>;
 

@@ -14,6 +14,7 @@ import { AddItemAwardedField } from '../components/AddItemAwardedField.jsx';
 import { AddPlayerField } from '../components/AddPlayerField.jsx';
 import { RemoveSelectedPlayersTable } from '../components/RemoveSelectedPlayersTable.jsx';
 import { DataField } from '../components/DataField.jsx';
+import { LoadingIndicator } from '../components/generic.jsx';
 
 export function RaidEditView() {
     const { id } = useParams();
@@ -41,10 +42,10 @@ export function RaidEditView() {
             .sort((a, b) => a.name.localeCompare(b.name));
     }, [raData]);
 
-    if (pendingList.some(Boolean)) return <>LOADING...</>;
+    if (pendingList.some(Boolean)) return <LoadingIndicator />;
     if (errorList.some(Boolean)) return <>{renderErrors(errorList)}</>;
     if (!isSuperUser) return <>Unauthorized.</>;
-    if (!playersToRender) return <>LOADING...</>;
+    if (!playersToRender) return <LoadingIndicator />;
 
     const handleRemovePlayersSubmit = async () => {
         if (raRowsToDelete.length === 0) return;

@@ -9,9 +9,10 @@ import {
     TableList,
 } from './Tables.jsx';
 import { Box, TableRow, Button } from '@mui/material';
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { useItemAwardedDelete, useItemAwardedEdit, usePlayersList } from '../hooks/requests.js';
 import { get21DayStyles, tableBox } from '../styles.js';
+import { LoadingIndicator } from './generic.jsx';
 import { getPlayersOptions } from '../views/utils.jsx';
 // The most complex files in the app are def. these custom forms
 // God speed when you come back in a couple of years and try to read this code :salute:
@@ -26,7 +27,7 @@ export function ItemAwardedListTableEditable({
     const { mutate: deleteItemAwarded } = useItemAwardedDelete();
     const { mutate: editItemAwarded } = useItemAwardedEdit();
 
-    if (isPlayersPending) return <>Loading...</>;
+    if (isPlayersPending) return <LoadingIndicator />;
 
     const lootTypeMap = {
         'Preferred': "preferred",
