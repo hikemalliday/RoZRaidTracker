@@ -26,11 +26,7 @@ export function AddItemAwardedField({ raidId, styles = {} }) {
     const [lootType, setLootType] = useState("Main");
 
     const lootTypeMap = {
-        'Preferred': "preferred",
-        'Preferred, Magelo': "preferred_magelo",
-        'Main, Magelo': "main_magelo",
         'Main': "main",
-        'Alt, Magelo': "alt_magelo",
         'Alt': "alt",
         "Main Alt": "main_alt",
     };
