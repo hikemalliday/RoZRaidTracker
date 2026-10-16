@@ -16,7 +16,6 @@ export function PlayerListTable({ data, rowStyles = {}, sortable = true }) {
                     <CellNonClickable val={mainAlt2?.name}/>
                     <CellNonClickable val={`${row?.lifetime_ra}%`}/>
                     <CellNonClickable val={`${row?.ra_21_day}%`}/>
-                    <CellNonClickable val={`${row?.active}`}/>
                 </TableRow>
             );
         });
@@ -29,7 +28,6 @@ export function PlayerListTable({ data, rowStyles = {}, sortable = true }) {
         'Main Alt 2': null,
         'Lifetime RA': 'lifetime_ra',
         '21 Day': 'ra_21_day',
-        Active: 'active',
     };
 
     return (
