@@ -6,6 +6,9 @@ import {
     fieldCardTypographyStyles,
     listBoxStyles,
     textFieldStyles,
+    boxEffectStyles,
+    lootSelectStyles,
+    buttonStyles
 } from '../styles.js';
 import { useDebounce } from '../hooks/useDebounce.js';
 import { _getReducedResults, getPlayersOptions } from '../views/utils.jsx';
@@ -61,11 +64,7 @@ export function AddItemAwardedField({ raidId, styles = {} }) {
         >
             <Typography sx={fieldCardTypographyStyles}>Add Item</Typography>
             <Box
-                sx={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: 2,
-                }}
+                sx={boxEffectStyles}
             >
                 <Autocomplete
                     sx={{ flex: 1 }}
@@ -99,22 +98,7 @@ export function AddItemAwardedField({ raidId, styles = {} }) {
                     value={lootType}
                     onChange={handleChange}
                     variant="outlined"
-                    sx={{
-                        width: '150px',
-                        color: 'white', // text color
-                        '.MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'white',
-                        },
-                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'white',
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'white',
-                        },
-                        '.MuiSvgIcon-root': {
-                            color: 'white', // dropdown arrow
-                        },
-                    }}
+                    sx={lootSelectStyles}
                 >
                     {Object.keys(lootTypeMap).map(option => (
                         <MenuItem key={option} value={option}>
@@ -122,7 +106,7 @@ export function AddItemAwardedField({ raidId, styles = {} }) {
                         </MenuItem>
                     ))}
                 </Select>
-                <Button sx={{ whiteSpace: 'nowrap', color: 'white' }} onClick={handleSubmit}>
+                <Button sx={buttonStyles} onClick={handleSubmit}>
                     ADD ITEM
                 </Button>
             </Box>

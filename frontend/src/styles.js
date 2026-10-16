@@ -1,25 +1,24 @@
+import { AddItemAwardedField } from "./components/AddItemAwardedField";
+
 export const VERY_DARK_GRAY = '#333';
 
 export const buttonStyles = {
-    color: 'white',
-    margin: 0.5,
-    backgroundColor: 'black',
-    '&::after': {
-        content: '""',
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        right: 0,
-        bottom: 0,
-        boxShadow: '0 0 0 2px rgba(255,255,255,1)',
-        opacity: 0,
-        pointerEvents: 'none',
-        transition: 'opacity 220ms ease-in-out',
-    },
-    '&:hover::after, &:focus-visible::after': {
-        opacity: 1,
-    },
-};
+        color: 'white',
+        backgroundColor: 'rgba(255, 255, 255, 0.05)',
+        border: '1px solid rgba(255, 255, 255, 0.12)',
+        borderRadius: 2,
+        width: 40,
+        height: 40,
+        transition: 'all 0.2s ease-in-out',
+        '&:hover': {
+            backgroundColor: 'rgba(102, 178, 255, 0.15)',
+            borderColor: '#66b2ff',
+        },
+        '&.Mui-disabled': {
+            color: 'rgba(255, 255, 255, 0.3)',
+            borderColor: 'rgba(255, 255, 255, 0.05)',
+        },
+    };
 
 export const getTextFieldStyles = (width = 600) => {
     return {
@@ -191,3 +190,114 @@ export const compactTableRowStyles = {
     },
     height: '36px',
 };
+
+export const listItemStyles = {
+    cursor: 'pointer',
+
+    '&:hover': {
+        backgroundColor: 'rgba(255,255,255,0.05)',
+    },
+};
+
+export const messageContainerStyles = {
+     position: 'fixed',
+                bottom: 24,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: { xs: 'calc(100% - 32px)', sm: 420 },
+                zIndex: theme => theme.zIndex.snackbar
+}
+
+export const boxEffectStyles = {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: 2
+}
+
+export const styles_map = {
+        "preferred": {
+            background: 'rgba(234, 179, 8, 0.15)',
+            color: '#facc15',
+            border: '1px solid rgba(234, 179, 8, 0.3)',
+        },
+        "preferred_magelo": {
+            background: 'rgba(245, 158, 11, 0.15)',
+            color: '#fbbf24',
+            border: '1px solid rgba(245, 158, 11, 0.3)',
+        },
+        "main_magelo": {
+            background: 'rgba(239, 68, 68, 0.15)',
+            color: '#f87171',
+            border: '1px solid rgba(239, 68, 68, 0.3)',
+        },
+        "alt_magelo": {
+            background: 'rgba(249, 115, 22, 0.15)',
+            color: '#fb923c',
+            border: '1px solid rgba(249, 115, 22, 0.3)',
+        },
+        "alt": {
+            background: 'rgba(139, 92, 246, 0.15)',
+            color: '#a78bfa',
+            border: '1px solid rgba(139, 92, 246, 0.3)',
+        },
+        "main": {
+            background: 'rgba(107, 114, 128, 0.15)',
+            color: '#9ca3af',
+            border: '1px solid rgba(107, 114, 128, 0.3)',
+        },
+        "main_alt": {
+            background: 'rgba(139, 92, 246, 0.15)',
+            color: '#a78bfa',
+            border: '1px solid rgba(139, 92, 246, 0.3)',
+        }
+    }
+
+    export const tableStylesSmall = {
+                    color: 'white', // text color
+                    '.MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'white',
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'white',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'white',
+                    },
+                    '.MuiSvgIcon-root': {
+                        color: 'white', // dropdown arrow
+                    },
+                }
+
+    export const nonClickableCellStyles = (badgeStyle) => ({
+
+        display: 'inline-block',
+                    padding: '4px 10px',
+                    borderRadius: '4px',
+                    border: badgeStyle.border,
+                    background: badgeStyle.background,
+                    color: badgeStyle.color,
+                    fontSize: '12px',
+                    textTransform: 'uppercase',
+                    fontWeight: 500,
+                    letterSpacing: '0.3px',
+
+    }) 
+                    
+                
+
+    export const lootSelectStyles = {
+                        width: '150px',
+                        color: 'white', // text color
+                        '.MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white',
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white',
+                        },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'white',
+                        },
+                        '.MuiSvgIcon-root': {
+                            color: 'white', // dropdown arrow
+                        },
+                    }
