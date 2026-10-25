@@ -3,6 +3,7 @@ import { useAuthContext } from '../context/AuthContext.jsx';
 import { useRef, useState } from 'react';
 import { Box, Drawer, IconButton, List, ListItem, ListItemText, Link } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { listItemStyles } from '../styles.js';
 
 export function NavBar() {
     const navigate = useNavigate();
@@ -133,10 +134,7 @@ export function NavBar() {
                     <ListItem
                         key={link.path}
                         onClick={() => handleLinkClick(link.path)}
-                        sx={{
-                            cursor: 'pointer',
-                            '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' },
-                        }}
+                        sx={listItemStyles}
                     >
                         <ListItemText primary={link.label} />
                     </ListItem>
@@ -145,10 +143,7 @@ export function NavBar() {
                     <>
                         <ListItem
                             onClick={() => handleLinkClick('/ra_approval_pending')}
-                            sx={{
-                                cursor: 'pointer',
-                                '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' },
-                            }}
+                            sx={listItemStyles}
                         >
                             <ListItemText primary="APPROVAL - PENDING" />
                         </ListItem>
@@ -156,10 +151,7 @@ export function NavBar() {
                 )}
                 <ListItem
                     onClick={isAuthenticated ? handleLogout : () => handleLinkClick('/login')}
-                    sx={{
-                        cursor: 'pointer',
-                        '&:hover': { backgroundColor: 'rgba(255,255,255,0.05)' },
-                    }}
+                    sx={listItemStyles}
                 >
                     <ListItemText primary={isAuthenticated ? 'LOG OUT' : 'LOG IN'} />
                 </ListItem>

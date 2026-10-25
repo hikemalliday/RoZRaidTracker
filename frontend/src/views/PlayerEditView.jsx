@@ -1,15 +1,6 @@
 import { useParams } from 'react-router';
 import { useAuthContext } from '../context/AuthContext.jsx';
-import {
-    Autocomplete,
-    Box,
-    Container,
-    MenuItem,
-    Select,
-    TableRow,
-    TextField,
-    Button,
-} from '@mui/material';
+import { Autocomplete, Box, Container, MenuItem, Select, TableRow, TextField, Button } from '@mui/material';
 import {
     useCharacterBatchEdit,
     useCharacterCreate,
@@ -17,7 +8,7 @@ import {
 } from '../hooks/requests.js';
 import { renderErrors } from './utils.jsx';
 import React, { useEffect, useState } from 'react';
-import { getTextFieldStyles, textFieldStyles } from '../styles.js';
+import { buttonStyles, getTextFieldStyles, textFieldStyles } from '../styles.js';
 import {
     CellNonClickable,
     LinkCell,
@@ -115,7 +106,7 @@ function AddCharacterField({ playerId }) {
                     setCharType(option?.value ?? 'ALT');
                 }}
             />
-            <Button style={{ whiteSpace: 'nowrap', color: 'white' }} onClick={handleSubmit}>
+            <Button style={buttonStyles} onClick={handleSubmit}>
                 ADD CHARACTER
             </Button>
         </Box>

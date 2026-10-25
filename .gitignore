@@ -2,4 +2,9 @@
 .env*
 node_modules
 dist
+__pycache__/
+*.py[cod]
+*.sqlite3
+.idea/
+*.iml
 db-dev.sqlite3
